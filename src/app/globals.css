@@ -1,0 +1,296 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ---------------------------------------------------------------------------
+   StrictMode palette — lifted verbatim from "StrictMode Mockups.dc.html".
+   Terminal-adjacent dark; flame is the only chromatic accent, mint means correct.
+   --------------------------------------------------------------------------- */
+:root {
+  --ink: #12100f;
+  --ink-deep: #100e0d;
+  --surface: #181615;
+  --surface-2: #1a1817;
+  --surface-3: #1b1817;
+  --surface-4: #1e1b19;
+  --well: #0c0b0a;
+  --line: #2a2624;
+  --line-2: #302c29;
+  --line-3: #3a3431;
+  --line-4: #272321;
+
+  --flame: #e4572e;
+  --flame-dim: #3d2a22;
+  --flame-deep: #221a16;
+  --flame-wash: rgb(228 87 46 / 0.09);
+  --mint: #4fb477;
+  --mint-soft: #8fd6a9;
+  --mint-deep: #1c2a20;
+  --mint-line: #2b4a37;
+  --mint-text: #7fbd97;
+
+  --parchment: #f5f1ec;
+  --paper: #f0ebe6;
+  --chalk: #efeae4;
+  --bone: #cfc7c0;
+  --stone: #a8a09a;
+  --ash: #8c847d;
+  --slate: #6f665e;
+  --shadow: #5c554f;
+  --clay: #c9a08e;
+  --peach: #e0b9a8;
+  --rust: #c98a72;
+  --rust-line: #4a2a20;
+  --rust-bg: #1e1413;
+  --salmon: #f0a486;
+
+  /* Code wells are set like an editor: Dracula's hues on this app's ground.
+     Mirrored by the Shiki theme in src/lib/highlight.ts. */
+  --code-plain: #f8f8f2;
+  --code-keyword: #ff79c6;
+  --code-string: #f1fa8c;
+  --code-function: #50fa7b;
+  --code-type: #8be9fd;
+  --code-comment: #6272a4;
+  --code-number: #bd93f9;
+  --code-param: #ffb86c;
+  --code-gutter: #4a4458;
+
+  /* heatmap ramp, 0 → 4 */
+  --heat-0: #211e1c;
+  --heat-1: #3d2a22;
+  --heat-2: #7a3a20;
+  --heat-3: #c04a24;
+  --heat-4: #e4572e;
+
+  --radius: 0.5rem;
+
+  /* shadcn semantic layer, remapped onto the palette above */
+  --background: var(--ink);
+  --foreground: var(--parchment);
+  --card: var(--surface-2);
+  --card-foreground: var(--paper);
+  --popover: var(--surface-2);
+  --popover-foreground: var(--paper);
+  --primary: var(--flame);
+  --primary-foreground: var(--ink);
+  --secondary: var(--surface-4);
+  --secondary-foreground: var(--bone);
+  --muted: var(--surface);
+  --muted-foreground: var(--ash);
+  --accent: var(--flame-deep);
+  --accent-foreground: var(--clay);
+  --destructive: var(--flame);
+  --border: var(--line);
+  --input: var(--line-2);
+  --ring: var(--flame);
+  --chart-1: var(--flame);
+  --chart-2: var(--mint);
+  --chart-3: var(--clay);
+  --chart-4: var(--peach);
+  --chart-5: var(--slate);
+  --sidebar: var(--surface);
+  --sidebar-foreground: var(--bone);
+  --sidebar-primary: var(--flame);
+  --sidebar-primary-foreground: var(--ink);
+  --sidebar-accent: var(--surface-4);
+  --sidebar-accent-foreground: var(--paper);
+  --sidebar-border: var(--line);
+  --sidebar-ring: var(--flame);
+}
+
+/* The app is dark-only by design; .dark exists so shadcn's variant resolves. */
+.dark {
+  color-scheme: dark;
+}
+
+@theme inline {
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --font-sans: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-plex-mono), ui-monospace, SFMono-Regular, monospace;
+  --font-heading: var(--font-plex-sans), ui-sans-serif, system-ui, sans-serif;
+
+  --color-ink: var(--ink);
+  --color-ink-deep: var(--ink-deep);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-surface-4: var(--surface-4);
+  --color-well: var(--well);
+  --color-line: var(--line);
+  --color-line-2: var(--line-2);
+  --color-line-3: var(--line-3);
+  --color-line-4: var(--line-4);
+
+  --color-flame: var(--flame);
+  --color-flame-dim: var(--flame-dim);
+  --color-flame-deep: var(--flame-deep);
+  --color-mint: var(--mint);
+  --color-mint-soft: var(--mint-soft);
+  --color-mint-deep: var(--mint-deep);
+  --color-mint-line: var(--mint-line);
+  --color-mint-text: var(--mint-text);
+
+  --color-parchment: var(--parchment);
+  --color-paper: var(--paper);
+  --color-chalk: var(--chalk);
+  --color-bone: var(--bone);
+  --color-stone: var(--stone);
+  --color-ash: var(--ash);
+  --color-slate: var(--slate);
+  --color-shadow: var(--shadow);
+  --color-clay: var(--clay);
+  --color-peach: var(--peach);
+  --color-rust: var(--rust);
+  --color-rust-line: var(--rust-line);
+  --color-rust-bg: var(--rust-bg);
+  --color-salmon: var(--salmon);
+
+  --color-term-bg: var(--term-bg);
+  --color-term-fg: var(--term-fg);
+  --color-term-dim: var(--term-dim);
+
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-popover: var(--popover);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --color-chart-1: var(--chart-1);
+  --color-chart-2: var(--chart-2);
+  --color-chart-3: var(--chart-3);
+  --color-chart-4: var(--chart-4);
+  --color-chart-5: var(--chart-5);
+  --color-sidebar: var(--sidebar);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-ring: var(--sidebar-ring);
+
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+}
+
+/* ---------------------------------------------------------------------------
+   Homebrew terminal skin — the macOS Terminal.app "Homebrew" profile.
+   Applied to output-prediction questions and to any option that reads as
+   console output, so the answer LOOKS like the thing it is describing.
+   --------------------------------------------------------------------------- */
+[data-skin="terminal"] {
+  --term-bg: #000000;
+  --term-fg: #28fe14;
+  --term-dim: #1a9c0d;
+  --code-plain: #28fe14;
+  --code-keyword: #28fe14;
+  --code-string: #28fe14;
+  --code-function: #28fe14;
+  --code-type: #28fe14;
+  --code-comment: #1a9c0d;
+  --code-number: #28fe14;
+  --code-gutter: #157a09;
+}
+
+:root {
+  --term-bg: #000000;
+  --term-fg: #28fe14;
+  --term-dim: #1a9c0d;
+}
+
+/* Faint CRT scanline wash. Purely decorative, hidden under reduced motion. */
+.term-scanlines::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgb(40 254 20 / 0.035) 0px,
+    rgb(40 254 20 / 0.035) 1px,
+    transparent 1px,
+    transparent 3px
+  );
+}
+
+.term-glow {
+  text-shadow: 0 0 6px rgb(40 254 20 / 0.45);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    background: var(--ink);
+  }
+  body {
+    @apply bg-background text-foreground font-sans;
+    -webkit-font-smoothing: antialiased;
+    text-rendering: optimizeLegibility;
+  }
+  /* Code is never reflowed or wrapped — long lines scroll, at every breakpoint.
+     The scroll container is the bordered wrapper around the <pre> (see CodeWell),
+     so the well keeps its padding on both ends; this is the bare-<pre> fallback. */
+  pre {
+    white-space: pre;
+    overscroll-behavior-x: contain;
+    -webkit-overflow-scrolling: touch;
+  }
+  ::selection {
+    background: var(--flame);
+    color: var(--ink);
+  }
+}
+
+@layer utilities {
+  .scrollbar-hairline {
+    scrollbar-width: thin;
+    scrollbar-color: var(--line-3) transparent;
+  }
+  .scrollbar-hairline::-webkit-scrollbar {
+    height: 8px;
+    width: 8px;
+  }
+  .scrollbar-hairline::-webkit-scrollbar-thumb {
+    background: var(--line-3);
+    border-radius: 4px;
+  }
+  .scrollbar-hairline::-webkit-scrollbar-track {
+    background: transparent;
+  }
+}
+
+/* Motion is cinematic by default and disappears entirely on request. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  .term-scanlines::after {
+    display: none;
+  }
+}

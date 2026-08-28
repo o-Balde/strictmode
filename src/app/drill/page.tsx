@@ -1,5 +1,14 @@
+import type { Metadata } from "next";
 import { Suspense } from "react";
 import { DrillLauncher } from "@/components/session/drill-launcher";
+
+export const metadata: Metadata = {
+  title: "Active Drill",
+  robots: {
+    index: false,
+    follow: false,
+  },
+};
 
 /**
  * Static. The mode and subject live in the query string and are read on the

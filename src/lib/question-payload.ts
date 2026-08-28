@@ -43,6 +43,8 @@ export interface QuestionPayload {
   interviewLine: string;
   misconception?: string;
   hints: string[];
+  /** Canonical documentation for the question's subject, shown with the hint. */
+  docsUrl?: string;
   estimatedMinutes: number;
   options: PayloadOption[];
   correctAnswer: string;

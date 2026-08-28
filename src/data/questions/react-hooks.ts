@@ -47,10 +47,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the difference between class-based and functional React components?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the difference between class-based and functional React components?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the difference between class-based and functional React components?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "44-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-are-the-lifecycle-methods-of-a-component",
@@ -97,10 +98,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the lifecycle methods of a component?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the lifecycle methods of a component?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the lifecycle methods of a component?."
+      "A class component's constructor must call super(props) before touching this.props, and its lifecycle methods map onto effects in a function component."
     ],
     source: "44-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/Component"
   },
   {
     id: "react-what-are-the-peculiarities-of-using-useeffect",
@@ -148,10 +150,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the peculiarities of using useEffect?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the peculiarities of using useEffect?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the peculiarities of using useEffect?."
+      "An effect synchronises with something outside React. Ask what it subscribes to, and what its cleanup has to undo when the dependencies change."
     ],
     source: "44-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useEffect"
   },
   {
     id: "react-which-pattern-does-mobx-implement",
@@ -198,10 +201,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Which pattern does Mobx implement?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Which pattern does Mobx implement?.",
     hints: [
-      "Consider the core principles and trade-offs of Which pattern does Mobx implement?."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "44-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   },
   {
     id: "react-what-is-react-context",
@@ -248,10 +252,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is React Context?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is React Context?.",
     hints: [
-      "Consider the core principles and trade-offs of What is React Context?."
+      "Context solves passing data down, not re-rendering. Every consumer re-renders when the value changes, so the value's identity matters."
     ],
     source: "44-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useContext"
   },
   {
     id: "react-what-is-useref-used-for-and-how-does-it-work",
@@ -299,10 +304,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is useRef used for and how does it work?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is useRef used for and how does it work?.",
     hints: [
-      "Consider the core principles and trade-offs of What is useRef used for and how does it work?."
+      "Both refs and state survive a render. Only state causes one, so refs are for values the UI does not display."
     ],
     source: "44-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useRef"
   },
   {
     id: "react-how-to-track-changes-in-a-field-of-an-object-in-a-funct",
@@ -350,10 +356,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to track changes in a field of an object in a functional component?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to track changes in a field of an object in a functional component?.",
     hints: [
-      "Consider the core principles and trade-offs of How to track changes in a field of an object in a functional component?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "44-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-to-access-a-dom-element",
@@ -401,10 +408,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to access a DOM element?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to access a DOM element?.",
     hints: [
-      "Consider the core principles and trade-offs of How to access a DOM element?."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "44-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   },
   {
     id: "react-what-is-a-custom-hook",
@@ -452,10 +460,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is a custom hook?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is a custom hook?.",
     hints: [
-      "Consider the core principles and trade-offs of What is a custom hook?."
+      "Hooks are matched by call order, which is why they must run unconditionally at the top level of a component or another hook."
     ],
     source: "44-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/warnings/invalid-hook-call-warning"
   },
   {
     id: "react-what-are-the-rules-for-creating-a-custom-hook",
@@ -503,10 +512,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the rules for creating a custom hook?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the rules for creating a custom hook?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the rules for creating a custom hook?."
+      "Hooks are matched by call order, which is why they must run unconditionally at the top level of a component or another hook."
     ],
     source: "44-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/warnings/invalid-hook-call-warning"
   },
   {
     id: "react-what-are-custom-hooks",
@@ -554,10 +564,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are Custom Hooks?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are Custom Hooks?.",
     hints: [
-      "Consider the core principles and trade-offs of What are Custom Hooks?."
+      "Hooks are matched by call order, which is why they must run unconditionally at the top level of a component or another hook."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/warnings/invalid-hook-call-warning"
   },
   {
     id: "react-what-is-the-difference-between-useeffect-and-uselayoute",
@@ -604,10 +615,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the difference between useEffect and useLayoutEffect?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the difference between useEffect and useLayoutEffect?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the difference between useEffect and useLayoutEffect?."
+      "An effect synchronises with something outside React. Ask what it subscribes to, and what its cleanup has to undo when the dependencies change."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useEffect"
   },
   {
     id: "react-what-are-the-limitations-of-react",
@@ -654,10 +666,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the limitations of React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the limitations of React?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the limitations of React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-usestate-in-react",
@@ -701,14 +714,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The useState() is a built-in React Hook that allows you for having state variables in functional components. It should be used when the DOM has something that is dynamically manipulating/controlling. In the below-given example code, The useState(0) will return a tuple where the count is the first parameter that represents the counter\ufffd\ufffd\ufffds current state and the second parameter setCounter method will allow us to update the state of the counter. We can make use of setCounter() method for updating the state of count anywhere. In this example, we are using setCounter() inside the setCount function where various other things can also be done. The idea with the usage of hooks is that we will be able to keep our code more functional and avoid class-based components if they are not required.",
+    explanation: "The useState() is a built-in React Hook that allows you for having state variables in functional components. It should be used when the DOM has something that is dynamically manipulating/controlling. In the below-given example code, The useState(0) will return a tuple where the count is the first parameter that represents the counter, s current state and the second parameter setCounter method will allow us to update the state of the counter. We can make use of setCounter() method for updating the state of count anywhere. In this example, we are using setCounter() inside the setCount function where various other things can also be done. The idea with the usage of hooks is that we will be able to keep our code more functional and avoid class-based components if they are not required.",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is useState() in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is useState() in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What is useState() in React?."
+      "State is a snapshot. Setting it schedules a render, it does not change the variable you already read, so two updates from the same value collapse into one."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useState"
   },
   {
     id: "react-what-are-the-differences-between-functional-and-class-c",
@@ -723,7 +737,7 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       "hooks",
       "junior"
     ],
-    codeSnippet: "function card(props){\n   return(\n      <div className=\"main-container\">\n        <h2>Title of the card</h2>\n      </div>\n    )\n   }\n   const card = (props) =>{\n    return(\n      <div className=\"main-container\">\n        <h2>Title of the card</h2>\n      </div>\n    )\n   }\n\nclass Card extends React.Component{\n  constructor(props){\n     super(props);\n   }\n    render(){\n      return(\n        <div className=\"main-container\">\n          <h2>Title of the card</h2>\n        </div>\n      )\n    }\n   }\n\n<Student Info name=\"Vivek\" rollNumber=\"23\" />\n\nfunction StudentInfo(props){\n   return(\n     <div className=\"main\">\n       <h2>{props.name}</h2>\n       <h4>{props.rollNumber}</h4>\n     </div>\n   )\n }\n\nclass StudentInfo extends React.Component{\n   constructor(props){\n     super(props);\n    }\n    render(){\n      return(\n        <div className=\"main\">\n          <h2>{this.props.name}</h2>\n          <h4>{this.props.rollNumber}</h4>\u00a0\n        </div>\n      )\n    }\n   }\n\nfunction ClassRoom(props){\n   let [studentsCount,setStudentsCount] = useState(0);\n    const addStudent = () => {\n      setStudentsCount(++studentsCount);\n   }\n    return(\n      <div>\n        <p>Number of students in class room: {studentsCount}</p>\n        <button onClick={addStudent}>Add Student</button>\n      </div>\n    )\n   }\n\nclass ClassRoom extends React.Component{\n        constructor(props){\n            super(props);\n            this.state = {studentsCount : 0};\n            \n            this.addStudent = this.addStudent.bind(this);\n         }\n            \n            addStudent(){\n            this.setState((prevState)=>{\n               return {studentsCount: prevState.studentsCount++}\n            });\n         }\n            \n            render(){\n             return(\n               <div>\n                 <p>Number of students in class room: {this.state.studentsCount}</p>\n                 <button onClick={this.addStudent}>Add Student</button>\n               </div>\n             )\n           }\n         }",
+    codeSnippet: "function card(props){\n   return(\n      <div className=\"main-container\">\n        <h2>Title of the card</h2>\n      </div>\n    )\n   }\n   const card = (props) =>{\n    return(\n      <div className=\"main-container\">\n        <h2>Title of the card</h2>\n      </div>\n    )\n   }\n\nclass Card extends React.Component{\n  constructor(props){\n     super(props);\n   }\n    render(){\n      return(\n        <div className=\"main-container\">\n          <h2>Title of the card</h2>\n        </div>\n      )\n    }\n   }\n\n<Student Info name=\"Vivek\" rollNumber=\"23\" />\n\nfunction StudentInfo(props){\n   return(\n     <div className=\"main\">\n       <h2>{props.name}</h2>\n       <h4>{props.rollNumber}</h4>\n     </div>\n   )\n }\n\nclass StudentInfo extends React.Component{\n   constructor(props){\n     super(props);\n    }\n    render(){\n      return(\n        <div className=\"main\">\n          <h2>{this.props.name}</h2>\n          <h4>{this.props.rollNumber}</h4>\u00a0\n        </div>\n      )\n    }\n   }\n\nfunction ClassRoom(props){\n   let [studentsCount,setStudentsCount] = useState(0);\n    const addStudent = () => {\n      setStudentsCount(++studentsCount);\n   }\n    return(\n      <div>\n        <p>Number of students in class room: {studentsCount}</p>\n        <button onClick={addStudent}>Add Student</button>\n      </div>\n    )\n   }\n\nclass ClassRoom extends React.Component{\n        constructor(props){\n            super(props);\n            this.state = {studentsCount: 0};\n            \n            this.addStudent = this.addStudent.bind(this);\n         }\n            \n            addStudent(){\n            this.setState((prevState)=>{\n               return {studentsCount: prevState.studentsCount++}\n            });\n         }\n            \n            render(){\n             return(\n               <div>\n                 <p>Number of students in class room: {this.state.studentsCount}</p>\n                 <button onClick={this.addStudent}>Add Student</button>\n               </div>\n             )\n           }\n         }",
     codeLanguage: "tsx",
     options: [
       {
@@ -752,14 +766,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Before the introduction of Hooks in React, functional components were called stateless components and were behind class components on a feature basis. After the introduction of Hooks, functional components are equivalent to class components. Although functional components are the new trend, the react team insists on keeping class components in React. Therefore, it is important to know how these components differ. On the following basis let\ufffd\ufffd\ufffds compare functional and class components: Declaration Functional components are nothing but JavaScript functions and therefore can be declared using an arrow function or the function keyword: Class components, on the other hand, are declared using the ES6 class: Handling props Let\ufffd\ufffd\ufffds render the following component with props and analyse how functional and class components handle props: In functional components, the handling of props is pretty straightforward. Any prop provided as an argument to a functional component can be directly used inside HTML elements: In the case of class components, props are handled in a different way: As we can see in the code above, this keyword is used in the case of class components. Handling state Functional components use React hooks to handle state. It uses the useState hook to set the state of a variable inside the component: Since useState hook returns an array of two items, the first item contains the current state, and the second item is a function used to update the state. In the code above, using array destructuring we have set the variable name to studentsCount with a current value of \ufffd\ufffd\ufffd0\ufffd\ufffd\ufffd and setStudentsCount is the function that is used to update the state. For reading the state, we can see from the code above, the variable name can be directly used to read the current state of the variable. We cannot use React Hooks inside class components, therefore state handling is done very differently in a class component: Let\ufffd\ufffd\ufffds take the same above example and convert it into a class component: In the code above, we see we are using this.state to add the variable studentsCount and setting the value to \ufffd\ufffd\ufffd0\ufffd\ufffd\ufffd. For reading the state, we are using this.state.studentsCount. For updating the state, we need to first bind the addStudent function to this. Only then, we will be able to use the setState function which is used to update the state. Advance your career with Mock Assessments Refine your coding skills with Mock Assessments Real-world coding challenges for top company interviews Real-world coding challenges for top companies Real-Life Problems Detailed reports Attempt Now",
+    explanation: "Before the introduction of Hooks in React, functional components were called stateless components and were behind class components on a feature basis. After the introduction of Hooks, functional components are equivalent to class components. Although functional components are the new trend, the react team insists on keeping class components in React. Therefore, it is important to know how these components differ. On the following basis let, s compare functional and class components: Declaration Functional components are nothing but JavaScript functions and therefore can be declared using an arrow function or the function keyword: Class components, on the other hand, are declared using the ES6 class: Handling props Let, s render the following component with props and analyse how functional and class components handle props: In functional components, the handling of props is pretty straightforward. Any prop provided as an argument to a functional component can be directly used inside HTML elements: In the case of class components, props are handled in a different way: As we can see in the code above, this keyword is used in the case of class components. Handling state Functional components use React hooks to handle state. It uses the useState hook to set the state of a variable inside the component: Since useState hook returns an array of two items, the first item contains the current state, and the second item is a function used to update the state. In the code above, using array destructuring we have set the variable name to studentsCount with a current value of, 0, and setStudentsCount is the function that is used to update the state. For reading the state, we can see from the code above, the variable name can be directly used to read the current state of the variable. We cannot use React Hooks inside class components, therefore state handling is done very differently in a class component: Let, s take the same above example and convert it into a class component: In the code above, we see we are using this.state to add the variable studentsCount and setting the value to: 0. For reading the state, we are using this.state.studentsCount. For updating the state, we need to first bind the addStudent function to this. Only then, we will be able to use the setState function which is used to update the state. Advance your career with Mock Assessments Refine your coding skills with Mock Assessments Real-world coding challenges for top company interviews Real-world coding challenges for top companies Real-Life Problems Detailed reports Attempt Now",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the differences between functional and class components?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the differences between functional and class components?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the differences between functional and class components?."
+      "A class component's constructor must call super(props) before touching this.props, and its lifecycle methods map onto effects in a function component."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/Component"
   },
   {
     id: "react-what-is-prop-drilling-in-react",
@@ -806,10 +821,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is prop drilling in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is prop drilling in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What is prop drilling in React?."
+      "Context solves passing data down, not re-rendering. Every consumer re-renders when the value changes, so the value's identity matters."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useContext"
   },
   {
     id: "react-what-is-react-hooks",
@@ -857,15 +873,16 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is React Hooks?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is React Hooks?.",
     hints: [
-      "Consider the core principles and trade-offs of What is React Hooks?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-explain-react-hooks",
     title: "Explain React Hooks.",
-    prompt: "Explain React Hooks. \u2014 explain the behavior and mechanism.",
+    prompt: "Explain React Hooks., explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -881,7 +898,7 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "What are Hooks? Hooks are functions that let us \ufffd\ufffd\ufffdhook into\ufffd\ufffd\ufffd React state and lifecycle features from a functional component.",
+        text: "What are Hooks? Hooks are functions that let us, hook into, React state and lifecycle features from a functional component.",
         isCorrect: true,
         explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
       },
@@ -905,14 +922,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "What are Hooks? Hooks are functions that let us \ufffd\ufffd\ufffdhook into\ufffd\ufffd\ufffd React state and lifecycle features from a functional component. React Hooks cannot be used in class components. They let us write components without class. Why were Hooks introduced in React? React hooks were introduced in the 16.8 version of React. Previously, functional components were called stateless components. Only class components were used for state management and lifecycle methods. The need to change a functional component to a class component, whenever state management or lifecycle methods were to be used, led to the development of Hooks. Example of a hook: useState hook: In functional components, the useState hook lets us define a state for a component: The state variable \ufffd\ufffd\ufffdname\ufffd\ufffd\ufffd can be directly used inside the HTML.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain React Hooks..",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain React Hooks..",
+    explanation: "What are Hooks? Hooks are functions that let us, hook into, React state and lifecycle features from a functional component. React Hooks cannot be used in class components. They let us write components without class. Why were Hooks introduced in React? React hooks were introduced in the 16.8 version of React. Previously, functional components were called stateless components. Only class components were used for state management and lifecycle methods. The need to change a functional component to a class component, whenever state management or lifecycle methods were to be used, led to the development of Hooks. Example of a hook: useState hook: In functional components, the useState hook lets us define a state for a component: The state variable, name, can be directly used inside the HTML.",
+    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain React Hooks.",
+    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain React Hooks.",
     hints: [
-      "Consider the core principles and trade-offs of Explain React Hooks.."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-are-the-rules-that-must-be-followed-while-using-re",
@@ -960,10 +978,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the rules that must be followed while using React Hooks?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the rules that must be followed while using React Hooks?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the rules that must be followed while using React Hooks?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-why-do-react-hooks-make-use-of-refs",
@@ -1011,10 +1030,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Why do React Hooks make use of refs?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Why do React Hooks make use of refs?.",
     hints: [
-      "Consider the core principles and trade-offs of Why do React Hooks make use of refs?."
+      "Both refs and state survive a render. Only state causes one, so refs are for values the UI does not display."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useRef"
   },
   {
     id: "react-does-react-hook-work-with-static-typing",
@@ -1062,10 +1082,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Does React Hook work with static typing?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Does React Hook work with static typing?.",
     hints: [
-      "Consider the core principles and trade-offs of Does React Hook work with static typing?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-are-the-lifecycle-methods-of-react",
@@ -1112,15 +1133,16 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the lifecycle methods of React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the lifecycle methods of React?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the lifecycle methods of React?."
+      "A class component's constructor must call super(props) before touching this.props, and its lifecycle methods map onto effects in a function component."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/Component"
   },
   {
     id: "react-explain-how-to-create-a-simple-react-hooks-example-prog",
     title: "Explain how to create a simple React Hooks example program.",
-    prompt: "Explain how to create a simple React Hooks example program. \u2014 explain the behavior and mechanism.",
+    prompt: "Explain how to create a simple React Hooks example program., explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -1160,19 +1182,20 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "I will assume that you are having some coding knowledge about JavaScript and have installed Node on your system for creating a below given React Hook program. An installation of Node comes along with the command-line tools: npm and npx, where npm is useful to install the packages into a project and npx is useful in running commands of Node from the command line. The npx looks in the current project folder for checking whether a command has been installed there. When the command is not available on your computer, the npx will look in the npmjs.com repository, then the latest version of the command script will be loaded and will run without locally installing it. This feature is useful in creating a skeleton React application within a few key presses. Open the Terminal inside the folder of your choice, and run the following command: Here, the create-react-app is an app initializer created by Facebook, to help with the easy and quick creation of React application, providing options to customize it while creating the application? The above command will create a new folder named react-items-with-hooks and it will be initialized with a basic React application. Now, you will be able to open the project in your favourite IDE. You can see an src folder inside the project along with the main application component App.js. This file is having a single function App() which will return an element and it will make use of an extended JavaScript syntax(JSX) for defining the component. JSX will permit you for writing HTML-style template syntax directly into the JavaScript file. This mixture of JavaScript and HTML will be converted by React toolchain into pure JavaScript that will render the HTML element. It is possible to define your own React components by writing a function that will return a JSX element. You can try this by creating a new file src/SearchItem.jsand put the following code into it. This is all about how you can create a component. It will only display the empty table and doesn\ufffd\ufffd\ufffdt do anything. But you will be able to use the Search component in the application. Open the file src/App.js and add the import statement given below to the top of the file. Now, from the logo.svg, import will be removed and then contents of returned value in the function App() will be replaced with the following code: You can notice that the element <SearchItem/> has been used just similar to an HTML element. The JSX syntax will enable for including the components in this approach directly within the JavaScript code. Your application can be tested by running the below-given command in your terminal. npm start This command will compile your application and open your default browser into http://localhost:4000. This command can be kept on running when code development is in progress to make sure that the application is up-to-date, and also this browser page will be reloaded each time you modify and save the code. This application will work finely, but it doesn\ufffd\ufffd\ufffdt look nice as it doesn\ufffd\ufffd\ufffdt react to any input from the user. You can make it more interactive by adding a state with React Hooks, adding authentication, etc.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain how to create a simple React Hooks example program..",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain how to create a simple React Hooks example program..",
+    explanation: "I will assume that you are having some coding knowledge about JavaScript and have installed Node on your system for creating a below given React Hook program. An installation of Node comes along with the command-line tools: npm and npx, where npm is useful to install the packages into a project and npx is useful in running commands of Node from the command line. The npx looks in the current project folder for checking whether a command has been installed there. When the command is not available on your computer, the npx will look in the npmjs.com repository, then the latest version of the command script will be loaded and will run without locally installing it. This feature is useful in creating a skeleton React application within a few key presses. Open the Terminal inside the folder of your choice, and run the following command: Here, the create-react-app is an app initializer created by Facebook, to help with the easy and quick creation of React application, providing options to customize it while creating the application? The above command will create a new folder named react-items-with-hooks and it will be initialized with a basic React application. Now, you will be able to open the project in your favourite IDE. You can see an src folder inside the project along with the main application component App.js. This file is having a single function App() which will return an element and it will make use of an extended JavaScript syntax(JSX) for defining the component. JSX will permit you for writing HTML-style template syntax directly into the JavaScript file. This mixture of JavaScript and HTML will be converted by React toolchain into pure JavaScript that will render the HTML element. It is possible to define your own React components by writing a function that will return a JSX element. You can try this by creating a new file src/SearchItem.jsand put the following code into it. This is all about how you can create a component. It will only display the empty table and doesn, t do anything. But you will be able to use the Search component in the application. Open the file src/App.js and add the import statement given below to the top of the file. Now, from the logo.svg, import will be removed and then contents of returned value in the function App() will be replaced with the following code: You can notice that the element <SearchItem/> has been used just similar to an HTML element. The JSX syntax will enable for including the components in this approach directly within the JavaScript code. Your application can be tested by running the below-given command in your terminal. npm start This command will compile your application and open your default browser into http://localhost:4000. This command can be kept on running when code development is in progress to make sure that the application is up-to-date, and also this browser page will be reloaded each time you modify and save the code. This application will work finely, but it doesn, t look nice as it doesn, t react to any input from the user. You can make it more interactive by adding a state with React Hooks, adding authentication, etc.",
+    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain how to create a simple React Hooks example program.",
+    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain how to create a simple React Hooks example program.",
     hints: [
-      "Consider the core principles and trade-offs of Explain how to create a simple React Hooks example program.."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-explain-about-types-of-hooks-in-react",
     title: "Explain about types of Hooks in React.",
-    prompt: "Explain about types of Hooks in React. \u2014 explain the behavior and mechanism.",
+    prompt: "Explain about types of Hooks in React., explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -1212,18 +1235,19 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "A",
     explanation: "There are two types of Hooks in React. They are:",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain about types of Hooks in React..",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain about types of Hooks in React..",
+    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain about types of Hooks in React.",
+    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain about types of Hooks in React.",
     hints: [
-      "Consider the core principles and trade-offs of Explain about types of Hooks in React.."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-differentiate-react-hooks-vs-classes",
     title: "Differentiate React Hooks vs Classes.",
-    prompt: "Differentiate React Hooks vs Classes. \u2014 explain the behavior and mechanism.",
+    prompt: "Differentiate React Hooks vs Classes., explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -1263,13 +1287,14 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "A",
     explanation: "React Hooks Classes It is used in functional components of React. It is used in class-based components of React. It will not require a declaration of any kind of constructor. It is necessary to declare the constructor inside the class component. It does not require the use of this keyword in state declaration or modification. Keyword this will be used in state declaration (this.state) and in modification (this.setState()). It is easier to use because of the useState functionality. No specific function is available for helping us to access the state and its corresponding setState variable. React Hooks can be helpful in implementing Redux and context API. Because of the long setup of state declarations, class states are generally not preferred.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Differentiate React Hooks vs Classes..",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Differentiate React Hooks vs Classes..",
+    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Differentiate React Hooks vs Classes.",
+    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Differentiate React Hooks vs Classes.",
     hints: [
-      "Consider the core principles and trade-offs of Differentiate React Hooks vs Classes.."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-do-hooks-cover-all-the-functionalities-provided-by-the",
@@ -1317,10 +1342,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Do Hooks cover all the functionalities provided by the classes?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Do Hooks cover all the functionalities provided by the classes?.",
     hints: [
-      "Consider the core principles and trade-offs of Do Hooks cover all the functionalities provided by the classes?."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   },
   {
     id: "react-can-react-hook-replaces-redux",
@@ -1368,10 +1394,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Can React Hook replaces Redux?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Can React Hook replaces Redux?.",
     hints: [
-      "Consider the core principles and trade-offs of Can React Hook replaces Redux?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-do-you-manage-global-state-compare-context-redux-an",
@@ -1414,14 +1441,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "So, this question is more targeted towards ways that YOU would take to manage the global state. So while I write the answer down, it\ufffd\ufffd\ufffds best that you personalize it with examples that seem fit to you. Managing global state in React really depends on its scope and complexity. Most of the time, you can use \ufffd\ufffd\ufffduseState\ufffd\ufffd\ufffd or \ufffd\ufffd\ufffduseReducer\ufffd\ufffd\ufffd, which may work well for component-specific data. But there are many circumstances under which different features can be used,",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you manage global state? Compare Context, Redux, and modern alternatives..",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you manage global state? Compare Context, Redux, and modern alternatives..",
+    explanation: "So, this question is more targeted towards ways that YOU would take to manage the global state. So while I write the answer down, it, s best that you personalize it with examples that seem fit to you. Managing global state in React really depends on its scope and complexity. Most of the time, you can use, useState, or, useReducer, which may work well for component-specific data. But there are many circumstances under which different features can be used,",
+    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you manage global state? Compare Context, Redux, and modern alternatives.",
+    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you manage global state? Compare Context, Redux, and modern alternatives.",
     hints: [
-      "Consider the core principles and trade-offs of How do you manage global state? Compare Context, Redux, and modern alternatives.."
+      "Context solves passing data down, not re-rendering. Every consumer re-renders when the value changes, so the value's identity matters."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useContext"
   },
   {
     id: "react-what-is-usereducer-and-when-would-you-use-it-over-usest",
@@ -1465,19 +1493,20 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "useReducer and useState are React hooks that manage state within functional components. Here, useRender is used for more complex state logic, and useState carries out simpler values. Here\ufffd\ufffd\ufffds how they work: With useState, you directly update values with Now you already know what change you want, so you update it immediately. The approach becomes a little different when it comes to useReducer. You will describe what happened, and a separate function then decides how to update the state. For example: Here: state - holds the current value dispatch - used to send actions reducer - a function that updates the state Looking at the reducer function, Here, the reducer receives the current \ufffd\ufffd\ufffdstate\ufffd\ufffd\ufffd and an \ufffd\ufffd\ufffdaction\ufffd\ufffd\ufffd, then it checks what kind of action it is (action.type), and based on that, it returns a new state. At first, this feels like extra steps compared to useState. But it becomes useful when state is more complex. For example, in a form with multiple fields, instead of writing many useState calls, you can handle all updates in one reducer function. This keeps all the logic in one place instead of spreading it across different handlers.",
+    explanation: "useReducer and useState are React hooks that manage state within functional components. Here, useRender is used for more complex state logic, and useState carries out simpler values. Here, s how they work: With useState, you directly update values with Now you already know what change you want, so you update it immediately. The approach becomes a little different when it comes to useReducer. You will describe what happened, and a separate function then decides how to update the state. For example: Here: state - holds the current value dispatch - used to send actions reducer - a function that updates the state Looking at the reducer function, Here, the reducer receives the current, state, and an, action, then it checks what kind of action it is (action.type), and based on that, it returns a new state. At first, this feels like extra steps compared to useState. But it becomes useful when state is more complex. For example, in a form with multiple fields, instead of writing many useState calls, you can handle all updates in one reducer function. This keeps all the logic in one place instead of spreading it across different handlers.",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is useReducer, and when would you use it over useState?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is useReducer, and when would you use it over useState?.",
     hints: [
-      "Consider the core principles and trade-offs of What is useReducer, and when would you use it over useState?."
+      "State is a snapshot. Setting it schedules a render, it does not change the variable you already read, so two updates from the same value collapse into one."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useState"
   },
   {
     id: "react-useeffect-runs-after-the-browser-has-painted-the-update",
     title: "useEffect runs after the browser has painted the update. So the user already sees the UI change, and then your effect runs in the background.",
-    prompt: "useEffect runs after the browser has painted the update. So the user already sees the UI change, and then your effect runs in the background. \u2014 explain the behavior and mechanism.",
+    prompt: "useEffect runs after the browser has painted the update. So the user already sees the UI change, and then your effect runs in the background., explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -1492,7 +1521,7 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "This is why it\ufffd\ufffd\ufffds non-blocking and used for things like API calls, subscriptions, and logging.",
+        text: "This is why it, s non-blocking and used for things like API calls, subscriptions, and logging.",
         isCorrect: true,
         explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
       },
@@ -1516,14 +1545,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "This is why it\ufffd\ufffd\ufffds non-blocking and used for things like API calls, subscriptions, and logging. Here,",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of useEffect runs after the browser has painted the update. So the user already sees the UI change, and then your effect runs in the background..",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of useEffect runs after the browser has painted the update. So the user already sees the UI change, and then your effect runs in the background..",
+    explanation: "This is why it, s non-blocking and used for things like API calls, subscriptions, and logging. Here,",
+    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of useEffect runs after the browser has painted the update. So the user already sees the UI change, and then your effect runs in the background.",
+    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of useEffect runs after the browser has painted the update. So the user already sees the UI change, and then your effect runs in the background.",
     hints: [
-      "Consider the core principles and trade-offs of useEffect runs after the browser has painted the update. So the user already sees the UI change, and then your effect runs in the background.."
+      "An effect synchronises with something outside React. Ask what it subscribes to, and what its cleanup has to undo when the dependencies change."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useEffect"
   },
   {
     id: "react-what-is-the-difference-between-reacts-class-components",
@@ -1570,10 +1600,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the difference between React's class components and functional components?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the difference between React's class components and functional components?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the difference between React's class components and functional components?."
+      "A class component's constructor must call super(props) before touching this.props, and its lifecycle methods map onto effects in a function component."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/Component"
   },
   {
     id: "react-what-are-stateless-components",
@@ -1621,10 +1652,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are stateless components?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are stateless components?.",
     hints: [
-      "Consider the core principles and trade-offs of What are stateless components?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-are-stateful-components",
@@ -1672,10 +1704,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are stateful components?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are stateful components?.",
     hints: [
-      "Consider the core principles and trade-offs of What are stateful components?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-are-the-benefits-of-using-hooks-in-react",
@@ -1723,10 +1756,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the benefits of using hooks in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the benefits of using hooks in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the benefits of using hooks in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-are-the-rules-of-react-hooks",
@@ -1774,10 +1808,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the rules of React hooks?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the rules of React hooks?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the rules of React hooks?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-the-difference-between-useeffect-and-uselayoute-2",
@@ -1825,10 +1860,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the difference between useEffect and useLayoutEffect in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the difference between useEffect and useLayoutEffect in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the difference between useEffect and useLayoutEffect in React?."
+      "An effect synchronises with something outside React. Ask what it subscribes to, and what its cleanup has to undo when the dependencies change."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useEffect"
   },
   {
     id: "react-what-does-the-dependency-array-of-useeffect-affect",
@@ -1875,10 +1911,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What does the dependency array of useEffect affect?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What does the dependency array of useEffect affect?.",
     hints: [
-      "Consider the core principles and trade-offs of What does the dependency array of useEffect affect?."
+      "An effect synchronises with something outside React. Ask what it subscribes to, and what its cleanup has to undo when the dependencies change."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useEffect"
   },
   {
     id: "react-what-is-the-useref-hook-in-react-and-when-should-it-be",
@@ -1927,10 +1964,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the useRef hook in React and when should it be used?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the useRef hook in React and when should it be used?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the useRef hook in React and when should it be used?."
+      "Both refs and state survive a render. Only state causes one, so refs are for values the UI does not display."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useRef"
   },
   {
     id: "react-what-is-the-purpose-of-callback-function-argument-forma",
@@ -1978,10 +2016,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the purpose of callback function argument format of setState() in React class components and when should it be used?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the purpose of callback function argument format of setState() in React class components and when should it be used?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the purpose of callback function argument format of setState() in React class components and when should it be used?."
+      "A class component's constructor must call super(props) before touching this.props, and its lifecycle methods map onto effects in a function component."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/Component"
   },
   {
     id: "react-what-is-the-usereducer-hook-in-react-and-when-should-it",
@@ -2030,10 +2069,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the useReducer hook in React and when should it be used?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the useReducer hook in React and when should it be used?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the useReducer hook in React and when should it be used?."
+      "Reach for a reducer when the next state depends on several fields at once, so the transitions live in one place instead of across many setters."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useReducer"
   },
   {
     id: "react-what-is-the-useid-hook-in-react-and-when-should-it-be-u",
@@ -2082,10 +2122,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the useId hook in React and when should it be used?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the useId hook in React and when should it be used?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the useId hook in React and when should it be used?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-are-some-react-anti-patterns",
@@ -2132,15 +2173,16 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are some React anti-patterns?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are some React anti-patterns?.",
     hints: [
-      "Consider the core principles and trade-offs of What are some React anti-patterns?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-explain-the-react-component-lifecycle-methods-in-class",
     title: "Explain the React component lifecycle methods in class components.",
-    prompt: "Explain the React component lifecycle methods in class components. \u2014 explain the behavior and mechanism.",
+    prompt: "Explain the React component lifecycle methods in class components., explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -2180,13 +2222,14 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "A",
     explanation: "Class lifecycle methods only apply to class components, which are no longer the recommended pattern. The function-component equivalents (using useEffect) are shown at the end. React class components have lifecycle methods for different phases: Mounting: constructor: Initializes state or binds methods componentDidMount: Runs after the component mounts, useful for API calls or subscriptions Updating: shouldComponentUpdate: Determines if the component should re-render componentDidUpdate: Runs after updates, useful for side effects Unmounting: componentWillUnmount: Cleans up (e.g., removing event listeners). In function components, all of the above are expressed with useEffect:",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain the React component lifecycle methods in class components..",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain the React component lifecycle methods in class components..",
+    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain the React component lifecycle methods in class components.",
+    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain the React component lifecycle methods in class components.",
     hints: [
-      "Consider the core principles and trade-offs of Explain the React component lifecycle methods in class components.."
+      "A class component's constructor must call super(props) before touching this.props, and its lifecycle methods map onto effects in a function component."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/Component"
   },
   {
     id: "react-what-are-higher-order-components-in-react",
@@ -2234,15 +2277,16 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are higher-order components in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are higher-order components in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What are higher-order components in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-explain-the-presentational-vs-container-component-patte",
     title: "Explain the presentational vs container component pattern in React",
-    prompt: "Explain the presentational vs container component pattern in React \u2014 explain the behavior and mechanism.",
+    prompt: "Explain the presentational vs container component pattern in React, explain the behavior and mechanism.",
     level: "intermediate",
     type: "concept",
     category: "react",
@@ -2285,10 +2329,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain the presentational vs container component pattern in React.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain the presentational vs container component pattern in React.",
     hints: [
-      "Consider the core principles and trade-offs of Explain the presentational vs container component pattern in React."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-are-render-props-in-react",
@@ -2304,7 +2349,7 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       "intermediate",
       "rendering"
     ],
-    codeSnippet: "function DataFetcher({ url, render }) {  const [data, setData] = useState(null);  useEffect(() => {    fetch(url)      .then((res) => res.json())      .then(setData);  }, [url]);  return render(data);}\n// Usage<DataFetcher  url=\"/api/data\"  render={(data) => <div>{data ? data.name : 'Loading...'}</div>}/>;",
+    codeSnippet: "function DataFetcher({ url, render }) {  const [data, setData] = useState(null);  useEffect(() => {    fetch(url)      .then((res) => res.json())      .then(setData);  }, [url]);  return render(data);}\n// Usage<DataFetcher  url=\"/api/data\"  render={(data) => <div>{data ? data.name: 'Loading...'}</div>}/>;",
     codeLanguage: "tsx",
     options: [
       {
@@ -2337,15 +2382,16 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are render props in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are render props in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What are render props in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-explain-the-composition-pattern-in-react",
     title: "Explain the composition pattern in React.",
-    prompt: "Explain the composition pattern in React. \u2014 explain the behavior and mechanism.",
+    prompt: "Explain the composition pattern in React., explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -2385,13 +2431,14 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "A",
     explanation: "The composition pattern in React involves building components by combining smaller, reusable ones instead of using inheritance. This encourages creating complex UIs by passing components as children or props. Find in-depth explanations and track study progress here ->",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain the composition pattern in React..",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain the composition pattern in React..",
+    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain the composition pattern in React.",
+    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain the composition pattern in React.",
     hints: [
-      "Consider the core principles and trade-offs of Explain the composition pattern in React.."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-do-you-re-render-the-view-when-the-browser-is-resiz",
@@ -2440,10 +2487,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you re-render the view when the browser is resized?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you re-render the view when the browser is resized?.",
     hints: [
-      "Consider the core principles and trade-offs of How do you re-render the view when the browser is resized?."
+      "React re-renders a component when its state or its parent renders. Skipping that needs both a memo and props that stay identical."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/memo"
   },
   {
     id: "react-how-do-you-handle-asynchronous-data-loading-in-react-ap",
@@ -2458,7 +2506,7 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       "hooks",
       "junior"
     ],
-    codeSnippet: "import React, { useState, useEffect } from 'react';\nconst FetchAndDisplayData = () => {  const [info, updateInfo] = useState(null);  const [isLoading, toggleLoading] = useState(true);\n  useEffect(() => {    const retrieveData = async () => {      try {        const res = await fetch('https://api.example.com/data');        const data = await res.json();        updateInfo(data);      } catch (err) {        console.error('Error fetching data:', err);      } finally {        toggleLoading(false);      }    };\n    retrieveData();  }, []);\n  return (    <div>      {isLoading ? (        <p>Fetching data, please wait...</p>      ) : (        <pre>{JSON.stringify(info, null, 2)}</pre>      )}    </div>  );};\nexport default FetchAndDisplayData;",
+    codeSnippet: "import React, { useState, useEffect } from 'react';\nconst FetchAndDisplayData = () => {  const [info, updateInfo] = useState(null);  const [isLoading, toggleLoading] = useState(true);\n  useEffect(() => {    const retrieveData = async () => {      try {        const res = await fetch('https://api.example.com/data');        const data = await res.json();        updateInfo(data);      } catch (err) {        console.error('Error fetching data:', err);      } finally {        toggleLoading(false);      }    };\n    retrieveData();  }, []);\n  return (    <div>      {isLoading ? (        <p>Fetching data, please wait...</p>      ): (        <pre>{JSON.stringify(info, null, 2)}</pre>      )}    </div>  );};\nexport default FetchAndDisplayData;",
     codeLanguage: "tsx",
     options: [
       {
@@ -2491,10 +2539,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you handle asynchronous data loading in React applications?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you handle asynchronous data loading in React applications?.",
     hints: [
-      "Consider the core principles and trade-offs of How do you handle asynchronous data loading in React applications?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-a-react-router",
@@ -2541,10 +2590,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is a React Router?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is a React Router?.",
     hints: [
-      "Consider the core principles and trade-offs of What is a React Router?."
+      "Routing maps a URL to a component. Ask what the URL owns, and what the component owns."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://nextjs.org/docs/app/building-your-application/routing"
   },
   {
     id: "react-what-is-the-difference-between-browserrouter-and-hashro",
@@ -2591,10 +2641,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the difference between BrowserRouter and HashRouter?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the difference between BrowserRouter and HashRouter?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the difference between BrowserRouter and HashRouter?."
+      "State the time and space cost before you optimise. A Set or Map turns a repeated scan into a lookup."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map"
   },
   {
     id: "react-how-do-you-navigate-programmatically-in-react-router",
@@ -2642,10 +2693,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you navigate programmatically in React Router?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you navigate programmatically in React Router?.",
     hints: [
-      "Consider the core principles and trade-offs of How do you navigate programmatically in React Router?."
+      "Routing maps a URL to a component. Ask what the URL owns, and what the component owns."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://nextjs.org/docs/app/building-your-application/routing"
   },
   {
     id: "react-how-do-you-manage-the-active-route-state-in-a-multi-pag",
@@ -2660,7 +2712,7 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       "hooks",
       "junior"
     ],
-    codeSnippet: "import { useLocation } from 'react-router-dom';\nfunction NavBar() {  const location = useLocation();  return (    <nav>      <ul>        <li className={location.pathname === '/home' ? 'active' : ''}>Home</li>        <li className={location.pathname === '/about' ? 'active' : ''}>          About        </li>      </ul>    </nav>  );}",
+    codeSnippet: "import { useLocation } from 'react-router-dom';\nfunction NavBar() {  const location = useLocation();  return (    <nav>      <ul>        <li className={location.pathname === '/home' ? 'active': ''}>Home</li>        <li className={location.pathname === '/about' ? 'active': ''}>          About        </li>      </ul>    </nav>  );}",
     codeLanguage: "tsx",
     options: [
       {
@@ -2693,10 +2745,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you manage the active route state in a multi-page React application?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you manage the active route state in a multi-page React application?.",
     hints: [
-      "Consider the core principles and trade-offs of How do you manage the active route state in a multi-page React application?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-to-get-query-parameters-in-react-router",
@@ -2744,10 +2797,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to get query parameters in React Router?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to get query parameters in React Router?.",
     hints: [
-      "Consider the core principles and trade-offs of How to get query parameters in React Router?."
+      "Routing maps a URL to a component. Ask what the URL owns, and what the component owns."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://nextjs.org/docs/app/building-your-application/routing"
   },
   {
     id: "react-how-do-you-perform-an-automatic-redirect-after-login-in",
@@ -2795,10 +2849,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you perform an automatic redirect after login in React Router?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you perform an automatic redirect after login in React Router?.",
     hints: [
-      "Consider the core principles and trade-offs of How do you perform an automatic redirect after login in React Router?."
+      "Routing maps a URL to a component. Ask what the URL owns, and what the component owns."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://nextjs.org/docs/app/building-your-application/routing"
   },
   {
     id: "react-how-do-you-localize-react-applications",
@@ -2846,10 +2901,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you localize React applications?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you localize React applications?.",
     hints: [
-      "Consider the core principles and trade-offs of How do you localize React applications?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-react-intl",
@@ -2896,10 +2952,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is react-intl?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is react-intl?.",
     hints: [
-      "Consider the core principles and trade-offs of What is react-intl?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-are-the-main-features-of-react-intl",
@@ -2946,10 +3003,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the main features of react-intl?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the main features of react-intl?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the main features of react-intl?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-are-the-two-ways-of-formatting-in-react-intl",
@@ -2996,10 +3054,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the two ways of formatting in react-intl?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the two ways of formatting in react-intl?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the two ways of formatting in react-intl?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-to-use-formattedmessage-as-a-placeholder-using-reac",
@@ -3047,10 +3106,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to use FormattedMessage as a placeholder using react-intl?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to use FormattedMessage as a placeholder using react-intl?.",
     hints: [
-      "Consider the core principles and trade-offs of How to use FormattedMessage as a placeholder using react-intl?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-to-access-the-current-locale-with-react-intl",
@@ -3098,10 +3158,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to access the current locale with React Intl?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to access the current locale with React Intl?.",
     hints: [
-      "Consider the core principles and trade-offs of How to access the current locale with React Intl?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-do-you-test-react-applications",
@@ -3148,10 +3209,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you test React applications?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you test React applications?.",
     hints: [
-      "Consider the core principles and trade-offs of How do you test React applications?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-do-you-test-react-hooks-in-functional-components",
@@ -3200,10 +3262,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you test React hooks in functional components?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you test React hooks in functional components?.",
     hints: [
-      "Consider the core principles and trade-offs of How do you test React hooks in functional components?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-do-you-test-custom-hooks-in-react",
@@ -3252,10 +3315,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you test custom hooks in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you test custom hooks in React?.",
     hints: [
-      "Consider the core principles and trade-offs of How do you test custom hooks in React?."
+      "Hooks are matched by call order, which is why they must run unconditionally at the top level of a component or another hook."
     ],
     source: "100-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/warnings/invalid-hook-call-warning"
   },
   {
     id: "react-what-does-the-useactionstate-hook-do",
@@ -3303,10 +3367,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What does the useActionState hook do?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What does the useActionState hook do?.",
     hints: [
-      "Consider the core principles and trade-offs of What does the useActionState hook do?."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   },
   {
     id: "react-what-is-the-use-hook-and-how-is-it-different-from-useef",
@@ -3355,10 +3420,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the use hook and how is it different from useEffect + fetch?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the use hook and how is it different from useEffect + fetch?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the use hook and how is it different from useEffect + fetch?."
+      "An effect synchronises with something outside React. Ask what it subscribes to, and what its cleanup has to undo when the dependencies change."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useEffect"
   },
   {
     id: "react-what-is-reactjs",
@@ -3405,10 +3471,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is ReactJS?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is ReactJS?.",
     hints: [
-      "Consider the core principles and trade-offs of What is ReactJS?."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   },
   {
     id: "react-what-is-the-latest-version-of-react",
@@ -3455,15 +3522,16 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What Is the Latest Version of React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What Is the Latest Version of React?.",
     hints: [
-      "Consider the core principles and trade-offs of What Is the Latest Version of React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-explain-props-and-state-in-react-with-differences",
     title: "Explain Props and State in React with Differences",
-    prompt: "Explain Props and State in React with Differences \u2014 explain the behavior and mechanism.",
+    prompt: "Explain Props and State in React with Differences, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -3505,10 +3573,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain Props and State in React with Differences.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain Props and State in React with Differences.",
     hints: [
-      "Consider the core principles and trade-offs of Explain Props and State in React with Differences."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-are-components-and-their-type-in-react",
@@ -3555,10 +3624,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are Components and Their Type in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are Components and Their Type in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What are Components and Their Type in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-do-browsers-read-jsx",
@@ -3605,15 +3675,16 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How Do Browsers Read JSX?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How Do Browsers Read JSX?.",
     hints: [
-      "Consider the core principles and trade-offs of How Do Browsers Read JSX?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-explain-the-steps-to-create-a-react-application-and-pri",
     title: "Explain the Steps to Create a React Application and Print Hello World",
-    prompt: "Explain the Steps to Create a React Application and Print Hello World \u2014 explain the behavior and mechanism.",
+    prompt: "Explain the Steps to Create a React Application and Print Hello World, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -3655,10 +3726,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain the Steps to Create a React Application and Print Hello World.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain the Steps to Create a React Application and Print Hello World.",
     hints: [
-      "Consider the core principles and trade-offs of Explain the Steps to Create a React Application and Print Hello World."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-higher-order-component-in-react",
@@ -3705,10 +3777,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is Higher-Order Component in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is Higher-Order Component in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What is Higher-Order Component in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-explain-the-difference-between-functional-and-class-com",
@@ -3755,10 +3828,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain the Difference Between Functional and Class Component in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain the Difference Between Functional and Class Component in React?.",
     hints: [
-      "Consider the core principles and trade-offs of Explain the Difference Between Functional and Class Component in React?."
+      "A class component's constructor must call super(props) before touching this.props, and its lifecycle methods map onto effects in a function component."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/Component"
   },
   {
     id: "react-explain-one-way-data-binding-in-react",
@@ -3805,10 +3879,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain One Way Data Binding in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain One Way Data Binding in React?.",
     hints: [
-      "Consider the core principles and trade-offs of Explain One Way Data Binding in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-context-api-in-react",
@@ -3855,10 +3930,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is Context API in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is Context API in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What is Context API in React?."
+      "Context solves passing data down, not re-rendering. Every consumer re-renders when the value changes, so the value's identity matters."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useContext"
   },
   {
     id: "react-how-is-react-routing-different-from-conventional-routin",
@@ -3905,10 +3981,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How Is React Routing Different from Conventional Routing?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How Is React Routing Different from Conventional Routing?.",
     hints: [
-      "Consider the core principles and trade-offs of How Is React Routing Different from Conventional Routing?."
+      "Routing maps a URL to a component. Ask what the URL owns, and what the component owns."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://nextjs.org/docs/app/building-your-application/routing"
   },
   {
     id: "react-what-is-the-use-of-ref-in-react",
@@ -3955,10 +4032,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the Use of Ref in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the Use of Ref in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the Use of Ref in React?."
+      "Both refs and state survive a render. Only state causes one, so refs are for values the UI does not display."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useRef"
   },
   {
     id: "react-what-are-hooks-in-react",
@@ -4006,10 +4084,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are Hooks in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are Hooks in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What are Hooks in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-explain-the-usestate-hook-in-react",
@@ -4057,10 +4136,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain the useState Hook in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain the useState Hook in React?.",
     hints: [
-      "Consider the core principles and trade-offs of Explain the useState Hook in React?."
+      "State is a snapshot. Setting it schedules a render, it does not change the variable you already read, so two updates from the same value collapse into one."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useState"
   },
   {
     id: "react-explain-the-useeffect-hook-in-react",
@@ -4108,10 +4188,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain the useEffect Hook in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain the useEffect Hook in React?.",
     hints: [
-      "Consider the core principles and trade-offs of Explain the useEffect Hook in React?."
+      "An effect synchronises with something outside React. Ask what it subscribes to, and what its cleanup has to undo when the dependencies change."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useEffect"
   },
   {
     id: "react-what-is-a-react-developer-tool",
@@ -4158,10 +4239,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is a React Developer Tool?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is a React Developer Tool?.",
     hints: [
-      "Consider the core principles and trade-offs of What is a React Developer Tool?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-prop-drilling-and-its-disadvantages",
@@ -4208,10 +4290,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is Prop Drilling and Its Disadvantages?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is Prop Drilling and Its Disadvantages?.",
     hints: [
-      "Consider the core principles and trade-offs of What is Prop Drilling and Its Disadvantages?."
+      "Context solves passing data down, not re-rendering. Every consumer re-renders when the value changes, so the value's identity matters."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useContext"
   },
   {
     id: "react-what-is-customhooks-in-react",
@@ -4259,10 +4342,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is CustomHooks in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is CustomHooks in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What is CustomHooks in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-the-difference-between-useref-and-createref-in",
@@ -4309,10 +4393,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the Difference Between useRef and createRef in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the Difference Between useRef and createRef in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the Difference Between useRef and createRef in React?."
+      "Both refs and state survive a render. Only state causes one, so refs are for values the UI does not display."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useRef"
   },
   {
     id: "react-what-are-custom-hooks-in-react",
@@ -4360,10 +4445,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are Custom Hooks in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are Custom Hooks in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What are Custom Hooks in React?."
+      "Hooks are matched by call order, which is why they must run unconditionally at the top level of a component or another hook."
     ],
     source: "150-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/warnings/invalid-hook-call-warning"
   },
   {
     id: "react-how-to-create-forms-in-react",
@@ -4410,10 +4496,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to Create Forms in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to Create Forms in React?.",
     hints: [
-      "Consider the core principles and trade-offs of How to Create Forms in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-is-react-different-from-react-native",
@@ -4460,15 +4547,16 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How is React Different from React Native?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How is React Different from React Native?.",
     hints: [
-      "Consider the core principles and trade-offs of How is React Different from React Native?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-state-versus-props-who-owns-what-and-where-to-lift-stat",
     title: "State Versus Props: Who Owns What and Where to Lift State",
-    prompt: "State Versus Props: Who Owns What and Where to Lift State \u2014 explain the behavior and mechanism.",
+    prompt: "State Versus Props: Who Owns What and Where to Lift State, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -4510,15 +4598,16 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of State Versus Props: Who Owns What and Where to Lift State.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of State Versus Props: Who Owns What and Where to Lift State.",
     hints: [
-      "Consider the core principles and trade-offs of State Versus Props: Who Owns What and Where to Lift State."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-prop-drilling-why-it-happens-and-how-to-avoid-it",
     title: "Prop Drilling: Why It Happens and How to Avoid It",
-    prompt: "Prop Drilling: Why It Happens and How to Avoid It \u2014 explain the behavior and mechanism.",
+    prompt: "Prop Drilling: Why It Happens and How to Avoid It, explain the behavior and mechanism.",
     level: "intermediate",
     type: "concept",
     category: "react",
@@ -4560,15 +4649,16 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Prop Drilling: Why It Happens and How to Avoid It.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Prop Drilling: Why It Happens and How to Avoid It.",
     hints: [
-      "Consider the core principles and trade-offs of Prop Drilling: Why It Happens and How to Avoid It."
+      "Context solves passing data down, not re-rendering. Every consumer re-renders when the value changes, so the value's identity matters."
     ],
     source: "150-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/reference/react/useContext"
   },
   {
     id: "react-react-hooks-overview-moving-state-and-lifecycle-into-fu",
     title: "React Hooks Overview: Moving State and Lifecycle Into Functions",
-    prompt: "React Hooks Overview: Moving State and Lifecycle Into Functions \u2014 explain the behavior and mechanism.",
+    prompt: "React Hooks Overview: Moving State and Lifecycle Into Functions, explain the behavior and mechanism.",
     level: "intermediate",
     type: "concept",
     category: "react",
@@ -4611,15 +4701,16 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of React Hooks Overview: Moving State and Lifecycle Into Functions.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of React Hooks Overview: Moving State and Lifecycle Into Functions.",
     hints: [
-      "Consider the core principles and trade-offs of React Hooks Overview: Moving State and Lifecycle Into Functions."
+      "A class component's constructor must call super(props) before touching this.props, and its lifecycle methods map onto effects in a function component."
     ],
     source: "150-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/reference/react/Component"
   },
   {
     id: "react-useeffect-explained-running-effects-and-dependency-cont",
     title: "useEffect explained: Running Effects and Dependency Control",
-    prompt: "useEffect explained: Running Effects and Dependency Control \u2014 explain the behavior and mechanism.",
+    prompt: "useEffect explained: Running Effects and Dependency Control, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -4661,15 +4752,16 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of useEffect explained: Running Effects and Dependency Control.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of useEffect explained: Running Effects and Dependency Control.",
     hints: [
-      "Consider the core principles and trade-offs of useEffect explained: Running Effects and Dependency Control."
+      "An effect synchronises with something outside React. Ask what it subscribes to, and what its cleanup has to undo when the dependencies change."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useEffect"
   },
   {
     id: "react-useref-and-refs-in-hooks-when-to-use-them",
     title: "useRef and refs in Hooks: When to Use Them",
-    prompt: "useRef and refs in Hooks: When to Use Them \u2014 explain the behavior and mechanism.",
+    prompt: "useRef and refs in Hooks: When to Use Them, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -4712,15 +4804,16 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of useRef and refs in Hooks: When to Use Them.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of useRef and refs in Hooks: When to Use Them.",
     hints: [
-      "Consider the core principles and trade-offs of useRef and refs in Hooks: When to Use Them."
+      "Both refs and state survive a render. Only state causes one, so refs are for values the UI does not display."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useRef"
   },
   {
     id: "react-custom-hooks-reusable-logic-with-a-simple-rule",
     title: "Custom Hooks: Reusable Logic With a Simple Rule",
-    prompt: "Custom Hooks: Reusable Logic With a Simple Rule \u2014 explain the behavior and mechanism.",
+    prompt: "Custom Hooks: Reusable Logic With a Simple Rule, explain the behavior and mechanism.",
     level: "intermediate",
     type: "concept",
     category: "react",
@@ -4763,15 +4856,16 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Custom Hooks: Reusable Logic With a Simple Rule.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Custom Hooks: Reusable Logic With a Simple Rule.",
     hints: [
-      "Consider the core principles and trade-offs of Custom Hooks: Reusable Logic With a Simple Rule."
+      "Hooks are matched by call order, which is why they must run unconditionally at the top level of a component or another hook."
     ],
     source: "150-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/warnings/invalid-hook-call-warning"
   },
   {
     id: "react-smooth-postlogin-redirect-automatic-navigation-after-au",
-    title: "Smooth Post\ufffd\ufffd\ufffdLogin Redirect \ufffd\ufffd\ufffd Automatic Navigation After Authentication",
-    prompt: "Smooth Post\ufffd\ufffd\ufffdLogin Redirect \ufffd\ufffd\ufffd Automatic Navigation After Authentication \u2014 explain the behavior and mechanism.",
+    title: "Smooth Post, Login Redirect, Automatic Navigation After Authentication",
+    prompt: "Smooth Post, Login Redirect, Automatic Navigation After Authentication, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -4809,19 +4903,20 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Render a redirect from your router when authentication completes, or navigate programmatically. In react\ufffd\ufffd\ufffdrouter v5 you can use <Redirect>, and in v6 use the useNavigate hook. Preserve the intended destination in state to return users to where they started, and validate any returnTo value to avoid open redirect attacks. Example v5 (conditional render): class Login extends React.Component { state = { loggedIn: false }; render() { if (this.state.loggedIn) { return <Redirect to=\"/dashboard\" />; } return <form>{/* login form */}</form>; }} Example v6 (programmatic): import { useNavigate, useLocation } from 'react-router-dom';function Login() { const navigate = useNavigate(); const location = useLocation(); const from = (location.state && location.state.from) || '/'; async function onSuccess() { // set token etc navigate(from, { replace: true }); // replace prevents back to login } return <form onSubmit={submit}>...</form>;} Best practices: Use replace for the final redirect to avoid leaving login in history. Store the intended path in location.state or a safe cookie. Validate returnTo against an allowlist to prevent open redirects. For SSR, perform redirect on the server by returning a 302 or by hydrating to the right route.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Smooth Post\ufffd\ufffd\ufffdLogin Redirect \ufffd\ufffd\ufffd Automatic Navigation After Authentication.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Smooth Post\ufffd\ufffd\ufffdLogin Redirect \ufffd\ufffd\ufffd Automatic Navigation After Authentication.",
+    explanation: "Render a redirect from your router when authentication completes, or navigate programmatically. In react, router v5 you can use <Redirect>, and in v6 use the useNavigate hook. Preserve the intended destination in state to return users to where they started, and validate any returnTo value to avoid open redirect attacks. Example v5 (conditional render): class Login extends React.Component { state = { loggedIn: false }; render() { if (this.state.loggedIn) { return <Redirect to=\"/dashboard\" />; } return <form>{/* login form */}</form>; }} Example v6 (programmatic): import { useNavigate, useLocation } from 'react-router-dom';function Login() { const navigate = useNavigate(); const location = useLocation(); const from = (location.state && location.state.from) || '/'; async function onSuccess() { // set token etc navigate(from, { replace: true }); // replace prevents back to login } return <form onSubmit={submit}>.</form>;} Best practices: Use replace for the final redirect to avoid leaving login in history. Store the intended path in location.state or a safe cookie. Validate returnTo against an allowlist to prevent open redirects. For SSR, perform redirect on the server by returning a 302 or by hydrating to the right route.",
+    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Smooth Post, Login Redirect, Automatic Navigation After Authentication.",
+    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Smooth Post, Login Redirect, Automatic Navigation After Authentication.",
     hints: [
-      "Consider the core principles and trade-offs of Smooth Post\ufffd\ufffd\ufffdLogin Redirect \ufffd\ufffd\ufffd Automatic Navigation After Authentication."
+      "Routing maps a URL to a component. Ask what the URL owns, and what the component owns."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://nextjs.org/docs/app/building-your-application/routing"
   },
   {
     id: "react-simple-react-hooks-example-state-effect-and-a-controlle",
-    title: "Simple React Hooks Example \ufffd\ufffd\ufffd State, Effect, and a Controlled Input",
-    prompt: "Simple React Hooks Example \ufffd\ufffd\ufffd State, Effect, and a Controlled Input \u2014 explain the behavior and mechanism.",
+    title: "Simple React Hooks Example, State, Effect, and a Controlled Input",
+    prompt: "Simple React Hooks Example, State, Effect, and a Controlled Input, explain the behavior and mechanism.",
     level: "intermediate",
     type: "concept",
     category: "react",
@@ -4836,7 +4931,7 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "A compact, interview\ufffd\ufffd\ufffdfriendly example shows useState and useEffect and demonstrates lifecycle equivalence.",
+        text: "A compact, interview, friendly example shows useState and useEffect and demonstrates lifecycle equivalence.",
         isCorrect: true,
         explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
       },
@@ -4860,19 +4955,20 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "A compact, interview\ufffd\ufffd\ufffdfriendly example shows useState and useEffect and demonstrates lifecycle equivalence. Example: import { useState, useEffect } from 'react';function SearchList({ items }) { const [query, setQuery] = useState(''); const [results, setResults] = useState(items); useEffect(() => { setResults(items.filter(i => i.name.includes(query))); }, [query, items]); return ( <div> <input value={query} onChange={e => setQuery(e.target.value)} /> <ul>{results.map(r => <li key={r.id}>{r.name}</li>)}</ul> </div> );} Tips for interviews: Explain how useEffect combines mount/update/unmount logic. Show how to extract behavior into custom hooks for reuse.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Simple React Hooks Example \ufffd\ufffd\ufffd State, Effect, and a Controlled Input.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Simple React Hooks Example \ufffd\ufffd\ufffd State, Effect, and a Controlled Input.",
+    explanation: "A compact, interview, friendly example shows useState and useEffect and demonstrates lifecycle equivalence. Example: import { useState, useEffect } from 'react';function SearchList({ items }) { const [query, setQuery] = useState(''); const [results, setResults] = useState(items); useEffect(() => { setResults(items.filter(i => i.name.includes(query))); }, [query, items]); return ( <div> <input value={query} onChange={e => setQuery(e.target.value)} /> <ul>{results.map(r => <li key={r.id}>{r.name}</li>)}</ul> </div> );} Tips for interviews: Explain how useEffect combines mount/update/unmount logic. Show how to extract behavior into custom hooks for reuse.",
+    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Simple React Hooks Example, State, Effect, and a Controlled Input.",
+    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Simple React Hooks Example, State, Effect, and a Controlled Input.",
     hints: [
-      "Consider the core principles and trade-offs of Simple React Hooks Example \ufffd\ufffd\ufffd State, Effect, and a Controlled Input."
+      "A controlled input reads its value from state, so React is the single source of truth. An uncontrolled one leaves it in the DOM."
     ],
     source: "150-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/reference/react-dom/components/input"
   },
   {
     id: "react-react-router-essentials-modern-routing-and-hooks",
-    title: "React Router Essentials \ufffd\ufffd\ufffd Modern Routing and Hooks",
-    prompt: "React Router Essentials \ufffd\ufffd\ufffd Modern Routing and Hooks \u2014 explain the behavior and mechanism.",
+    title: "React Router Essentials, Modern Routing and Hooks",
+    prompt: "React Router Essentials, Modern Routing and Hooks, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -4912,18 +5008,19 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "A",
     explanation: "React Router provides client routing with sync to URL. v6 simplified route structure and introduced hooks like useNavigate, useParams, useLocation, and useRoutes for nested routing. Key points: Use nested routes to match component hierarchy. Prefer hooks over HOCs; they return simple primitives for navigation and params. For SSR, render routes on the server and handle redirects by checking matched routes during render. Example: import { Routes, Route } from 'react-router-dom';<Routes> <Route path=\"/\" element={<Home/>}/> <Route path=\"users/:id\" element={<User/>}/></Routes>",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of React Router Essentials \ufffd\ufffd\ufffd Modern Routing and Hooks.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of React Router Essentials \ufffd\ufffd\ufffd Modern Routing and Hooks.",
+    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of React Router Essentials, Modern Routing and Hooks.",
+    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of React Router Essentials, Modern Routing and Hooks.",
     hints: [
-      "Consider the core principles and trade-offs of React Router Essentials \ufffd\ufffd\ufffd Modern Routing and Hooks."
+      "Routing maps a URL to a component. Ask what the URL owns, and what the component owns."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://nextjs.org/docs/app/building-your-application/routing"
   },
   {
     id: "react-do-hooks-cover-class-functionality-mapping-and-exceptio",
-    title: "Do Hooks Cover Class Functionality \ufffd\ufffd\ufffd Mapping and Exceptions",
-    prompt: "Do Hooks Cover Class Functionality \ufffd\ufffd\ufffd Mapping and Exceptions \u2014 explain the behavior and mechanism.",
+    title: "Do Hooks Cover Class Functionality, Mapping and Exceptions",
+    prompt: "Do Hooks Cover Class Functionality, Mapping and Exceptions, explain the behavior and mechanism.",
     level: "intermediate",
     type: "concept",
     category: "react",
@@ -4963,18 +5060,19 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "A",
     explanation: "Hooks cover mount/update/unmount flows via useEffect and support state via useState and useReducer. Some class features remain class-only today: Limitations: Error boundaries still require class components (componentDidCatch) until APIs expand. Certain lifecycle control patterns map awkwardly but usually have hook equivalents. Pattern guidance: Use useEffect cleanup for unmount logic. Combine hooks or create custom hooks to model complex lifecycle sequences.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Do Hooks Cover Class Functionality \ufffd\ufffd\ufffd Mapping and Exceptions.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Do Hooks Cover Class Functionality \ufffd\ufffd\ufffd Mapping and Exceptions.",
+    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Do Hooks Cover Class Functionality, Mapping and Exceptions.",
+    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Do Hooks Cover Class Functionality, Mapping and Exceptions.",
     hints: [
-      "Consider the core principles and trade-offs of Do Hooks Cover Class Functionality \ufffd\ufffd\ufffd Mapping and Exceptions."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "150-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   },
   {
     id: "react-lifecycle-methods-class-methods-and-hook-equivalents",
-    title: "Lifecycle Methods \ufffd\ufffd\ufffd Class Methods and Hook Equivalents",
-    prompt: "Lifecycle Methods \ufffd\ufffd\ufffd Class Methods and Hook Equivalents \u2014 explain the behavior and mechanism.",
+    title: "Lifecycle Methods, Class Methods and Hook Equivalents",
+    prompt: "Lifecycle Methods, Class Methods and Hook Equivalents, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -5014,18 +5112,19 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "A",
     explanation: "Class methods: constructor getDerivedStateFromProps render componentDidMount shouldComponentUpdate getSnapshotBeforeUpdate componentDidUpdate componentWillUnmount Hook mappings: Mount/update/unmount: useEffect Synchronous DOM reads: useLayoutEffect. Avoid getSnapshotBeforeUpdate by capturing values in refs before update.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Lifecycle Methods \ufffd\ufffd\ufffd Class Methods and Hook Equivalents.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Lifecycle Methods \ufffd\ufffd\ufffd Class Methods and Hook Equivalents.",
+    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Lifecycle Methods, Class Methods and Hook Equivalents.",
+    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Lifecycle Methods, Class Methods and Hook Equivalents.",
     hints: [
-      "Consider the core principles and trade-offs of Lifecycle Methods \ufffd\ufffd\ufffd Class Methods and Hook Equivalents."
+      "A class component's constructor must call super(props) before touching this.props, and its lifecycle methods map onto effects in a function component."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/Component"
   },
   {
     id: "react-component-lifecycle-phases-initialization-to-unmount",
-    title: "Component Lifecycle Phases \ufffd\ufffd\ufffd Initialization to Unmount",
-    prompt: "Component Lifecycle Phases \ufffd\ufffd\ufffd Initialization to Unmount \u2014 explain the behavior and mechanism.",
+    title: "Component Lifecycle Phases, Initialization to Unmount",
+    prompt: "Component Lifecycle Phases, Initialization to Unmount, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -5064,18 +5163,19 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "A",
     explanation: "Phases: Initialization: set initial state and props. Mounting: component enters DOM; use componentDidMount or useEffect with empty deps. Updating: triggered by props or state changes; use componentDidUpdate or useEffect with deps. Unmounting: cleanup subscriptions with componentWillUnmount or effect return.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Component Lifecycle Phases \ufffd\ufffd\ufffd Initialization to Unmount.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Component Lifecycle Phases \ufffd\ufffd\ufffd Initialization to Unmount.",
+    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Component Lifecycle Phases, Initialization to Unmount.",
+    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Component Lifecycle Phases, Initialization to Unmount.",
     hints: [
-      "Consider the core principles and trade-offs of Component Lifecycle Phases \ufffd\ufffd\ufffd Initialization to Unmount."
+      "A class component's constructor must call super(props) before touching this.props, and its lifecycle methods map onto effects in a function component."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/Component"
   },
   {
     id: "react-higherorder-components-when-and-how-to-abstract-behavio",
-    title: "Higher\ufffd\ufffd\ufffdOrder Components \ufffd\ufffd\ufffd When and How to Abstract Behavior",
-    prompt: "Higher\ufffd\ufffd\ufffdOrder Components \ufffd\ufffd\ufffd When and How to Abstract Behavior \u2014 explain the behavior and mechanism.",
+    title: "Higher, Order Components, When and How to Abstract Behavior",
+    prompt: "Higher, Order Components, When and How to Abstract Behavior, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -5113,19 +5213,20 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "HOC = function that takes a component and returns a new component. Use HOCs to share behavior like subscriptions, data sources, or feature toggles. Example HOC: function withData(Wrapped, select) { return class extends React.Component { state = { data: select(DataSource) }; componentDidMount() { DataSource.subscribe(this.update); } componentWillUnmount() { DataSource.unsubscribe(this.update); } update = () => this.setState({ data: select(DataSource) }); render() { return <Wrapped {...this.props} data={this.state.data} />; } };} Pitfalls and alternatives: HOCs can obscure props and refs; use forwardRef where needed. Consider hooks and composition as simpler alternatives for new code. Preserve displayName and static methods when wrapping.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Higher\ufffd\ufffd\ufffdOrder Components \ufffd\ufffd\ufffd When and How to Abstract Behavior.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Higher\ufffd\ufffd\ufffdOrder Components \ufffd\ufffd\ufffd When and How to Abstract Behavior.",
+    explanation: "HOC = function that takes a component and returns a new component. Use HOCs to share behavior like subscriptions, data sources, or feature toggles. Example HOC: function withData(Wrapped, select) { return class extends React.Component { state = { data: select(DataSource) }; componentDidMount() { DataSource.subscribe(this.update); } componentWillUnmount() { DataSource.unsubscribe(this.update); } update = () => this.setState({ data: select(DataSource) }); render() { return <Wrapped {.this.props} data={this.state.data} />; } };} Pitfalls and alternatives: HOCs can obscure props and refs; use forwardRef where needed. Consider hooks and composition as simpler alternatives for new code. Preserve displayName and static methods when wrapping.",
+    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Higher, Order Components, When and How to Abstract Behavior.",
+    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Higher, Order Components, When and How to Abstract Behavior.",
     hints: [
-      "Consider the core principles and trade-offs of Higher\ufffd\ufffd\ufffdOrder Components \ufffd\ufffd\ufffd When and How to Abstract Behavior."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-passing-data-between-components-patterns-from-props-to",
-    title: "Passing Data Between Components \ufffd\ufffd\ufffd Patterns From Props to Context",
-    prompt: "Passing Data Between Components \ufffd\ufffd\ufffd Patterns From Props to Context \u2014 explain the behavior and mechanism.",
+    title: "Passing Data Between Components, Patterns From Props to Context",
+    prompt: "Passing Data Between Components, Patterns From Props to Context, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -5164,18 +5265,19 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "A",
     explanation: "Parent to child: props. Child to parent: callbacks passed via props. Siblings: lift state to common parent, use Context, or route state. Global: Redux, Zustand, or Context for broadly shared state. Example child-to-parent: function Parent() { const [value, setValue] = useState(0); return <Child onChange={setValue} value={value} />;}function Child({ value, onChange }) { return <button onClick={() => onChange(value + 1)}>Inc</button>;}",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Passing Data Between Components \ufffd\ufffd\ufffd Patterns From Props to Context.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Passing Data Between Components \ufffd\ufffd\ufffd Patterns From Props to Context.",
+    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Passing Data Between Components, Patterns From Props to Context.",
+    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Passing Data Between Components, Patterns From Props to Context.",
     hints: [
-      "Consider the core principles and trade-offs of Passing Data Between Components \ufffd\ufffd\ufffd Patterns From Props to Context."
+      "Context solves passing data down, not re-rendering. Every consumer re-renders when the value changes, so the value's identity matters."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useContext"
   },
   {
     id: "react-how-to-ace-an-ai-company-interview-2026-guide",
     title: "How to Ace an AI Company Interview (2026 Guide)",
-    prompt: "How to Ace an AI Company Interview (2026 Guide) \u2014 explain the behavior and mechanism.",
+    prompt: "How to Ace an AI Company Interview (2026 Guide), explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -5217,10 +5319,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to Ace an AI Company Interview (2026 Guide).",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to Ace an AI Company Interview (2026 Guide).",
     hints: [
-      "Consider the core principles and trade-offs of How to Ace an AI Company Interview (2026 Guide)."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   },
   {
     id: "react-ready-to-pass-any-swe-interviews-with-100-undetectable",
@@ -5267,10 +5370,11 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Ready to Pass Any SWE Interviews with 100% Undetectable AI?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Ready to Pass Any SWE Interviews with 100% Undetectable AI?.",
     hints: [
-      "Consider the core principles and trade-offs of Ready to Pass Any SWE Interviews with 100% Undetectable AI?."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   },
   {
     id: "react-when-to-use-a-class-component-over-a-function-component",
@@ -5313,14 +5417,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "If the component needs state or lifecycle methods then use class component otherwise use function component. However, from React 16.8 with the addition of Hooks, you could use state , lifecycle methods and other features that were only available in class component right in your function component. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "If the component needs state or lifecycle methods then use class component otherwise use function component. However, from React 16.8 with the addition of Hooks, you could use state, lifecycle methods and other features that were only available in class component right in your function component.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of When to use a Class Component over a Function Component?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of When to use a Class Component over a Function Component?.",
     hints: [
-      "Consider the core principles and trade-offs of When to use a Class Component over a Function Component?."
+      "A class component's constructor must call super(props) before touching this.props, and its lifecycle methods map onto effects in a function component."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/Component"
   },
   {
     id: "react-what-is-the-difference-between-html-and-react-event-han",
@@ -5364,14 +5469,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Below are some of the main differences between HTML and React event handling, In HTML, the event name should be in lowercase: Whereas in React it follows camelCase convention: In HTML, you can return false to prevent default behavior: Whereas in React you must call preventDefault() explicitly: In HTML, you need to invoke the function by appending () Whereas in react you should not append () with the function name. (refer \"activateLasers\" function in the first point for example) \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Below are some of the main differences between HTML and React event handling, In HTML, the event name should be in lowercase: Whereas in React it follows camelCase convention: In HTML, you can return false to prevent default behavior: Whereas in React you must call preventDefault() explicitly: In HTML, you need to invoke the function by appending () Whereas in react you should not append () with the function name. (refer \"activateLasers\" function in the first point for example): ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the difference between HTML and React event handling?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the difference between HTML and React event handling?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the difference between HTML and React event handling?."
+      "React wraps native events in a synthetic event with one consistent API, delegated from the root."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react-dom/components/common#react-event-object"
   },
   {
     id: "react-how-to-pass-a-parameter-to-an-event-handler-or-callback",
@@ -5415,14 +5521,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "You can use an arrow function to wrap around an event handler and pass parameters: This is an equivalent to calling .bind: Apart from these two approaches, you can also pass arguments to a function which is defined as arrow function \ufffd\ufffd\ufffd Back to Top",
+    explanation: "You can use an arrow function to wrap around an event handler and pass parameters: This is an equivalent to calling .bind: Apart from these two approaches, you can also pass arguments to a function which is defined as arrow function: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to pass a parameter to an event handler or callback?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to pass a parameter to an event handler or callback?.",
     hints: [
-      "Consider the core principles and trade-offs of How to pass a parameter to an event handler or callback?."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   },
   {
     id: "react-what-are-synthetic-events-in-react",
@@ -5465,14 +5572,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "SyntheticEvent is a cross-browser wrapper around the browser's native event. It's API is same as the browser's native event, including stopPropagation() and preventDefault(), except the events work identically across all browsers. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "SyntheticEvent is a cross-browser wrapper around the browser's native event. It's API is same as the browser's native event, including stopPropagation() and preventDefault(), except the events work identically across all browsers.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are synthetic events in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are synthetic events in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What are synthetic events in React?."
+      "React wraps native events in a synthetic event with one consistent API, delegated from the root."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react-dom/components/common#react-event-object"
   },
   {
     id: "react-what-are-forward-refs",
@@ -5516,14 +5624,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Ref forwarding is a feature that lets some components take a ref they receive, and pass it further down to a child. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Ref forwarding is a feature that lets some components take a ref they receive, and pass it further down to a child.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are forward refs?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are forward refs?.",
     hints: [
-      "Consider the core principles and trade-offs of What are forward refs?."
+      "Both refs and state survive a render. Only state causes one, so refs are for values the UI does not display."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useRef"
   },
   {
     id: "react-which-is-preferred-option-with-in-callback-refs-and-fin",
@@ -5567,14 +5676,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "It is preferred to use callback refs over findDOMNode() API. Because findDOMNode() prevents certain improvements in React in the future. The legacy approach of using findDOMNode: The recommended approach is: \ufffd\ufffd\ufffd Back to Top",
+    explanation: "It is preferred to use callback refs over findDOMNode() API. Because findDOMNode() prevents certain improvements in React in the future. The legacy approach of using findDOMNode: The recommended approach is:: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Which is preferred option with in callback refs and findDOMNode()?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Which is preferred option with in callback refs and findDOMNode()?.",
     hints: [
-      "Consider the core principles and trade-offs of Which is preferred option with in callback refs and findDOMNode()?."
+      "Both refs and state survive a render. Only state causes one, so refs are for values the UI does not display."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useRef"
   },
   {
     id: "react-how-error-boundaries-handled-in-react-v15",
@@ -5617,14 +5727,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "React v15 provided very basic support for error boundaries using unstable_handleError method. It has been renamed to componentDidCatch in React v16. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "React v15 provided very basic support for error boundaries using unstable_handleError method. It has been renamed to componentDidCatch in React v16.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How error boundaries handled in React v15?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How error boundaries handled in React v15?.",
     hints: [
-      "Consider the core principles and trade-offs of How error boundaries handled in React v15?."
+      "Error boundaries catch the render path, not the interaction path. An event handler needs its own try/catch."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary"
   },
   {
     id: "react-how-you-use-decorators-in-react",
@@ -5668,14 +5779,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "You can decorate your class components, which is the same as passing the component into a function. Decorators are flexible and readable way of modifying component functionality. Note: Decorators are a feature that didn't make it into ES7, but are currently a stage 2 proposal. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "You can decorate your class components, which is the same as passing the component into a function. Decorators are flexible and readable way of modifying component functionality. Note: Decorators are a feature that didn't make it into ES7, but are currently a stage 2 proposal.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How you use decorators in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How you use decorators in React?.",
     hints: [
-      "Consider the core principles and trade-offs of How you use decorators in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-do-hooks-replace-render-props-and-higher-order-componen",
@@ -5720,14 +5832,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Both render props and higher-order components render only a single child but in most of the cases Hooks are a simpler way to serve this by reducing nesting in your tree. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Both render props and higher-order components render only a single child but in most of the cases Hooks are a simpler way to serve this by reducing nesting in your tree.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Do Hooks replace render props and higher order components?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Do Hooks replace render props and higher order components?.",
     hints: [
-      "Consider the core principles and trade-offs of Do Hooks replace render props and higher order components?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-the-recommended-way-for-naming-components",
@@ -5771,14 +5884,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "It is recommended to name the component by reference instead of using displayName. Using displayName for naming component: The recommended approach: \ufffd\ufffd\ufffd Back to Top",
+    explanation: "It is recommended to name the component by reference instead of using displayName. Using displayName for naming component: The recommended approach:: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the recommended way for naming components?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the recommended way for naming components?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the recommended way for naming components?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-are-the-exceptions-on-react-component-naming",
@@ -5822,14 +5936,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The component names should start with a uppercase letter but there are few exceptions on this convention. The lowercase tag names with a dot (property accessors) are still considered as valid component names. For example the below tag can be compiled to a valid component, \ufffd\ufffd\ufffd Back to Top",
+    explanation: "The component names should start with a uppercase letter but there are few exceptions on this convention. The lowercase tag names with a dot (property accessors) are still considered as valid component names. For example the below tag can be compiled to a valid component,: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the exceptions on React component naming?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the exceptions on React component naming?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the exceptions on React component naming?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-do-you-access-props-in-attribute-quotes",
@@ -5873,14 +5988,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "React (or JSX) doesn't support variable interpolation inside an attribute value. The below representation won't work: But you can put any JS expression inside curly braces as the entire attribute value. So the below expression works: Using template strings will also work: \ufffd\ufffd\ufffd Back to Top",
+    explanation: "React (or JSX) doesn't support variable interpolation inside an attribute value. The below representation won't work: But you can put any JS expression inside curly braces as the entire attribute value. So the below expression works: Using template strings will also work:: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you access props in attribute quotes?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you access props in attribute quotes?.",
     hints: [
-      "Consider the core principles and trade-offs of How do you access props in attribute quotes?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-to-conditionally-apply-class-attributes",
@@ -5895,7 +6011,7 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       "hooks",
       "junior"
     ],
-    codeSnippet: "<div className=\"btn-panel {this.props.visible ? 'show' : 'hidden'}\">\n\n<div className={'btn-panel ' + (this.props.visible ? 'show' : 'hidden')}>\n\n<div className={`btn-panel ${this.props.visible ? 'show' : 'hidden'}`}>",
+    codeSnippet: "<div className=\"btn-panel {this.props.visible ? 'show': 'hidden'}\">\n\n<div className={'btn-panel ' + (this.props.visible ? 'show': 'hidden')}>\n\n<div className={`btn-panel ${this.props.visible ? 'show': 'hidden'}`}>",
     codeLanguage: "tsx",
     options: [
       {
@@ -5924,14 +6040,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "You shouldn't use curly braces inside quotes because it is going to be evaluated as a string. Instead you need to move curly braces outside (don't forget to include spaces between class names): Template strings will also work: \ufffd\ufffd\ufffd Back to Top",
+    explanation: "You shouldn't use curly braces inside quotes because it is going to be evaluated as a string. Instead you need to move curly braces outside (don't forget to include spaces between class names): Template strings will also work:: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to conditionally apply class attributes?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to conditionally apply class attributes?.",
     hints: [
-      "Consider the core principles and trade-offs of How to conditionally apply class attributes?."
+      "A regular function resolves this at call time from its receiver. An arrow captures it at definition time."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this"
   },
   {
     id: "react-how-to-pretty-print-json-with-react",
@@ -5975,14 +6092,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "We can use <pre> tag so that the formatting of the JSON.stringify() is retained: \ufffd\ufffd\ufffd Back to Top",
+    explanation: "We can use <pre> tag so that the formatting of the JSON.stringify() is retained:: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to pretty print JSON with React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to pretty print JSON with React?.",
     hints: [
-      "Consider the core principles and trade-offs of How to pretty print JSON with React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-why-you-cant-update-props-in-react",
@@ -6025,14 +6143,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The React philosophy is that props should be immutable and top-down. This means that a parent can send any prop values to a child, but the child can't modify received props. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "The React philosophy is that props should be immutable and top-down. This means that a parent can send any prop values to a child, but the child can't modify received props.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Why you can't update props in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Why you can't update props in React?.",
     hints: [
-      "Consider the core principles and trade-offs of Why you can't update props in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-can-we-find-the-version-of-react-at-runtime-in-the",
@@ -6076,14 +6195,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "You can use React.version to get the version. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "You can use React.version to get the version.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How can we find the version of React at runtime in the browser?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How can we find the version of React at runtime in the browser?.",
     hints: [
-      "Consider the core principles and trade-offs of How can we find the version of React at runtime in the browser?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-to-use-https-instead-of-http-in-create-react-app",
@@ -6127,14 +6247,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "You just need to use HTTPS=true configuration. You can edit your package.json scripts section: or just run set HTTPS=true && npm start \ufffd\ufffd\ufffd Back to Top",
+    explanation: "You just need to use HTTPS=true configuration. You can edit your package.json scripts section: or just run set HTTPS=true && npm start: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to use https instead of http in create-react-app?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to use https instead of http in create-react-app?.",
     hints: [
-      "Consider the core principles and trade-offs of How to use https instead of http in create-react-app?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-to-avoid-using-relative-path-imports-in-create-reac",
@@ -6178,14 +6299,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Create a file called .env in the project root and write the import path: After that restart the development server. Now you should be able to import anything inside src/app without relative paths. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Create a file called .env in the project root and write the import path: After that restart the development server. Now you should be able to import anything inside src/app without relative paths.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to avoid using relative path imports in create-react-app?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to avoid using relative path imports in create-react-app?.",
     hints: [
-      "Consider the core principles and trade-offs of How to avoid using relative path imports in create-react-app?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-to-add-google-analytics-for-react-router",
@@ -6205,7 +6327,7 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Add a listener on the history object to record each page view: \ufffd\ufffd\ufffd Back to Top",
+        text: "Add a listener on the history object to record each page view:: ",
         isCorrect: true,
         explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
       },
@@ -6229,14 +6351,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Add a listener on the history object to record each page view: \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Add a listener on the history object to record each page view:: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to add Google Analytics for React Router?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to add Google Analytics for React Router?.",
     hints: [
-      "Consider the core principles and trade-offs of How to add Google Analytics for React Router?."
+      "Routing maps a URL to a component. Ask what the URL owns, and what the component owns."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://nextjs.org/docs/app/building-your-application/routing"
   },
   {
     id: "react-how-to-import-and-export-components-using-react-and-es6",
@@ -6280,14 +6403,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "You should use default for exporting the components With the export specifier, the MyProfile is going to be the member and exported to this module and the same can be imported without mentioning the name in other components. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "You should use default for exporting the components With the export specifier, the MyProfile is going to be the member and exported to this module and the same can be imported without mentioning the name in other components.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to import and export components using React and ES6?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to import and export components using React and ES6?.",
     hints: [
-      "Consider the core principles and trade-offs of How to import and export components using React and ES6?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-to-define-constants-in-react",
@@ -6331,14 +6455,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "You can use ES7 static field to define constant. Static fields are part of the Class Fields stage 3 proposal. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "You can use ES7 static field to define constant. Static fields are part of the Class Fields stage 3 proposal.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to define constants in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to define constants in React?.",
     hints: [
-      "Consider the core principles and trade-offs of How to define constants in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-the-benefit-of-styles-modules",
@@ -6382,14 +6507,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "It is recommended to avoid hard coding style values in components. Any values that are likely to be used across different UI components should be extracted into their own modules. For example, these styles could be extracted into a separate component: And then imported individually in other components: \ufffd\ufffd\ufffd Back to Top",
+    explanation: "It is recommended to avoid hard coding style values in components. Any values that are likely to be used across different UI components should be extracted into their own modules. For example, these styles could be extracted into a separate component: And then imported individually in other components:: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the benefit of styles modules?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the benefit of styles modules?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the benefit of styles modules?."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   },
   {
     id: "react-how-to-get-history-on-react-router-v4",
@@ -6433,14 +6559,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Below are the list of steps to get history object on React Router v4, Create a module that exports a history object and import this module across the project. For example, create history.js file: You should use the <Router> component instead of built-in routers. Imported the above history.js inside index.js file: You can also use push method of history object similar to built-in history object: \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Below are the list of steps to get history object on React Router v4, Create a module that exports a history object and import this module across the project. For example, create history.js file: You should use the <Router> component instead of built-in routers. Imported the above history.js inside index.js file: You can also use push method of history object similar to built-in history object:: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to get history on React Router v4?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to get history on React Router v4?.",
     hints: [
-      "Consider the core principles and trade-offs of How to get history on React Router v4?."
+      "Routing maps a URL to a component. Ask what the URL owns, and what the component owns."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://nextjs.org/docs/app/building-your-application/routing"
   },
   {
     id: "react-how-to-access-current-locale-with-react-intl",
@@ -6460,7 +6587,7 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "You can get the current locale in any component of your application using injectIntl(): \ufffd\ufffd\ufffd Back to",
+        text: "You can get the current locale in any component of your application using injectIntl():, Back to",
         isCorrect: true,
         explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
       },
@@ -6484,14 +6611,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "You can get the current locale in any component of your application using injectIntl(): \ufffd\ufffd\ufffd Back to Top",
+    explanation: "You can get the current locale in any component of your application using injectIntl():: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to access current locale with React Intl?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to access current locale with React Intl?.",
     hints: [
-      "Consider the core principles and trade-offs of How to access current locale with React Intl?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-the-purpose-of-reacttestutils-package",
@@ -6534,14 +6662,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "ReactTestUtils are provided in the with-addons package and allow you to perform actions against a simulated DOM for the purpose of unit testing. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "ReactTestUtils are provided in the with-addons package and allow you to perform actions against a simulated DOM for the purpose of unit testing.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the purpose of ReactTestUtils package?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the purpose of ReactTestUtils package?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the purpose of ReactTestUtils package?."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   },
   {
     id: "react-what-is-jest",
@@ -6584,14 +6713,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Jest is a JavaScript unit testing framework created by Facebook based on Jasmine and provides automated mock creation and a jsdom environment. It's often used for testing components. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Jest is a JavaScript unit testing framework created by Facebook based on Jasmine and provides automated mock creation and a jsdom environment. It's often used for testing components.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is Jest?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is Jest?.",
     hints: [
-      "Consider the core principles and trade-offs of What is Jest?."
+      "Test what the user does, not how the component stores it. Query by role, assert on output."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://testing-library.com/docs/queries/about/#priority"
   },
   {
     id: "react-what-are-the-drawbacks-of-mvw-pattern",
@@ -6634,14 +6764,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "DOM manipulation is very expensive which causes applications to behave slow and inefficient. Due to circular dependencies, a complicated model was created around models and views. Lot of data changes happens for collaborative applications(like Google Docs). No way to do undo (travel back in time) easily without adding so much extra code. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "DOM manipulation is very expensive which causes applications to behave slow and inefficient. Due to circular dependencies, a complicated model was created around models and views. Lot of data changes happens for collaborative applications(like Google Docs). No way to do undo (travel back in time) easily without adding so much extra code.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the drawbacks of MVW pattern?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the drawbacks of MVW pattern?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the drawbacks of MVW pattern?."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   },
   {
     id: "react-how-to-test-react-native-apps",
@@ -6684,14 +6815,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "React Native can be tested only in mobile simulators like iOS and Android. You can run the app in your mobile using expo app (https://expo.io) Where it syncs using QR code, your mobile and computer should be in same wireless network. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "React Native can be tested only in mobile simulators like iOS and Android. You can run the app in your mobile using expo app (https://expo.io) Where it syncs using QR code, your mobile and computer should be in same wireless network.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to test React Native apps?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to test React Native apps?.",
     hints: [
-      "Consider the core principles and trade-offs of How to test React Native apps?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-to-do-logging-in-react-native",
@@ -6735,14 +6867,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "You can use console.log, console.warn, etc. As of React Native v0.29 you can simply run the following to see logs in the console: \ufffd\ufffd\ufffd Back to Top",
+    explanation: "You can use console.log, console.warn, etc. As of React Native v0.29 you can simply run the following to see logs in the console:: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to do logging in React Native?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to do logging in React Native?.",
     hints: [
-      "Consider the core principles and trade-offs of How to do logging in React Native?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-why-is-devtools-not-loading-in-chrome-for-local-files",
@@ -6785,14 +6918,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "If you opened a local HTML file in your browser (file://...) then you must first open Chrome Extensions and check Allow access to file URLs. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "If you opened a local HTML file in your browser (file://.) then you must first open Chrome Extensions and check Allow access to file URLs.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Why is DevTools not loading in Chrome for local files?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Why is DevTools not loading in Chrome for local files?.",
     hints: [
-      "Consider the core principles and trade-offs of Why is DevTools not loading in Chrome for local files?."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   },
   {
     id: "react-what-are-the-advantages-of-react-over-vuejs",
@@ -6835,14 +6969,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "React has the following advantages over Vue.js: Gives more flexibility in large apps developing. Easier to test. Suitable for mobile apps creating. More information and solutions available. Note: The above list of advantages are purely opinionated and it vary based on the professional experience. But they are helpful as base parameters. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "React has the following advantages over Vue.js: Gives more flexibility in large apps developing. Easier to test. Suitable for mobile apps creating. More information and solutions available. Note: The above list of advantages are purely opinionated and it vary based on the professional experience. But they are helpful as base parameters.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the advantages of React over Vue.js?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the advantages of React over Vue.js?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the advantages of React over Vue.js?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-why-react-tab-is-not-showing-up-in-devtools",
@@ -6885,14 +7020,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "When the page loads, React DevTools sets a global named __REACT_DEVTOOLS_GLOBAL_HOOK__, then React communicates with that hook during initialization. If the website is not using React or if React fails to communicate with DevTools then it won't show up the tab. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "When the page loads, React DevTools sets a global named __REACT_DEVTOOLS_GLOBAL_HOOK__, then React communicates with that hook during initialization. If the website is not using React or if React fails to communicate with DevTools then it won't show up the tab.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Why React tab is not showing up in DevTools?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Why React tab is not showing up in DevTools?.",
     hints: [
-      "Consider the core principles and trade-offs of Why React tab is not showing up in DevTools?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-are-styled-components",
@@ -6935,14 +7071,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "styled-components is a JavaScript library for styling React applications. It removes the mapping between styles and components, and lets you write actual CSS augmented with JavaScript. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "styled-components is a JavaScript library for styling React applications. It removes the mapping between styles and components, and lets you write actual CSS augmented with JavaScript.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are Styled Components?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are Styled Components?.",
     hints: [
-      "Consider the core principles and trade-offs of What are Styled Components?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-relay",
@@ -6985,14 +7122,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Relay is a JavaScript framework for providing a data layer and client-server communication to web applications using the React view layer. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Relay is a JavaScript framework for providing a data layer and client-server communication to web applications using the React view layer.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is Relay?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is Relay?.",
     hints: [
-      "Consider the core principles and trade-offs of What is Relay?."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   },
   {
     id: "react-give-an-example-of-reselect-usage",
@@ -7036,14 +7174,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Let's take calculations and different amounts of a shipment order with the simplified usage of Reselect: \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Let's take calculations and different amounts of a shipment order with the simplified usage of Reselect:: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Give an example of Reselect usage?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Give an example of Reselect usage?.",
     hints: [
-      "Consider the core principles and trade-offs of Give an example of Reselect usage?."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   },
   {
     id: "react-can-i-import-an-svg-file-as-react-component",
@@ -7087,14 +7226,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "You can import SVG directly as component instead of loading it as a file. This feature is available with react-scripts@2.0.0 and higher. Note: Don't forget about the curly braces in the import. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "You can import SVG directly as component instead of loading it as a file. This feature is available with react-scripts@2.0.0 and higher. Note: Don't forget about the curly braces in the import.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Can I import an SVG file as react component?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Can I import an SVG file as react component?.",
     hints: [
-      "Consider the core principles and trade-offs of Can I import an SVG file as react component?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-to-pass-numbers-to-react-component",
@@ -7114,7 +7254,7 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "You should be passing the numbers via curly braces({}) where as strings in quotes \ufffd\ufffd\ufffd Back to Top",
+        text: "You should be passing the numbers via curly braces({}) where as strings in quotes: ",
         isCorrect: true,
         explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
       },
@@ -7138,14 +7278,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "You should be passing the numbers via curly braces({}) where as strings in quotes \ufffd\ufffd\ufffd Back to Top",
+    explanation: "You should be passing the numbers via curly braces({}) where as strings in quotes: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to pass numbers to React component?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to pass numbers to React component?.",
     hints: [
-      "Consider the core principles and trade-offs of How to pass numbers to React component?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-are-hooks",
@@ -7190,14 +7331,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Hooks is a new feature(React 16.8) that lets you use state and other React features without writing a class. Let's see an example of useState hook example, \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Hooks is a new feature(React 16.8) that lets you use state and other React features without writing a class. Let's see an example of useState hook example,: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are hooks?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are hooks?.",
     hints: [
-      "Consider the core principles and trade-offs of What are hooks?."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   },
   {
     id: "react-what-are-the-rules-needs-to-follow-for-hooks",
@@ -7241,14 +7383,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "You need to follow two rules in order to use hooks, Call Hooks only at the top level of your react functions. i.e, You shouldn\ufffd\ufffd\ufffdt call Hooks inside loops, conditions, or nested functions. This will ensure that Hooks are called in the same order each time a component renders and it preserves the state of Hooks between multiple useState and useEffect calls. Call Hooks from React Functions only. i.e, You shouldn\ufffd\ufffd\ufffdt call Hooks from regular JavaScript functions. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "You need to follow two rules in order to use hooks, Call Hooks only at the top level of your react functions. i.e, You shouldn, t call Hooks inside loops, conditions, or nested functions. This will ensure that Hooks are called in the same order each time a component renders and it preserves the state of Hooks between multiple useState and useEffect calls. Call Hooks from React Functions only. i.e, You shouldn, t call Hooks from regular JavaScript functions.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the rules needs to follow for hooks?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the rules needs to follow for hooks?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the rules needs to follow for hooks?."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   },
   {
     id: "react-how-to-ensure-hooks-followed-the-rules-in-your-project",
@@ -7293,14 +7436,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "React team released an ESLint plugin called eslint-plugin-react-hooks that enforces these two rules. You can add this plugin to your project using the below command, And apply the below config in your ESLint config file, Note: This plugin is intended to use in Create React App by default. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "React team released an ESLint plugin called eslint-plugin-react-hooks that enforces these two rules. You can add this plugin to your project using the below command, And apply the below config in your ESLint config file, Note: This plugin is intended to use in Create React App by default.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to ensure hooks followed the rules in your project?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to ensure hooks followed the rules in your project?.",
     hints: [
-      "Consider the core principles and trade-offs of How to ensure hooks followed the rules in your project?."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   },
   {
     id: "react-what-are-the-benefits-of-react-router-v4",
@@ -7343,14 +7487,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Below are the main benefits of React Router V4 module, In React Router v4(version 4), the API is completely about components. A router can be visualized as a single component(<BrowserRouter>) which wraps specific child router components(<Route>). You don't need to manually set history. The router module will take care history by wrapping routes with <BrowserRouter> component. The application size is reduced by adding only the specific router module(Web, core, or native) \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Below are the main benefits of React Router V4 module, In React Router v4(version 4), the API is completely about components. A router can be visualized as a single component(<BrowserRouter>) which wraps specific child router components(<Route>). You don't need to manually set history. The router module will take care history by wrapping routes with <BrowserRouter> component. The application size is reduced by adding only the specific router module(Web, core, or native): ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the benefits of React Router V4?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the benefits of React Router V4?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the benefits of React Router V4?."
+      "Routing maps a URL to a component. Ask what the URL owns, and what the component owns."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://nextjs.org/docs/app/building-your-application/routing"
   },
   {
     id: "react-what-are-default-props",
@@ -7365,7 +7510,7 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       "hooks",
       "junior"
     ],
-    codeSnippet: "class MyButton extends React.Component {\n  // ...\n}\n\nMyButton.defaultProps = {\n  color: 'red',\n};\n\nrender() {\n  return <MyButton /> ; // props.color will be set to red\n}",
+    codeSnippet: "class MyButton extends React.Component {\n  // ...\n}\n\nMyButton.defaultProps = {\n  color: 'red',\n};\n\nrender() {\n  return <MyButton />; // props.color will be set to red\n}",
     codeLanguage: "tsx",
     options: [
       {
@@ -7394,14 +7539,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The defaultProps are defined as a property on the component class to set the default props for the class. This is used for undefined props, but not for null props. For example, let us create color default prop for the button component, If props.color is not provided then it will set the default value to 'red'. i.e, Whenever you try to access the color prop it uses default value Note: If you provide null value then it remains null value. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "The defaultProps are defined as a property on the component class to set the default props for the class. This is used for undefined props, but not for null props. For example, let us create color default prop for the button component, If props.color is not provided then it will set the default value to 'red'. i.e, Whenever you try to access the color prop it uses default value Note: If you provide null value then it remains null value.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are default props?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are default props?.",
     hints: [
-      "Consider the core principles and trade-offs of What are default props?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-the-browser-support-for-react-applications",
@@ -7444,14 +7590,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "React supports all popular browsers, including Internet Explorer 9 and above, although some polyfills are required for older browsers such as IE 9 and IE 10. If you use es5-shim and es5-sham polyfill then it even support old browsers that doesn't support ES5 methods. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "React supports all popular browsers, including Internet Explorer 9 and above, although some polyfills are required for older browsers such as IE 9 and IE 10. If you use es5-shim and es5-sham polyfill then it even support old browsers that doesn't support ES5 methods.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the browser support for react applications?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the browser support for react applications?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the browser support for react applications?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-does-react-support-all-html-attributes",
@@ -7495,14 +7642,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "As of React 16, both standard or custom DOM attributes are fully supported. Since React components often take both custom and DOM-related props, React uses the camelCase convention just like the DOM APIs. Let us take few props with respect to standard HTML attributes, These props work similarly to the corresponding HTML attributes, with the exception of the special cases. It also support all SVG attributes. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "As of React 16, both standard or custom DOM attributes are fully supported. Since React components often take both custom and DOM-related props, React uses the camelCase convention just like the DOM APIs. Let us take few props with respect to standard HTML attributes, These props work similarly to the corresponding HTML attributes, with the exception of the special cases. It also support all SVG attributes.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Does React support all HTML attributes?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Does React support all HTML attributes?.",
     hints: [
-      "Consider the core principles and trade-offs of Does React support all HTML attributes?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-when-component-props-defaults-to-true",
@@ -7546,14 +7694,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "If you pass no value for a prop, it defaults to true. This behavior is available so that it matches the behavior of HTML. For example, below expressions are equivalent, Note: It is not recommended to use this approach because it can be confused with the ES6 object shorthand (example, {name} which is short for {name: name}) \ufffd\ufffd\ufffd Back to Top",
+    explanation: "If you pass no value for a prop, it defaults to true. This behavior is available so that it matches the behavior of HTML. For example, below expressions are equivalent, Note: It is not recommended to use this approach because it can be confused with the ES6 object shorthand (example, {name} which is short for {name: name}): ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of When component props defaults to true?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of When component props defaults to true?.",
     hints: [
-      "Consider the core principles and trade-offs of When component props defaults to true?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-do-you-pass-an-event-handler-to-a-component",
@@ -7597,14 +7746,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "You can pass event handlers and other functions as props to child components. It can be used in child component as below, \ufffd\ufffd\ufffd Back to Top",
+    explanation: "You can pass event handlers and other functions as props to child components. It can be used in child component as below,: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you pass an event handler to a component?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you pass an event handler to a component?.",
     hints: [
-      "Consider the core principles and trade-offs of How do you pass an event handler to a component?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-to-prevent-a-function-from-being-called-multiple-ti",
@@ -7647,14 +7797,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "If you use an event handler such as onClick or onScroll and want to prevent the callback from being fired too quickly, then you can limit the rate at which callback is executed. This can be achieved in the below possible ways, Throttling: Changes based on a time based frequency. For example, it can be used using _.throttle lodash function Debouncing: Publish changes after a period of inactivity. For example, it can be used using _.debounce lodash function RequestAnimationFrame throttling: Changes based on requestAnimationFrame. For example, it can be used using raf-schd lodash function \ufffd\ufffd\ufffd Back to Top",
+    explanation: "If you use an event handler such as onClick or onScroll and want to prevent the callback from being fired too quickly, then you can limit the rate at which callback is executed. This can be achieved in the below possible ways, Throttling: Changes based on a time based frequency. For example, it can be used using _.throttle lodash function Debouncing: Publish changes after a period of inactivity. For example, it can be used using _.debounce lodash function RequestAnimationFrame throttling: Changes based on requestAnimationFrame. For example, it can be used using raf-schd lodash function: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to prevent a function from being called multiple times?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to prevent a function from being called multiple times?.",
     hints: [
-      "Consider the core principles and trade-offs of How to prevent a function from being called multiple times?."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   },
   {
     id: "react-how-do-you-say-that-props-are-read-only",
@@ -7698,14 +7849,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "When you declare a component as a function or a class, it must never modify its own props. Let us take a below capital function, The above function is called \ufffd\ufffd\ufffdpure\ufffd\ufffd\ufffd because it does not attempt to change their inputs, and always return the same result for the same inputs. Hence, React has a single rule saying \"All React components must act like pure functions with respect to their props.\" \ufffd\ufffd\ufffd Back to Top",
+    explanation: "When you declare a component as a function or a class, it must never modify its own props. Let us take a below capital function, The above function is called, pure, because it does not attempt to change their inputs, and always return the same result for the same inputs. Hence, React has a single rule saying \"All React components must act like pure functions with respect to their props.\": ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you say that props are read only?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you say that props are read only?.",
     hints: [
-      "Consider the core principles and trade-offs of How do you say that props are read only?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-why-do-you-not-required-to-use-inheritance",
@@ -7748,14 +7900,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "In React, it is recommend using composition instead of inheritance to reuse code between components. Both Props and composition give you all the flexibility you need to customize a component\ufffd\ufffd\ufffds look and behavior in an explicit and safe way. Whereas, If you want to reuse non-UI functionality between components, it is suggested to extracting it into a separate JavaScript module. Later components import it and use that function, object, or a class, without extending it. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "In React, it is recommend using composition instead of inheritance to reuse code between components. Both Props and composition give you all the flexibility you need to customize a component, s look and behavior in an explicit and safe way. Whereas, If you want to reuse non-UI functionality between components, it is suggested to extracting it into a separate JavaScript module. Later components import it and use that function, object, or a class, without extending it.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Why do you not required to use inheritance?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Why do you not required to use inheritance?.",
     hints: [
-      "Consider the core principles and trade-offs of Why do you not required to use inheritance?."
+      "Reads walk the prototype chain; writes land on the object you assigned to. Mutating a value you read is not a write."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Inheritance_and_the_prototype_chain"
   },
   {
     id: "react-can-i-use-web-components-in-react-application",
@@ -7799,14 +7952,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Yes, you can use web components in a react application. Even though many developers won't use this combination, it may require especially if you are using third-party UI components that are written using Web Components. For example, let us use Vaadin date picker web component as below, \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Yes, you can use web components in a react application. Even though many developers won't use this combination, it may require especially if you are using third-party UI components that are written using Web Components. For example, let us use Vaadin date picker web component as below,: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Can I use web components in react application?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Can I use web components in react application?.",
     hints: [
-      "Consider the core principles and trade-offs of Can I use web components in react application?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-dynamic-import",
@@ -7850,14 +8004,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The dynamic import() syntax is a ECMAScript proposal not currently part of the language standard. It is expected to be accepted in the near future. You can achieve code-splitting into your app using dynamic import. Let's take an example of addition, Normal Import Dynamic Import \ufffd\ufffd\ufffd Back to Top",
+    explanation: "The dynamic import() syntax is a ECMAScript proposal not currently part of the language standard. It is expected to be accepted in the near future. You can achieve code-splitting into your app using dynamic import. Let's take an example of addition, Normal Import Dynamic Import: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is dynamic import?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is dynamic import?.",
     hints: [
-      "Consider the core principles and trade-offs of What is dynamic import?."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   },
   {
     id: "react-is-it-ref-argument-available-for-all-functions-or-class",
@@ -7876,7 +8031,7 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Regular function or class components don\ufffd\ufffd\ufffdt receive the ref argument, and ref is not available in props either.",
+        text: "Regular function or class components don, t receive the ref argument, and ref is not available in props either.",
         isCorrect: true,
         explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
       },
@@ -7900,14 +8055,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Regular function or class components don\ufffd\ufffd\ufffdt receive the ref argument, and ref is not available in props either. The second ref argument only exists when you define a component with React.forwardRef call. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Regular function or class components don, t receive the ref argument, and ref is not available in props either. The second ref argument only exists when you define a component with React.forwardRef call.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Is it ref argument available for all functions or class components?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Is it ref argument available for all functions or class components?.",
     hints: [
-      "Consider the core principles and trade-offs of Is it ref argument available for all functions or class components?."
+      "Both refs and state survive a render. Only state causes one, so refs are for values the UI does not display."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useRef"
   },
   {
     id: "react-when-do-you-need-to-use-refs",
@@ -7950,14 +8106,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "There are few use cases to go for refs, Managing focus, text selection, or media playback. Triggering imperative animations. Integrating with third-party DOM libraries. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "There are few use cases to go for refs, Managing focus, text selection, or media playback. Triggering imperative animations. Integrating with third-party DOM libraries.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of When do you need to use refs?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of When do you need to use refs?.",
     hints: [
-      "Consider the core principles and trade-offs of When do you need to use refs?."
+      "Both refs and state survive a render. Only state causes one, so refs are for values the UI does not display."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useRef"
   },
   {
     id: "react-can-you-list-down-top-websites-or-applications-using-re",
@@ -8000,14 +8157,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Below are the top 10 websites using React as their front-end framework, Facebook Uber Instagram WhatsApp Khan Academy Airbnb Dropbox Flipboard Netflix PayPal \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Below are the top 10 websites using React as their front-end framework, Facebook Uber Instagram WhatsApp Khan Academy Airbnb Dropbox Flipboard Netflix PayPal: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Can you list down top websites or applications using react as front end framework?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Can you list down top websites or applications using react as front end framework?.",
     hints: [
-      "Consider the core principles and trade-offs of Can you list down top websites or applications using react as front end framework?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-is-it-recommended-to-use-css-in-js-technique-in-react",
@@ -8050,14 +8208,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "React does not have any opinion about how styles are defined but if you are a beginner then good starting point is to define your styles in a separate *.css file as usual and refer to them using className. This functionality is not part of React but came from third-party libraries. But If you want to try a different approach(CSS-In-JS) then styled-components library is a good option. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "React does not have any opinion about how styles are defined but if you are a beginner then good starting point is to define your styles in a separate *.css file as usual and refer to them using className. This functionality is not part of React but came from third-party libraries. But If you want to try a different approach(CSS-In-JS) then styled-components library is a good option.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Is it recommended to use CSS In JS technique in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Is it recommended to use CSS In JS technique in React?.",
     hints: [
-      "Consider the core principles and trade-offs of Is it recommended to use CSS In JS technique in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-to-fetch-data-with-react-hooks",
@@ -8078,7 +8237,7 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "The effect hook called useEffect is used to fetch the data with axios from the API and to set the data in the local state of the component with the state hook\ufffd\ufffd\ufffds update function.",
+        text: "The effect hook called useEffect is used to fetch the data with axios from the API and to set the data in the local state of the component with the state hook, s update function.",
         isCorrect: true,
         explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
       },
@@ -8102,14 +8261,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The effect hook called useEffect is used to fetch the data with axios from the API and to set the data in the local state of the component with the state hook\ufffd\ufffd\ufffds update function. Let's take an example in which it fetches list of react articles from the API Remember we provided an empty array as second argument to the effect hook to avoid activating it on component updates but only for the mounting of the component. i.e, It fetches only for component mount. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "The effect hook called useEffect is used to fetch the data with axios from the API and to set the data in the local state of the component with the state hook, s update function. Let's take an example in which it fetches list of react articles from the API Remember we provided an empty array as second argument to the effect hook to avoid activating it on component updates but only for the mounting of the component. i.e, It fetches only for component mount.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to fetch data with React Hooks?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to fetch data with React Hooks?.",
     hints: [
-      "Consider the core principles and trade-offs of How to fetch data with React Hooks?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-is-hooks-cover-all-use-cases-for-classes",
@@ -8153,14 +8313,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Hooks doesn't cover all use cases of classes but there is a plan to add them soon. Currently there are no Hook equivalents to the uncommon getSnapshotBeforeUpdate and componentDidCatch lifecycles yet. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Hooks doesn't cover all use cases of classes but there is a plan to add them soon. Currently there are no Hook equivalents to the uncommon getSnapshotBeforeUpdate and componentDidCatch lifecycles yet.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Is Hooks cover all use cases for classes?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Is Hooks cover all use cases for classes?.",
     hints: [
-      "Consider the core principles and trade-offs of Is Hooks cover all use cases for classes?."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   },
   {
     id: "react-what-is-the-stable-release-for-hooks-support",
@@ -8204,14 +8365,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "React includes a stable implementation of React Hooks in 16.8 release for below packages React DOM React DOM Server React Test Renderer React Shallow Renderer \ufffd\ufffd\ufffd Back to Top",
+    explanation: "React includes a stable implementation of React Hooks in 16.8 release for below packages React DOM React DOM Server React Test Renderer React Shallow Renderer: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the stable release for hooks support?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the stable release for hooks support?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the stable release for hooks support?."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   },
   {
     id: "react-why-do-we-use-array-destructuring-square-brackets-notat",
@@ -8231,7 +8393,7 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "When we declare a state variable with useState, it returns a pair \ufffd\ufffd\ufffd an array with two items.",
+        text: "When we declare a state variable with useState, it returns a pair, an array with two items.",
         isCorrect: true,
         explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
       },
@@ -8255,14 +8417,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "When we declare a state variable with useState, it returns a pair \ufffd\ufffd\ufffd an array with two items. The first item is the current value, and the second is a function that updates the value. Using [0] and [1] to access them is a bit confusing because they have a specific meaning. This is why we use array destructuring instead. For example, the array index access would look as follows: Whereas with array destructuring the variables can be accessed as follows: \ufffd\ufffd\ufffd Back to Top",
+    explanation: "When we declare a state variable with useState, it returns a pair, an array with two items. The first item is the current value, and the second is a function that updates the value. Using [0] and [1] to access them is a bit confusing because they have a specific meaning. This is why we use array destructuring instead. For example, the array index access would look as follows: Whereas with array destructuring the variables can be accessed as follows:: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Why do we use array destructuring (square brackets notation) in useState?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Why do we use array destructuring (square brackets notation) in useState?.",
     hints: [
-      "Consider the core principles and trade-offs of Why do we use array destructuring (square brackets notation) in useState?."
+      "State is a snapshot. Setting it schedules a render, it does not change the variable you already read, so two updates from the same value collapse into one."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useState"
   },
   {
     id: "react-what-are-the-sources-used-for-introducing-hooks",
@@ -8306,14 +8469,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Hooks got the ideas from several different sources. Below are some of them, Previous experiments with functional APIs in the react-future repository Community experiments with render prop APIs such as Reactions Component State variables and state cells in DisplayScript. Subscriptions in Rx. Reducer components in ReasonReact. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Hooks got the ideas from several different sources. Below are some of them, Previous experiments with functional APIs in the react-future repository Community experiments with render prop APIs such as Reactions Component State variables and state cells in DisplayScript. Subscriptions in Rx. Reducer components in ReasonReact.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the sources used for introducing hooks?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the sources used for introducing hooks?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the sources used for introducing hooks?."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   },
   {
     id: "react-how-do-you-access-imperative-api-of-web-components",
@@ -8356,14 +8520,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Web Components often expose an imperative API to implement its functions. You will need to use a ref to interact with the DOM node directly if you want to access imperative API of a web component. But if you are using third-party Web Components, the best solution is to write a React component that behaves as a wrapper for your Web Component. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Web Components often expose an imperative API to implement its functions. You will need to use a ref to interact with the DOM node directly if you want to access imperative API of a web component. But if you are using third-party Web Components, the best solution is to write a React component that behaves as a wrapper for your Web Component.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you access imperative API of web components?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you access imperative API of web components?.",
     hints: [
-      "Consider the core principles and trade-offs of How do you access imperative API of web components?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-do-browsers-understand-jsx-code",
@@ -8406,14 +8571,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "No, browsers can't understand JSX code. You need a transpiler to convert your JSX to regular Javascript that browsers can understand. The most widely used transpiler right now is Babel. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "No, browsers can't understand JSX code. You need a transpiler to convert your JSX to regular Javascript that browsers can understand. The most widely used transpiler right now is Babel.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Do browsers understand JSX code?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Do browsers understand JSX code?.",
     hints: [
-      "Consider the core principles and trade-offs of Do browsers understand JSX code?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-describe-about-data-flow-in-react",
@@ -8456,14 +8622,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "React implements one-way reactive data flow using props which reduce boilerplate and is easier to understand than traditional two-way data binding. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "React implements one-way reactive data flow using props which reduce boilerplate and is easier to understand than traditional two-way data binding.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Describe about data flow in react?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Describe about data flow in react?.",
     hints: [
-      "Consider the core principles and trade-offs of Describe about data flow in react?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-react-scripts",
@@ -8506,14 +8673,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The react-scripts package is a set of scripts from the create-react-app starter pack which helps you kick off projects without configuring. The react-scripts start command sets up the development environment and starts a server, as well as hot module reloading. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "The react-scripts package is a set of scripts from the create-react-app starter pack which helps you kick off projects without configuring. The react-scripts start command sets up the development environment and starts a server, as well as hot module reloading.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is react scripts?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is react scripts?.",
     hints: [
-      "Consider the core principles and trade-offs of What is react scripts?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-can-i-use-javascript-urls-in-react169",
@@ -8557,14 +8725,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Yes, you can use javascript: URLs but it will log a warning in the console. Because URLs starting with javascript: are dangerous by including unsanitized output in a tag like <a href> and create a security hole. Remember that the future versions will throw an error for javascript URLs. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Yes, you can use javascript: URLs but it will log a warning in the console. Because URLs starting with javascript: are dangerous by including unsanitized output in a tag like <a href> and create a security hole. Remember that the future versions will throw an error for javascript URLs.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Can I use javascript urls in react16.9?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Can I use javascript urls in react16.9?.",
     hints: [
-      "Consider the core principles and trade-offs of Can I use javascript urls in react16.9?."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   },
   {
     id: "react-how-do-you-make-sure-that-user-remains-authenticated-on",
@@ -8608,19 +8777,20 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "When a user logs in and reload, to persist the state generally we add the load user action in the useEffect hooks in the main App.js. While using Redux, loadUser action can be easily accessed. App.js But while using Context API, to access context in App.js, wrap the AuthState in index.js so that App.js can access the auth context. Now whenever the page reloads, no matter what route you are on, the user will be authenticated as loadUser action will be triggered on each re-render. index.js App.js loadUser \ufffd\ufffd\ufffd Back to Top",
+    explanation: "When a user logs in and reload, to persist the state generally we add the load user action in the useEffect hooks in the main App.js. While using Redux, loadUser action can be easily accessed. App.js But while using Context API, to access context in App.js, wrap the AuthState in index.js so that App.js can access the auth context. Now whenever the page reloads, no matter what route you are on, the user will be authenticated as loadUser action will be triggered on each re-render. index.js App.js loadUser: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you make sure that user remains authenticated on page refresh while using Context API State Management?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you make sure that user remains authenticated on page refresh while using Context API State Management?.",
     hints: [
-      "Consider the core principles and trade-offs of How do you make sure that user remains authenticated on page refresh while using Context API State Management?."
+      "Context solves passing data down, not re-rendering. Every consumer re-renders when the value changes, so the value's identity matters."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useContext"
   },
   {
     id: "react-how-we-slashed-an-ai-agents-latency-by-80-in-60-minutes",
     title: "How we slashed an AI Agent's latency by 80% in 60 minutes",
-    prompt: "How we slashed an AI Agent's latency by 80% in 60 minutes \u2014 explain the behavior and mechanism.",
+    prompt: "How we slashed an AI Agent's latency by 80% in 60 minutes, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -8658,14 +8828,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Building an AI agent is fun. Fixing its production latency when it's juggling live data, RAG, and text-to-speech? Not so fun. Read more \ufffd\ufffd\ufffd Michael Sakhniuk Follow Senior Software Engineer at Miro Location Yerevan, Armenia Education Engineer Work Frontend Engineer at Miro Joined Nov 22, 2019 More from Michael Sakhniuk Why you should avoid using arrow functions to define class methods Website Accessibility: What You Need to Know JS Math cheatsheet The DEV Team Promoted Dropdown menu What's a billboard? Manage preferences Report billboard Hacktoberfest 2026: AI belongs to everyone We have some news we're excited to share today: Major League Hacking (MLH) and DEV are partnering with DigitalOcean to run Hacktoberfest 2026. This October, we\ufffd\ufffd\ufffdll host over 300 in-person events (\ufffd\ufffd\ufffdFests\ufffd\ufffd\ufffd) plus a global online event, all about building with open source and open-weight AI. Read more \ufffd\ufffd\ufffd \ufffd\ufffd\ufffd\ufffd Kindness is contagious Dropdown menu What's a billboard? Manage preferences Report billboard Dive into this thoughtful piece, beloved in the supportive DEV Community. Coders of every background are invited to share and elevate our collective know-how. A sincere \"thank you\" can brighten someone's day\ufffd\ufffd\ufffdleave your appreciation below! On DEV, sharing knowledge smooths our journey and tightens our community bonds. Enjoyed this? A quick thank you to the author is hugely appreciated. Okay DEV Community \ufffd\ufffd\ufffd A space to discuss and keep up software development and manage your software career Home DEV Challenges DEV++ Videos DEV Education Tracks DEV Help Advertise on DEV Organization Accounts DEV Showcase About Contact Free Postgres Database DEV Shop MLH Code of Conduct Privacy Policy Terms of Use Built on Forem \ufffd\ufffd\ufffd the open source software that powers DEV and other inclusive communities. Made with love and Ruby on Rails. DEV Community \ufffd\ufffd 2016 - 2026. We're a place where coders share, stay up-to-date and grow their careers.",
+    explanation: "Building an AI agent is fun. Fixing its production latency when it's juggling live data, RAG, and text-to-speech? Not so fun. Read more, Michael Sakhniuk Follow Senior Software Engineer at Miro Location Yerevan, Armenia Education Engineer Work Frontend Engineer at Miro Joined Nov 22, 2019 More from Michael Sakhniuk Why you should avoid using arrow functions to define class methods Website Accessibility: What You Need to Know JS Math cheatsheet The DEV Team Promoted Dropdown menu What's a billboard? Manage preferences Report billboard Hacktoberfest 2026: AI belongs to everyone We have some news we're excited to share today: Major League Hacking (MLH) and DEV are partnering with DigitalOcean to run Hacktoberfest 2026. This October, we, ll host over 300 in-person events (, Fests, ) plus a global online event, all about building with open source and open-weight AI. Read more, Kindness is contagious Dropdown menu What's a billboard? Manage preferences Report billboard Dive into this thoughtful piece, beloved in the supportive DEV Community. Coders of every background are invited to share and elevate our collective know-how. A sincere \"thank you\" can brighten someone's day, leave your appreciation below! On DEV, sharing knowledge smooths our journey and tightens our community bonds. Enjoyed this? A quick thank you to the author is hugely appreciated. Okay DEV Community, A space to discuss and keep up software development and manage your software career Home DEV Challenges DEV++ Videos DEV Education Tracks DEV Help Advertise on DEV Organization Accounts DEV Showcase About Contact Free Postgres Database DEV Shop MLH Code of Conduct Privacy Policy Terms of Use Built on Forem, the open source software that powers DEV and other inclusive communities. Made with love and Ruby on Rails. DEV Community, 2016 - 2026. We're a place where coders share, stay up-to-date and grow their careers.",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How we slashed an AI Agent's latency by 80% in 60 minutes.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How we slashed an AI Agent's latency by 80% in 60 minutes.",
     hints: [
-      "Consider the core principles and trade-offs of How we slashed an AI Agent's latency by 80% in 60 minutes."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   },
   {
     id: "react-lifecycle-methods-as-effects",
@@ -8686,13 +8857,13 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "useEffect(fn, []) \u2014 the empty array means updates only",
+        text: "useEffect(fn, []), the empty array means updates only",
         isCorrect: false,
         explanation: "An empty array is the opposite: it runs once on mount and never again."
       },
       {
         id: "B",
-        text: "useEffect(fn, [count]) \u2014 it fires only when count changes",
+        text: "useEffect(fn, [count]), it fires only when count changes",
         isCorrect: false,
         explanation: "It also fires once after the initial mount, which componentDidUpdate does not."
       },
@@ -8700,7 +8871,7 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
         id: "C",
         text: "useEffect(fn) with no dependency array",
         isCorrect: false,
-        explanation: "That runs after every render, including the first \u2014 closer to componentDidUpdate plus componentDidMount plus more."
+        explanation: "That runs after every render, including the first, closer to componentDidUpdate plus componentDidMount plus more."
       },
       {
         id: "D",
@@ -8710,14 +8881,15 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "D",
-    explanation: "useEffect(fn, []) maps cleanly onto componentDidMount, and its cleanup function onto componentWillUnmount. componentDidUpdate has no exact equivalent, because every effect also runs after the initial mount \u2014 useEffect(fn, [count]) fires on mount and on each change. Skipping the first run means holding a ref and checking it. That friction is deliberate: effects are meant to synchronise with external systems based on current values, not to re-enact lifecycle hooks.",
+    explanation: "useEffect(fn, []) maps cleanly onto componentDidMount, and its cleanup function onto componentWillUnmount. componentDidUpdate has no exact equivalent, because every effect also runs after the initial mount, useEffect(fn, [count]) fires on mount and on each change. Skipping the first run means holding a ref and checking it. That friction is deliberate: effects are meant to synchronise with external systems based on current values, not to re-enact lifecycle hooks.",
     interviewLine: "Effects synchronise, they don't sequence. There's no 'on update only' because an effect doesn't care whether this is the first render.",
-    misconception: "Assuming a dependency array means 'only when this changes'. It means 'after every render where this changed' \u2014 and the mount always counts.",
+    misconception: "Assuming a dependency array means 'only when this changes'. It means 'after every render where this changed', and the mount always counts.",
     hints: [
       "Does an effect with dependencies skip the very first render?"
     ],
     source: "react-17-2025",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/reference/react/useEffect"
   },
   {
     id: "react-refs-persist-without-rerender",
@@ -8740,13 +8912,13 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
         id: "A",
         text: "Refs are read-only once assigned",
         isCorrect: false,
-        explanation: "ref.current is freely mutable \u2014 that is the point."
+        explanation: "ref.current is freely mutable, that is the point."
       },
       {
         id: "B",
         text: "Refs persist across renders but changing one does not trigger a re-render",
         isCorrect: true,
-        explanation: "Correct. That is the whole distinction \u2014 same persistence, no subscription."
+        explanation: "Correct. That is the whole distinction, same persistence, no subscription."
       },
       {
         id: "C",
@@ -8762,13 +8934,14 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "B",
-    explanation: "Both useRef and useState survive re-renders. The difference is that React subscribes to state: setting it schedules a render. A ref is a plain mutable box \u2014 writing ref.current changes the value immediately and React never notices. That makes refs right for values the UI does not display: a DOM node to focus, a timer id to clear, the previous value of a prop. It also makes them wrong for anything the render output depends on, because nothing will re-render to show the change.",
-    interviewLine: "Both survive renders; only state causes one. If the UI needs to react to it, it's state \u2014 otherwise it's a ref.",
+    explanation: "Both useRef and useState survive re-renders. The difference is that React subscribes to state: setting it schedules a render. A ref is a plain mutable box, writing ref.current changes the value immediately and React never notices. That makes refs right for values the UI does not display: a DOM node to focus, a timer id to clear, the previous value of a prop. It also makes them wrong for anything the render output depends on, because nothing will re-render to show the change.",
+    interviewLine: "Both survive renders; only state causes one. If the UI needs to react to it, it's state, otherwise it's a ref.",
     misconception: "Reaching for a ref to avoid re-renders on a value the UI actually displays, then wondering why the screen is stale.",
     hints: [
       "Both persist. What does React do differently when each one changes?"
     ],
     source: "react-17-2025",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useRef"
   }
 ];

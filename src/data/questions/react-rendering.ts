@@ -48,10 +48,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to render an array of elements?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to render an array of elements?.",
     hints: [
-      "Consider the core principles and trade-offs of How to render an array of elements?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "44-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-jsx",
@@ -99,10 +100,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is JSX?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is JSX?.",
     hints: [
-      "Consider the core principles and trade-offs of What is JSX?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "44-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-to-render-an-element-conditionally",
@@ -118,7 +120,7 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       "junior",
       "rendering"
     ],
-    codeSnippet: "return (\n  <div>\n    {isVisible && <span>I'm visible!</span>}\n  </div>\n);\n\nreturn (\n  <div>\n    {isOnline ? <span>I'm online!</span> : <span>I'm offline</span>}\n  </div>\n);\n\nif (isOnline) {\n  element = <span>I'm online!</span>;\n} else {\n  element = <span>I'm offline</span>;\n}\n\nreturn (\n  <div>\n    {element}\n  </div>\n);",
+    codeSnippet: "return (\n  <div>\n    {isVisible && <span>I'm visible!</span>}\n  </div>\n);\n\nreturn (\n  <div>\n    {isOnline ? <span>I'm online!</span>: <span>I'm offline</span>}\n  </div>\n);\n\nif (isOnline) {\n  element = <span>I'm online!</span>;\n} else {\n  element = <span>I'm offline</span>;\n}\n\nreturn (\n  <div>\n    {element}\n  </div>\n);",
     codeLanguage: "tsx",
     options: [
       {
@@ -151,10 +153,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to render an element conditionally?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to render an element conditionally?.",
     hints: [
-      "Consider the core principles and trade-offs of How to render an element conditionally?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "44-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-react-fragment",
@@ -202,10 +205,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is React Fragment?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is React Fragment?.",
     hints: [
-      "Consider the core principles and trade-offs of What is React Fragment?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "44-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-why-do-we-need-keys-in-lists-when-using-map",
@@ -253,10 +257,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Why do we need keys in lists when using map()?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Why do we need keys in lists when using map()?.",
     hints: [
-      "Consider the core principles and trade-offs of Why do we need keys in lists when using map()?."
+      "A key is an identity claim. Change it and React unmounts the old element and mounts a new one, resetting its state."
     ],
     source: "44-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/rendering-lists#keeping-list-items-in-order-with-key"
   },
   {
     id: "react-what-is-react",
@@ -299,14 +304,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "React is a front-end and open-source JavaScript library which is useful in developing user interfaces specifically for applications with a single page. It is helpful in building complex and reusable user interface(UI) components of mobile and web applications as it follows the component-based approach. The important features of React are: It supports server-side rendering. It will make use of the virtual DOM rather than real DOM (Data Object Model) as RealDOM manipulations are expensive. It follows unidirectional data binding or data flow. It uses reusable or composable UI components for developing the view. Create a free personalised study plan Create a FREE custom study plan Get into your dream companies with expert guidance Get into your dream companies with expert.. Real-Life Problems Prep for Target Roles Custom Plan Duration Flexible Plans Create My Plan",
+    explanation: "React is a front-end and open-source JavaScript library which is useful in developing user interfaces specifically for applications with a single page. It is helpful in building complex and reusable user interface(UI) components of mobile and web applications as it follows the component-based approach. The important features of React are: It supports server-side rendering. It will make use of the virtual DOM rather than real DOM (Data Object Model) as RealDOM manipulations are expensive. It follows unidirectional data binding or data flow. It uses reusable or composable UI components for developing the view. Create a free personalised study plan Create a FREE custom study plan Get into your dream companies with expert guidance Get into your dream companies with expert. Real-Life Problems Prep for Target Roles Custom Plan Duration Flexible Plans Create My Plan",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is React?.",
     hints: [
-      "Consider the core principles and trade-offs of What is React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-are-keys-in-react",
@@ -354,10 +360,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are keys in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are keys in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What are keys in React?."
+      "A key is an identity claim. Change it and React unmounts the old element and mounts a new one, resetting its state."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/rendering-lists#keeping-list-items-in-order-with-key"
   },
   {
     id: "react-what-are-the-differences-between-controlled-and-uncontr",
@@ -401,14 +408,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Controlled and uncontrolled components are just different approaches to handling input from elements in react. Feature Uncontrolled Controlled Name attrs One-time value retrieval (e.g. on submit) \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd Validating on submit \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd Field-level Validation \ufffd\ufffd\ufffd \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd Conditionally disabling submit button \ufffd\ufffd\ufffd \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd Enforcing input format \ufffd\ufffd\ufffd \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd several inputs for one piece of data \ufffd\ufffd\ufffd \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd dynamic inputs \ufffd\ufffd\ufffd \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd \ufffd\ufffd\ufffd\ufffd Controlled component: In a controlled component, the value of the input element is controlled by React. We store the state of the input element inside the code, and by using event-based callbacks, any changes made to the input element will be reflected in the code as well. When a user enters data inside the input element of a controlled component, onChange function gets triggered and inside the code, we check whether the value entered is valid or invalid. If the value is valid, we change the state and re-render the input element with the new value. Example of a controlled component: As one can see in the code above, the value of the input element is determined by the state of the inputValue variable. Any changes made to the input element is handled by the updateInput function. Uncontrolled component: In an uncontrolled component, the value of the input element is handled by the DOM itself. Input elements inside uncontrolled components work just like normal HTML input form elements. The state of the input element is handled by the DOM. Whenever the value of the input element is changed, event-based callbacks are not called. Basically, react does not perform any action when there are changes made to the input element. Whenever use enters data inside the input field, the updated data is shown directly. To access the value of the input element, we can use ref. Example of an uncontrolled component: As one can see in the code above, we are not using onChange function to govern the changes made to the input element. Instead, we are using ref to access the value of the input element.",
+    explanation: "Controlled and uncontrolled components are just different approaches to handling input from elements in react. Feature Uncontrolled Controlled Name attrs One-time value retrieval (e.g. on submit),, Validating on submit,, Field-level Validation,, Conditionally disabling submit button,, Enforcing input format,, several inputs for one piece of data,, dynamic inputs,, Controlled component: In a controlled component, the value of the input element is controlled by React. We store the state of the input element inside the code, and by using event-based callbacks, any changes made to the input element will be reflected in the code as well. When a user enters data inside the input element of a controlled component, onChange function gets triggered and inside the code, we check whether the value entered is valid or invalid. If the value is valid, we change the state and re-render the input element with the new value. Example of a controlled component: As one can see in the code above, the value of the input element is determined by the state of the inputValue variable. Any changes made to the input element is handled by the updateInput function. Uncontrolled component: In an uncontrolled component, the value of the input element is handled by the DOM itself. Input elements inside uncontrolled components work just like normal HTML input form elements. The state of the input element is handled by the DOM. Whenever the value of the input element is changed, event-based callbacks are not called. Basically, react does not perform any action when there are changes made to the input element. Whenever use enters data inside the input field, the updated data is shown directly. To access the value of the input element, we can use ref. Example of an uncontrolled component: As one can see in the code above, we are not using onChange function to govern the changes made to the input element. Instead, we are using ref to access the value of the input element.",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the differences between controlled and uncontrolled components?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the differences between controlled and uncontrolled components?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the differences between controlled and uncontrolled components?."
+      "A controlled input reads its value from state, so React is the single source of truth. An uncontrolled one leaves it in the DOM."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/reference/react-dom/components/input"
   },
   {
     id: "react-what-are-error-boundaries",
@@ -452,14 +460,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Introduced in version 16 of React, Error boundaries provide a way for us to catch errors that occur in the render phase. What is an error boundary? Any component which uses one of the following lifecycle methods is considered an error boundary.In what places can an error boundary detect an error? Render phase Inside a lifecycle method Inside the constructor Without using error boundaries: In the code above, when the counterValue equals 2, we throw an error inside the render method. When we are not using the error boundary, instead of seeing an error, we see a blank page. Since any error inside the render method leads to unmounting of the component. To display an error that occurs inside the render method, we use error boundaries. With error boundaries: As mentioned above, error boundary is a component using one or both of the following methods: static getDerivedStateFromError and componentDidCatch. Let\ufffd\ufffd\ufffds create an error boundary to handle errors in the render phase: In the code above, getDerivedStateFromError function renders the fallback UI interface when the render method has an error. componentDidCatch logs the error information to an error tracking service. Now with the error boundary, we can render the CounterComponent in the following way:",
+    explanation: "Introduced in version 16 of React, Error boundaries provide a way for us to catch errors that occur in the render phase. What is an error boundary? Any component which uses one of the following lifecycle methods is considered an error boundary.In what places can an error boundary detect an error? Render phase Inside a lifecycle method Inside the constructor Without using error boundaries: In the code above, when the counterValue equals 2, we throw an error inside the render method. When we are not using the error boundary, instead of seeing an error, we see a blank page. Since any error inside the render method leads to unmounting of the component. To display an error that occurs inside the render method, we use error boundaries. With error boundaries: As mentioned above, error boundary is a component using one or both of the following methods: static getDerivedStateFromError and componentDidCatch. Let, s create an error boundary to handle errors in the render phase: In the code above, getDerivedStateFromError function renders the fallback UI interface when the render method has an error. componentDidCatch logs the error information to an error tracking service. Now with the error boundary, we can render the CounterComponent in the following way:",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are error boundaries?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are error boundaries?.",
     hints: [
-      "Consider the core principles and trade-offs of What are error boundaries?."
+      "Error boundaries catch the render path, not the interaction path. An event handler needs its own try/catch."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary"
   },
   {
     id: "react-how-to-create-a-switching-component-for-displaying-diff",
@@ -507,10 +516,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to create a switching component for displaying different pages?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to create a switching component for displaying different pages?.",
     hints: [
-      "Consider the core principles and trade-offs of How to create a switching component for displaying different pages?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-to-re-render-the-view-when-the-browser-is-resized",
@@ -559,10 +569,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to re-render the view when the browser is resized?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to re-render the view when the browser is resized?.",
     hints: [
-      "Consider the core principles and trade-offs of How to re-render the view when the browser is resized?."
+      "React re-renders a component when its state or its parent renders. Skipping that needs both a memo and props that stay identical."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/memo"
   },
   {
     id: "react-what-are-the-different-ways-to-style-a-react-component",
@@ -606,14 +617,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "There are many different ways through which one can style a React component. Some of the ways are : Inline Styling: We can directly style an element using inline style attributes. Make sure the value of style is a JavaScript object: Using JavaScript object: We can create a separate JavaScript object and set the desired style properties. This object can be used as the value of the inline style attribute. CSS Stylesheet: We can create a separate CSS file and write all the styles for the component inside that file. This file needs to be imported inside the component file. CSS Modules: We can create a separate CSS module and import this module inside our component. Create a file with \ufffd\ufffd\ufffd.module.css\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd extension, styles.module.css: We can import this file inside the component and use it:",
+    explanation: "There are many different ways through which one can style a React component. Some of the ways are: Inline Styling: We can directly style an element using inline style attributes. Make sure the value of style is a JavaScript object: Using JavaScript object: We can create a separate JavaScript object and set the desired style properties. This object can be used as the value of the inline style attribute. CSS Stylesheet: We can create a separate CSS file and write all the styles for the component inside that file. This file needs to be imported inside the component file. CSS Modules: We can create a separate CSS module and import this module inside our component. Create a file with.module.css, extension, styles.module.css: We can import this file inside the component and use it:",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the different ways to style a React component?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the different ways to style a React component?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the different ways to style a React component?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-to-pass-data-between-react-components",
@@ -661,10 +673,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to pass data between react components?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to pass data between react components?.",
     hints: [
-      "Consider the core principles and trade-offs of How to pass data between react components?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-are-higher-order-components",
@@ -708,14 +721,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Simply put, Higher-Order Component(HOC) is a function that takes in a component and returns a new component. When do we need a Higher Order Component? While developing React applications, we might develop components that are quite similar to each other with minute differences. In most cases, developing similar components might not be an issue but, while developing larger applications we need to keep our code DRY, therefore, we want an abstraction that allows us to define this logic in a single place and share it across components. HOC allows us to create that abstraction. Example of a HOC: Consider the following components having similar functionality. The following component displays the list of articles: The following component displays the list of users: Notice the above components, both have similar functionality but, they are calling different methods to an API endpoint. Let\ufffd\ufffd\ufffds create a Higher Order Component to create an abstraction: We know HOC is a function that takes in a component and returns a component. In the code above, we have created a function called HOC which returns a component and performs functionality that can be shared across both the ArticlesList component and UsersList Component. The second parameter in the HOC function is the function that calls the method on the API endpoint. We have reduced the duplicated code of the componentDidUpdate and componentDidMount functions. Using the concept of Higher-Order Components, we can now render the ArticlesList and UsersList components in the following way: Remember, we are not trying to change the functionality of each component, we are trying to share a single functionality across multiple components using HOC.",
+    explanation: "Simply put, Higher-Order Component(HOC) is a function that takes in a component and returns a new component. When do we need a Higher Order Component? While developing React applications, we might develop components that are quite similar to each other with minute differences. In most cases, developing similar components might not be an issue but, while developing larger applications we need to keep our code DRY, therefore, we want an abstraction that allows us to define this logic in a single place and share it across components. HOC allows us to create that abstraction. Example of a HOC: Consider the following components having similar functionality. The following component displays the list of articles: The following component displays the list of users: Notice the above components, both have similar functionality but, they are calling different methods to an API endpoint. Let, s create a Higher Order Component to create an abstraction: We know HOC is a function that takes in a component and returns a component. In the code above, we have created a function called HOC which returns a component and performs functionality that can be shared across both the ArticlesList component and UsersList Component. The second parameter in the HOC function is the function that calls the method on the API endpoint. We have reduced the duplicated code of the componentDidUpdate and componentDidMount functions. Using the concept of Higher-Order Components, we can now render the ArticlesList and UsersList components in the following way: Remember, we are not trying to change the functionality of each component, we are trying to share a single functionality across multiple components using HOC.",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are Higher Order Components?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are Higher Order Components?.",
     hints: [
-      "Consider the core principles and trade-offs of What are Higher Order Components?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-are-the-different-phases-of-the-component-lifecycl",
@@ -762,10 +776,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the different phases of the component lifecycle?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the different phases of the component lifecycle?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the different phases of the component lifecycle?."
+      "A class component's constructor must call super(props) before touching this.props, and its lifecycle methods map onto effects in a function component."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/Component"
   },
   {
     id: "react-what-is-react-router",
@@ -808,19 +823,20 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "React Router refers to the standard library used for routing in React. It permits us for building a single-page web application in React with navigation without even refreshing the page when the user navigates. It also allows to change the browser URL and will keep the user interface in sync with the URL. React Router will make use of the component structure for calling the components, using which appropriate information can be shown. Since React is a component-based framework, it\ufffd\ufffd\ufffds not necessary to include and use this package. Any other compatible routing library would also work with React. The major components of React Router are given below: BrowserRouter: It is a router implementation that will make use of the HTML5 history API (pushState, popstate, and event replaceState) for keeping your UI to be in sync with the URL. It is the parent component useful in storing all other components. Routes: It is a newer component that has been introduced in the React v6 and an upgrade of the component. Route: It is considered to be a conditionally shown component and some UI will be rendered by this whenever there is a match between its path and the current URL. Link: It is useful in creating links to various routes and implementing navigation all over the application. It works similarly to the anchor tag in HTML.",
+    explanation: "React Router refers to the standard library used for routing in React. It permits us for building a single-page web application in React with navigation without even refreshing the page when the user navigates. It also allows to change the browser URL and will keep the user interface in sync with the URL. React Router will make use of the component structure for calling the components, using which appropriate information can be shown. Since React is a component-based framework, it, s not necessary to include and use this package. Any other compatible routing library would also work with React. The major components of React Router are given below: BrowserRouter: It is a router implementation that will make use of the HTML5 history API (pushState, popstate, and event replaceState) for keeping your UI to be in sync with the URL. It is the parent component useful in storing all other components. Routes: It is a newer component that has been introduced in the React v6 and an upgrade of the component. Route: It is considered to be a conditionally shown component and some UI will be rendered by this whenever there is a match between its path and the current URL. Link: It is useful in creating links to various routes and implementing navigation all over the application. It works similarly to the anchor tag in HTML.",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is React Router?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is React Router?.",
     hints: [
-      "Consider the core principles and trade-offs of What is React Router?."
+      "Routing maps a URL to a component. Ask what the URL owns, and what the component owns."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://nextjs.org/docs/app/building-your-application/routing"
   },
   {
     id: "react-different-trees-are-produced-because-of-different-eleme",
     title: "Different trees are produced because of different elements",
-    prompt: "Different trees are produced because of different elements \u2014 explain the behavior and mechanism.",
+    prompt: "Different trees are produced because of different elements, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -830,7 +846,7 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       "rendering-keys",
       "junior"
     ],
-    codeSnippet: "<div /> \ufffd\ufffd\ufffd <section />",
+    codeSnippet: "<div />  <section />",
     codeLanguage: "tsx",
     options: [
       {
@@ -863,15 +879,16 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Different trees are produced because of different elements.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Different trees are produced because of different elements.",
     hints: [
-      "Consider the core principles and trade-offs of Different trees are produced because of different elements."
+      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/render-and-commit"
   },
   {
     id: "react-elements-of-the-same-type-are-compared-attribute-wise",
     title: "Elements of the same type are compared attribute-wise",
-    prompt: "Elements of the same type are compared attribute-wise \u2014 explain the behavior and mechanism.",
+    prompt: "Elements of the same type are compared attribute-wise, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -913,10 +930,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Elements of the same type are compared attribute-wise.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Elements of the same type are compared attribute-wise.",
     hints: [
-      "Consider the core principles and trade-offs of Elements of the same type are compared attribute-wise."
+      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/render-and-commit"
   },
   {
     id: "react-what-is-forwardref-and-when-do-you-need-it",
@@ -960,19 +978,20 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "This one is simple! You can use forwardRef to pass a ref from the parent component through the child component to a DOM element or another component inside it. You need it particularly because, by default, function components do not accept ref, as ref is not a regular prop, and it is handled separately by React. forwardRef is needed because it enables access to a child component\ufffd\ufffd\ufffds DOM node, it helps in imperative actions like , and measuring layout. So, when you don\ufffd\ufffd\ufffdt use forwardRef, the parent won\ufffd\ufffd\ufffdt be able to directly interact with the child\ufffd\ufffd\ufffds internal DOM elements, and hence it may hinder when required to reuse. This is how forwardRef works - React.forwardRef wraps a functional component and provides ref as a second argument. This is the pattern: Here\ufffd\ufffd\ufffds how you can use it: Now the parent can directly call: Some common use cases are - integrating DOM libraries, focus management, triggering animations, measuring DOM elements, etc.",
+    explanation: "This one is simple! You can use forwardRef to pass a ref from the parent component through the child component to a DOM element or another component inside it. You need it particularly because, by default, function components do not accept ref, as ref is not a regular prop, and it is handled separately by React. forwardRef is needed because it enables access to a child component, s DOM node, it helps in imperative actions like, and measuring layout. So, when you don, t use forwardRef, the parent won, t be able to directly interact with the child, s internal DOM elements, and hence it may hinder when required to reuse. This is how forwardRef works - React.forwardRef wraps a functional component and provides ref as a second argument. This is the pattern: Here, s how you can use it: Now the parent can directly call: Some common use cases are - integrating DOM libraries, focus management, triggering animations, measuring DOM elements, etc.",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is forwardRef, and when do you need it?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is forwardRef, and when do you need it?.",
     hints: [
-      "Consider the core principles and trade-offs of What is forwardRef, and when do you need it?."
+      "Both refs and state survive a render. Only state causes one, so refs are for values the UI does not display."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useRef"
   },
   {
     id: "react-minimize-re-render-scope---state-colocation",
     title: "Minimize re-render scope - State Colocation",
-    prompt: "Minimize re-render scope - State Colocation \u2014 explain the behavior and mechanism.",
+    prompt: "Minimize re-render scope - State Colocation, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -1015,10 +1034,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Minimize re-render scope - State Colocation.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Minimize re-render scope - State Colocation.",
     hints: [
-      "Consider the core principles and trade-offs of Minimize re-render scope - State Colocation."
+      "React re-renders a component when its state or its parent renders. Skipping that needs both a memo and props that stay identical."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/memo"
   },
   {
     id: "react-what-is-reactfragment-and-why-is-it-useful",
@@ -1062,14 +1082,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "React's Fragment helps in grouping multiple elements together by being careful not to add an extra element to the DOM. Just like you know in React, every component MUST return a single parent element, and a fragment just acts like that parent, except it doesn\ufffd\ufffd\ufffdt actually show up in the final HTML. I\ufffd\ufffd\ufffdll explain this to you with an example! If you write: React will group these elements together using Fragment, but in the browser, it will render as: This shows that the Fragment is only used by React internally; it does not create an HTML element like a <div>. Why do we use Fragment? Because sometimes using <div> might cause some problems like breaking layouts on flexbox or grid, or creating invalid HTML (yes, this happens!) You can use it in these 2 ways: <React.Fragment> ... </React.Fragment> <> ... </> - (short syntax) One thing you need to keep in mind is that only React.Fragment supports props like key, which comes in hand when rendering lists.",
+    explanation: "React's Fragment helps in grouping multiple elements together by being careful not to add an extra element to the DOM. Just like you know in React, every component MUST return a single parent element, and a fragment just acts like that parent, except it doesn, t actually show up in the final HTML. I, ll explain this to you with an example! If you write: React will group these elements together using Fragment, but in the browser, it will render as: This shows that the Fragment is only used by React internally; it does not create an HTML element like a <div>. Why do we use Fragment? Because sometimes using <div> might cause some problems like breaking layouts on flexbox or grid, or creating invalid HTML (yes, this happens!) You can use it in these 2 ways: <React.Fragment>. </React.Fragment> <>. </> - (short syntax) One thing you need to keep in mind is that only React.Fragment supports props like key, which comes in hand when rendering lists.",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is React.Fragment and why is it useful?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is React.Fragment and why is it useful?.",
     hints: [
-      "Consider the core principles and trade-offs of What is React.Fragment and why is it useful?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-jsx-and-how-does-it-work",
@@ -1116,15 +1137,16 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is JSX and how does it work?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is JSX and how does it work?.",
     hints: [
-      "Consider the core principles and trade-offs of What is JSX and how does it work?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-explain-the-concept-of-the-virtual-dom-in-react",
     title: "Explain the concept of the Virtual DOM in React.",
-    prompt: "Explain the concept of the Virtual DOM in React. \u2014 explain the behavior and mechanism.",
+    prompt: "Explain the concept of the Virtual DOM in React., explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -1163,13 +1185,14 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "A",
     explanation: "The virtual DOM is a simplified version of the actual DOM used by React. It allows for efficient UI updates by comparing the virtual DOM to the real DOM and making only the necessary changes through a process known as reconciliation. Find in-depth explanations and track study progress here ->",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain the concept of the Virtual DOM in React..",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain the concept of the Virtual DOM in React..",
+    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain the concept of the Virtual DOM in React.",
+    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain the concept of the Virtual DOM in React.",
     hints: [
-      "Consider the core principles and trade-offs of Explain the concept of the Virtual DOM in React.."
+      "React builds a description of the UI, diffs it against the previous one, and applies only the differences to the real DOM."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/preserving-and-resetting-state"
   },
   {
     id: "react-what-is-the-difference-between-react-node-react-element",
@@ -1216,10 +1239,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the difference Between React Node, React Element, and React Component?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the difference Between React Node, React Element, and React Component?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the difference Between React Node, React Element, and React Component?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-are-react-fragments-used-for",
@@ -1263,14 +1287,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "React Fragments allow you to group multiple elements without adding extra nodes to the DOM. They are particularly useful when you need to return multiple elements from a component but don't want to wrap them in a container element. You can utilize shorthand syntax <>...</> or React.Fragment. Find in-depth explanations and track study progress here ->",
+    explanation: "React Fragments allow you to group multiple elements without adding extra nodes to the DOM. They are particularly useful when you need to return multiple elements from a component but don't want to wrap them in a container element. You can utilize shorthand syntax <>.</> or React.Fragment. Find in-depth explanations and track study progress here ->",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are React Fragments used for?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are React Fragments used for?.",
     hints: [
-      "Consider the core principles and trade-offs of What are React Fragments used for?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-the-difference-between-createelement-and-clonee",
@@ -1318,10 +1343,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the difference between createElement and cloneElement?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the difference between createElement and cloneElement?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the difference between createElement and cloneElement?."
+      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/render-and-commit"
   },
   {
     id: "react-what-does-re-rendering-mean-in-react",
@@ -1369,10 +1395,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What does re-rendering mean in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What does re-rendering mean in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What does re-rendering mean in React?."
+      "React re-renders a component when its state or its parent renders. Skipping that needs both a memo and props that stay identical."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/memo"
   },
   {
     id: "react-what-is-forwardref-in-react-used-for",
@@ -1387,7 +1414,7 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       "rendering-keys",
       "junior"
     ],
-    codeSnippet: "// Pre-React 19import React, { forwardRef } from 'react';\nconst MyComponent = forwardRef((props, ref) => <input ref={ref} {...props} />);\n\nfunction MyComponent({ ref, ...props }) {  return <input ref={ref} {...props} />;}",
+    codeSnippet: "// Pre-React 19import React, { forwardRef } from 'react';\nconst MyComponent = forwardRef((props, ref) => <input ref={ref} {...props} />);\n\nfunction MyComponent({ ref...props }) {  return <input ref={ref} {...props} />;}",
     codeLanguage: "tsx",
     options: [
       {
@@ -1420,10 +1447,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is forwardRef() in React used for?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is forwardRef() in React used for?.",
     hints: [
-      "Consider the core principles and trade-offs of What is forwardRef() in React used for?."
+      "Both refs and state survive a render. Only state causes one, so refs are for values the UI does not display."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useRef"
   },
   {
     id: "react-explain-what-react-hydration-is",
@@ -1470,10 +1498,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain what React hydration is?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain what React hydration is?.",
     hints: [
-      "Consider the core principles and trade-offs of Explain what React hydration is?."
+      "Hydration attaches listeners to server-rendered HTML. A mismatch between server and client output is what breaks it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://nextjs.org/docs/app/building-your-application/rendering"
   },
   {
     id: "react-what-are-react-portals-used-for",
@@ -1520,10 +1549,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are React Portals used for?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are React Portals used for?.",
     hints: [
-      "Consider the core principles and trade-offs of What are React Portals used for?."
+      "A portal moves where a node is inserted in the DOM. Context and event bubbling still follow the React tree."
     ],
     source: "100-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react-dom.dev/reference/react-dom/createPortal"
   },
   {
     id: "react-what-is-react-strict-mode-and-what-are-its-benefits",
@@ -1571,10 +1601,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is React strict mode and what are its benefits?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is React strict mode and what are its benefits?.",
     hints: [
-      "Consider the core principles and trade-offs of What is React strict mode and what are its benefits?."
+      "StrictMode double-invokes render and effects in development, so an effect that is not idempotent shows its seams immediately."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/StrictMode"
   },
   {
     id: "react-how-do-you-decide-between-using-react-state-context-and",
@@ -1621,10 +1652,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you decide between using React state, context, and external state managers?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you decide between using React state, context, and external state managers?.",
     hints: [
-      "Consider the core principles and trade-offs of How do you decide between using React state, context, and external state managers?."
+      "Context solves passing data down, not re-rendering. Every consumer re-renders when the value changes, so the value's identity matters."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useContext"
   },
   {
     id: "react-how-does-react-handle-concurrent-rendering-with-multipl",
@@ -1672,15 +1704,16 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How does React handle concurrent rendering with multiple updates and prioritize them?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How does React handle concurrent rendering with multiple updates and prioritize them?.",
     hints: [
-      "Consider the core principles and trade-offs of How does React handle concurrent rendering with multiple updates and prioritize them?."
+      "Concurrent features let React keep an urgent update responsive by letting a non-urgent one lag behind."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useTransition"
   },
   {
     id: "react-explain-server-side-rendering-of-react-applications-and",
     title: "Explain server-side rendering of React applications and its benefits",
-    prompt: "Explain server-side rendering of React applications and its benefits \u2014 explain the behavior and mechanism.",
+    prompt: "Explain server-side rendering of React applications and its benefits, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -1723,10 +1756,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain server-side rendering of React applications and its benefits.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain server-side rendering of React applications and its benefits.",
     hints: [
-      "Consider the core principles and trade-offs of Explain server-side rendering of React applications and its benefits."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-do-you-handle-nested-routes-and-route-parameters-in",
@@ -1774,10 +1808,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you handle nested routes and route parameters in React Router?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you handle nested routes and route parameters in React Router?.",
     hints: [
-      "Consider the core principles and trade-offs of How do you handle nested routes and route parameters in React Router?."
+      "Routing maps a URL to a component. Ask what the URL owns, and what the component owns."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://nextjs.org/docs/app/building-your-application/routing"
   },
   {
     id: "react-how-do-you-handle-404-errors-or-page-not-found-in-react",
@@ -1825,10 +1860,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you handle 404 errors or page not found in React Router?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you handle 404 errors or page not found in React Router?.",
     hints: [
-      "Consider the core principles and trade-offs of How do you handle 404 errors or page not found in React Router?."
+      "Routing maps a URL to a component. Ask what the URL owns, and what the component owns."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://nextjs.org/docs/app/building-your-application/routing"
   },
   {
     id: "react-how-do-you-pass-props-to-a-route-component-in-react-rou",
@@ -1876,10 +1912,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you pass props to a route component in React Router?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you pass props to a route component in React Router?.",
     hints: [
-      "Consider the core principles and trade-offs of How do you pass props to a route component in React Router?."
+      "Routing maps a URL to a component. Ask what the URL owns, and what the component owns."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://nextjs.org/docs/app/building-your-application/routing"
   },
   {
     id: "react-what-is-react-testing-library-and-how-is-it-used-for-te",
@@ -1926,10 +1963,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is React Testing Library and how is it used for testing React components?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is React Testing Library and how is it used for testing React components?.",
     hints: [
-      "Consider the core principles and trade-offs of What is React Testing Library and how is it used for testing React components?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-do-you-test-react-components-using-react-testing-li",
@@ -1977,10 +2015,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you test React components using React Testing Library?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you test React components using React Testing Library?.",
     hints: [
-      "Consider the core principles and trade-offs of How do you test React components using React Testing Library?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-shallow-renderer-in-react-testing",
@@ -2029,10 +2068,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is Shallow Renderer in React testing?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is Shallow Renderer in React testing?.",
     hints: [
-      "Consider the core principles and trade-offs of What is Shallow Renderer in React testing?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-snapshot-testing-in-react",
@@ -2080,10 +2120,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is Snapshot Testing in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is Snapshot Testing in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What is Snapshot Testing in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-do-you-test-react-components-that-use-context",
@@ -2131,10 +2172,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you test React components that use context?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you test React components that use context?.",
     hints: [
-      "Consider the core principles and trade-offs of How do you test React components that use context?."
+      "Context solves passing data down, not re-rendering. Every consumer re-renders when the value changes, so the value's identity matters."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useContext"
   },
   {
     id: "react-how-do-you-test-react-components-that-use-redux",
@@ -2182,10 +2224,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you test React components that use Redux?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you test React components that use Redux?.",
     hints: [
-      "Consider the core principles and trade-offs of How do you test React components that use Redux?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-are-the-key-differences-between-shallow-rendering",
@@ -2233,10 +2276,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the key differences between shallow rendering and full DOM rendering in React tests?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the key differences between shallow rendering and full DOM rendering in React tests?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the key differences between shallow rendering and full DOM rendering in React tests?."
+      "A key is an identity claim. Change it and React unmounts the old element and mounts a new one, resetting its state."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/rendering-lists#keeping-list-items-in-order-with-key"
   },
   {
     id: "react-what-does-useoptimistic-do",
@@ -2251,7 +2295,7 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       "rendering-keys",
       "intermediate"
     ],
-    codeSnippet: "import { useOptimistic } from 'react';\nfunction MessageList({ messages, sendMessage }) {  const [optimisticMessages, addOptimistic] = useOptimistic(    messages,    (state, newMessage) => [...state, { text: newMessage, sending: true }],  );\n  async function handleSend(formData) {    const text = formData.get('text');    addOptimistic(text);    await sendMessage(text);  }\n  return (    <>      {optimisticMessages.map((m, i) => (        <p key={i} style={{ opacity: m.sending ? 0.5 : 1 }}>          {m.text}        </p>      ))}      <form action={handleSend}>        <input name=\"text\" />      </form>    </>  );}",
+    codeSnippet: "import { useOptimistic } from 'react';\nfunction MessageList({ messages, sendMessage }) {  const [optimisticMessages, addOptimistic] = useOptimistic(    messages,    (state, newMessage) => [...state, { text: newMessage, sending: true }],  );\n  async function handleSend(formData) {    const text = formData.get('text');    addOptimistic(text);    await sendMessage(text);  }\n  return (    <>      {optimisticMessages.map((m, i) => (        <p key={i} style={{ opacity: m.sending ? 0.5: 1 }}>          {m.text}        </p>      ))}      <form action={handleSend}>        <input name=\"text\" />      </form>    </>  );}",
     codeLanguage: "tsx",
     options: [
       {
@@ -2284,10 +2328,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What does useOptimistic do?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What does useOptimistic do?.",
     hints: [
-      "Consider the core principles and trade-offs of What does useOptimistic do?."
+      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
     source: "100-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/learn/render-and-commit"
   },
   {
     id: "react-whats-the-difference-between-usetransition-and-usedefer",
@@ -2335,10 +2380,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What's the difference between useTransition and useDeferredValue?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What's the difference between useTransition and useDeferredValue?.",
     hints: [
-      "Consider the core principles and trade-offs of What's the difference between useTransition and useDeferredValue?."
+      "Concurrent features let React keep an urgent update responsive by letting a non-urgent one lag behind."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useTransition"
   },
   {
     id: "react-how-to-create-an-event-in-react",
@@ -2385,10 +2431,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to Create an Event in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to Create an Event in React?.",
     hints: [
-      "Consider the core principles and trade-offs of How to Create an Event in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-explain-the-creation-of-a-list-in-react",
@@ -2435,10 +2482,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain the creation of a List in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain the creation of a List in React?.",
     hints: [
-      "Consider the core principles and trade-offs of Explain the creation of a List in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-a-key-in-react",
@@ -2485,10 +2533,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is a Key in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is a Key in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What is a Key in React?."
+      "A key is an identity claim. Change it and React unmounts the old element and mounts a new one, resetting its state."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/rendering-lists#keeping-list-items-in-order-with-key"
   },
   {
     id: "react-explain-the-use-of-the-render-method-in-react",
@@ -2536,10 +2585,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain the Use of the Render Method in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain the Use of the Render Method in React?.",
     hints: [
-      "Consider the core principles and trade-offs of Explain the Use of the Render Method in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-state-in-react",
@@ -2586,10 +2636,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is State in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is State in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What is State in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-the-role-of-shouldcomponentupdate-in-react",
@@ -2636,10 +2687,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the Role of shouldComponentUpdate() in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the Role of shouldComponentUpdate() in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the Role of shouldComponentUpdate() in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-are-pure-components-in-react",
@@ -2686,10 +2738,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are Pure Components in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are Pure Components in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What are Pure Components in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-the-significance-of-setstate-in-react",
@@ -2708,7 +2761,7 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "setState() schedules an update to a component\ufffd\ufffd\ufffds state.",
+        text: "setState() schedules an update to a component, s state.",
         isCorrect: true,
         explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
       },
@@ -2732,14 +2785,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "setState() schedules an update to a component\ufffd\ufffd\ufffds state. After state changes, React re-renders the component and its children to reflect the new data.",
+    explanation: "setState() schedules an update to a component, s state. After state changes, React re-renders the component and its children to reflect the new data.",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the significance of setState() in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the significance of setState() in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the significance of setState() in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-conditional-rendering-in-react",
@@ -2783,19 +2837,20 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Conditional rendering displays different components depending on conditions. For example:{isLoggedIn == false ? <DisplayLoggedOut /> : <DisplayLoggedIn />}",
+    explanation: "Conditional rendering displays different components depending on conditions. For example:{isLoggedIn == false? <DisplayLoggedOut />: <DisplayLoggedIn />}",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is Conditional Rendering in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is Conditional Rendering in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What is Conditional Rendering in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-explain-the-components-of-a-react-router",
     title: "Explain the components of a React-Router",
-    prompt: "Explain the components of a React-Router \u2014 explain the behavior and mechanism.",
+    prompt: "Explain the components of a React-Router, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -2837,15 +2892,16 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain the components of a React-Router.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain the components of a React-Router.",
     hints: [
-      "Consider the core principles and trade-offs of Explain the components of a React-Router."
+      "Routing maps a URL to a component. Ask what the URL owns, and what the component owns."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://nextjs.org/docs/app/building-your-application/routing"
   },
   {
     id: "react-explain-the-lifecycle-methods-of-components",
     title: "Explain the Lifecycle Methods of Components",
-    prompt: "Explain the Lifecycle Methods of Components \u2014 explain the behavior and mechanism.",
+    prompt: "Explain the Lifecycle Methods of Components, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -2887,15 +2943,16 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain the Lifecycle Methods of Components.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain the Lifecycle Methods of Components.",
     hints: [
-      "Consider the core principles and trade-offs of Explain the Lifecycle Methods of Components."
+      "A class component's constructor must call super(props) before touching this.props, and its lifecycle methods map onto effects in a function component."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/Component"
   },
   {
     id: "react-explain-the-methods-used-in-mounting-phase-of-component",
     title: "Explain the Methods Used in Mounting Phase of Components",
-    prompt: "Explain the Methods Used in Mounting Phase of Components \u2014 explain the behavior and mechanism.",
+    prompt: "Explain the Methods Used in Mounting Phase of Components, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -2937,10 +2994,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain the Methods Used in Mounting Phase of Components.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain the Methods Used in Mounting Phase of Components.",
     hints: [
-      "Consider the core principles and trade-offs of Explain the Methods Used in Mounting Phase of Components."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-are-react-fragments",
@@ -2987,10 +3045,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are React Fragments?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are React Fragments?.",
     hints: [
-      "Consider the core principles and trade-offs of What are React Fragments?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-to-use-styles-in-reactjs",
@@ -3037,10 +3096,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to Use Styles in ReactJS?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to Use Styles in ReactJS?.",
     hints: [
-      "Consider the core principles and trade-offs of How to Use Styles in ReactJS?."
+      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/render-and-commit"
   },
   {
     id: "react-what-is-the-strict-mode-in-react",
@@ -3087,10 +3147,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the Strict Mode in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the Strict Mode in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the Strict Mode in React?."
+      "StrictMode double-invokes render and effects in development, so an effect that is not idempotent shows its seams immediately."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/StrictMode"
   },
   {
     id: "react-how-does-react-handle-concurrency",
@@ -3109,7 +3170,7 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "React\ufffd\ufffd\ufffds concurrency features let React split rendering work, pause it, and prioritize urgent updates.",
+        text: "React, s concurrency features let React split rendering work, pause it, and prioritize urgent updates.",
         isCorrect: true,
         explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
       },
@@ -3133,14 +3194,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "React\ufffd\ufffd\ufffds concurrency features let React split rendering work, pause it, and prioritize urgent updates. This helps apps stay responsive under heavy work by scheduling lower-priority tasks later.",
+    explanation: "React, s concurrency features let React split rendering work, pause it, and prioritize urgent updates. This helps apps stay responsive under heavy work by scheduling lower-priority tasks later.",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How does React Handle Concurrency?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How does React Handle Concurrency?.",
     hints: [
-      "Consider the core principles and trade-offs of How does React Handle Concurrency?."
+      "Concurrent features let React keep an urgent update responsive by letting a non-urgent one lag behind."
     ],
     source: "150-react",
-    estimatedMinutes: 4
+    estimatedMinutes: 4,
+    bestPracticeRef: "https://react.dev/reference/react/useTransition"
   },
   {
     id: "react-how-does-react-handle-server-side-rendering-ssr",
@@ -3188,10 +3250,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How does React Handle Server-Side Rendering (SSR)?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How does React Handle Server-Side Rendering (SSR)?.",
     hints: [
-      "Consider the core principles and trade-offs of How does React Handle Server-Side Rendering (SSR)?."
+      "Hydration attaches listeners to server-rendered HTML. A mismatch between server and client output is what breaks it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://nextjs.org/docs/app/building-your-application/rendering"
   },
   {
     id: "react-what-are-forms-in-react",
@@ -3238,15 +3301,16 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are Forms in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are Forms in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What are Forms in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-error-boundaries-catching-render-time-failures-and-repo",
     title: "Error Boundaries: Catching Render-Time Failures and Reporting",
-    prompt: "Error Boundaries: Catching Render-Time Failures and Reporting \u2014 explain the behavior and mechanism.",
+    prompt: "Error Boundaries: Catching Render-Time Failures and Reporting, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -3289,15 +3353,16 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Error Boundaries: Catching Render-Time Failures and Reporting.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Error Boundaries: Catching Render-Time Failures and Reporting.",
     hints: [
-      "Consider the core principles and trade-offs of Error Boundaries: Catching Render-Time Failures and Reporting."
+      "Error boundaries catch the render path, not the interaction path. An event handler needs its own try/catch."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary"
   },
   {
     id: "react-keys-revisited-more-examples-and-anti-patterns",
     title: "Keys Revisited: More Examples and Anti-Patterns",
-    prompt: "Keys Revisited: More Examples and Anti-Patterns \u2014 explain the behavior and mechanism.",
+    prompt: "Keys Revisited: More Examples and Anti-Patterns, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -3339,15 +3404,16 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Keys Revisited: More Examples and Anti-Patterns.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Keys Revisited: More Examples and Anti-Patterns.",
     hints: [
-      "Consider the core principles and trade-offs of Keys Revisited: More Examples and Anti-Patterns."
+      "A key is an identity claim. Change it and React unmounts the old element and mounts a new one, resetting its state."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/rendering-lists#keeping-list-items-in-order-with-key"
   },
   {
     id: "react-why-jsx-needs-transpilation-and-build-tools",
     title: "Why JSX Needs Transpilation and Build Tools",
-    prompt: "Why JSX Needs Transpilation and Build Tools \u2014 explain the behavior and mechanism.",
+    prompt: "Why JSX Needs Transpilation and Build Tools, explain the behavior and mechanism.",
     level: "junior",
     type: "output",
     category: "react",
@@ -3389,15 +3455,16 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Why JSX Needs Transpilation and Build Tools.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Why JSX Needs Transpilation and Build Tools.",
     hints: [
-      "Consider the core principles and trade-offs of Why JSX Needs Transpilation and Build Tools."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-strictmode-why-run-extra-checks-in-development",
     title: "StrictMode: Why Run Extra Checks in Development",
-    prompt: "StrictMode: Why Run Extra Checks in Development \u2014 explain the behavior and mechanism.",
+    prompt: "StrictMode: Why Run Extra Checks in Development, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -3439,15 +3506,16 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of StrictMode: Why Run Extra Checks in Development.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of StrictMode: Why Run Extra Checks in Development.",
     hints: [
-      "Consider the core principles and trade-offs of StrictMode: Why Run Extra Checks in Development."
+      "StrictMode double-invokes render and effects in development, so an effect that is not idempotent shows its seams immediately."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/StrictMode"
   },
   {
     id: "react-graceful-error-handling-practical-approaches-for-robust",
     title: "Graceful Error Handling: Practical Approaches for Robust Apps",
-    prompt: "Graceful Error Handling: Practical Approaches for Robust Apps \u2014 explain the behavior and mechanism.",
+    prompt: "Graceful Error Handling: Practical Approaches for Robust Apps, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -3489,15 +3557,16 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Graceful Error Handling: Practical Approaches for Robust Apps.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Graceful Error Handling: Practical Approaches for Robust Apps.",
     hints: [
-      "Consider the core principles and trade-offs of Graceful Error Handling: Practical Approaches for Robust Apps."
+      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/render-and-commit"
   },
   {
     id: "react-conditional-rendering-patterns-that-scale-and-stay-read",
-    title: "Conditional Rendering \ufffd\ufffd\ufffd Patterns That Scale and Stay Readable",
-    prompt: "Conditional Rendering \ufffd\ufffd\ufffd Patterns That Scale and Stay Readable \u2014 explain the behavior and mechanism.",
+    title: "Conditional Rendering, Patterns That Scale and Stay Readable",
+    prompt: "Conditional Rendering, Patterns That Scale and Stay Readable, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -3537,13 +3606,14 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "A",
     explanation: "Common techniques: if/return early: ideal for guarding large sections. ternary: concise for inline choices. && short circuit: show-only-if truthy cases. component guards: wrap logic in small components (e.g., <AuthGuard>). switch or map for many cases: map a status to a component. Example using guard: if (!user) return <LoginPrompt />;return <Dashboard />; Avoid: Deeply nested ternaries. Use small components to keep the render readable.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Conditional Rendering \ufffd\ufffd\ufffd Patterns That Scale and Stay Readable.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Conditional Rendering \ufffd\ufffd\ufffd Patterns That Scale and Stay Readable.",
+    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Conditional Rendering, Patterns That Scale and Stay Readable.",
+    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Conditional Rendering, Patterns That Scale and Stay Readable.",
     hints: [
-      "Consider the core principles and trade-offs of Conditional Rendering \ufffd\ufffd\ufffd Patterns That Scale and Stay Readable."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-are-the-major-features-of-react",
@@ -3586,14 +3656,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The major features of React are: It uses VirtualDOM instead of RealDOM considering that RealDOM manipulations are expensive. Supports server-side rendering. Follows Unidirectional data flow or data binding. Uses reusable/composable UI components to develop the view. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "The major features of React are: It uses VirtualDOM instead of RealDOM considering that RealDOM manipulations are expensive. Supports server-side rendering. Follows Unidirectional data flow or data binding. Uses reusable/composable UI components to develop the view.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the major features of React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the major features of React?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the major features of React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-the-difference-between-element-and-component",
@@ -3637,14 +3708,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "An Element is a plain object describing what you want to appear on the screen in terms of the DOM nodes or other components. Elements can contain other Elements in their props. Creating a React element is cheap. Once an element is created, it is never mutated. The object representation of React Element would be as follows: The above React.createElement() function returns an object: And finally it renders to the DOM using ReactDOM.render(): Whereas a component can be declared in several different ways. It can be a class with a render() method. Alternatively, in simple cases, it can be defined as a function. In either case, it takes props as an input, and returns a JSX tree as the output: Then JSX gets transpiled to a React.createElement() function tree: \ufffd\ufffd\ufffd Back to Top",
+    explanation: "An Element is a plain object describing what you want to appear on the screen in terms of the DOM nodes or other components. Elements can contain other Elements in their props. Creating a React element is cheap. Once an element is created, it is never mutated. The object representation of React Element would be as follows: The above React.createElement() function returns an object: And finally it renders to the DOM using ReactDOM.render(): Whereas a component can be declared in several different ways. It can be a class with a render() method. Alternatively, in simple cases, it can be defined as a function. In either case, it takes props as an input, and returns a JSX tree as the output: Then JSX gets transpiled to a React.createElement() function tree:: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the difference between Element and Component?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the difference between Element and Component?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the difference between Element and Component?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-to-create-components-in-react",
@@ -3688,14 +3760,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "There are two possible ways to create a component. Function Components: This is the simplest way to create a component. Those are pure JavaScript functions that accept props object as first parameter and return React elements: Class Components: You can also use ES6 class to define a component. The above function component can be written as: \ufffd\ufffd\ufffd Back to Top",
+    explanation: "There are two possible ways to create a component. Function Components: This is the simplest way to create a component. Those are pure JavaScript functions that accept props object as first parameter and return React elements: Class Components: You can also use ES6 class to define a component. The above function component can be written as:: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to create components in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to create components in React?.",
     hints: [
-      "Consider the core principles and trade-offs of How to create components in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-the-difference-between-state-and-props",
@@ -3738,14 +3811,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Both props and state are plain JavaScript objects. While both of them hold information that influences the output of render, they are different in their functionality with respect to component. Props get passed to the component similar to function parameters whereas state is managed within the component similar to variables declared within a function. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Both props and state are plain JavaScript objects. While both of them hold information that influences the output of render, they are different in their functionality with respect to component. Props get passed to the component similar to function parameters whereas state is managed within the component similar to variables declared within a function.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the difference between state and props?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the difference between state and props?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the difference between state and props?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-why-should-we-not-update-the-state-directly",
@@ -3789,14 +3863,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "If you try to update state directly then it won't re-render the component. Instead use setState() method. It schedules an update to a component's state object. When state changes, the component responds by re-rendering. Note: You can directly assign to the state object either in constructor or using latest javascript's class field declaration syntax. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "If you try to update state directly then it won't re-render the component. Instead use setState() method. It schedules an update to a component's state object. When state changes, the component responds by re-rendering. Note: You can directly assign to the state object either in constructor or using latest javascript's class field declaration syntax.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Why should we not update the state directly?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Why should we not update the state directly?.",
     hints: [
-      "Consider the core principles and trade-offs of Why should we not update the state directly?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-the-purpose-of-callback-function-as-an-argument",
@@ -3840,14 +3915,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The callback function is invoked when setState finished and the component gets rendered. Since setState() is asynchronous the callback function is used for any post action. Note: It is recommended to use lifecycle method rather than this callback function. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "The callback function is invoked when setState finished and the component gets rendered. Since setState() is asynchronous the callback function is used for any post action. Note: It is recommended to use lifecycle method rather than this callback function.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the purpose of callback function as an argument of setState()?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the purpose of callback function as an argument of setState()?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the purpose of callback function as an argument of setState()?."
+      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/render-and-commit"
   },
   {
     id: "react-what-are-inline-conditional-expressions",
@@ -3862,7 +3938,7 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       "rendering-keys",
       "junior"
     ],
-    codeSnippet: "<h1>Hello!</h1>;\n{\n  messages.length > 0 && !isLogin ? (\n    <h2>You have {messages.length} unread messages.</h2>\n  ) : (\n    <h2>You don't have unread messages.</h2>\n  );\n}",
+    codeSnippet: "<h1>Hello!</h1>;\n{\n  messages.length > 0 && !isLogin ? (\n    <h2>You have {messages.length} unread messages.</h2>\n  ): (\n    <h2>You don't have unread messages.</h2>\n  );\n}",
     codeLanguage: "tsx",
     options: [
       {
@@ -3891,14 +3967,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "You can use either if statements or ternary expressions which are available from JS to conditionally render expressions. Apart from these approaches, you can also embed any expressions in JSX by wrapping them in curly braces and then followed by JS logical operator &&. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "You can use either if statements or ternary expressions which are available from JS to conditionally render expressions. Apart from these approaches, you can also embed any expressions in JSX by wrapping them in curly braces and then followed by JS logical operator &&.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are inline conditional expressions?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are inline conditional expressions?.",
     hints: [
-      "Consider the core principles and trade-offs of What are inline conditional expressions?."
+      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/render-and-commit"
   },
   {
     id: "react-what-is-the-use-of-refs",
@@ -3941,14 +4018,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The ref is used to return a reference to the element. They should be avoided in most cases, however, they can be useful when you need a direct access to the DOM element or an instance of a component. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "The ref is used to return a reference to the element. They should be avoided in most cases, however, they can be useful when you need a direct access to the DOM element or an instance of a component.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the use of refs?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the use of refs?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the use of refs?."
+      "Both refs and state survive a render. Only state causes one, so refs are for values the UI does not display."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useRef"
   },
   {
     id: "react-how-virtual-dom-works",
@@ -3991,14 +4069,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The Virtual DOM works in three simple steps. Whenever any underlying data changes, the entire UI is re-rendered in Virtual DOM representation. Then the difference between the previous DOM representation and the new one is calculated. Once the calculations are done, the real DOM will be updated with only the things that have actually changed. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "The Virtual DOM works in three simple steps. Whenever any underlying data changes, the entire UI is re-rendered in Virtual DOM representation. Then the difference between the previous DOM representation and the new one is calculated. Once the calculations are done, the real DOM will be updated with only the things that have actually changed.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How Virtual DOM works?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How Virtual DOM works?.",
     hints: [
-      "Consider the core principles and trade-offs of How Virtual DOM works?."
+      "React builds a description of the UI, diffs it against the previous one, and applies only the differences to the real DOM."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/preserving-and-resetting-state"
   },
   {
     id: "react-what-is-the-main-goal-of-react-fiber",
@@ -4041,14 +4120,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The goal of React Fiber is to increase its suitability for areas like animation, layout, and gestures. Its headline feature is incremental rendering: the ability to split rendering work into chunks and spread it out over multiple frames. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "The goal of React Fiber is to increase its suitability for areas like animation, layout, and gestures. Its headline feature is incremental rendering: the ability to split rendering work into chunks and spread it out over multiple frames.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the main goal of React Fiber?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the main goal of React Fiber?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the main goal of React Fiber?."
+      "React builds a description of the UI, diffs it against the previous one, and applies only the differences to the real DOM."
     ],
     source: "300-react",
-    estimatedMinutes: 4
+    estimatedMinutes: 4,
+    bestPracticeRef: "https://react.dev/learn/preserving-and-resetting-state"
   },
   {
     id: "react-what-are-controlled-components",
@@ -4092,14 +4172,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "A component that controls the input elements within the forms on subsequent user input is called Controlled Component, i.e, every state mutation will have an associated handler function. For example, to write all the names in uppercase letters, we use handleChange as below, \ufffd\ufffd\ufffd Back to Top",
+    explanation: "A component that controls the input elements within the forms on subsequent user input is called Controlled Component, i.e, every state mutation will have an associated handler function. For example, to write all the names in uppercase letters, we use handleChange as below,: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are controlled components?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are controlled components?.",
     hints: [
-      "Consider the core principles and trade-offs of What are controlled components?."
+      "A controlled input reads its value from state, so React is the single source of truth. An uncontrolled one leaves it in the DOM."
     ],
     source: "300-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/reference/react-dom/components/input"
   },
   {
     id: "react-what-are-the-different-phases-of-component-lifecycle",
@@ -4142,14 +4223,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The component lifecycle has three distinct lifecycle phases: Mounting: The component is ready to mount in the browser DOM. This phase covers initialization from constructor(), getDerivedStateFromProps(), render(), and componentDidMount() lifecycle methods. Updating: In this phase, the component get updated in two ways, sending the new props and updating the state either from setState() or forceUpdate(). This phase covers getDerivedStateFromProps(), shouldComponentUpdate(), render(), getSnapshotBeforeUpdate() and componentDidUpdate() lifecycle methods. Unmounting: In this last phase, the component is not needed and get unmounted from the browser DOM. This phase includes componentWillUnmount() lifecycle method. It's worth mentioning that React internally has a concept of phases when applying changes to the DOM. They are separated as follows Render The component will render without any side-effects. This applies for Pure components and in this phase, React can pause, abort, or restart the render. Pre-commit Before the component actually applies the changes to the DOM, there is a moment that allows React to read from the DOM through the getSnapshotBeforeUpdate(). Commit React works with the DOM and executes the final lifecycles respectively componentDidMount() for mounting, componentDidUpdate() for updating, and componentWillUnmount() for unmounting. React 16.3+ Phases (or an interactive version) Before React 16.3 \ufffd\ufffd\ufffd Back to Top",
+    explanation: "The component lifecycle has three distinct lifecycle phases: Mounting: The component is ready to mount in the browser DOM. This phase covers initialization from constructor(), getDerivedStateFromProps(), render(), and componentDidMount() lifecycle methods. Updating: In this phase, the component get updated in two ways, sending the new props and updating the state either from setState() or forceUpdate(). This phase covers getDerivedStateFromProps(), shouldComponentUpdate(), render(), getSnapshotBeforeUpdate() and componentDidUpdate() lifecycle methods. Unmounting: In this last phase, the component is not needed and get unmounted from the browser DOM. This phase includes componentWillUnmount() lifecycle method. It's worth mentioning that React internally has a concept of phases when applying changes to the DOM. They are separated as follows Render The component will render without any side-effects. This applies for Pure components and in this phase, React can pause, abort, or restart the render. Pre-commit Before the component actually applies the changes to the DOM, there is a moment that allows React to read from the DOM through the getSnapshotBeforeUpdate(). Commit React works with the DOM and executes the final lifecycles respectively componentDidMount() for mounting, componentDidUpdate() for updating, and componentWillUnmount() for unmounting. React 16.3+ Phases (or an interactive version) Before React 16.3: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the different phases of component lifecycle?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the different phases of component lifecycle?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the different phases of component lifecycle?."
+      "A class component's constructor must call super(props) before touching this.props, and its lifecycle methods map onto effects in a function component."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/Component"
   },
   {
     id: "react-how-to-set-state-with-a-dynamic-key-name",
@@ -4193,14 +4275,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "If you are using ES6 or the Babel transpiler to transform your JSX code then you can accomplish this with computed property names. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "If you are using ES6 or the Babel transpiler to transform your JSX code then you can accomplish this with computed property names.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to set state with a dynamic key name?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to set state with a dynamic key name?.",
     hints: [
-      "Consider the core principles and trade-offs of How to set state with a dynamic key name?."
+      "A key is an identity claim. Change it and React unmounts the old element and mounts a new one, resetting its state."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/rendering-lists#keeping-list-items-in-order-with-key"
   },
   {
     id: "react-what-would-be-the-common-mistake-of-function-being-call",
@@ -4245,14 +4328,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "You need to make sure that function is not being called while passing the function as a parameter. Instead, pass the function itself without parenthesis: \ufffd\ufffd\ufffd Back to Top",
+    explanation: "You need to make sure that function is not being called while passing the function as a parameter. Instead, pass the function itself without parenthesis:: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What would be the common mistake of function being called every time the component renders?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What would be the common mistake of function being called every time the component renders?.",
     hints: [
-      "Consider the core principles and trade-offs of What would be the common mistake of function being called every time the component renders?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-why-react-uses-classname-over-class-attribute",
@@ -4296,14 +4380,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "class is a keyword in JavaScript, and JSX is an extension of JavaScript. That's the principal reason why React uses className instead of class. Pass a string as the className prop. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "class is a keyword in JavaScript, and JSX is an extension of JavaScript. That's the principal reason why React uses className instead of class. Pass a string as the className prop.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Why React uses className over class attribute?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Why React uses className over class attribute?.",
     hints: [
-      "Consider the core principles and trade-offs of Why React uses className over class attribute?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-are-fragments",
@@ -4347,14 +4432,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "It's common pattern in React which is used for a component to return multiple elements. Fragments let you group a list of children without adding extra nodes to the DOM. There is also a shorter syntax, but it's not supported in many tools: \ufffd\ufffd\ufffd Back to Top",
+    explanation: "It's common pattern in React which is used for a component to return multiple elements. Fragments let you group a list of children without adding extra nodes to the DOM. There is also a shorter syntax, but it's not supported in many tools:: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are fragments?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are fragments?.",
     hints: [
-      "Consider the core principles and trade-offs of What are fragments?."
+      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/render-and-commit"
   },
   {
     id: "react-what-are-portals-in-react",
@@ -4398,14 +4484,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Portal is a recommended way to render children into a DOM node that exists outside the DOM hierarchy of the parent component. The first argument is any render-able React child, such as an element, string, or fragment. The second argument is a DOM element. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Portal is a recommended way to render children into a DOM node that exists outside the DOM hierarchy of the parent component. The first argument is any render-able React child, such as an element, string, or fragment. The second argument is a DOM element.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are portals in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are portals in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What are portals in React?."
+      "A portal moves where a node is inserted in the DOM. Context and event bubbling still follow the React tree."
     ],
     source: "300-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react-dom.dev/reference/react-dom/createPortal"
   },
   {
     id: "react-what-is-the-use-of-react-dom-package",
@@ -4448,14 +4535,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The react-dom package provides DOM-specific methods that can be used at the top level of your app. Most of the components are not required to use this module. Some of the methods of this package are: render() hydrate() unmountComponentAtNode() findDOMNode() createPortal() \ufffd\ufffd\ufffd Back to Top",
+    explanation: "The react-dom package provides DOM-specific methods that can be used at the top level of your app. Most of the components are not required to use this module. Some of the methods of this package are: render() hydrate() unmountComponentAtNode() findDOMNode() createPortal(): ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the use of react-dom package?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the use of react-dom package?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the use of react-dom package?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-the-purpose-of-render-method-of-react-dom",
@@ -4500,14 +4588,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "This method is used to render a React element into the DOM in the supplied container and return a reference to the component. If the React element was previously rendered into container, it will perform an update on it and only mutate the DOM as necessary to reflect the latest changes. If the optional callback is provided, it will be executed after the component is rendered or updated. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "This method is used to render a React element into the DOM in the supplied container and return a reference to the component. If the React element was previously rendered into container, it will perform an update on it and only mutate the DOM as necessary to reflect the latest changes. If the optional callback is provided, it will be executed after the component is rendered or updated.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the purpose of render method of react-dom?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the purpose of render method of react-dom?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the purpose of render method of react-dom?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-reactdomserver",
@@ -4551,14 +4640,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The ReactDOMServer object enables you to render components to static markup (typically used on node server). This object is mainly used for server-side rendering (SSR). The following methods can be used in both the server and browser environments: renderToString() renderToStaticMarkup() For example, you generally run a Node-based web server like Express, Hapi, or Koa, and you call renderToString to render your root component to a string, which you then send as response. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "The ReactDOMServer object enables you to render components to static markup (typically used on node server). This object is mainly used for server-side rendering (SSR). The following methods can be used in both the server and browser environments: renderToString() renderToStaticMarkup() For example, you generally run a Node-based web server like Express, Hapi, or Koa, and you call renderToString to render your root component to a string, which you then send as response.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is ReactDOMServer?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is ReactDOMServer?.",
     hints: [
-      "Consider the core principles and trade-offs of What is ReactDOMServer?."
+      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/render-and-commit"
   },
   {
     id: "react-how-to-use-innerhtml-in-react",
@@ -4602,14 +4692,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The dangerouslySetInnerHTML attribute is React's replacement for using innerHTML in the browser DOM. Just like innerHTML, it is risky to use this attribute considering cross-site scripting (XSS) attacks. You just need to pass a __html object as key and HTML text as value. In this example MyComponent uses dangerouslySetInnerHTML attribute for setting HTML markup: \ufffd\ufffd\ufffd Back to Top",
+    explanation: "The dangerouslySetInnerHTML attribute is React's replacement for using innerHTML in the browser DOM. Just like innerHTML, it is risky to use this attribute considering cross-site scripting (XSS) attacks. You just need to pass a __html object as key and HTML text as value. In this example MyComponent uses dangerouslySetInnerHTML attribute for setting HTML markup:: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to use innerHTML in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to use innerHTML in React?.",
     hints: [
-      "Consider the core principles and trade-offs of How to use innerHTML in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-to-use-styles-in-react",
@@ -4653,14 +4744,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The style attribute accepts a JavaScript object with camelCased properties rather than a CSS string. This is consistent with the DOM style JavaScript property, is more efficient, and prevents XSS security holes. Style keys are camelCased in order to be consistent with accessing the properties on DOM nodes in JavaScript (e.g. node.style.backgroundImage). \ufffd\ufffd\ufffd Back to Top",
+    explanation: "The style attribute accepts a JavaScript object with camelCased properties rather than a CSS string. This is consistent with the DOM style JavaScript property, is more efficient, and prevents XSS security holes. Style keys are camelCased in order to be consistent with accessing the properties on DOM nodes in JavaScript (e.g. node.style.backgroundImage).: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to use styles in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to use styles in React?.",
     hints: [
-      "Consider the core principles and trade-offs of How to use styles in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-events-are-different-in-react",
@@ -4703,14 +4795,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Handling events in React elements has some syntactic differences: React event handlers are named using camelCase, rather than lowercase. With JSX you pass a function as the event handler, rather than a string. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Handling events in React elements has some syntactic differences: React event handlers are named using camelCase, rather than lowercase. With JSX you pass a function as the event handler, rather than a string.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How events are different in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How events are different in React?.",
     hints: [
-      "Consider the core principles and trade-offs of How events are different in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-will-happen-if-you-use-setstate-in-constructor",
@@ -4753,14 +4846,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "When you use setState(), then apart from assigning to the object state React also re-renders the component and all its children. You would get error like this: Can only update a mounted or mounting component. So we need to use this.state to initialize variables inside constructor. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "When you use setState(), then apart from assigning to the object state React also re-renders the component and all its children. You would get error like this: Can only update a mounted or mounting component. So we need to use this.state to initialize variables inside constructor.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What will happen if you use setState() in constructor?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What will happen if you use setState() in constructor?.",
     hints: [
-      "Consider the core principles and trade-offs of What will happen if you use setState() in constructor?."
+      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/render-and-commit"
   },
   {
     id: "react-what-is-the-impact-of-indexes-as-keys",
@@ -4804,14 +4898,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Keys should be stable, predictable, and unique so that React can keep track of elements. In the below code snippet each element's key will be based on ordering, rather than tied to the data that is being represented. This limits the optimizations that React can do. If you use element data for unique key, assuming todo.id is unique to this list and stable, React would be able to reorder elements without needing to reevaluate them as much. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Keys should be stable, predictable, and unique so that React can keep track of elements. In the below code snippet each element's key will be based on ordering, rather than tied to the data that is being represented. This limits the optimizations that React can do. If you use element data for unique key, assuming todo.id is unique to this list and stable, React would be able to reorder elements without needing to reevaluate them as much.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the impact of indexes as keys?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the impact of indexes as keys?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the impact of indexes as keys?."
+      "A key is an identity claim. Change it and React unmounts the old element and mounts a new one, resetting its state."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/rendering-lists#keeping-list-items-in-order-with-key"
   },
   {
     id: "react-is-it-good-to-use-setstate-in-componentwillmount-method",
@@ -4855,14 +4950,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Yes, it is safe to use setState() inside componentWillMount() method. But at the same it is recommended to avoid async initialization in componentWillMount() lifecycle method. componentWillMount() is invoked immediately before mounting occurs. It is called before render(), therefore setting state in this method will not trigger a re-render. Avoid introducing any side-effects or subscriptions in this method. We need to make sure async calls for component initialization happened in componentDidMount() instead of componentWillMount(). \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Yes, it is safe to use setState() inside componentWillMount() method. But at the same it is recommended to avoid async initialization in componentWillMount() lifecycle method. componentWillMount() is invoked immediately before mounting occurs. It is called before render(), therefore setting state in this method will not trigger a re-render. Avoid introducing any side-effects or subscriptions in this method. We need to make sure async calls for component initialization happened in componentDidMount() instead of componentWillMount().: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Is it good to use setState() in componentWillMount() method?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Is it good to use setState() in componentWillMount() method?.",
     hints: [
-      "Consider the core principles and trade-offs of Is it good to use setState() in componentWillMount() method?."
+      "A class component's constructor must call super(props) before touching this.props, and its lifecycle methods map onto effects in a function component."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/Component"
   },
   {
     id: "react-what-will-happen-if-you-use-props-in-initial-state",
@@ -4906,14 +5002,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "If the props on the component are changed without the component being refreshed, the new prop value will never be displayed because the constructor function will never update the current state of the component. The initialization of state from props only runs when the component is first created. The below component won't display the updated input value: Using props inside render method will update the value: \ufffd\ufffd\ufffd Back to Top",
+    explanation: "If the props on the component are changed without the component being refreshed, the new prop value will never be displayed because the constructor function will never update the current state of the component. The initialization of state from props only runs when the component is first created. The below component won't display the updated input value: Using props inside render method will update the value:: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What will happen if you use props in initial state?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What will happen if you use props in initial state?.",
     hints: [
-      "Consider the core principles and trade-offs of What will happen if you use props in initial state?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-do-you-conditionally-render-components",
@@ -4929,7 +5026,7 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       "junior",
       "rendering"
     ],
-    codeSnippet: "const MyComponent = ({ name, address }) => (\n  <div>\n    <h2>{name}</h2>\n    {address && <p>{address}</p>}\n  </div>\n);\n\nconst MyComponent = ({ name, address }) => (\n  <div>\n    <h2>{name}</h2>\n    {address ? <p>{address}</p> : <p>{'Address is not available'}</p>}\n  </div>\n);",
+    codeSnippet: "const MyComponent = ({ name, address }) => (\n  <div>\n    <h2>{name}</h2>\n    {address && <p>{address}</p>}\n  </div>\n);\n\nconst MyComponent = ({ name, address }) => (\n  <div>\n    <h2>{name}</h2>\n    {address ? <p>{address}</p>: <p>{'Address is not available'}</p>}\n  </div>\n);",
     codeLanguage: "tsx",
     options: [
       {
@@ -4958,14 +5055,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "In some cases you want to render different components depending on some state. JSX does not render false or undefined, so you can use conditional short-circuiting to render a given part of your component only if a certain condition is true. If you need an if-else condition then use ternary operator. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "In some cases you want to render different components depending on some state. JSX does not render false or undefined, so you can use conditional short-circuiting to render a given part of your component only if a certain condition is true. If you need an if-else condition then use ternary operator.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you conditionally render components?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you conditionally render components?.",
     hints: [
-      "Consider the core principles and trade-offs of How do you conditionally render components?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-why-we-need-to-be-careful-when-spreading-props-on-dom-e",
@@ -4980,7 +5078,7 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       "rendering-keys",
       "junior"
     ],
-    codeSnippet: "const ComponentA = () => <ComponentB isDisplay={true} className={'componentStyle'} />;\n\nconst ComponentB = ({ isDisplay, ...domProps }) => <div {...domProps}>{'ComponentB'}</div>;",
+    codeSnippet: "const ComponentA = () => <ComponentB isDisplay={true} className={'componentStyle'} />;\n\nconst ComponentB = ({ isDisplay...domProps }) => <div {...domProps}>{'ComponentB'}</div>;",
     codeLanguage: "tsx",
     options: [
       {
@@ -5009,14 +5107,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "When we spread props we run into the risk of adding unknown HTML attributes, which is a bad practice. Instead we can use prop destructuring with ...rest operator, so it will add only required props. For example, \ufffd\ufffd\ufffd Back to Top",
+    explanation: "When we spread props we run into the risk of adding unknown HTML attributes, which is a bad practice. Instead we can use prop destructuring with .rest operator, so it will add only required props. For example,: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Why we need to be careful when spreading props on DOM elements?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Why we need to be careful when spreading props on DOM elements?.",
     hints: [
-      "Consider the core principles and trade-offs of Why we need to be careful when spreading props on DOM elements?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-you-implement-server-side-rendering-or-ssr",
@@ -5061,14 +5160,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "React is already equipped to handle rendering on Node servers. A special version of the DOM renderer is available, which follows the same pattern as on the client side. This method will output the regular HTML as a string, which can be then placed inside a page body as part of the server response. On the client side, React detects the pre-rendered content and seamlessly picks up where it left off. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "React is already equipped to handle rendering on Node servers. A special version of the DOM renderer is available, which follows the same pattern as on the client side. This method will output the regular HTML as a string, which can be then placed inside a page body as part of the server response. On the client side, React detects the pre-rendered content and seamlessly picks up where it left off.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How you implement Server Side Rendering or SSR?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How you implement Server Side Rendering or SSR?.",
     hints: [
-      "Consider the core principles and trade-offs of How you implement Server Side Rendering or SSR?."
+      "Hydration attaches listeners to server-rendered HTML. A mismatch between server and client output is what breaks it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://nextjs.org/docs/app/building-your-application/rendering"
   },
   {
     id: "react-what-is-the-lifecycle-methods-order-in-mounting",
@@ -5111,14 +5211,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The lifecycle methods are called in the following order when an instance of a component is being created and inserted into the DOM. constructor() static getDerivedStateFromProps() render() componentDidMount() \ufffd\ufffd\ufffd Back to Top",
+    explanation: "The lifecycle methods are called in the following order when an instance of a component is being created and inserted into the DOM. constructor() static getDerivedStateFromProps() render() componentDidMount(): ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the lifecycle methods order in mounting?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the lifecycle methods order in mounting?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the lifecycle methods order in mounting?."
+      "A class component's constructor must call super(props) before touching this.props, and its lifecycle methods map onto effects in a function component."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/Component"
   },
   {
     id: "react-what-is-the-purpose-of-getderivedstatefromprops-lifecyc",
@@ -5162,14 +5263,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The new static getDerivedStateFromProps() lifecycle method is invoked after a component is instantiated as well as before it is re-rendered. It can return an object to update state, or null to indicate that the new props do not require any state updates. This lifecycle method along with componentDidUpdate() covers all the use cases of componentWillReceiveProps(). \ufffd\ufffd\ufffd Back to Top",
+    explanation: "The new static getDerivedStateFromProps() lifecycle method is invoked after a component is instantiated as well as before it is re-rendered. It can return an object to update state, or null to indicate that the new props do not require any state updates. This lifecycle method along with componentDidUpdate() covers all the use cases of componentWillReceiveProps().: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the purpose of getDerivedStateFromProps() lifecycle method?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the purpose of getDerivedStateFromProps() lifecycle method?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the purpose of getDerivedStateFromProps() lifecycle method?."
+      "A class component's constructor must call super(props) before touching this.props, and its lifecycle methods map onto effects in a function component."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/Component"
   },
   {
     id: "react-what-is-the-recommended-ordering-of-methods-in-componen",
@@ -5212,14 +5314,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Recommended ordering of methods from mounting to render stage: static methods constructor() getChildContext() componentWillMount() componentDidMount() componentWillReceiveProps() shouldComponentUpdate() componentWillUpdate() componentDidUpdate() componentWillUnmount() click handlers or event handlers like onClickSubmit() or onChangeDescription() getter methods for render like getSelectReason() or getFooterContent() optional render methods like renderNavigation() or renderProfilePicture() render() \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Recommended ordering of methods from mounting to render stage: static methods constructor() getChildContext() componentWillMount() componentDidMount() componentWillReceiveProps() shouldComponentUpdate() componentWillUpdate() componentDidUpdate() componentWillUnmount() click handlers or event handlers like onClickSubmit() or onChangeDescription() getter methods for render like getSelectReason() or getFooterContent() optional render methods like renderNavigation() or renderProfilePicture() render(): ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the recommended ordering of methods in component class?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the recommended ordering of methods in component class?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the recommended ordering of methods in component class?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-a-switching-component",
@@ -5263,14 +5366,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "A switching component is a component that renders one of many components. We need to use object to map prop values to components. For example, a switching component to display different pages based on page prop: \ufffd\ufffd\ufffd Back to Top",
+    explanation: "A switching component is a component that renders one of many components. We need to use object to map prop values to components. For example, a switching component to display different pages based on page prop:: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is a switching component?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is a switching component?.",
     hints: [
-      "Consider the core principles and trade-offs of What is a switching component?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-strict-mode-in-react",
@@ -5314,14 +5418,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "React.StrictMode is a useful component for highlighting potential problems in an application. Just like <Fragment>, <StrictMode> does not render any extra DOM elements. It activates additional checks and warnings for its descendants. These checks apply for development mode only. In the example above, the strict mode checks apply to <ComponentOne> and <ComponentTwo> components only. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "React.StrictMode is a useful component for highlighting potential problems in an application. Just like <Fragment>, <StrictMode> does not render any extra DOM elements. It activates additional checks and warnings for its descendants. These checks apply for development mode only. In the example above, the strict mode checks apply to <ComponentOne> and <ComponentTwo> components only.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is strict mode in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is strict mode in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What is strict mode in React?."
+      "StrictMode double-invokes render and effects in development, so an effect that is not idempotent shows its seams immediately."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/StrictMode"
   },
   {
     id: "react-why-should-component-names-start-with-capital-letter",
@@ -5369,10 +5474,11 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Why should component names start with capital letter?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Why should component names start with capital letter?.",
     hints: [
-      "Consider the core principles and trade-offs of Why should component names start with capital letter?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-are-custom-dom-attributes-supported-in-react-v16",
@@ -5416,14 +5522,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Yes. In the past, React used to ignore unknown DOM attributes. If you wrote JSX with an attribute that React doesn't recognize, React would just skip it. For example, let's take a look at the below attribute: Would render an empty div to the DOM with React v15: In React v16 any unknown attributes will end up in the DOM: This is useful for supplying browser-specific non-standard attributes, trying new DOM APIs, and integrating with opinionated third-party libraries. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Yes. In the past, React used to ignore unknown DOM attributes. If you wrote JSX with an attribute that React doesn't recognize, React would just skip it. For example, let's take a look at the below attribute: Would render an empty div to the DOM with React v15: In React v16 any unknown attributes will end up in the DOM: This is useful for supplying browser-specific non-standard attributes, trying new DOM APIs, and integrating with opinionated third-party libraries.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Are custom DOM attributes supported in React v16?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Are custom DOM attributes supported in React v16?.",
     hints: [
-      "Consider the core principles and trade-offs of Are custom DOM attributes supported in React v16?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-can-you-force-a-component-to-re-render-without-calling",
@@ -5468,14 +5575,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "By default, when your component's state or props change, your component will re-render. If your render() method depends on some other data, you can tell React that the component needs re-rendering by calling forceUpdate(). It is recommended to avoid all uses of forceUpdate() and only read from this.props and this.state in render(). \ufffd\ufffd\ufffd Back to Top",
+    explanation: "By default, when your component's state or props change, your component will re-render. If your render() method depends on some other data, you can tell React that the component needs re-rendering by calling forceUpdate(). It is recommended to avoid all uses of forceUpdate() and only read from this.props and this.state in render().: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Can you force a component to re-render without calling setState?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Can you force a component to re-render without calling setState?.",
     hints: [
-      "Consider the core principles and trade-offs of Can you force a component to re-render without calling setState?."
+      "React re-renders a component when its state or its parent renders. Skipping that needs both a memo and props that stay identical."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/memo"
   },
   {
     id: "react-what-is-the-difference-between-react-and-reactdom",
@@ -5518,14 +5626,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The react package contains React.createElement(), React.Component, React.Children, and other helpers related to elements and component classes. You can think of these as the isomorphic or universal helpers that you need to build components. The react-dom package contains ReactDOM.render(), and in react-dom/server we have server-side rendering support with ReactDOMServer.renderToString() and ReactDOMServer.renderToStaticMarkup(). \ufffd\ufffd\ufffd Back to Top",
+    explanation: "The react package contains React.createElement(), React.Component, React.Children, and other helpers related to elements and component classes. You can think of these as the isomorphic or universal helpers that you need to build components. The react-dom package contains ReactDOM.render(), and in react-dom/server we have server-side rendering support with ReactDOMServer.renderToString() and ReactDOMServer.renderToStaticMarkup().: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the difference between React and ReactDOM?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the difference between React and ReactDOM?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the difference between React and ReactDOM?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-why-reactdom-is-separated-from-react",
@@ -5568,14 +5677,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The React team worked on extracting all DOM-related features into a separate library called ReactDOM. React v0.14 is the first release in which the libraries are split. By looking at some of the packages, react-native, react-art, react-canvas, and react-three, it has become clear that the beauty and essence of React has nothing to do with browsers or the DOM. To build more environments that React can render to, React team planned to split the main React package into two: react and react-dom. This paves the way to writing components that can be shared between the web version of React and React Native. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "The React team worked on extracting all DOM-related features into a separate library called ReactDOM. React v0.14 is the first release in which the libraries are split. By looking at some of the packages, react-native, react-art, react-canvas, and react-three, it has become clear that the beauty and essence of React has nothing to do with browsers or the DOM. To build more environments that React can render to, React team planned to split the main React package into two: react and react-dom. This paves the way to writing components that can be shared between the web version of React and React Native.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Why ReactDOM is separated from React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Why ReactDOM is separated from React?.",
     hints: [
-      "Consider the core principles and trade-offs of Why ReactDOM is separated from React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-to-use-react-label-element",
@@ -5619,14 +5729,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "If you try to render a <label> element bound to a text input using the standard for attribute, then it produces HTML missing that attribute and prints a warning to the console. Since for is a reserved keyword in JavaScript, use htmlFor instead. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "If you try to render a <label> element bound to a text input using the standard for attribute, then it produces HTML missing that attribute and prints a warning to the console. Since for is a reserved keyword in JavaScript, use htmlFor instead.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to use React label element?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to use React label element?.",
     hints: [
-      "Consider the core principles and trade-offs of How to use React label element?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-the-difference-between-setstate-and-replacestat",
@@ -5669,14 +5780,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "When you use setState() the current and previous states are merged. replaceState() throws out the current state, and replaces it with only what you provide. Usually setState() is used unless you really need to remove all previous keys for some reason. You can also set state to false/null in setState() instead of using replaceState(). \ufffd\ufffd\ufffd Back to Top",
+    explanation: "When you use setState() the current and previous states are merged. replaceState() throws out the current state, and replaces it with only what you provide. Usually setState() is used unless you really need to remove all previous keys for some reason. You can also set state to false/null in setState() instead of using replaceState().: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the difference between setState() and replaceState() methods?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the difference between setState() and replaceState() methods?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the difference between setState() and replaceState() methods?."
+      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/render-and-commit"
   },
   {
     id: "react-is-it-possible-to-use-react-without-rendering-html",
@@ -5721,14 +5833,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "It is possible with latest version (>=16.2). Below are the possible options: Returning undefined won't work. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "It is possible with latest version (>=16.2). Below are the possible options: Returning undefined won't work.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Is it possible to use React without rendering HTML?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Is it possible to use React without rendering HTML?.",
     hints: [
-      "Consider the core principles and trade-offs of Is it possible to use React without rendering HTML?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-to-focus-an-input-element-on-page-load",
@@ -5748,7 +5861,7 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "You can do it by creating ref for input element and using it in componentDidMount(): \ufffd\ufffd\ufffd Back to Top",
+        text: "You can do it by creating ref for input element and using it in componentDidMount():: ",
         isCorrect: true,
         explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
       },
@@ -5772,14 +5885,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "You can do it by creating ref for input element and using it in componentDidMount(): \ufffd\ufffd\ufffd Back to Top",
+    explanation: "You can do it by creating ref for input element and using it in componentDidMount():: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to focus an input element on page load?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to focus an input element on page load?.",
     hints: [
-      "Consider the core principles and trade-offs of How to focus an input element on page load?."
+      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/render-and-commit"
   },
   {
     id: "react-how-to-programmatically-trigger-click-event-in-react",
@@ -5823,14 +5937,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "You could use the ref prop to acquire a reference to the underlying HTMLInputElement object through a callback, store the reference as a class property, then use that reference to later trigger a click from your event handlers using the HTMLElement.click method. This can be done in two steps: Create ref in render method: Apply click event in your event handler: \ufffd\ufffd\ufffd Back to Top",
+    explanation: "You could use the ref prop to acquire a reference to the underlying HTMLInputElement object through a callback, store the reference as a class property, then use that reference to later trigger a click from your event handlers using the HTMLElement.click method. This can be done in two steps: Create ref in render method: Apply click event in your event handler:: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to programmatically trigger click event in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to programmatically trigger click event in React?.",
     hints: [
-      "Consider the core principles and trade-offs of How to programmatically trigger click event in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-are-the-popular-packages-for-animation",
@@ -5873,14 +5988,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "React Transition Group and React Motion are popular animation packages in React ecosystem. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "React Transition Group and React Motion are popular animation packages in React ecosystem.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the popular packages for animation?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the popular packages for animation?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the popular packages for animation?."
+      "Concurrent features let React keep an urgent update responsive while a non-urgent one lags."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useTransition"
   },
   {
     id: "react-what-are-the-popular-react-specific-linters",
@@ -5923,14 +6039,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "ESLint is a popular JavaScript linter. There are plugins available that analyse specific code styles. One of the most common for React is an npm package called eslint-plugin-react. By default, it will check a number of best practices, with rules checking things from keys in iterators to a complete set of prop types. Another popular plugin is eslint-plugin-jsx-a11y, which will help fix common issues with accessibility. As JSX offers slightly different syntax to regular HTML, issues with alt text and tabindex, for example, will not be picked up by regular plugins. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "ESLint is a popular JavaScript linter. There are plugins available that analyse specific code styles. One of the most common for React is an npm package called eslint-plugin-react. By default, it will check a number of best practices, with rules checking things from keys in iterators to a complete set of prop types. Another popular plugin is eslint-plugin-jsx-a11y, which will help fix common issues with accessibility. As JSX offers slightly different syntax to regular HTML, issues with alt text and tabindex, for example, will not be picked up by regular plugins.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the popular React-specific linters?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the popular React-specific linters?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the popular React-specific linters?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-are-render-props",
@@ -5975,14 +6092,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Render Props is a simple technique for sharing code between components using a prop whose value is a function. The below component uses render prop which returns a React element. Libraries such as React Router and DownShift are using this pattern. React Router \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Render Props is a simple technique for sharing code between components using a prop whose value is a function. The below component uses render prop which returns a React element. Libraries such as React Router and DownShift are using this pattern. React Router: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are render props?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are render props?.",
     hints: [
-      "Consider the core principles and trade-offs of What are render props?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-do-you-programmatically-navigate-using-react-router",
@@ -6026,14 +6144,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "There are three different ways to achieve programmatic routing/navigation within components. Using the withRouter() higher-order function: The withRouter() higher-order function will inject the history object as a prop of the component. This object provides push() and replace() methods to avoid the usage of context. Using <Route> component and render props pattern: The <Route> component passes the same props as withRouter(), so you will be able to access the history methods through the history prop. Using context: This option is not recommended and treated as unstable API. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "There are three different ways to achieve programmatic routing/navigation within components. Using the withRouter() higher-order function: The withRouter() higher-order function will inject the history object as a prop of the component. This object provides push() and replace() methods to avoid the usage of context. Using <Route> component and render props pattern: The <Route> component passes the same props as withRouter(), so you will be able to access the history methods through the history prop. Using context: This option is not recommended and treated as unstable API.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you programmatically navigate using React Router v4?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you programmatically navigate using React Router v4?.",
     hints: [
-      "Consider the core principles and trade-offs of How do you programmatically navigate using React Router v4?."
+      "Routing maps a URL to a component. Ask what the URL owns, and what the component owns."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://nextjs.org/docs/app/building-your-application/routing"
   },
   {
     id: "react-why-you-get-router-may-have-only-one-child-element-warn",
@@ -6077,14 +6196,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "You have to wrap your Route's in a <Switch> block because <Switch> is unique in that it renders a route exclusively. At first you need to add Switch to your imports: Then define the routes within <Switch> block: \ufffd\ufffd\ufffd Back to Top",
+    explanation: "You have to wrap your Route's in a <Switch> block because <Switch> is unique in that it renders a route exclusively. At first you need to add Switch to your imports: Then define the routes within <Switch> block:: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Why you get \"Router may have only one child element\" warning?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Why you get \"Router may have only one child element\" warning?.",
     hints: [
-      "Consider the core principles and trade-offs of Why you get \"Router may have only one child element\" warning?."
+      "Routing maps a URL to a component. Ask what the URL owns, and what the component owns."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://nextjs.org/docs/app/building-your-application/routing"
   },
   {
     id: "react-how-to-use-formattedmessage-as-placeholder-using-react",
@@ -6128,14 +6248,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The <Formatted... /> components from react-intl return elements, not plain text, so they can't be used for placeholders, alt text, etc. In that case, you should use lower level API formatMessage(). You can inject the intl object into your component using injectIntl() higher-order component and then format the message using formatMessage() available on that object. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "The <Formatted. /> components from react-intl return elements, not plain text, so they can't be used for placeholders, alt text, etc. In that case, you should use lower level API formatMessage(). You can inject the intl object into your component using injectIntl() higher-order component and then format the message using formatMessage() available on that object.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to use <FormattedMessage> as placeholder using React Intl?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to use <FormattedMessage> as placeholder using React Intl?.",
     hints: [
-      "Consider the core principles and trade-offs of How to use <FormattedMessage> as placeholder using React Intl?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-testrenderer-package-in-react",
@@ -6180,14 +6301,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "This package provides a renderer that can be used to render components to pure JavaScript objects, without depending on the DOM or a native mobile environment. This package makes it easy to grab a snapshot of the platform view hierarchy (similar to a DOM tree) rendered by a ReactDOM or React Native without using a browser or jsdom. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "This package provides a renderer that can be used to render components to pure JavaScript objects, without depending on the DOM or a native mobile environment. This package makes it easy to grab a snapshot of the platform view hierarchy (similar to a DOM tree) rendered by a ReactDOM or React Native without using a browser or jsdom.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is TestRenderer package in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is TestRenderer package in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What is TestRenderer package in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-to-dispatch-an-action-on-load",
@@ -6202,7 +6324,7 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       "rendering-keys",
       "junior"
     ],
-    codeSnippet: "class App extends Component {\n  componentDidMount() {\n    this.props.fetchData();\n  }\n\n  render() {\n    return this.props.isLoaded ? <div>{'Loaded'}</div> : <div>{'Not Loaded'}</div>;\n  }\n}\n\nconst mapStateToProps = (state) => ({\n  isLoaded: state.isLoaded,\n});\n\nconst mapDispatchToProps = { fetchData };\n\nexport default connect(mapStateToProps, mapDispatchToProps)(App);",
+    codeSnippet: "class App extends Component {\n  componentDidMount() {\n    this.props.fetchData();\n  }\n\n  render() {\n    return this.props.isLoaded ? <div>{'Loaded'}</div>: <div>{'Not Loaded'}</div>;\n  }\n}\n\nconst mapStateToProps = (state) => ({\n  isLoaded: state.isLoaded,\n});\n\nconst mapDispatchToProps = { fetchData };\n\nexport default connect(mapStateToProps, mapDispatchToProps)(App);",
     codeLanguage: "tsx",
     options: [
       {
@@ -6231,14 +6353,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "You can dispatch an action in componentDidMount() method and in render() method you can verify the data. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "You can dispatch an action in componentDidMount() method and in render() method you can verify the data.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to dispatch an action on load?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to dispatch an action on load?.",
     hints: [
-      "Consider the core principles and trade-offs of How to dispatch an action on load?."
+      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/render-and-commit"
   },
   {
     id: "react-how-to-reset-state-in-redux",
@@ -6282,14 +6405,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "You need to write a root reducer in your application which delegate handling the action to the reducer generated by combineReducers(). For example, let us take rootReducer() to return the initial state after USER_LOGOUT action. As we know, reducers are supposed to return the initial state when they are called with undefined as the first argument, no matter the action. In case of using redux-persist, you may also need to clean your storage. redux-persist keeps a copy of your state in a storage engine. First, you need to import the appropriate storage engine and then, to parse the state before setting it to undefined and clean each storage state key. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "You need to write a root reducer in your application which delegate handling the action to the reducer generated by combineReducers(). For example, let us take rootReducer() to return the initial state after USER_LOGOUT action. As we know, reducers are supposed to return the initial state when they are called with undefined as the first argument, no matter the action. In case of using redux-persist, you may also need to clean your storage. redux-persist keeps a copy of your state in a storage engine. First, you need to import the appropriate storage engine and then, to parse the state before setting it to undefined and clean each storage state key.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to reset state in Redux?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to reset state in Redux?.",
     hints: [
-      "Consider the core principles and trade-offs of How to reset state in Redux?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-the-difference-between-component-and-container",
@@ -6332,14 +6456,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Component is a class or function component that describes the presentational part of your application. Container is an informal term for a component that is connected to a Redux store. Containers subscribe to Redux state updates and dispatch actions, and they usually don't render DOM elements; they delegate rendering to presentational child components. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Component is a class or function component that describes the presentational part of your application. Container is an informal term for a component that is connected to a Redux store. Containers subscribe to Redux state updates and dispatch actions, and they usually don't render DOM elements; they delegate rendering to presentational child components.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the difference between component and container in React Redux?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the difference between component and container in React Redux?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the difference between component and container in React Redux?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-to-structure-redux-top-level-directories",
@@ -6382,14 +6507,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Most of the applications has several top-level directories as below: Components: Used for dumb components unaware of Redux. Containers: Used for smart components connected to Redux. Actions: Used for all action creators, where file names correspond to part of the app. Reducers: Used for all reducers, where files name correspond to state key. Store: Used for store initialization. This structure works well for small and medium size apps. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Most of the applications has several top-level directories as below: Components: Used for dumb components unaware of Redux. Containers: Used for smart components connected to Redux. Actions: Used for all action creators, where file names correspond to part of the app. Reducers: Used for all reducers, where files name correspond to state key. Store: Used for store initialization. This structure works well for small and medium size apps.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to structure Redux top level directories?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to structure Redux top level directories?.",
     hints: [
-      "Consider the core principles and trade-offs of How to structure Redux top level directories?."
+      "Ask where the state genuinely belongs: the URL, a server cache, a global store, or one component."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://redux.js.org/style-guide/"
   },
   {
     id: "react-how-to-use-polymer-in-react",
@@ -6433,14 +6559,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "You need to follow below steps to use Polymer in React, Create a Polymer element: Create the Polymer component HTML tag by importing it in a HTML document, e.g. import it in the index.html of your React application: Use that element in the JSX file: \ufffd\ufffd\ufffd Back to Top",
+    explanation: "You need to follow below steps to use Polymer in React, Create a Polymer element: Create the Polymer component HTML tag by importing it in a HTML document, e.g. import it in the index.html of your React application: Use that element in the JSX file:: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to use Polymer in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to use Polymer in React?.",
     hints: [
-      "Consider the core principles and trade-offs of How to use Polymer in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-give-an-example-of-styled-components",
@@ -6484,14 +6611,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Lets create <Title> and <Wrapper> components with specific styles for each. These two variables, Title and Wrapper, are now components that you can render just like any other react component. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Lets create <Title> and <Wrapper> components with specific styles for each. These two variables, Title and Wrapper, are now components that you can render just like any other react component.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Give an example of Styled Components?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Give an example of Styled Components?.",
     hints: [
-      "Consider the core principles and trade-offs of Give an example of Styled Components?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-why-are-inline-ref-callbacks-or-functions-not-recommend",
@@ -6535,14 +6663,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "If the ref callback is defined as an inline function, it will get called twice during updates, first with null and then again with the DOM element. This is because a new instance of the function is created with each render, so React needs to clear the old ref and set up the new one. But our expectation is for the ref callback to get called once, when the component mounts. One quick fix is to use the ES7 class property syntax to define the function Note: In React v16.3, \ufffd\ufffd\ufffd Back to Top",
+    explanation: "If the ref callback is defined as an inline function, it will get called twice during updates, first with null and then again with the DOM element. This is because a new instance of the function is created with each render, so React needs to clear the old ref and set up the new one. But our expectation is for the ref callback to get called once, when the component mounts. One quick fix is to use the ES7 class property syntax to define the function Note: In React v16.3,: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Why are inline ref callbacks or functions not recommended?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Why are inline ref callbacks or functions not recommended?.",
     hints: [
-      "Consider the core principles and trade-offs of Why are inline ref callbacks or functions not recommended?."
+      "Both refs and state survive a render. Only state causes one, so refs are for values the UI does not display."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useRef"
   },
   {
     id: "react-what-is-render-hijacking-in-react",
@@ -6586,14 +6715,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The concept of render hijacking is the ability to control what a component will output from another component. It actually means that you decorate your component by wrapping it into a Higher-Order component. By wrapping you can inject additional props or make other changes, which can cause changing logic of rendering. It does not actually enables hijacking, but by using HOC you make your component behave in different way. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "The concept of render hijacking is the ability to control what a component will output from another component. It actually means that you decorate your component by wrapping it into a Higher-Order component. By wrapping you can inject additional props or make other changes, which can cause changing logic of rendering. It does not actually enables hijacking, but by using HOC you make your component behave in different way.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is render hijacking in react?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is render hijacking in react?.",
     hints: [
-      "Consider the core principles and trade-offs of What is render hijacking in react?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-are-hoc-factory-implementations",
@@ -6637,14 +6767,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "There are two main ways of implementing HOCs in React. Props Proxy (PP) and Inheritance Inversion (II). But they follow different approaches for manipulating the WrappedComponent. Props Proxy In this approach, the render method of the HOC returns a React Element of the type of the WrappedComponent. We also pass through the props that the HOC receives, hence the name Props Proxy. Inheritance Inversion In this approach, the returned HOC class (Enhancer) extends the WrappedComponent. It is called Inheritance Inversion because instead of the WrappedComponent extending some Enhancer class, it is passively extended by the Enhancer. In this way the relationship between them seems inverse. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "There are two main ways of implementing HOCs in React. Props Proxy (PP) and Inheritance Inversion (II). But they follow different approaches for manipulating the WrappedComponent. Props Proxy In this approach, the render method of the HOC returns a React Element of the type of the WrappedComponent. We also pass through the props that the HOC receives, hence the name Props Proxy. Inheritance Inversion In this approach, the returned HOC class (Enhancer) extends the WrappedComponent. It is called Inheritance Inversion because instead of the WrappedComponent extending some Enhancer class, it is passively extended by the Enhancer. In this way the relationship between them seems inverse.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are HOC factory implementations?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are HOC factory implementations?.",
     hints: [
-      "Consider the core principles and trade-offs of What are HOC factory implementations?."
+      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/render-and-commit"
   },
   {
     id: "react-how-do-you-render-array-strings-and-numbers-in-react-16",
@@ -6689,14 +6820,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Arrays: Unlike older releases, you don't need to make sure render method return a single element in React16. You are able to return multiple sibling elements without a wrapping element by returning an array. For example, let us take the below list of developers, You can also merge this array of items in another array component. Strings and Numbers: You can also return string and number type from the render method. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Arrays: Unlike older releases, you don't need to make sure render method return a single element in React16. You are able to return multiple sibling elements without a wrapping element by returning an array. For example, let us take the below list of developers, You can also merge this array of items in another array component. Strings and Numbers: You can also return string and number type from the render method.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you render Array, Strings and Numbers in React 16 Version?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you render Array, Strings and Numbers in React 16 Version?.",
     hints: [
-      "Consider the core principles and trade-offs of How do you render Array, Strings and Numbers in React 16 Version?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-in-which-scenarios-error-boundaries-do-not-catch-errors",
@@ -6739,14 +6871,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Below are the cases in which error boundaries doesn't work, Inside Event handlers Asynchronous code using setTimeout or requestAnimationFrame callbacks During Server side rendering When errors thrown in the error boundary code itself \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Below are the cases in which error boundaries doesn't work, Inside Event handlers Asynchronous code using setTimeout or requestAnimationFrame callbacks During Server side rendering When errors thrown in the error boundary code itself: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of In which scenarios error boundaries do not catch errors?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of In which scenarios error boundaries do not catch errors?.",
     hints: [
-      "Consider the core principles and trade-offs of In which scenarios error boundaries do not catch errors?."
+      "Error boundaries catch the render path, not the interaction path. An event handler needs its own try/catch."
     ],
     source: "300-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary"
   },
   {
     id: "react-why-do-not-you-need-error-boundaries-for-event-handlers",
@@ -6790,14 +6923,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Error boundaries do not catch errors inside event handlers. Event handlers don't happened or invoked during rendering time unlike render method or lifecycle methods. So React knows how to recover these kind of errors in event handlers. If still you need to catch an error inside event handler, use the regular JavaScript try / catch statement as below The above code is catching the error using vanilla javascript try/catch block instead of error boundaries. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Error boundaries do not catch errors inside event handlers. Event handlers don't happened or invoked during rendering time unlike render method or lifecycle methods. So React knows how to recover these kind of errors in event handlers. If still you need to catch an error inside event handler, use the regular JavaScript try / catch statement as below The above code is catching the error using vanilla javascript try/catch block instead of error boundaries.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Why do not you need error boundaries for event handlers?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Why do not you need error boundaries for event handlers?.",
     hints: [
-      "Consider the core principles and trade-offs of Why do not you need error boundaries for event handlers?."
+      "Error boundaries catch the render path, not the interaction path. An event handler needs its own try/catch."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary"
   },
   {
     id: "react-what-is-the-difference-between-try-catch-block-and-erro",
@@ -6841,14 +6975,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Try catch block works with imperative code whereas error boundaries are meant for declarative code to render on the screen. For example, the try catch block used for below imperative code Whereas error boundaries wrap declarative code as below, So if an error occurs in a componentDidUpdate method caused by a setState somewhere deep in the tree, it will still correctly propagate to the closest error boundary. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Try catch block works with imperative code whereas error boundaries are meant for declarative code to render on the screen. For example, the try catch block used for below imperative code Whereas error boundaries wrap declarative code as below, So if an error occurs in a componentDidUpdate method caused by a setState somewhere deep in the tree, it will still correctly propagate to the closest error boundary.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the difference between try catch block and error boundaries?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the difference between try catch block and error boundaries?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the difference between try catch block and error boundaries?."
+      "Error boundaries catch the render path, not the interaction path. An event handler needs its own try/catch."
     ],
     source: "300-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary"
   },
   {
     id: "react-what-is-the-behavior-of-uncaught-errors-in-react-16",
@@ -6891,14 +7026,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "In React 16, errors that were not caught by any error boundary will result in unmounting of the whole React component tree. The reason behind this decision is that it is worse to leave corrupted UI in place than to completely remove it. For example, it is worse for a payments app to display a wrong amount than to render nothing. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "In React 16, errors that were not caught by any error boundary will result in unmounting of the whole React component tree. The reason behind this decision is that it is worse to leave corrupted UI in place than to completely remove it. For example, it is worse for a payments app to display a wrong amount than to render nothing.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the behavior of uncaught errors in react 16?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the behavior of uncaught errors in react 16?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the behavior of uncaught errors in react 16?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-the-required-method-to-be-defined-for-a-class-c",
@@ -6941,14 +7077,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The render() method is the only required method in a class component. i.e, All methods other than render method are optional for a class component. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "The render() method is the only required method in a class component. i.e, All methods other than render method are optional for a class component.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the required method to be defined for a class component?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the required method to be defined for a class component?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the required method to be defined for a class component?."
+      "A class component's constructor must call super(props) before touching this.props, and its lifecycle methods map onto effects in a function component."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/Component"
   },
   {
     id: "react-what-are-the-possible-return-types-of-render-method",
@@ -6992,14 +7129,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Below are the list of following types used and return from render method, React elements: Elements that instruct React to render a DOM node. It includes html elements such as <div/> and user defined elements. Arrays and fragments: Return multiple elements to render as Arrays and Fragments to wrap multiple elements Portals: Render children into a different DOM subtree. String and numbers: Render both Strings and Numbers as text nodes in the DOM Booleans or null: Doesn't render anything but these types are used to conditionally render content. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Below are the list of following types used and return from render method, React elements: Elements that instruct React to render a DOM node. It includes html elements such as <div/> and user defined elements. Arrays and fragments: Return multiple elements to render as Arrays and Fragments to wrap multiple elements Portals: Render children into a different DOM subtree. String and numbers: Render both Strings and Numbers as text nodes in the DOM Booleans or null: Doesn't render anything but these types are used to conditionally render content.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the possible return types of render method?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the possible return types of render method?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the possible return types of render method?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-the-methods-order-when-component-re-rendered",
@@ -7043,14 +7181,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "An update can be caused by changes to props or state. The below methods are called in the following order when a component is being re-rendered. static getDerivedStateFromProps() shouldComponentUpdate() render() getSnapshotBeforeUpdate() componentDidUpdate() \ufffd\ufffd\ufffd Back to Top",
+    explanation: "An update can be caused by changes to props or state. The below methods are called in the following order when a component is being re-rendered. static getDerivedStateFromProps() shouldComponentUpdate() render() getSnapshotBeforeUpdate() componentDidUpdate(): ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the methods order when component re-rendered?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the methods order when component re-rendered?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the methods order when component re-rendered?."
+      "React re-renders a component when its state or its parent renders. Skipping that needs both a memo and props that stay identical."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/memo"
   },
   {
     id: "react-what-are-the-methods-invoked-during-error-handling",
@@ -7093,14 +7232,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Below methods are called when there is an error during rendering, in a lifecycle method, or in the constructor of any child component. static getDerivedStateFromError() componentDidCatch() \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Below methods are called when there is an error during rendering, in a lifecycle method, or in the constructor of any child component. static getDerivedStateFromError() componentDidCatch(): ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the methods invoked during error handling?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the methods invoked during error handling?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the methods invoked during error handling?."
+      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/render-and-commit"
   },
   {
     id: "react-what-are-keyed-fragments",
@@ -7144,14 +7284,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The Fragments declared with the explicit syntax may have keys. The general use case is mapping a collection to an array of fragments as below, Note: key is the only attribute that can be passed to Fragment. In the future, there might be a support for additional attributes, such as event handlers. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "The Fragments declared with the explicit syntax may have keys. The general use case is mapping a collection to an array of fragments as below, Note: key is the only attribute that can be passed to Fragment. In the future, there might be a support for additional attributes, such as event handlers.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are Keyed Fragments?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are Keyed Fragments?.",
     hints: [
-      "Consider the core principles and trade-offs of What are Keyed Fragments?."
+      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/render-and-commit"
   },
   {
     id: "react-how-jsx-prevents-injection-attacks",
@@ -7195,14 +7336,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "React DOM escapes any values embedded in JSX before rendering them. Thus it ensures that you can never inject anything that\ufffd\ufffd\ufffds not explicitly written in your application. Everything is converted to a string before being rendered. For example, you can embed user input as below, This way you can prevent XSS(Cross-site-scripting) attacks in the application. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "React DOM escapes any values embedded in JSX before rendering them. Thus it ensures that you can never inject anything that, s not explicitly written in your application. Everything is converted to a string before being rendered. For example, you can embed user input as below, This way you can prevent XSS(Cross-site-scripting) attacks in the application.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How JSX prevents Injection Attacks?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How JSX prevents Injection Attacks?.",
     hints: [
-      "Consider the core principles and trade-offs of How JSX prevents Injection Attacks?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-do-you-update-rendered-elements",
@@ -7247,14 +7389,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "You can update UI(represented by rendered element) by passing the newly created element to ReactDOM's render method. For example, lets take a ticking clock example, where it updates the time by calling render method multiple times, \ufffd\ufffd\ufffd Back to Top",
+    explanation: "You can update UI(represented by rendered element) by passing the newly created element to ReactDOM's render method. For example, lets take a ticking clock example, where it updates the time by calling render method multiple times,: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you update rendered elements?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you update rendered elements?.",
     hints: [
-      "Consider the core principles and trade-offs of How do you update rendered elements?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-to-prevent-component-from-rendering",
@@ -7299,14 +7442,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "You can prevent component from rendering by returning null based on specific condition. This way it can conditionally render component. In the above example, the greeting component skips its rendering section by applying condition and returning null value. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "You can prevent component from rendering by returning null based on specific condition. This way it can conditionally render component. In the above example, the greeting component skips its rendering section by applying condition and returning null value.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to prevent component from rendering?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to prevent component from rendering?.",
     hints: [
-      "Consider the core principles and trade-offs of How to prevent component from rendering?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-are-the-conditions-to-safely-use-the-index-as-a-ke",
@@ -7349,14 +7493,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "There are three conditions to make sure, it is safe use the index as a key. The list and items are static\ufffd\ufffd\ufffd they are not computed and do not change The items in the list have no ids The list is never reordered or filtered. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "There are three conditions to make sure, it is safe use the index as a key. The list and items are static, they are not computed and do not change The items in the list have no ids The list is never reordered or filtered.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the conditions to safely use the index as a key?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the conditions to safely use the index as a key?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the conditions to safely use the index as a key?."
+      "A key is an identity claim. Change it and React unmounts the old element and mounts a new one, resetting its state."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/rendering-lists#keeping-list-items-in-order-with-key"
   },
   {
     id: "react-is-it-keys-should-be-globally-unique",
@@ -7376,7 +7521,7 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Keys used within arrays should be unique among their siblings but they don\ufffd\ufffd\ufffdt need to be globally unique.",
+        text: "Keys used within arrays should be unique among their siblings but they don, t need to be globally unique.",
         isCorrect: true,
         explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
       },
@@ -7400,14 +7545,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Keys used within arrays should be unique among their siblings but they don\ufffd\ufffd\ufffdt need to be globally unique. i.e, You can use the same keys with two different arrays. For example, the below book component uses two arrays with different arrays, \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Keys used within arrays should be unique among their siblings but they don, t need to be globally unique. i.e, You can use the same keys with two different arrays. For example, the below book component uses two arrays with different arrays,: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Is it keys should be globally unique?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Is it keys should be globally unique?.",
     hints: [
-      "Consider the core principles and trade-offs of Is it keys should be globally unique?."
+      "A key is an identity claim. Change it and React unmounts the old element and mounts a new one, resetting its state."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/rendering-lists#keeping-list-items-in-order-with-key"
   },
   {
     id: "react-what-are-the-advantages-of-formik-over-redux-form-libra",
@@ -7450,14 +7596,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Below are the main reasons to recommend formik over redux form library, The form state is inherently short-term and local, so tracking it in Redux (or any kind of Flux library) is unnecessary. Redux-Form calls your entire top-level Redux reducer multiple times ON EVERY SINGLE KEYSTROKE. This way it increases input latency for large apps. Redux-Form is 22.5 kB minified gzipped whereas Formik is 12.7 kB \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Below are the main reasons to recommend formik over redux form library, The form state is inherently short-term and local, so tracking it in Redux (or any kind of Flux library) is unnecessary. Redux-Form calls your entire top-level Redux reducer multiple times ON EVERY SINGLE KEYSTROKE. This way it increases input latency for large apps. Redux-Form is 22.5 kB minified gzipped whereas Formik is 12.7 kB: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the advantages of formik over redux form library?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the advantages of formik over redux form library?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the advantages of formik over redux form library?."
+      "A controlled input reads its value from state, so React is the single source of truth. An uncontrolled one leaves it in the DOM."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react-dom/components/input"
   },
   {
     id: "react-what-is-suspense-component",
@@ -7477,7 +7624,7 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "If the module containing the dynamic import is not yet loaded by the time parent component renders, you must show some fallback content while you\ufffd\ufffd\ufffdre waiting for it to load using a loading indicator.",
+        text: "If the module containing the dynamic import is not yet loaded by the time parent component renders, you must show some fallback content while you, re waiting for it to load using a loading indicator.",
         isCorrect: true,
         explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
       },
@@ -7501,14 +7648,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "If the module containing the dynamic import is not yet loaded by the time parent component renders, you must show some fallback content while you\ufffd\ufffd\ufffdre waiting for it to load using a loading indicator. This can be done using Suspense component. For example, the below code uses suspense component, As mentioned in the above code, Suspense is wrapped above the lazy component. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "If the module containing the dynamic import is not yet loaded by the time parent component renders, you must show some fallback content while you, re waiting for it to load using a loading indicator. This can be done using Suspense component. For example, the below code uses suspense component, As mentioned in the above code, Suspense is wrapped above the lazy component.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is suspense component?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is suspense component?.",
     hints: [
-      "Consider the core principles and trade-offs of What is suspense component?."
+      "Suspense lets a subtree declare it is not ready yet, so a fallback shows while the work is still in flight."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/Suspense"
   },
   {
     id: "react-what-is-route-based-code-splitting",
@@ -7552,14 +7700,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "One of the best place to do code splitting is with routes. The entire page is going to re-render at once so users are unlikely to interact with other elements in the page at the same time. Due to this, the user experience won't be disturbed. Let us take an example of route based website using libraries like React Router with React.lazy, In the above code, the code splitting will happen at each route level. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "One of the best place to do code splitting is with routes. The entire page is going to re-render at once so users are unlikely to interact with other elements in the page at the same time. Due to this, the user experience won't be disturbed. Let us take an example of route based website using libraries like React Router with React.lazy, In the above code, the code splitting will happen at each route level.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is route based code splitting?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is route based code splitting?.",
     hints: [
-      "Consider the core principles and trade-offs of What is route based code splitting?."
+      "Suspense lets a subtree declare it is not ready yet, so a fallback shows while the work is still in flight."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/Suspense"
   },
   {
     id: "react-how-do-you-use-contexttype",
@@ -7603,14 +7752,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "ContextType is used to consume the context object. The contextType property can be used in two ways, contextType as property of class: The contextType property on a class can be assigned a Context object created by React.createContext(). After that, you can consume the nearest current value of that Context type using this.context in any of the lifecycle methods and render function. Lets assign contextType property on MyClass as below, Static field You can use a static class field to initialize your contextType using public class field syntax. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "ContextType is used to consume the context object. The contextType property can be used in two ways, contextType as property of class: The contextType property on a class can be assigned a Context object created by React.createContext(). After that, you can consume the nearest current value of that Context type using this.context in any of the lifecycle methods and render function. Lets assign contextType property on MyClass as below, Static field You can use a static class field to initialize your contextType using public class field syntax.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you use contextType?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you use contextType?.",
     hints: [
-      "Consider the core principles and trade-offs of How do you use contextType?."
+      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/render-and-commit"
   },
   {
     id: "react-what-is-the-purpose-of-forward-ref-in-hocs",
@@ -7625,7 +7775,7 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       "rendering-keys",
       "junior"
     ],
-    codeSnippet: "```javascript\nfunction logProps(Component) {\n  class LogProps extends React.Component {\n    componentDidUpdate(prevProps) {\n      console.log('old props:', prevProps);\n      console.log('new props:', this.props);\n    }\n\n    render() {\n      const {forwardedRef, ...rest} = this.props;\n\n      // Assign the custom prop \"forwardedRef\" as a ref\n      return <Component ref={forwardedRef} {...rest} />;\n    }\n  }\n\n  return React.forwardRef((props, ref) => {\n    return <LogProps {...props} forwardedRef={ref} />;\n  });\n}\n```\n\n```javascript\nclass FancyButton extends React.Component {\n  focus() {\n    // ...\n  }\n\n  // ...\n}\nexport default logProps(FancyButton);\n```\n\n```javascript\nimport FancyButton from './FancyButton';\n\nconst ref = React.createRef();\nref.current.focus();\n<FancyButton\n  label=\"Click Me\"\n  handleClick={handleClick}\n  ref={ref}\n/>;\n```",
+    codeSnippet: "```javascript\nfunction logProps(Component) {\n  class LogProps extends React.Component {\n    componentDidUpdate(prevProps) {\n      console.log('old props:', prevProps);\n      console.log('new props:', this.props);\n    }\n\n    render() {\n      const {forwardedRef...rest} = this.props;\n\n      // Assign the custom prop \"forwardedRef\" as a ref\n      return <Component ref={forwardedRef} {...rest} />;\n    }\n  }\n\n  return React.forwardRef((props, ref) => {\n    return <LogProps {...props} forwardedRef={ref} />;\n  });\n}\n```\n\n```javascript\nclass FancyButton extends React.Component {\n  focus() {\n    // ...\n  }\n\n  // ...\n}\nexport default logProps(FancyButton);\n```\n\n```javascript\nimport FancyButton from './FancyButton';\n\nconst ref = React.createRef();\nref.current.focus();\n<FancyButton\n  label=\"Click Me\"\n  handleClick={handleClick}\n  ref={ref}\n/>;\n```",
     codeLanguage: "tsx",
     options: [
       {
@@ -7654,14 +7804,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Refs will not get passed through because ref is not a prop. It handled differently by React just like key. If you add a ref to a HOC, the ref will refer to the outermost container component, not the wrapped component. In this case, you can use Forward Ref API. For example, we can explicitly forward refs to the inner FancyButton component using the React.forwardRef API. The below HOC logs all props, Let's use this HOC to log all props that get passed to our \ufffd\ufffd\ufffdfancy button\ufffd\ufffd\ufffd component, Now lets create a ref and pass it to FancyButton component. In this case, you can set focus to button element. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Refs will not get passed through because ref is not a prop. It handled differently by React just like key. If you add a ref to a HOC, the ref will refer to the outermost container component, not the wrapped component. In this case, you can use Forward Ref API. For example, we can explicitly forward refs to the inner FancyButton component using the React.forwardRef API. The below HOC logs all props, Let's use this HOC to log all props that get passed to our, fancy button, component, Now lets create a ref and pass it to FancyButton component. In this case, you can set focus to button element.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the purpose of forward ref in HOCs?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the purpose of forward ref in HOCs?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the purpose of forward ref in HOCs?."
+      "Both refs and state survive a render. Only state causes one, so refs are for values the UI does not display."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useRef"
   },
   {
     id: "react-is-it-possible-to-use-react-without-jsx",
@@ -7705,14 +7856,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Yes, JSX is not mandatory for using React. Actually it is convenient when you don\ufffd\ufffd\ufffdt want to set up compilation in your build environment. Each JSX element is just syntactic sugar for calling React.createElement(component, props, ...children). For example, let us take a greeting example with JSX, You can write the same code without JSX as below, \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Yes, JSX is not mandatory for using React. Actually it is convenient when you don, t want to set up compilation in your build environment. Each JSX element is just syntactic sugar for calling React.createElement(component, props.children). For example, let us take a greeting example with JSX, You can write the same code without JSX as below,: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Is it possible to use react without JSX?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Is it possible to use react without JSX?.",
     hints: [
-      "Consider the core principles and trade-offs of Is it possible to use react without JSX?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-is-it-prop-must-be-named-as-render-for-render-props",
@@ -7733,7 +7885,7 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Even though the pattern named render props, you don\ufffd\ufffd\ufffdt have to use a prop named render to use this pattern.",
+        text: "Even though the pattern named render props, you don, t have to use a prop named render to use this pattern.",
         isCorrect: true,
         explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
       },
@@ -7757,14 +7909,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Even though the pattern named render props, you don\ufffd\ufffd\ufffdt have to use a prop named render to use this pattern. i.e, Any prop that is a function that a component uses to know what to render is technically a \ufffd\ufffd\ufffdrender prop\ufffd\ufffd\ufffd. Lets take an example with the children prop for render props, Actually children prop doesn\ufffd\ufffd\ufffdt need to be named in the list of \ufffd\ufffd\ufffdattributes\ufffd\ufffd\ufffd in JSX element. Instead, you can keep it directly inside element, While using this above technique(without any name), explicitly state that children should be a function in your propTypes. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Even though the pattern named render props, you don, t have to use a prop named render to use this pattern. i.e, Any prop that is a function that a component uses to know what to render is technically a, render prop. Lets take an example with the children prop for render props, Actually children prop doesn, t need to be named in the list of, attributes, in JSX element. Instead, you can keep it directly inside element, While using this above technique(without any name), explicitly state that children should be a function in your propTypes.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Is it prop must be named as render for render props?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Is it prop must be named as render for render props?.",
     hints: [
-      "Consider the core principles and trade-offs of Is it prop must be named as render for render props?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-are-the-problems-of-using-render-props-with-pure-c",
@@ -7808,14 +7961,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "If you create a function inside a render method, it negates the purpose of pure component. Because the shallow prop comparison will always return false for new props, and each render in this case will generate a new value for the render prop. You can solve this issue by defining the render function as instance method. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "If you create a function inside a render method, it negates the purpose of pure component. Because the shallow prop comparison will always return false for new props, and each render in this case will generate a new value for the render prop. You can solve this issue by defining the render function as instance method.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the problems of using render props with pure components?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the problems of using render props with pure components?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the problems of using render props with pure components?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-do-you-create-hoc-using-render-props",
@@ -7860,14 +8014,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "You can implement most higher-order components (HOC) using a regular component with a render prop. For example, if you would prefer to have a withMouse HOC instead of a component, you could easily create one using a regular with a render prop. This way render props gives the flexibility of using either pattern. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "You can implement most higher-order components (HOC) using a regular component with a render prop. For example, if you would prefer to have a withMouse HOC instead of a component, you could easily create one using a regular with a render prop. This way render props gives the flexibility of using either pattern.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you create HOC using render props?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you create HOC using render props?.",
     hints: [
-      "Consider the core principles and trade-offs of How do you create HOC using render props?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-windowing-technique",
@@ -7910,14 +8065,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Windowing is a technique that only renders a small subset of your rows at any given time, and can dramatically reduce the time it takes to re-render the components as well as the number of DOM nodes created. If your application renders long lists of data then this technique is recommended. Both react-window and react-virtualized are popular windowing libraries which provides several reusable components for displaying lists, grids, and tabular data. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Windowing is a technique that only renders a small subset of your rows at any given time, and can dramatically reduce the time it takes to re-render the components as well as the number of DOM nodes created. If your application renders long lists of data then this technique is recommended. Both react-window and react-virtualized are popular windowing libraries which provides several reusable components for displaying lists, grids, and tabular data.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is windowing technique?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is windowing technique?.",
     hints: [
-      "Consider the core principles and trade-offs of What is windowing technique?."
+      "Rendering only the visible rows keeps the DOM small. The cost moves to measurement and scroll bookkeeping."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://web.dev/articles/virtualize-long-lists-react-window"
   },
   {
     id: "react-how-do-you-print-falsy-values-in-jsx",
@@ -7961,14 +8117,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The falsy values such as false, null, undefined, and true are valid children but they don't render anything. If you still want to display them then you need to convert it to string. Let's take an example on how to convert to a string, \ufffd\ufffd\ufffd Back to Top",
+    explanation: "The falsy values such as false, null, undefined, and true are valid children but they don't render anything. If you still want to display them then you need to convert it to string. Let's take an example on how to convert to a string,: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you print falsy values in JSX?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you print falsy values in JSX?.",
     hints: [
-      "Consider the core principles and trade-offs of How do you print falsy values in JSX?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-how-do-you-set-default-value-for-uncontrolled-component",
@@ -8012,14 +8169,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "In React, the value attribute on form elements will override the value in the DOM. With an uncontrolled component, you might want React to specify the initial value, but leave subsequent updates uncontrolled. To handle this case, you can specify a defaultValue attribute instead of value. The same applies for select and textArea inputs. But you need to use defaultChecked for checkbox and radio inputs. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "In React, the value attribute on form elements will override the value in the DOM. With an uncontrolled component, you might want React to specify the initial value, but leave subsequent updates uncontrolled. To handle this case, you can specify a defaultValue attribute instead of value. The same applies for select and textArea inputs. But you need to use defaultChecked for checkbox and radio inputs.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you set default value for uncontrolled component?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you set default value for uncontrolled component?.",
     hints: [
-      "Consider the core principles and trade-offs of How do you set default value for uncontrolled component?."
+      "A controlled input reads its value from state, so React is the single source of truth. An uncontrolled one leaves it in the DOM."
     ],
     source: "300-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/reference/react-dom/components/input"
   },
   {
     id: "react-what-is-the-purpose-of-rendertonodestream-method",
@@ -8063,14 +8221,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The ReactDOMServer method is used to generate HTML on the server and send the markup down on the initial request for faster page loads. It also helps search engines to crawl your pages easily for SEO purposes. Note: Remember this method is not available in the browser but only server. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "The ReactDOMServer method is used to generate HTML on the server and send the markup down on the initial request for faster page loads. It also helps search engines to crawl your pages easily for SEO purposes. Note: Remember this method is not available in the browser but only server.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the purpose of renderToNodeStream method?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the purpose of renderToNodeStream method?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the purpose of renderToNodeStream method?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-concurrent-rendering",
@@ -8115,14 +8274,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The Concurrent rendering makes React apps to be more responsive by rendering component trees without blocking the main UI thread. It allows React to interrupt a long-running render to handle a high-priority event. i.e, When you enabled concurrent Mode, React will keep an eye on other tasks that need to be done, and if there's something with a higher priority it will pause what it is currently rendering and let the other task finish first. You can enable this in two ways, \ufffd\ufffd\ufffd Back to Top",
+    explanation: "The Concurrent rendering makes React apps to be more responsive by rendering component trees without blocking the main UI thread. It allows React to interrupt a long-running render to handle a high-priority event. i.e, When you enabled concurrent Mode, React will keep an eye on other tasks that need to be done, and if there's something with a higher priority it will pause what it is currently rendering and let the other task finish first. You can enable this in two ways,: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is Concurrent Rendering?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is Concurrent Rendering?.",
     hints: [
-      "Consider the core principles and trade-offs of What is Concurrent Rendering?."
+      "Concurrent features let React keep an urgent update responsive by letting a non-urgent one lag behind."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useTransition"
   },
   {
     id: "react-what-is-the-difference-between-async-mode-and-concurren",
@@ -8165,14 +8325,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Both refers the same thing. Previously concurrent Mode being referred to as \"Async Mode\" by React team. The name has been changed to highlight React\ufffd\ufffd\ufffds ability to perform work on different priority levels. So it avoids the confusion from other approaches to Async Rendering. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Both refers the same thing. Previously concurrent Mode being referred to as \"Async Mode\" by React team. The name has been changed to highlight React, s ability to perform work on different priority levels. So it avoids the confusion from other approaches to Async Rendering.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the difference between async mode and concurrent mode?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the difference between async mode and concurrent mode?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the difference between async mode and concurrent mode?."
+      "Concurrent features let React keep an urgent update responsive by letting a non-urgent one lag behind."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useTransition"
   },
   {
     id: "react-virtual-dom-vs-real-and-shadow-dom",
@@ -8200,7 +8361,7 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
         id: "B",
         text: "The Virtual DOM is an in-memory description of the UI that React diffs before touching the real DOM; the Shadow DOM is an unrelated browser feature for encapsulating a component's markup and styles",
         isCorrect: true,
-        explanation: "Correct. One is a React implementation detail, the other is a native browser API \u2014 they only sound alike."
+        explanation: "Correct. One is a React implementation detail, the other is a native browser API, they only sound alike."
       },
       {
         id: "C",
@@ -8212,18 +8373,19 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
         id: "D",
         text: "The Virtual DOM is a faster reimplementation of the real DOM that React renders to directly",
         isCorrect: false,
-        explanation: "React never renders to the Virtual DOM as an output target \u2014 it eventually commits to the real DOM."
+        explanation: "React never renders to the Virtual DOM as an output target, it eventually commits to the real DOM."
       }
     ],
     correctAnswer: "B",
-    explanation: "The Virtual DOM is a plain-object description of what the UI should look like, kept in memory. React builds a new one on each render, diffs it against the previous one, and applies only the differences to the real DOM \u2014 batching the expensive part. The Shadow DOM is something else entirely: a native browser API that gives an element its own encapsulated subtree and scoped styles, used by Web Components. React does not use it to render.",
+    explanation: "The Virtual DOM is a plain-object description of what the UI should look like, kept in memory. React builds a new one on each render, diffs it against the previous one, and applies only the differences to the real DOM, batching the expensive part. The Shadow DOM is something else entirely: a native browser API that gives an element its own encapsulated subtree and scoped styles, used by Web Components. React does not use it to render.",
     interviewLine: "The Virtual DOM is React's diffing strategy; the Shadow DOM is the browser's encapsulation strategy. Same word, unrelated ideas.",
     misconception: "Assuming Virtual DOM and Shadow DOM are two names for the same thing because both contrast with 'the real DOM'.",
     hints: [
       "One of the three is a browser standard that has nothing to do with React."
     ],
     source: "react-17-2025",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/preserving-and-resetting-state"
   },
   {
     id: "react-class-vs-function-components-today",
@@ -8257,7 +8419,7 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
         id: "C",
         text: "Function components, because hooks gave them state and effects and they are now the default for new code",
         isCorrect: true,
-        explanation: "Correct. Classes still work and are not deprecated, but everything new \u2014 including Server Components \u2014 is built around functions."
+        explanation: "Correct. Classes still work and are not deprecated, but everything new, including Server Components, is built around functions."
       },
       {
         id: "D",
@@ -8267,18 +8429,19 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "C",
-    explanation: "Before hooks, function components were limited to presentation and anything stateful had to be a class. Hooks removed that split: useState, useEffect and the rest give function components the full feature set, with less ceremony and no this binding. Class components are not deprecated and still hold one unique capability \u2014 error boundaries need componentDidCatch or getDerivedStateFromError \u2014 but new code should default to functions.",
+    explanation: "Before hooks, function components were limited to presentation and anything stateful had to be a class. Hooks removed that split: useState, useEffect and the rest give function components the full feature set, with less ceremony and no this binding. Class components are not deprecated and still hold one unique capability, error boundaries need componentDidCatch or getDerivedStateFromError, but new code should default to functions.",
     interviewLine: "Hooks collapsed the class/function split. The only thing still requiring a class is an error boundary.",
     misconception: "Believing function components are still 'presentational only'. That distinction ended with hooks.",
     hints: [
       "Is there anything a class can still do that a function cannot?"
     ],
     source: "react-17-2025",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-keys-outside-lists-force-remount",
-    title: "Keys work outside lists too \u2014 and that is how you force a remount",
+    title: "Keys work outside lists too, and that is how you force a remount",
     prompt: "Keys are usually seen on list items. What happens if you put a changing key on a single element?",
     level: "intermediate",
     type: "concept",
@@ -8309,24 +8472,25 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
         id: "C",
         text: "React reuses the instance but re-runs every effect",
         isCorrect: false,
-        explanation: "It does not reuse the instance at all \u2014 the component unmounts and a new one mounts."
+        explanation: "It does not reuse the instance at all, the component unmounts and a new one mounts."
       },
       {
         id: "D",
-        text: "Nothing \u2014 keys are ignored outside of a list",
+        text: "Nothing, keys are ignored outside of a list",
         isCorrect: false,
         explanation: "Keys are part of reconciliation for every element, not just list children."
       }
     ],
     correctAnswer: "B",
-    explanation: "Keys tell React which element a node corresponds to between renders. In a list that prevents index-based mismatching, but the mechanism is general: change an element's key and React concludes it is a different element, so it unmounts the old instance \u2014 losing all its state \u2014 and mounts a new one. That makes a changing key the idiomatic way to reset a form or a component when its subject changes, rather than syncing state in an effect.",
-    interviewLine: "A key is an identity claim. Change the identity and React remounts \u2014 which is the cleanest way to reset state on a prop change.",
+    explanation: "Keys tell React which element a node corresponds to between renders. In a list that prevents index-based mismatching, but the mechanism is general: change an element's key and React concludes it is a different element, so it unmounts the old instance, losing all its state, and mounts a new one. That makes a changing key the idiomatic way to reset a form or a component when its subject changes, rather than syncing state in an effect.",
+    interviewLine: "A key is an identity claim. Change the identity and React remounts, which is the cleanest way to reset state on a prop change.",
     misconception: "Thinking keys only matter inside .map(). They control reconciliation identity everywhere.",
     hints: [
       "What does React do when it decides an element is not the same element as last time?"
     ],
     source: "react-17-2025",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/rendering-lists#keeping-list-items-in-order-with-key"
   },
   {
     id: "react-why-jsx-needs-transpiling",
@@ -8349,7 +8513,7 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
         id: "A",
         text: "Because browsers can parse JSX but do so too slowly for production",
         isCorrect: false,
-        explanation: "No browser parses JSX at all \u2014 it is a syntax error in every JavaScript engine."
+        explanation: "No browser parses JSX at all, it is a syntax error in every JavaScript engine."
       },
       {
         id: "B",
@@ -8365,20 +8529,21 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       },
       {
         id: "D",
-        text: "Because JSX is not valid JavaScript syntax \u2014 a compiler rewrites it into plain function calls",
+        text: "Because JSX is not valid JavaScript syntax, a compiler rewrites it into plain function calls",
         isCorrect: true,
         explanation: "Correct. No engine parses JSX; Babel, SWC or TypeScript rewrite each element into a function call that returns a plain object."
       }
     ],
     correctAnswer: "D",
-    explanation: "JSX is a syntax extension, not JavaScript. No engine can parse <h1>Hello</h1>, so a compiler rewrites every element into a function call \u2014 createElement under the classic transform, jsx under the modern automatic runtime. Those calls return plain objects describing the UI, which is exactly the Virtual DOM React then diffs. This is also why JSX expressions are just values: you can store them in variables and return them from functions.",
+    explanation: "JSX is a syntax extension, not JavaScript. No engine can parse <h1>Hello</h1>, so a compiler rewrites every element into a function call, createElement under the classic transform, jsx under the modern automatic runtime. Those calls return plain objects describing the UI, which is exactly the Virtual DOM React then diffs. This is also why JSX expressions are just values: you can store them in variables and return them from functions.",
     interviewLine: "JSX is sugar over function calls that return objects. The compiler is what turns markup-shaped syntax into those calls.",
     misconception: "Thinking JSX compiles to HTML. It compiles to function calls that produce JavaScript objects.",
     hints: [
       "What would a JavaScript engine do if you handed it an angle bracket in expression position?"
     ],
     source: "react-17-2025",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-styling-approaches-tradeoffs",
@@ -8413,7 +8578,7 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
         id: "C",
         text: "Inline style objects support the full range of CSS, including pseudo-classes and media queries",
         isCorrect: false,
-        explanation: "Inline styles cannot express :hover, ::before or media queries \u2014 those need a real stylesheet."
+        explanation: "Inline styles cannot express :hover, :before or media queries, those need a real stylesheet."
       },
       {
         id: "D",
@@ -8430,7 +8595,8 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       "Which approach cannot express a hover state?"
     ],
     source: "react-17-2025",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-error-boundaries-what-they-catch",
@@ -8445,14 +8611,14 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       "error-boundaries",
       "error-handling"
     ],
-    codeSnippet: "class ErrorBoundary extends React.Component {\n  state = { hasError: false };\n  static getDerivedStateFromError() {\n    return { hasError: true };\n  }\n  componentDidCatch(error, info) {\n    log(error, info);\n  }\n  render() {\n    return this.state.hasError ? <Fallback /> : this.props.children;\n  }\n}",
+    codeSnippet: "class ErrorBoundary extends React.Component {\n  state = { hasError: false };\n  static getDerivedStateFromError() {\n    return { hasError: true };\n  }\n  componentDidCatch(error, info) {\n    log(error, info);\n  }\n  render() {\n    return this.state.hasError ? <Fallback />: this.props.children;\n  }\n}",
     codeLanguage: "tsx",
     options: [
       {
         id: "A",
         text: "A rejected promise in an async click handler",
         isCorrect: true,
-        explanation: "Correct. Event handlers run outside the render/commit phases, so their errors escape the boundary \u2014 catch them yourself."
+        explanation: "Correct. Event handlers run outside the render/commit phases, so their errors escape the boundary, catch them yourself."
       },
       {
         id: "B",
@@ -8474,14 +8640,15 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Without a boundary, an error during rendering unmounts the whole tree \u2014 React would rather show nothing than something wrong. An error boundary catches errors thrown while rendering, in lifecycle methods, and in constructors anywhere below it, and swaps in a fallback. It does not catch errors in event handlers, in asynchronous code such as setTimeout or a rejected promise, or in the boundary's own render \u2014 those are outside the render/commit path and need ordinary try/catch. Error boundaries still require a class, or a wrapper like react-error-boundary.",
+    explanation: "Without a boundary, an error during rendering unmounts the whole tree, React would rather show nothing than something wrong. An error boundary catches errors thrown while rendering, in lifecycle methods, and in constructors anywhere below it, and swaps in a fallback. It does not catch errors in event handlers, in asynchronous code such as setTimeout or a rejected promise, or in the boundary's own render, those are outside the render/commit path and need ordinary try/catch. Error boundaries still require a class, or a wrapper like react-error-boundary.",
     interviewLine: "Error boundaries catch the render path, not the interaction path. A failing click handler needs its own try/catch.",
     misconception: "Expecting a boundary to catch everything inside it. Event handlers and async callbacks are not covered.",
     hints: [
       "Which of these runs outside the render and commit phases?"
     ],
     source: "react-17-2025",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary"
   },
   {
     id: "react-portals-dom-vs-react-tree",
@@ -8520,19 +8687,20 @@ export const REACT_RENDERING_QUESTIONS: QuizQuestion[] = [
       },
       {
         id: "D",
-        text: "Nowhere \u2014 portals stop event propagation entirely",
+        text: "Nowhere, portals stop event propagation entirely",
         isCorrect: false,
         explanation: "Events propagate normally; the portal changes where the node lives, not whether events bubble."
       }
     ],
     correctAnswer: "C",
-    explanation: "createPortal changes where a subtree is inserted in the DOM \u2014 useful for modals and tooltips that must escape a parent's overflow or stacking context \u2014 but it does not move the component in the React tree. Context still flows down from the rendering parent, and events still bubble up to it, which is what makes a portalled modal feel like a normal child despite living elsewhere in the document. Only the physical DOM position changes.",
+    explanation: "createPortal changes where a subtree is inserted in the DOM, useful for modals and tooltips that must escape a parent's overflow or stacking context, but it does not move the component in the React tree. Context still flows down from the rendering parent, and events still bubble up to it, which is what makes a portalled modal feel like a normal child despite living elsewhere in the document. Only the physical DOM position changes.",
     interviewLine: "A portal moves the node, not the component. Context and events still follow the React tree.",
     misconception: "Expecting a portalled child to lose context or bubble to its DOM host. Both follow the React tree.",
     hints: [
       "Does the portal change the component hierarchy, or only the DOM placement?"
     ],
     source: "react-17-2025",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react-dom.dev/reference/react-dom/createPortal"
   }
 ];

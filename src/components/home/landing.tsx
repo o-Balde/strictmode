@@ -12,6 +12,7 @@ import { motion, useReducedMotion } from "motion/react";
 import { Brand } from "@/components/brand";
 import { BANK_TOTAL, QUESTION_INDEX } from "@/lib/question-index";
 import { stagger, staggerChild } from "@/lib/motion";
+import { OptionText } from "@/components/option-text";
 import { cn } from "@/lib/utils";
 
 const SAMPLE_OPTIONS = ["0 then 0", "0 then 1", "1 then 2", "2 then 2"];
@@ -160,7 +161,7 @@ export function Landing() {
                   transition={{ delay: 0.6 + i * 0.07 }}
                   className={cn(
                     "term-scanlines relative flex items-center gap-[11px] rounded-[7px] border bg-[var(--term-bg)]",
-                    "term-glow px-[13px] py-[11px] font-mono text-[13.5px] text-[var(--term-fg)]",
+                    "px-[13px] py-[11px] text-[13.5px] text-bone",
                     i === 2 ? "border-flame" : "border-[#123c0c]",
                   )}
                 >
@@ -172,7 +173,7 @@ export function Landing() {
                   >
                     {String.fromCharCode(65 + i)}
                   </span>
-                  {text}
+                  <OptionText text={text} terminal />
                 </motion.div>
               ))}
             </div>

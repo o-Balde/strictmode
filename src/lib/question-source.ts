@@ -22,8 +22,14 @@ export interface QuestionSource {
   getQuestions(ids: string[]): Promise<QuestionPayload[]>;
 }
 
-/** Content is immutable and content-addressed by id, so cache it hard. */
-const STATIC_FETCH: RequestInit = { cache: "force-cache" };
+/**
+ * Content is immutable and content-addressed by id, so cache it hard in
+ * production. In development the payloads are rewritten on every build, and a
+ * forced cache would keep serving the previous run's question.
+ */
+const STATIC_FETCH: RequestInit = {
+  cache: process.env.NODE_ENV === "production" ? "force-cache" : "no-store",
+};
 
 export const staticSource: QuestionSource = {
   async getQuestions(ids) {

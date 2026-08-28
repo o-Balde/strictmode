@@ -14,6 +14,7 @@ import { CodeWell } from "@/components/code-well";
 import { TypeBadge, typeLabel } from "@/components/chrome";
 import { stagger, staggerChild } from "@/lib/motion";
 import { isTerminalOption, optionsAreTerminal } from "@/lib/terminal";
+import { OptionText } from "@/components/option-text";
 
 const LETTERS = ["A", "B", "C", "D"] as const;
 
@@ -155,12 +156,12 @@ export function QuestionView({
                 className={cn(
                   "min-w-0 flex-1",
                   optionTerminal
-                    ? "term-glow font-mono text-[13px]/[1.7] whitespace-pre-wrap text-[var(--term-fg)]"
-                    : "text-bone font-mono text-[13.5px]/[1.6]",
+                    ? "text-bone text-[13.5px]/[1.7] whitespace-pre-wrap"
+                    : "text-bone text-[13.5px]/[1.6]",
                   selected === option.id && !optionTerminal && "text-parchment",
                 )}
               >
-                {option.text}
+                <OptionText text={option.text} terminal={optionTerminal} />
               </span>
             </motion.button>
             );

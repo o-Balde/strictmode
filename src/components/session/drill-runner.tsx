@@ -16,6 +16,7 @@ import { useDrillSession, type SessionMode } from "@/hooks/use-drill-session";
 import { useProgress } from "@/components/progress-provider";
 import { QuestionView } from "@/components/session/question-view";
 import { Feedback } from "@/components/session/feedback";
+import { HintPanel } from "@/components/session/hint-panel";
 import { ElapsedClock, SegmentStrip, type SegmentState } from "@/components/chrome";
 import { questionSwap, unfold } from "@/lib/motion";
 import { dayNumber, nextStreak } from "@/lib/progress";
@@ -158,6 +159,11 @@ export function DrillRunner({
         skip();
         return;
       }
+      if (key === "h") {
+        e.preventDefault();
+        document.querySelector<HTMLButtonElement>("[data-hint-toggle]")?.click();
+        return;
+      }
       if ((key === "enter" || key === " ") && selected) {
         e.preventDefault();
         submit();
@@ -246,7 +252,13 @@ export function DrillRunner({
         </AnimatePresence>
 
         {!answered ? (
-          <div className="flex items-center justify-between px-6 pb-8 sm:px-10">
+          <div className="px-6 pb-5 sm:px-10">
+            <HintPanel hint={current.hints[0]} docsUrl={current.docsUrl} />
+          </div>
+        ) : null}
+
+        {!answered ? (
+          <div className="flex items-center justify-between gap-4 px-6 pb-8 sm:px-10">
             <button
               type="button"
               onClick={skip}

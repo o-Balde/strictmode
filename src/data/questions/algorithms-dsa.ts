@@ -47,10 +47,11 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the peculiarities of using useState?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the peculiarities of using useState?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the peculiarities of using useState?."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "44-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   },
   {
     id: "algorithms-what-is-react-reconciliation",
@@ -97,10 +98,11 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is React Reconciliation?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is React Reconciliation?.",
     hints: [
-      "Consider the core principles and trade-offs of What is React Reconciliation?."
+      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
     source: "44-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/render-and-commit"
   },
   {
     id: "algorithms-what-is-reconciliation-how-does-reacts-diffing-algorith",
@@ -119,7 +121,7 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "So this concept is not very difficult once you read its rules and uses! What you should do here is get familiar with the concept right now, have a read, and then, in the end, I\ufffd\ufffd\ufffdll mention a short answer-like paragraph that you can use during your interview.",
+        text: "So this concept is not very difficult once you read its rules and uses! What you should do here is get familiar with the concept right now, have a read, and then, in the end, I, ll mention a short answer-like paragraph that you can use during your interview.",
         isCorrect: true,
         explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
       },
@@ -143,19 +145,20 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "So this concept is not very difficult once you read its rules and uses! What you should do here is get familiar with the concept right now, have a read, and then, in the end, I\ufffd\ufffd\ufffdll mention a short answer-like paragraph that you can use during your interview. So to understand Reconciliation: Reconciliation is the internal algo process React uses to compare the previous Virtual DOM tree with the newly generated Virtual DOM tree after a state or prop changes. Here\ufffd\ufffd\ufffds what happens to make it work: React re-renders the component to produce a new Virtual DOM tree It compares this tree with the previous Virtual DOM tree It computes a set of changes called mutations It applies only those changes to the real DOM And so, this process is used to avoid unnecessary DOM operations, which end up being expensive. Coming to React\ufffd\ufffd\ufffds Diffing Algorithm - React\ufffd\ufffd\ufffds Diffing Algorithm is a part of the reconciliation process, where its primary goal is to minimize DOM updates. Now it is important to understand how this takes place, so please look into this carefully: The expensive but optimal component is (O(n3 ) ) React uses a tree-diffing algorithm to minimize DOM Hence, it uses a heuristic O(n) algorithm instead of specific assumptions What it essentially does is compare root elements, then if they differ, the entire subtree is replaced, and if they match, then its attributes and the recursion on children are compared. There are some rules of diffing that you really need to keep in mind:",
+    explanation: "So this concept is not very difficult once you read its rules and uses! What you should do here is get familiar with the concept right now, have a read, and then, in the end, I, ll mention a short answer-like paragraph that you can use during your interview. So to understand Reconciliation: Reconciliation is the internal algo process React uses to compare the previous Virtual DOM tree with the newly generated Virtual DOM tree after a state or prop changes. Here, s what happens to make it work: React re-renders the component to produce a new Virtual DOM tree It compares this tree with the previous Virtual DOM tree It computes a set of changes called mutations It applies only those changes to the real DOM And so, this process is used to avoid unnecessary DOM operations, which end up being expensive. Coming to React, s Diffing Algorithm - React, s Diffing Algorithm is a part of the reconciliation process, where its primary goal is to minimize DOM updates. Now it is important to understand how this takes place, so please look into this carefully: The expensive but optimal component is (O(n3 ) ) React uses a tree-diffing algorithm to minimize DOM Hence, it uses a heuristic O(n) algorithm instead of specific assumptions What it essentially does is compare root elements, then if they differ, the entire subtree is replaced, and if they match, then its attributes and the recursion on children are compared. There are some rules of diffing that you really need to keep in mind:",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is reconciliation? How does React's diffing algorithm work?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is reconciliation? How does React's diffing algorithm work?.",
     hints: [
-      "Consider the core principles and trade-offs of What is reconciliation? How does React's diffing algorithm work?."
+      "State the time and space cost before you optimise. A Set or Map turns a repeated scan into a lookup."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map"
   },
   {
     id: "algorithms-keys-are-used-to-match-children-in-lists",
     title: "Keys are used to match children in lists",
-    prompt: "Keys are used to match children in lists \u2014 explain the behavior and mechanism.",
+    prompt: "Keys are used to match children in lists, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "algorithms",
@@ -194,14 +197,15 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "When reconciling lists, React uses the key prop to identify which items have stayed the same, moved, or have been added or removed For eg: There is a reason why these keys are critical: They provide a stable identity across renders Prevent incorrect reuse of DOM nodes Preserve component state Without stable keys, React falls back to index-based matching What you must also note is that Reordering can lead to state being assigned to the wrong component, unnecessary re-renders, and even UI inconsistencies. You must be wondering why the complexity is O(n) instead of O(n\ufffd\ufffd) - A full tree comparison would require checking every node against every other node, which then results in O(n\ufffd\ufffd) complexity. React reduces this to O(n) using two assumptions: Different element types produce different subtrees - Because of this, there is no need to deeply compare and replace directly Keys uniquely identify elements in lists - Enables efficient matching of children without exhaustive comparison These heuristics make React perform reconciliation in linear time relative to the number of elements. Now this was all you needed to know about reconciliation, Here\ufffd\ufffd\ufffds a short answer that you can prepare if the interviewer isn\ufffd\ufffd\ufffdt expecting anything detailed: Reconciliation is the process by which React compares the previous and new Virtual DOM trees to compute the minimal DOM updates. It uses a heuristic O(n) diffing algorithm based on two assumptions: elements of different types produce different trees, and keys provide a stable identity for list elements. Now you are good to go!",
+    explanation: "When reconciling lists, React uses the key prop to identify which items have stayed the same, moved, or have been added or removed For eg: There is a reason why these keys are critical: They provide a stable identity across renders Prevent incorrect reuse of DOM nodes Preserve component state Without stable keys, React falls back to index-based matching What you must also note is that Reordering can lead to state being assigned to the wrong component, unnecessary re-renders, and even UI inconsistencies. You must be wondering why the complexity is O(n) instead of O(n, ) - A full tree comparison would require checking every node against every other node, which then results in O(n, ) complexity. React reduces this to O(n) using two assumptions: Different element types produce different subtrees - Because of this, there is no need to deeply compare and replace directly Keys uniquely identify elements in lists - Enables efficient matching of children without exhaustive comparison These heuristics make React perform reconciliation in linear time relative to the number of elements. Now this was all you needed to know about reconciliation, Here, s a short answer that you can prepare if the interviewer isn, t expecting anything detailed: Reconciliation is the process by which React compares the previous and new Virtual DOM trees to compute the minimal DOM updates. It uses a heuristic O(n) diffing algorithm based on two assumptions: elements of different types produce different trees, and keys provide a stable identity for list elements. Now you are good to go!",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Keys are used to match children in lists.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Keys are used to match children in lists.",
     hints: [
-      "Consider the core principles and trade-offs of Keys are used to match children in lists."
+      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/render-and-commit"
   },
   {
     id: "algorithms-what-are-react-portals-and-when-would-you-use-them",
@@ -245,14 +249,15 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "When you work with React, you might have noticed how a component renders inside its parent in the DOM. But even so, there are times when you don\ufffd\ufffd\ufffdt necessarily want that. For example, think of a modal. Even if the modal component is written deep inside your component tree, you usually want it to appear at the top of the page, and not stuck inside some parent container. And to mitigate this very problem, Portals are used. So, you don't have to render from your usual place, and run something like: This practically commands to render the component elsewhere in the DOM. Now, here\ufffd\ufffd\ufffds how you can set it up: First write, Then, from anywhere in your React app, you can render into it like this: Even when it\ufffd\ufffd\ufffds done, you need to keep this in mind that even though the modal is rendered outside the parent in the DOM, it still showcases like a normal React child. Which means that it still receives props, it still has access to context, and event handling still works. In fact, event bubbling can take place here. If you click inside a modal rendered via a portal, the event still bubbles up to the parent component in the React tree, and not based on the DOM structure. Now, coming to when to use these Portals, You can say that mostly when UI needs to \ufffd\ufffd\ufffdbreak out\ufffd\ufffd\ufffd of layout restrictions like overflow: hidden, z-index stacking issues. That\ufffd\ufffd\ufffds why they\ufffd\ufffd\ufffdre commonly used for modals, tooltips, dropdowns, and toast notifications.",
+    explanation: "When you work with React, you might have noticed how a component renders inside its parent in the DOM. But even so, there are times when you don, t necessarily want that. For example, think of a modal. Even if the modal component is written deep inside your component tree, you usually want it to appear at the top of the page, and not stuck inside some parent container. And to mitigate this very problem, Portals are used. So, you don't have to render from your usual place, and run something like: This practically commands to render the component elsewhere in the DOM. Now, here, s how you can set it up: First write, Then, from anywhere in your React app, you can render into it like this: Even when it, s done, you need to keep this in mind that even though the modal is rendered outside the parent in the DOM, it still showcases like a normal React child. Which means that it still receives props, it still has access to context, and event handling still works. In fact, event bubbling can take place here. If you click inside a modal rendered via a portal, the event still bubbles up to the parent component in the React tree, and not based on the DOM structure. Now, coming to when to use these Portals, You can say that mostly when UI needs to, break out, of layout restrictions like overflow: hidden, z-index stacking issues. That, s why they, re commonly used for modals, tooltips, dropdowns, and toast notifications.",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are React Portals, and when would you use them?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are React Portals, and when would you use them?.",
     hints: [
-      "Consider the core principles and trade-offs of What are React Portals, and when would you use them?."
+      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/learn/render-and-commit"
   },
   {
     id: "algorithms-how-does-virtual-dom-in-react-work-what-are-its-benefit",
@@ -299,10 +304,11 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How does virtual DOM in React work? What are its benefits and downsides?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How does virtual DOM in React work? What are its benefits and downsides?.",
     hints: [
-      "Consider the core principles and trade-offs of How does virtual DOM in React work? What are its benefits and downsides?."
+      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/render-and-commit"
   },
   {
     id: "algorithms-what-is-react-fiber",
@@ -349,10 +355,11 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is React Fiber?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is React Fiber?.",
     hints: [
-      "Consider the core principles and trade-offs of What is React Fiber?."
+      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
     source: "100-react",
-    estimatedMinutes: 4
+    estimatedMinutes: 4,
+    bestPracticeRef: "https://react.dev/learn/render-and-commit"
   },
   {
     id: "algorithms-what-is-the-purpose-of-the-push-and-replace-methods-of",
@@ -399,15 +406,16 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the purpose of the push and replace methods of history?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the purpose of the push and replace methods of history?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the purpose of the push and replace methods of history?."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   },
   {
     id: "algorithms-virtual-dom-how-react-batches-updates-and-minimizes-dom",
     title: "Virtual DOM: How React Batches Updates and Minimizes DOM Work",
-    prompt: "Virtual DOM: How React Batches Updates and Minimizes DOM Work \u2014 explain the behavior and mechanism.",
+    prompt: "Virtual DOM: How React Batches Updates and Minimizes DOM Work, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "algorithms",
@@ -449,15 +457,16 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Virtual DOM: How React Batches Updates and Minimizes DOM Work.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Virtual DOM: How React Batches Updates and Minimizes DOM Work.",
     hints: [
-      "Consider the core principles and trade-offs of Virtual DOM: How React Batches Updates and Minimizes DOM Work."
+      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/render-and-commit"
   },
   {
     id: "algorithms-types-of-side-effects-in-components-and-how-to-manage-c",
     title: "Types of Side Effects in Components and How to Manage Cleanup",
-    prompt: "Types of Side Effects in Components and How to Manage Cleanup \u2014 explain the behavior and mechanism.",
+    prompt: "Types of Side Effects in Components and How to Manage Cleanup, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "algorithms",
@@ -499,10 +508,11 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Types of Side Effects in Components and How to Manage Cleanup.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Types of Side Effects in Components and How to Manage Cleanup.",
     hints: [
-      "Consider the core principles and trade-offs of Types of Side Effects in Components and How to Manage Cleanup."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   },
   {
     id: "algorithms-what-is-cra-and-its-benefits",
@@ -546,14 +556,15 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The create-react-app CLI tool allows you to quickly create & run React applications with no configuration step. Let's create Todo App using CRA: It includes everything we need to build a React app: React, JSX, ES6, and Flow syntax support. Language extras beyond ES6 like the object spread operator. Autoprefixed CSS, so you don\ufffd\ufffd\ufffdt need -webkit- or other prefixes. A fast interactive unit test runner with built-in support for coverage reporting. A live development server that warns about common mistakes. A build script to bundle JS, CSS, and images for production, with hashes and sourcemaps. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "The create-react-app CLI tool allows you to quickly create & run React applications with no configuration step. Let's create Todo App using CRA: It includes everything we need to build a React app: React, JSX, ES6, and Flow syntax support. Language extras beyond ES6 like the object spread operator. Autoprefixed CSS, so you don, t need -webkit- or other prefixes. A fast interactive unit test runner with built-in support for coverage reporting. A live development server that warns about common mistakes. A build script to bundle JS, CSS, and images for production, with hashes and sourcemaps.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is CRA and its benefits?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is CRA and its benefits?.",
     hints: [
-      "Consider the core principles and trade-offs of What is CRA and its benefits?."
+      "Measure before optimising. Ask what the user actually waits for."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://web.dev/articles/vitals"
   },
   {
     id: "algorithms-what-are-the-lifecycle-methods-going-to-be-deprecated-i",
@@ -596,14 +607,15 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The following lifecycle methods going to be unsafe coding practices and will be more problematic with async rendering. componentWillMount() componentWillReceiveProps() componentWillUpdate() Starting with React v16.3 these methods are aliased with UNSAFE_ prefix, and the unprefixed version will be removed in React v17. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "The following lifecycle methods going to be unsafe coding practices and will be more problematic with async rendering. componentWillMount() componentWillReceiveProps() componentWillUpdate() Starting with React v16.3 these methods are aliased with UNSAFE_ prefix, and the unprefixed version will be removed in React v17.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the lifecycle methods going to be deprecated in React v16?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the lifecycle methods going to be deprecated in React v16?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the lifecycle methods going to be deprecated in React v16?."
+      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/render-and-commit"
   },
   {
     id: "react-how-to-combine-multiple-inline-style-objects",
@@ -618,7 +630,7 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
       "data-structures",
       "junior"
     ],
-    codeSnippet: "<button style={{ ...styles.panel.button, ...styles.panel.submitButton }}>{'Submit'}</button>\n\n<button style={[styles.panel.button, styles.panel.submitButton]}>{'Submit'}</button>",
+    codeSnippet: "<button style={{ ...styles.panel.button...styles.panel.submitButton }}>{'Submit'}</button>\n\n<button style={[styles.panel.button, styles.panel.submitButton]}>{'Submit'}</button>",
     codeLanguage: "tsx",
     options: [
       {
@@ -647,14 +659,15 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "You can use spread operator in regular React: If you're using React Native then you can use the array notation: \ufffd\ufffd\ufffd Back to Top",
+    explanation: "You can use spread operator in regular React: If you're using React Native then you can use the array notation:: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to combine multiple inline style objects?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to combine multiple inline style objects?.",
     hints: [
-      "Consider the core principles and trade-offs of How to combine multiple inline style objects?."
+      "State the time and space cost before you optimise. A Set or Map turns a repeated scan into a lookup."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map"
   },
   {
     id: "algorithms-how-to-update-a-component-every-second",
@@ -698,14 +711,15 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "You need to use setInterval() to trigger the change, but you also need to clear the timer when the component unmounts to prevent errors and memory leaks. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "You need to use setInterval() to trigger the change, but you also need to clear the timer when the component unmounts to prevent errors and memory leaks.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to update a component every second?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to update a component every second?.",
     hints: [
-      "Consider the core principles and trade-offs of How to update a component every second?."
+      "Measure before optimising. Ask what the user actually waits for."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://web.dev/articles/vitals"
   },
   {
     id: "algorithms-how-do-you-apply-vendor-prefixes-to-inline-styles-in-re",
@@ -749,14 +763,15 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "React does not apply vendor prefixes automatically. You need to add vendor prefixes manually. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "React does not apply vendor prefixes automatically. You need to add vendor prefixes manually.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you apply vendor prefixes to inline styles in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you apply vendor prefixes to inline styles in React?.",
     hints: [
-      "Consider the core principles and trade-offs of How do you apply vendor prefixes to inline styles in React?."
+      "A regular function resolves this at call time from its receiver. An arrow captures it at definition time."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this"
   },
   {
     id: "algorithms-why-is-a-component-constructor-called-only-once",
@@ -799,14 +814,15 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "React's reconciliation algorithm assumes that without any information to the contrary, if a custom component appears in the same place on subsequent renders, it's the same component as before, so reuses the previous instance rather than creating a new one. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "React's reconciliation algorithm assumes that without any information to the contrary, if a custom component appears in the same place on subsequent renders, it's the same component as before, so reuses the previous instance rather than creating a new one.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Why is a component constructor called only once?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Why is a component constructor called only once?.",
     hints: [
-      "Consider the core principles and trade-offs of Why is a component constructor called only once?."
+      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/render-and-commit"
   },
   {
     id: "react-what-is-the-purpose-of-push-and-replace-methods-of-hist",
@@ -849,14 +865,15 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "A history instance has two methods for navigation purpose. push() replace() If you think of the history as an array of visited locations, push() will add a new location to the array and replace() will replace the current location in the array with the new one. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "A history instance has two methods for navigation purpose. push() replace() If you think of the history as an array of visited locations, push() will add a new location to the array and replace() will replace the current location in the array with the new one.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the purpose of push() and replace() methods of history?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the purpose of push() and replace() methods of history?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the purpose of push() and replace() methods of history?."
+      "State the time and space cost before you optimise. A Set or Map turns a repeated scan into a lookup."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map"
   },
   {
     id: "algorithms-how-relay-is-different-from-redux",
@@ -903,10 +920,11 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How Relay is different from Redux?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How Relay is different from Redux?.",
     hints: [
-      "Consider the core principles and trade-offs of How Relay is different from Redux?."
+      "Ask where the state genuinely belongs: the URL, a server cache, a global store, or one component."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/choosing-the-state-structure"
   },
   {
     id: "algorithms-can-you-describe-about-componentdidcatch-lifecycle-meth",
@@ -950,14 +968,15 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The componentDidCatch lifecycle method is invoked after an error has been thrown by a descendant component. The method receives two parameters, error: - The error object which was thrown info: - An object with a componentStack key contains the information about which component threw the error. The method structure would be as follows \ufffd\ufffd\ufffd Back to Top",
+    explanation: "The componentDidCatch lifecycle method is invoked after an error has been thrown by a descendant component. The method receives two parameters, error: - The error object which was thrown info: - An object with a componentStack key contains the information about which component threw the error. The method structure would be as follows: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Can you describe about componentDidCatch lifecycle method signature?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Can you describe about componentDidCatch lifecycle method signature?.",
     hints: [
-      "Consider the core principles and trade-offs of Can you describe about componentDidCatch lifecycle method signature?."
+      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/render-and-commit"
   },
   {
     id: "algorithms-what-is-diffing-algorithm",
@@ -1000,14 +1019,15 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "React needs to use algorithms to find out how to efficiently update the UI to match the most recent tree. The diffing algorithms is generating the minimum number of operations to transform one tree into another. However, the algorithms have a complexity in the order of O(n3) where n is the number of elements in the tree. In this case, for displaying 1000 elements would require in the order of one billion comparisons. This is far too expensive. Instead, React implements a heuristic O(n) algorithm based on two assumptions: Two elements of different types will produce different trees. The developer can hint at which child elements may be stable across different renders with a key prop. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "React needs to use algorithms to find out how to efficiently update the UI to match the most recent tree. The diffing algorithms is generating the minimum number of operations to transform one tree into another. However, the algorithms have a complexity in the order of O(n3) where n is the number of elements in the tree. In this case, for displaying 1000 elements would require in the order of one billion comparisons. This is far too expensive. Instead, React implements a heuristic O(n) algorithm based on two assumptions: Two elements of different types will produce different trees. The developer can hint at which child elements may be stable across different renders with a key prop.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is diffing algorithm?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is diffing algorithm?.",
     hints: [
-      "Consider the core principles and trade-offs of What is diffing algorithm?."
+      "State the time and space cost before you optimise. A Set or Map turns a repeated scan into a lookup."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map"
   },
   {
     id: "algorithms-what-are-the-rules-covered-by-diffing-algorithm",
@@ -1051,14 +1071,15 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "When diffing two trees, React first compares the two root elements. The behavior is different depending on the types of the root elements. It covers the below rules during reconciliation algorithm, Elements Of Different Types: Whenever the root elements have different types, React will tear down the old tree and build the new tree from scratch. For example, elements to , or from to of different types lead a full rebuild. DOM Elements Of The Same Type: When comparing two React DOM elements of the same type, React looks at the attributes of both, keeps the same underlying DOM node, and only updates the changed attributes. Lets take an example with same DOM elements except className attribute, Component Elements Of The Same Type: When a component updates, the instance stays the same, so that state is maintained across renders. React updates the props of the underlying component instance to match the new element, and calls componentWillReceiveProps() and componentWillUpdate() on the underlying instance. After that, the render() method is called and the diff algorithm recurses on the previous result and the new result. Recursing On Children: when recursing on the children of a DOM node, React just iterates over both lists of children at the same time and generates a mutation whenever there\ufffd\ufffd\ufffds a difference. For example, when adding an element at the end of the children, converting between these two trees works well. Handling keys: React supports a key attribute. When children have keys, React uses the key to match children in the original tree with children in the subsequent tree. For example, adding a key can make the tree conversion efficient, \ufffd\ufffd\ufffd Back to Top",
+    explanation: "When diffing two trees, React first compares the two root elements. The behavior is different depending on the types of the root elements. It covers the below rules during reconciliation algorithm, Elements Of Different Types: Whenever the root elements have different types, React will tear down the old tree and build the new tree from scratch. For example, elements to, or from to of different types lead a full rebuild. DOM Elements Of The Same Type: When comparing two React DOM elements of the same type, React looks at the attributes of both, keeps the same underlying DOM node, and only updates the changed attributes. Lets take an example with same DOM elements except className attribute, Component Elements Of The Same Type: When a component updates, the instance stays the same, so that state is maintained across renders. React updates the props of the underlying component instance to match the new element, and calls componentWillReceiveProps() and componentWillUpdate() on the underlying instance. After that, the render() method is called and the diff algorithm recurses on the previous result and the new result. Recursing On Children: when recursing on the children of a DOM node, React just iterates over both lists of children at the same time and generates a mutation whenever there, s a difference. For example, when adding an element at the end of the children, converting between these two trees works well. Handling keys: React supports a key attribute. When children have keys, React uses the key to match children in the original tree with children in the subsequent tree. For example, adding a key can make the tree conversion efficient,: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the rules covered by diffing algorithm?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the rules covered by diffing algorithm?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the rules covered by diffing algorithm?."
+      "State the time and space cost before you optimise. A Set or Map turns a repeated scan into a lookup."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map"
   },
   {
     id: "algorithms-what-is-the-typical-use-case-of-portals",
@@ -1077,7 +1098,7 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "React portals are very useful when a parent component has overflow: hidden or has properties that affect the stacking context(z-index,position,opacity etc styles) and you need to visually \ufffd\ufffd\ufffdbreak out\ufffd\ufffd\ufffd of its container.",
+        text: "React portals are very useful when a parent component has overflow: hidden or has properties that affect the stacking context(z-index,position,opacity etc styles) and you need to visually, break out, of its container.",
         isCorrect: true,
         explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
       },
@@ -1101,14 +1122,15 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "React portals are very useful when a parent component has overflow: hidden or has properties that affect the stacking context(z-index,position,opacity etc styles) and you need to visually \ufffd\ufffd\ufffdbreak out\ufffd\ufffd\ufffd of its container. For example, dialogs, global message notifications, hovercards, and tooltips. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "React portals are very useful when a parent component has overflow: hidden or has properties that affect the stacking context(z-index,position,opacity etc styles) and you need to visually, break out, of its container. For example, dialogs, global message notifications, hovercards, and tooltips.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the typical use case of portals?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the typical use case of portals?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the typical use case of portals?."
+      "Ask where the state genuinely belongs: the URL, a server cache, a global store, or one component."
     ],
     source: "300-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/learn/choosing-the-state-structure"
   },
   {
     id: "algorithms-what-is-your-favorite-react-stack",
@@ -1151,14 +1173,15 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Even though the tech stack varies from developer to developer, the most popular stack is used in react boilerplate project code. It mainly uses Redux and redux-saga for state management and asynchronous side-effects, react-router for routing purpose, styled-components for styling react components, axios for invoking REST api, and other supported stack such as webpack, reselect, ESNext, Babel. You can clone the project https://github.com/react-boilerplate/react-boilerplate and start working on any new react project. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Even though the tech stack varies from developer to developer, the most popular stack is used in react boilerplate project code. It mainly uses Redux and redux-saga for state management and asynchronous side-effects, react-router for routing purpose, styled-components for styling react components, axios for invoking REST api, and other supported stack such as webpack, reselect, ESNext, Babel. You can clone the project https://github.com/react-boilerplate/react-boilerplate and start working on any new react project.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is your favorite React stack?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is your favorite React stack?.",
     hints: [
-      "Consider the core principles and trade-offs of What is your favorite React stack?."
+      "await does not block the thread, but it does block the next line."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises"
   },
   {
     id: "algorithms-how-does-new-jsx-transform-different-from-old-transform",
@@ -1178,7 +1201,7 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "The new JSX transform doesn\ufffd\ufffd\ufffdt require React to be in scope.",
+        text: "The new JSX transform doesn, t require React to be in scope.",
         isCorrect: true,
         explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
       },
@@ -1202,19 +1225,20 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The new JSX transform doesn\ufffd\ufffd\ufffdt require React to be in scope. i.e, You don't need to import React package for simple scenarios. Let's take an example to look at the main differences between the old and the new transform, Old Transform: Now JSX transform convert the above code into regular JavaScript as below, New Transform: The new JSX transform doesn't require any React imports Under the hood JSX transform compiles to below code Note: You still need to import React to use Hooks. DEV Community Dropdown menu What's a billboard? Manage preferences Report billboard Build Apps with Google AI Studio \ufffd\ufffd\ufffd\ufffd This track will guide you through Google AI Studio's new \"Build apps with Gemini\" feature, where you can turn a simple text prompt into a fully functional, deployed web application in minutes. Read more \ufffd\ufffd\ufffd Read More Top comments (50) Subscribe Personal Trusted User Create template Templates let you quickly answer FAQs or store snippets for re-use. Submit Preview Dismiss Collapse Expand Jon Deavers Jon Deavers Jon Deavers Follow Jon graduated from the Trilogy full-stack web development boot camp at University of Richmond. He loves building applications on the MERN stack and JAM stack Location Richmond, VA Education Full-Stack Web Development Boot Camp - University of Richmond Joined Sep 6, 2020 \ufffd\ufffd\ufffd Jan 5 '21 Dropdown menu Hide Wow, what a resource. Thanks so much for putting this together. Perfect for interview prep and as a quick reference. Great job Mikhail! Like comment: Like comment: 7 likes Like Comment button Reply Collapse Expand Utsho Sadhak Joy Utsho Sadhak Joy Utsho Sadhak Joy Follow Love to code and solving problems in leetcode. Email utsho233@gmail.com Location Khulna, Bangladesh Joined Apr 29, 2021 \ufffd\ufffd\ufffd Jul 24 '21 Dropdown menu Hide github.com/sudheerj/reactjs-interv... Like comment: Like comment: 4 likes Like Comment button Reply Collapse Expand Michael Sakhniuk Michael Sakhniuk Michael Sakhniuk Follow Senior Software Engineer at Miro Location Yerevan, Armenia Education Engineer Work Frontend Engineer at Miro Joined Nov 22, 2019 \ufffd\ufffd\ufffd Jan 5 '21 Dropdown menu Hide Thank you very much, Jon. I appreciate that \ufffd\ufffd\ufffd\ufffd Like comment: Like comment: 1 like Like Comment button Reply Collapse Expand Ben Halpern Ben Halpern Ben Halpern Follow A Canadian software developer who thinks he\ufffd\ufffd\ufffds funny. Email ben@forem.com Location NY Education Mount Allison University Pronouns He/him Work Co-founder at Forem Joined Dec 26, 2015 \ufffd\ufffd\ufffd Jan 5 '21 Dropdown menu Hide Holy cow! Like comment: Like comment: 4 likes Like Comment button Reply Collapse Expand Divyesh Parmar Divyesh Parmar Divyesh Parmar Follow Exploring the software world with my ukulele :D Location Bhavnagar, Gujarat, India Education B.Tech ICT Work Software Engineer at Postman Inc Joined Apr 5, 2018 \ufffd\ufffd\ufffd Jan 5 '21 Dropdown menu Hide \ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd\ufffd Like comment: Like comment: 4 likes Like Comment button Reply Collapse Expand Matt Heslington Matt Heslington Matt Heslington Follow Location Bali, Indonesia Joined Dec 26, 2019 \ufffd\ufffd\ufffd Jan 5 '21 Dropdown menu Hide Wow. That's a tremendous post Mikhail. Go treat yourself, you deserve it Like comment: Like comment: 3 likes Like Comment button Reply Collapse Expand Alex Booker Alex Booker Alex Booker Follow Location London, United Kingdom Education None Pronouns he/him Work Content creator who codes @ Clerk | Host of the Scrimba Podcast Joined Nov 8, 2017 \ufffd\ufffd\ufffd Jan 9 '21 Dropdown menu Hide Omg, you made my 3,000+ word post on React interview questions (with answers) look short \ufffd\ufffd\ufffd\ufffd Like comment: Like comment: 2 likes Like Comment button Reply Collapse Expand Michael Sakhniuk Michael Sakhniuk Michael Sakhniuk Follow Senior Software Engineer at Miro Location Yerevan, Armenia Education Engineer Work Frontend Engineer at Miro Joined Nov 22, 2019 \ufffd\ufffd\ufffd Jan 9 '21 Dropdown menu Hide Our articles hugest longreads \ufffd\ufffd\ufffd\ufffd That\ufffd\ufffd\ufffds why I\ufffd\ufffd\ufffdve decided to create project with questions. Here it is: iq.js.org/ If you want, you can add your questions there too Like comment: Like comment: 2 likes Like Comment button Reply Collapse Expand Alex Booker Alex Booker Alex Booker Follow Location London, United Kingdom Education None Pronouns he/him Work Content creator who codes @ Clerk | Host of the Scrimba Podcast Joined Nov 8, 2017 \ufffd\ufffd\ufffd Jan 9 '21 Dropdown menu Hide Great idea \ufffd\ufffd\ufffd\ufffd You're more than welcome to copy my questions and answers but please can you add a link to and credit me over at scrimba.com/articles/react-intervi... Like comment: Like comment: 2 likes Like Comment button Reply Collapse Expand Utsho Sadhak Joy Utsho Sadhak Joy Utsho Sadhak Joy Follow Love to code and solving problems in leetcode. Email utsho233@gmail.com Location Khulna, Bangladesh Joined Apr 29, 2021 \ufffd\ufffd\ufffd Jul 24 '21 Dropdown menu Hide github.com/sudheerj/reactjs-interv... Like comment: Like comment: 1 like Like Comment button Reply Collapse Expand Alex Booker Alex Booker Alex Booker Follow Location London, United Kingdom Education None Pronouns he/him Work Content creator who codes @ Clerk | Host of the Scrimba Podcast Joined Nov 8, 2017 \ufffd\ufffd\ufffd Jul 26 '21 Dropdown menu Hide What is this? Like comment: Like comment: 1 like Like Thread Thread Utsho Sadhak Joy Utsho Sadhak Joy Utsho Sadhak Joy Follow Love to code and solving problems in leetcode. Email utsho233@gmail.com Location Khulna, Bangladesh Joined Apr 29, 2021 \ufffd\ufffd\ufffd Jul 26 '21 Dropdown menu Hide This is react question. i first found this question from github. Their explanation is better. you can read from there. . . . Like comment: Like comment: 1 like Like Comment button Reply Collapse Expand certifieddev0101 certifieddev0101 certifieddev0101 Follow I am a Full Stack Developer with 8+ years of professional front-end & back-end development experience using React and Node.js Recently, I took part in the development of LMS(Learning Management System Email noru0916@gmail.com Work Midas Tech Joined Jul 11, 2023 \ufffd\ufffd\ufffd Jul 28 '23 Dropdown menu Hide This article is very useful. Actually I have rich experience with react. So I am very interesting for your article. Personally I am freelancer. Now I am looing for a new job. So I think you can help me. I hope you are doing well. I will never disappoint you. \ufffd\ufffd\ufffd\ufffd Like comment: Like comment: 1 like Like Comment button Reply Collapse Expand Vangari Bhanu Prakash Vangari Bhanu Prakash Vangari Bhanu Prakash Follow Eat ; Sleep ; Code ; Repeat;; Location Hyderabad, IN Work Web Designer / Web Developer at Quadato Joined Nov 17, 2020 \ufffd\ufffd\ufffd Jan 6 '21 Dropdown menu Hide Mindblowing! super useful\ufffd\ufffd\ufffd\ufffd Like comment: Like comment: 3 likes Like Comment button Reply Collapse Expand lycha0206 lycha0206 lycha0206 Follow Joined Feb 23, 2023 \ufffd\ufffd\ufffd Sep 18 '23 \ufffd\ufffd\ufffd Edited on Sep 18 \ufffd\ufffd\ufffd Edited Dropdown menu Hide My God, I suppose this is how people \"pass the interview\", and join the company and don't know what they are doing, and then of course, appearing as defensive as possible when they feel they are fake and cannot be \"revealed\". Like comment: Like comment: 1 like Like Comment button Reply Collapse Expand dMarina dMarina dMarina Follow Location Cluj-Napoca, Romania Work Software Developer Joined Apr 13, 2020 \ufffd\ufffd\ufffd Jan 5 '21 Dropdown menu Hide That is very useful. Thanks Like comment: Like comment: 1 like Like Comment button Reply Collapse Expand Michael Sakhniuk Michael Sakhniuk Michael Sakhniuk Follow Senior Software Engineer at Miro Location Yerevan, Armenia Education Engineer Work Frontend Engineer at Miro Joined Nov 22, 2019 \ufffd\ufffd\ufffd Jan 5 '21 Dropdown menu Hide Thank you, Marina! Like comment: Like comment: 1 like Like Comment button Reply Collapse Expand Af Af Af Follow A very enthusiastic software developer Joined Jun 20, 2022 \ufffd\ufffd\ufffd Oct 16 '22 Dropdown menu Hide test Like comment: Like comment: 1 like Like Comment button Reply Collapse Expand MirAli Mobasheri MirAli Mobasheri MirAli Mobasheri Follow A web & mobile front-end developer. Programming enthusiast. And in pursuit of ideas. Location Tehran, Iran Work Front-end developer at Teanab Parto Shargh Joined Oct 14, 2020 \ufffd\ufffd\ufffd Jan 8 '21 Dropdown menu Hide That's a great job, Mikhail. A very useful resource. Thanks a lot! \ufffd\ufffd\ufffd\ufffd Like comment: Like comment: 2 likes Like Comment button Reply View full discussion (50 comments) Some comments may only be visible to logged-in visitors. Sign in to view all comments. Code of Conduct \ufffd\ufffd\ufffd Are you sure you want to hide this comment? It will become hidden in your post, but will still be visible via the comment's permalink. Hide child comments as well Confirm For further actions, you may consider blocking this person and/or reporting abuse The DEV Team Promoted Dropdown menu What's a billboard? Manage preferences Report billboard",
+    explanation: "The new JSX transform doesn, t require React to be in scope. i.e, You don't need to import React package for simple scenarios. Let's take an example to look at the main differences between the old and the new transform, Old Transform: Now JSX transform convert the above code into regular JavaScript as below, New Transform: The new JSX transform doesn't require any React imports Under the hood JSX transform compiles to below code Note: You still need to import React to use Hooks. DEV Community Dropdown menu What's a billboard? Manage preferences Report billboard Build Apps with Google AI Studio, This track will guide you through Google AI Studio's new \"Build apps with Gemini\" feature, where you can turn a simple text prompt into a fully functional, deployed web application in minutes. Read more, Read More Top comments (50) Subscribe Personal Trusted User Create template Templates let you quickly answer FAQs or store snippets for re-use. Submit Preview Dismiss Collapse Expand Jon Deavers Jon Deavers Jon Deavers Follow Jon graduated from the Trilogy full-stack web development boot camp at University of Richmond. He loves building applications on the MERN stack and JAM stack Location Richmond, VA Education Full-Stack Web Development Boot Camp - University of Richmond Joined Sep 6, 2020, Jan 5 '21 Dropdown menu Hide Wow, what a resource. Thanks so much for putting this together. Perfect for interview prep and as a quick reference. Great job Mikhail! Like comment: Like comment: 7 likes Like Comment button Reply Collapse Expand Utsho Sadhak Joy Utsho Sadhak Joy Utsho Sadhak Joy Follow Love to code and solving problems in leetcode. Email utsho233@gmail.com Location Khulna, Bangladesh Joined Apr 29, 2021, Jul 24 '21 Dropdown menu Hide github.com/sudheerj/reactjs-interv. Like comment: Like comment: 4 likes Like Comment button Reply Collapse Expand Michael Sakhniuk Michael Sakhniuk Michael Sakhniuk Follow Senior Software Engineer at Miro Location Yerevan, Armenia Education Engineer Work Frontend Engineer at Miro Joined Nov 22, 2019, Jan 5 '21 Dropdown menu Hide Thank you very much, Jon. I appreciate that, Like comment: Like comment: 1 like Like Comment button Reply Collapse Expand Ben Halpern Ben Halpern Ben Halpern Follow A Canadian software developer who thinks he, s funny. Email ben@forem.com Location NY Education Mount Allison University Pronouns He/him Work Co-founder at Forem Joined Dec 26, 2015, Jan 5 '21 Dropdown menu Hide Holy cow! Like comment: Like comment: 4 likes Like Comment button Reply Collapse Expand Divyesh Parmar Divyesh Parmar Divyesh Parmar Follow Exploring the software world with my ukulele :D Location Bhavnagar, Gujarat, India Education B.Tech ICT Work Software Engineer at Postman Inc Joined Apr 5, 2018, Jan 5 '21 Dropdown menu Hide, Like comment: Like comment: 4 likes Like Comment button Reply Collapse Expand Matt Heslington Matt Heslington Matt Heslington Follow Location Bali, Indonesia Joined Dec 26, 2019, Jan 5 '21 Dropdown menu Hide Wow. That's a tremendous post Mikhail. Go treat yourself, you deserve it Like comment: Like comment: 3 likes Like Comment button Reply Collapse Expand Alex Booker Alex Booker Alex Booker Follow Location London, United Kingdom Education None Pronouns he/him Work Content creator who codes @ Clerk | Host of the Scrimba Podcast Joined Nov 8, 2017, Jan 9 '21 Dropdown menu Hide Omg, you made my 3,000+ word post on React interview questions (with answers) look short, Like comment: Like comment: 2 likes Like Comment button Reply Collapse Expand Michael Sakhniuk Michael Sakhniuk Michael Sakhniuk Follow Senior Software Engineer at Miro Location Yerevan, Armenia Education Engineer Work Frontend Engineer at Miro Joined Nov 22, 2019, Jan 9 '21 Dropdown menu Hide Our articles hugest longreads, That, s why I, ve decided to create project with questions. Here it is: iq.js.org/ If you want, you can add your questions there too Like comment: Like comment: 2 likes Like Comment button Reply Collapse Expand Alex Booker Alex Booker Alex Booker Follow Location London, United Kingdom Education None Pronouns he/him Work Content creator who codes @ Clerk | Host of the Scrimba Podcast Joined Nov 8, 2017, Jan 9 '21 Dropdown menu Hide Great idea, You're more than welcome to copy my questions and answers but please can you add a link to and credit me over at scrimba.com/articles/react-intervi. Like comment: Like comment: 2 likes Like Comment button Reply Collapse Expand Utsho Sadhak Joy Utsho Sadhak Joy Utsho Sadhak Joy Follow Love to code and solving problems in leetcode. Email utsho233@gmail.com Location Khulna, Bangladesh Joined Apr 29, 2021, Jul 24 '21 Dropdown menu Hide github.com/sudheerj/reactjs-interv. Like comment: Like comment: 1 like Like Comment button Reply Collapse Expand Alex Booker Alex Booker Alex Booker Follow Location London, United Kingdom Education None Pronouns he/him Work Content creator who codes @ Clerk | Host of the Scrimba Podcast Joined Nov 8, 2017, Jul 26 '21 Dropdown menu Hide What is this? Like comment: Like comment: 1 like Like Thread Thread Utsho Sadhak Joy Utsho Sadhak Joy Utsho Sadhak Joy Follow Love to code and solving problems in leetcode. Email utsho233@gmail.com Location Khulna, Bangladesh Joined Apr 29, 2021, Jul 26 '21 Dropdown menu Hide This is react question. i first found this question from github. Their explanation is better. you can read from there.. Like comment: Like comment: 1 like Like Comment button Reply Collapse Expand certifieddev0101 certifieddev0101 certifieddev0101 Follow I am a Full Stack Developer with 8+ years of professional front-end & back-end development experience using React and Node.js Recently, I took part in the development of LMS(Learning Management System Email noru0916@gmail.com Work Midas Tech Joined Jul 11, 2023, Jul 28 '23 Dropdown menu Hide This article is very useful. Actually I have rich experience with react. So I am very interesting for your article. Personally I am freelancer. Now I am looing for a new job. So I think you can help me. I hope you are doing well. I will never disappoint you., Like comment: Like comment: 1 like Like Comment button Reply Collapse Expand Vangari Bhanu Prakash Vangari Bhanu Prakash Vangari Bhanu Prakash Follow Eat; Sleep; Code; Repeat; Location Hyderabad, IN Work Web Designer / Web Developer at Quadato Joined Nov 17, 2020, Jan 6 '21 Dropdown menu Hide Mindblowing! super useful, Like comment: Like comment: 3 likes Like Comment button Reply Collapse Expand lycha0206 lycha0206 lycha0206 Follow Joined Feb 23, 2023, Sep 18 '23, Edited on Sep 18, Edited Dropdown menu Hide My God, I suppose this is how people \"pass the interview\", and join the company and don't know what they are doing, and then of course, appearing as defensive as possible when they feel they are fake and cannot be \"revealed\". Like comment: Like comment: 1 like Like Comment button Reply Collapse Expand dMarina dMarina dMarina Follow Location Cluj-Napoca, Romania Work Software Developer Joined Apr 13, 2020, Jan 5 '21 Dropdown menu Hide That is very useful. Thanks Like comment: Like comment: 1 like Like Comment button Reply Collapse Expand Michael Sakhniuk Michael Sakhniuk Michael Sakhniuk Follow Senior Software Engineer at Miro Location Yerevan, Armenia Education Engineer Work Frontend Engineer at Miro Joined Nov 22, 2019, Jan 5 '21 Dropdown menu Hide Thank you, Marina! Like comment: Like comment: 1 like Like Comment button Reply Collapse Expand Af Af Af Follow A very enthusiastic software developer Joined Jun 20, 2022, Oct 16 '22 Dropdown menu Hide test Like comment: Like comment: 1 like Like Comment button Reply Collapse Expand MirAli Mobasheri MirAli Mobasheri MirAli Mobasheri Follow A web & mobile front-end developer. Programming enthusiast. And in pursuit of ideas. Location Tehran, Iran Work Front-end developer at Teanab Parto Shargh Joined Oct 14, 2020, Jan 8 '21 Dropdown menu Hide That's a great job, Mikhail. A very useful resource. Thanks a lot!, Like comment: Like comment: 2 likes Like Comment button Reply View full discussion (50 comments) Some comments may only be visible to logged-in visitors. Sign in to view all comments. Code of Conduct, Are you sure you want to hide this comment? It will become hidden in your post, but will still be visible via the comment's permalink. Hide child comments as well Confirm For further actions, you may consider blocking this person and/or reporting abuse The DEV Team Promoted Dropdown menu What's a billboard? Manage preferences Report billboard",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How does new JSX transform different from old transform?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How does new JSX transform different from old transform?.",
     hints: [
-      "Consider the core principles and trade-offs of How does new JSX transform different from old transform?."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   },
   {
     id: "algorithms-product-of-array-except-self",
     title: "Product of Array Except Self",
-    prompt: "Product of Array Except Self \u2014 explain the behavior and mechanism.",
+    prompt: "Product of Array Except Self, explain the behavior and mechanism.",
     level: "intermediate",
     type: "output",
     category: "algorithms",
@@ -1256,15 +1280,16 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Product of Array Except Self.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Product of Array Except Self.",
     hints: [
-      "Consider the core principles and trade-offs of Product of Array Except Self."
+      "State the time and space cost before you optimise. A Set or Map turns a repeated scan into a lookup."
     ],
     source: "dsa-interview",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map"
   },
   {
     id: "algorithms-minimum-window-substring",
     title: "Minimum Window Substring",
-    prompt: "Minimum Window Substring \u2014 explain the behavior and mechanism.",
+    prompt: "Minimum Window Substring, explain the behavior and mechanism.",
     level: "intermediate",
     type: "concept",
     category: "algorithms",
@@ -1306,9 +1331,10 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Minimum Window Substring.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Minimum Window Substring.",
     hints: [
-      "Consider the core principles and trade-offs of Minimum Window Substring."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "dsa-interview",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   }
 ];

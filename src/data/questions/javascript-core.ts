@@ -47,15 +47,16 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to handle asynchronous actions in Redux Thunk?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to handle asynchronous actions in Redux Thunk?.",
     hints: [
-      "Consider the core principles and trade-offs of How to handle asynchronous actions in Redux Thunk?."
+      "Ask where the state genuinely belongs: the URL, a server cache, a global store, or one component."
     ],
     source: "44-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://redux.js.org/style-guide/"
   },
   {
     id: "react-explain-strict-mode-in-react",
     title: "Explain Strict Mode in React.",
-    prompt: "Explain Strict Mode in React. \u2014 explain the behavior and mechanism.",
+    prompt: "Explain Strict Mode in React., explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -95,13 +96,14 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "A",
     explanation: "StrictMode is a tool added in version 16.3 of React to highlight potential problems in an application. It performs additional checks on the application. To enable StrictMode, <React.StrictMode> tags need to be added inside the application: StrictMode currently helps with the following issues: Identifying components with unsafe lifecycle methods: Certain lifecycle methods are unsafe to use in asynchronous react applications. With the use of third-party libraries, it becomes difficult to ensure that certain lifecycle methods are not used. StrictMode helps in providing us with a warning if any of the class components use an unsafe lifecycle method. Warning about the usage of legacy string API: If one is using an older version of React, callback ref is the recommended way to manage refs instead of using the string refs. StrictMode gives a warning if we are using string refs to manage refs. Warning about the usage of findDOMNode: Previously, findDOMNode( ) method was used to search the tree of a DOM node. This method is deprecated in React. Hence, the StrictMode gives us a warning about the usage of this method. Warning about the usage of legacy context API (because the API is error-prone).",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain Strict Mode in React..",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain Strict Mode in React..",
+    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain Strict Mode in React.",
+    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain Strict Mode in React.",
     hints: [
-      "Consider the core principles and trade-offs of Explain Strict Mode in React.."
+      "StrictMode double-invokes render and effects in development, so an effect that is not idempotent shows its seams immediately."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/StrictMode"
   },
   {
     id: "react-what-are-error-boundaries-in-react-for",
@@ -148,15 +150,16 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are error boundaries in React for?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are error boundaries in React for?.",
     hints: [
-      "Consider the core principles and trade-offs of What are error boundaries in React for?."
+      "Error boundaries catch the render path, not the interaction path. An event handler needs its own try/catch."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/Component#catching-rendering-errors-with-an-error-boundary"
   },
   {
     id: "react-discuss-synthetic-events-in-react",
     title: "Discuss synthetic events in React",
-    prompt: "Discuss synthetic events in React \u2014 explain the behavior and mechanism.",
+    prompt: "Discuss synthetic events in React, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "react",
@@ -199,10 +202,11 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Discuss synthetic events in React.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Discuss synthetic events in React.",
     hints: [
-      "Consider the core principles and trade-offs of Discuss synthetic events in React."
+      "React wraps native events in a synthetic event with one consistent API, delegated from the root."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react-dom/components/common#react-event-object"
   },
   {
     id: "react-how-do-you-test-asynchronous-code-in-react-components",
@@ -250,10 +254,11 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you test asynchronous code in React components?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you test asynchronous code in React components?.",
     hints: [
-      "Consider the core principles and trade-offs of How do you test asynchronous code in React components?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-are-actions-in-react-19",
@@ -297,14 +302,15 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "By convention, an Action is an async function passed to a React API that runs it inside a transition: useActionState, startTransition (from useTransition), or a <form action={...}> prop. React tracks pending state, surfaces errors, and applies updates inside a transition so the UI stays responsive. This removes the usual boilerplate of toggling a loading flag, wrapping in try/catch, and managing error and data state separately.",
+    explanation: "By convention, an Action is an async function passed to a React API that runs it inside a transition: useActionState, startTransition (from useTransition), or a <form action={.}> prop. React tracks pending state, surfaces errors, and applies updates inside a transition so the UI stays responsive. This removes the usual boilerplate of toggling a loading flag, wrapping in try/catch, and managing error and data state separately.",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are Actions in React 19?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are Actions in React 19?.",
     hints: [
-      "Consider the core principles and trade-offs of What are Actions in React 19?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-explain-styled-components-in-react",
@@ -347,14 +353,15 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Styled-components lets you write component-scoped CSS inside JavaScript. Install:npm i styled-components Example: import styled from 'styled-components';const Button = styled.div width: 100px; cursor: pointer; text-decoration: none;;export default Button;",
+    explanation: "Styled-components lets you write component-scoped CSS inside JavaScript. Install:npm i styled-components Example: import styled from 'styled-components';const Button = styled.div width: 100px; cursor: pointer; text-decoration: none;export default Button;",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain Styled Components in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain Styled Components in React?.",
     hints: [
-      "Consider the core principles and trade-offs of Explain Styled Components in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-is-axios-and-how-to-use-it-in-react",
@@ -401,15 +408,16 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is Axios, and How to Use it in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is Axios, and How to Use it in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What is Axios, and How to Use it in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "javascript-explain-hooks-common-ones-and-how-to-use-them-correctly",
     title: "Explain Hooks: Common Ones and How to Use Them Correctly",
-    prompt: "Explain Hooks: Common Ones and How to Use Them Correctly \u2014 explain the behavior and mechanism.",
+    prompt: "Explain Hooks: Common Ones and How to Use Them Correctly, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "javascript",
@@ -452,15 +460,16 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain Hooks: Common Ones and How to Use Them Correctly.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain Hooks: Common Ones and How to Use Them Correctly.",
     hints: [
-      "Consider the core principles and trade-offs of Explain Hooks: Common Ones and How to Use Them Correctly."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   },
   {
     id: "javascript-hooks-vs-classes-performance-tradeoffs-and-common-pitfa",
-    title: "Hooks vs Classes Performance \ufffd\ufffd\ufffd Tradeoffs and Common Pitfalls",
-    prompt: "Hooks vs Classes Performance \ufffd\ufffd\ufffd Tradeoffs and Common Pitfalls \u2014 explain the behavior and mechanism.",
+    title: "Hooks vs Classes Performance, Tradeoffs and Common Pitfalls",
+    prompt: "Hooks vs Classes Performance, Tradeoffs and Common Pitfalls, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "javascript",
@@ -500,18 +509,19 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "A",
     explanation: "Hooks remove instance allocation and binding overhead present in classes and enable flatter component composition. But closures create different performance considerations.Performance notes: Hooks let you avoid wrapper components like some HOCs, reducing tree depth. Beware creating new functions/objects inline; they break referential equality and trigger child updates unless memoized. Profile with React DevTools profiler and Chrome to identify hotspots. Optimization tactics: Use React.memo, useCallback, and useMemo judiciously. Prefer immutable updates to make shallow comparisons effective.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Hooks vs Classes Performance \ufffd\ufffd\ufffd Tradeoffs and Common Pitfalls.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Hooks vs Classes Performance \ufffd\ufffd\ufffd Tradeoffs and Common Pitfalls.",
+    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Hooks vs Classes Performance, Tradeoffs and Common Pitfalls.",
+    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Hooks vs Classes Performance, Tradeoffs and Common Pitfalls.",
     hints: [
-      "Consider the core principles and trade-offs of Hooks vs Classes Performance \ufffd\ufffd\ufffd Tradeoffs and Common Pitfalls."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   },
   {
     id: "javascript-hooks-compared-to-classes-practical-differences",
-    title: "Hooks Compared to Classes \ufffd\ufffd\ufffd Practical Differences",
-    prompt: "Hooks Compared to Classes \ufffd\ufffd\ufffd Practical Differences \u2014 explain the behavior and mechanism.",
+    title: "Hooks Compared to Classes, Practical Differences",
+    prompt: "Hooks Compared to Classes, Practical Differences, explain the behavior and mechanism.",
     level: "intermediate",
     type: "concept",
     category: "javascript",
@@ -551,13 +561,14 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "A",
     explanation: "Syntax: hooks use functions; classes use class syntax and this. State setup: useState and useReducer vs this.state and setState. Lifecycle: useEffect vs lifecycle methods. Reuse: custom hooks replace many HOC and render-prop patterns. Instances: functions avoid instance creation but can introduce closure traps.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Hooks Compared to Classes \ufffd\ufffd\ufffd Practical Differences.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Hooks Compared to Classes \ufffd\ufffd\ufffd Practical Differences.",
+    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Hooks Compared to Classes, Practical Differences.",
+    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Hooks Compared to Classes, Practical Differences.",
     hints: [
-      "Consider the core principles and trade-offs of Hooks Compared to Classes \ufffd\ufffd\ufffd Practical Differences."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "150-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   },
   {
     id: "react-does-hirevue-detect-ai-cheating-what-gets-flagged-2026",
@@ -600,14 +611,15 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "HireVue's async video interviews don't record your screen. The real signals are response-similarity scoring and browser tab logging. Here's exactly what\ufffd\ufffd\ufffd June 18, 202617 min AI Interview Tools With Real Proof They Work (2026) Most AI interview tools claim they're undetectable and get you hired. Only one shows face-shown video of real interviews and verified offer letters. June 12, 202621 min",
+    explanation: "HireVue's async video interviews don't record your screen. The real signals are response-similarity scoring and browser tab logging. Here's exactly what, June 18, 202617 min AI Interview Tools With Real Proof They Work (2026) Most AI interview tools claim they're undetectable and get you hired. Only one shows face-shown video of real interviews and verified offer letters. June 12, 202621 min",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Does HireVue Detect AI Cheating? What Gets Flagged (2026).",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Does HireVue Detect AI Cheating? What Gets Flagged (2026).",
     hints: [
-      "Consider the core principles and trade-offs of Does HireVue Detect AI Cheating? What Gets Flagged (2026)."
+      "await does not block the thread, but it does block the next line."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises"
   },
   {
     id: "javascript-how-to-create-refs",
@@ -651,14 +663,15 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "There are two approaches This is a recently added approach. Refs are created using React.createRef() method and attached to React elements via the ref attribute. In order to use refs throughout the component, just assign the ref to the instance property within constructor. You can also use ref callbacks approach regardless of React version. For example, the search bar component's input element accessed as follows, You can also use refs in function components using closures. Note: You can also use inline ref callbacks even though it is not a recommended approach \ufffd\ufffd\ufffd Back to Top",
+    explanation: "There are two approaches This is a recently added approach. Refs are created using React.createRef() method and attached to React elements via the ref attribute. In order to use refs throughout the component, just assign the ref to the instance property within constructor. You can also use ref callbacks approach regardless of React version. For example, the search bar component's input element accessed as follows, You can also use refs in function components using closures. Note: You can also use inline ref callbacks even though it is not a recommended approach: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to create refs?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to create refs?.",
     hints: [
-      "Consider the core principles and trade-offs of How to create refs?."
+      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/render-and-commit"
   },
   {
     id: "javascript-what-is-the-recommended-approach-of-removing-an-array-e",
@@ -702,14 +715,15 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The better approach is to use Array.prototype.filter() method. For example, let's create a removeItem() method for updating the state. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "The better approach is to use Array.prototype.filter() method. For example, let's create a removeItem() method for updating the state.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the recommended approach of removing an array element in React state?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the recommended approach of removing an array element in React state?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the recommended approach of removing an array element in React state?."
+      "State the time and space cost before you optimise. A Set or Map turns a repeated scan into a lookup."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map"
   },
   {
     id: "react-is-it-possible-to-use-asyncawait-in-plain-react",
@@ -752,14 +766,15 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "If you want to use async/await in React, you will need Babel and transform-async-to-generator plugin. React Native ships with Babel and a set of transforms. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "If you want to use async/await in React, you will need Babel and transform-async-to-generator plugin. React Native ships with Babel and a set of transforms.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Is it possible to use async/await in plain React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Is it possible to use async/await in plain React?.",
     hints: [
-      "Consider the core principles and trade-offs of Is it possible to use async/await in plain React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "react-what-are-the-advantages-of-jest-over-jasmine",
@@ -774,7 +789,7 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
       "async-await",
       "junior"
     ],
-    codeSnippet: "const sum = (a, b) => a + b;\n\nexport default sum;\n\nimport sum from './sum';\n\ntest('adds 1 + 2 to equal 3', () => {\n  expect(sum(1, 2)).toBe(3);\n});\n\n{\n  \"scripts\": {\n    \"test\": \"jest\"\n  }\n}\n\n$ yarn test\nPASS ./sum.test.js\n\ufffd\ufffd\ufffd adds 1 + 2 to equal 3 (2ms)",
+    codeSnippet: "const sum = (a, b) => a + b;\n\nexport default sum;\n\nimport sum from './sum';\n\ntest('adds 1 + 2 to equal 3', () => {\n  expect(sum(1, 2)).toBe(3);\n});\n\n{\n  \"scripts\": {\n    \"test\": \"jest\"\n  }\n}\n\n$ yarn test\nPASS ./sum.test.js\n adds 1 + 2 to equal 3 (2ms)",
     codeLanguage: "typescript",
     options: [
       {
@@ -803,14 +818,15 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "There are couple of advantages compared to Jasmine: Automatically finds tests to execute in your source code. Automatically mocks dependencies when running your tests. Allows you to test asynchronous code synchronously. Runs your tests with a fake DOM implementation (via jsdom) so that your tests can be run on the command line. Runs tests in parallel processes so that they finish sooner. \ufffd\ufffd\ufffd Back to Top Give a simple example of Jest test case Let's write a test for a function that adds two numbers in sum.js file: Create a file named sum.test.js which contains actual test: And then add the following section to your package.json: Finally, run yarn test or npm test and Jest will print a result: React Redux \ufffd\ufffd\ufffd Back to Top",
+    explanation: "There are couple of advantages compared to Jasmine: Automatically finds tests to execute in your source code. Automatically mocks dependencies when running your tests. Allows you to test asynchronous code synchronously. Runs your tests with a fake DOM implementation (via jsdom) so that your tests can be run on the command line. Runs tests in parallel processes so that they finish sooner., Give a simple example of Jest test case Let's write a test for a function that adds two numbers in sum.js file: Create a file named sum.test.js which contains actual test: And then add the following section to your package.json: Finally, run yarn test or npm test and Jest will print a result: React Redux: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the advantages of Jest over Jasmine?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the advantages of Jest over Jasmine?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the advantages of Jest over Jasmine?."
+      "Test what the user does, not how the component stores it. Query by role, assert on output."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://testing-library.com/docs/queries/about/#priority"
   },
   {
     id: "react-how-to-make-ajax-request-in-redux",
@@ -854,14 +870,15 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "You can use redux-thunk middleware which allows you to define async actions. Let's take an example of fetching specific account as an AJAX call using fetch API: \ufffd\ufffd\ufffd Back to Top",
+    explanation: "You can use redux-thunk middleware which allows you to define async actions. Let's take an example of fetching specific account as an AJAX call using fetch API:: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to make AJAX request in Redux?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to make AJAX request in Redux?.",
     hints: [
-      "Consider the core principles and trade-offs of How to make AJAX request in Redux?."
+      "Ask where the state genuinely belongs: the URL, a server cache, a global store, or one component."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://redux.js.org/style-guide/"
   },
   {
     id: "react-what-is-redux-saga",
@@ -876,7 +893,7 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
       "async-await",
       "junior"
     ],
-    codeSnippet: "$ npm install --save redux-saga",
+    codeSnippet: "$ npm install, save redux-saga",
     codeLanguage: "typescript",
     options: [
       {
@@ -905,14 +922,15 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "redux-saga is a library that aims to make side effects (asynchronous things like data fetching and impure things like accessing the browser cache) in React/Redux applications easier and better. It is available in NPM: \ufffd\ufffd\ufffd Back to Top",
+    explanation: "redux-saga is a library that aims to make side effects (asynchronous things like data fetching and impure things like accessing the browser cache) in React/Redux applications easier and better. It is available in NPM:: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is redux-saga?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is redux-saga?.",
     hints: [
-      "Consider the core principles and trade-offs of What is redux-saga?."
+      "Ask where the state genuinely belongs: the URL, a server cache, a global store, or one component."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://redux.js.org/style-guide/"
   },
   {
     id: "react-what-are-the-differences-between-call-and-put-in-redux",
@@ -956,14 +974,15 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Both call() and put() are effect creator functions. call() function is used to create effect description, which instructs middleware to call the promise. put() function creates an effect, which instructs middleware to dispatch an action to the store. Let's take example of how these effects work for fetching particular user data. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Both call() and put() are effect creator functions. call() function is used to create effect description, which instructs middleware to call the promise. put() function creates an effect, which instructs middleware to dispatch an action to the store. Let's take example of how these effects work for fetching particular user data.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the differences between call() and put() in redux-saga?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the differences between call() and put() in redux-saga?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the differences between call() and put() in redux-saga?."
+      "Ask where the state genuinely belongs: the URL, a server cache, a global store, or one component."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://redux.js.org/style-guide/"
   },
   {
     id: "react-what-are-the-differences-between-redux-saga-and-redux-t",
@@ -1006,14 +1025,15 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Both Redux Thunk and Redux Saga take care of dealing with side effects. In most of the scenarios, Thunk uses Promises to deal with them, whereas Saga uses Generators. Thunk is simple to use and Promises are familiar to many developers, Sagas/Generators are more powerful but you will need to learn them. But both middleware can coexist, so you can start with Thunks and introduce Sagas when/if you need them. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Both Redux Thunk and Redux Saga take care of dealing with side effects. In most of the scenarios, Thunk uses Promises to deal with them, whereas Saga uses Generators. Thunk is simple to use and Promises are familiar to many developers, Sagas/Generators are more powerful but you will need to learn them. But both middleware can coexist, so you can start with Thunks and introduce Sagas when/if you need them.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the differences between redux-saga and redux-thunk?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the differences between redux-saga and redux-thunk?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the differences between redux-saga and redux-thunk?."
+      "Ask where the state genuinely belongs: the URL, a server cache, a global store, or one component."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://redux.js.org/style-guide/"
   },
   {
     id: "react-what-are-the-main-features-of-redux-form",
@@ -1056,14 +1076,15 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Some of the main features of Redux Form are: Field values persistence via Redux store. Validation (sync/async) and submission. Formatting, parsing and normalization of field values. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Some of the main features of Redux Form are: Field values persistence via Redux store. Validation (sync/async) and submission. Formatting, parsing and normalization of field values.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the main features of Redux Form?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the main features of Redux Form?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the main features of Redux Form?."
+      "A controlled input reads its value from state, so React is the single source of truth. An uncontrolled one leaves it in the DOM."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react-dom/components/input"
   },
   {
     id: "react-what-are-typical-middleware-choices-for-handling-asynch",
@@ -1106,14 +1127,15 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Some of the popular middleware choices for handling asynchronous calls in Redux eco system are Redux Thunk, Redux Promise, Redux Saga. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Some of the popular middleware choices for handling asynchronous calls in Redux eco system are Redux Thunk, Redux Promise, Redux Saga.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are typical middleware choices for handling asynchronous calls in Redux?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are typical middleware choices for handling asynchronous calls in Redux?.",
     hints: [
-      "Consider the core principles and trade-offs of What are typical middleware choices for handling asynchronous calls in Redux?."
+      "Ask where the state genuinely belongs: the URL, a server cache, a global store, or one component."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://redux.js.org/style-guide/"
   },
   {
     id: "javascript-stale-closure-primitive-capture",
@@ -1158,14 +1180,15 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "D",
-    explanation: "Both inner functions close over the same lexical environment, so they genuinely share count \u2014 increment() really does take it from 0 to 2. But message is a const string whose template literal was evaluated once, at the moment of assignment, when count was still 0. Closing over a variable does not make the expression that produced its value re-run. To see the current count, log would have to read count itself and build the string at call time.",
+    explanation: "Both inner functions close over the same lexical environment, so they genuinely share count, increment() really does take it from 0 to 2. But message is a const string whose template literal was evaluated once, at the moment of assignment, when count was still 0. Closing over a variable does not make the expression that produced its value re-run. To see the current count, log would have to read count itself and build the string at call time.",
     interviewLine: "Closures capture variables, not expressions. If the variable holds a primitive computed once, you're looking at a snapshot forever.",
     misconception: "Believing a closure re-evaluates the expression it closed over. It closes over the binding, and that binding already holds a finished value.",
     hints: [
-      "When exactly does the template literal run \u2014 at assignment or at call?"
+      "When exactly does the template literal run, at assignment or at call?"
     ],
     source: "advanced-javascript-6",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Closures"
   },
   {
     id: "javascript-this-binding-three-ways",
@@ -1201,7 +1224,7 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
         id: "C",
         text: "Hello, Alex!\nNormal: undefined\nArrow: undefined",
         isCorrect: false,
-        explanation: "The arrow function has no this of its own \u2014 it uses greet's, which is user."
+        explanation: "The arrow function has no this of its own, it uses greet's, which is user."
       },
       {
         id: "D",
@@ -1211,14 +1234,15 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "B",
-    explanation: "Regular functions resolve this at call time from how they were called. user.greet() has a receiver, so this is user. innerNormal() is called bare \u2014 no receiver \u2014 so this is undefined in strict mode (modules are always strict), and reading .name off it throws or yields undefined depending on the surrounding mode. Arrow functions have no this binding at all; innerArrow closes over greet's this lexically, so it still sees user.",
+    explanation: "Regular functions resolve this at call time from how they were called. user.greet() has a receiver, so this is user. innerNormal() is called bare, no receiver, so this is undefined in strict mode (modules are always strict), and reading .name off it throws or yields undefined depending on the surrounding mode. Arrow functions have no this binding at all; innerArrow closes over greet's this lexically, so it still sees user.",
     interviewLine: "Regular functions bind this at call time; arrows capture it at definition time. Losing a receiver loses the binding.",
-    misconception: "Expecting a nested regular function to inherit the enclosing method's this. It does not \u2014 only arrows do.",
+    misconception: "Expecting a nested regular function to inherit the enclosing method's this. It does not, only arrows do.",
     hints: [
       "Look at how each function is *called*, not where it is written."
     ],
     source: "advanced-javascript-6",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this"
   },
   {
     id: "javascript-prototype-read-vs-write",
@@ -1254,7 +1278,7 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
         id: "C",
         text: "150\n[\"gold\", \"land\", \"debts\"]\n150\n[\"gold\", \"land\", \"debts\"]",
         isCorrect: false,
-        explanation: "grandparent.coins is never written to \u2014 the assignment lands on child."
+        explanation: "grandparent.coins is never written to, the assignment lands on child."
       },
       {
         id: "D",
@@ -1264,14 +1288,15 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Reads walk the prototype chain; writes always land on the object that received the assignment. child.coins += 50 reads 100 from grandparent, adds 50, then writes 150 as a new own property on child \u2014 grandparent keeps 100. child.heritage.push('debts') never assigns to heritage at all: it reads the array reference from grandparent and mutates that one shared array, so every object in the chain sees the new element. To get an independent array you must assign a copy: child.heritage = [...child.heritage, 'debts'].",
+    explanation: "Reads walk the prototype chain; writes always land on the object that received the assignment. child.coins += 50 reads 100 from grandparent, adds 50, then writes 150 as a new own property on child, grandparent keeps 100. child.heritage.push('debts') never assigns to heritage at all: it reads the array reference from grandparent and mutates that one shared array, so every object in the chain sees the new element. To get an independent array you must assign a copy: child.heritage = [.child.heritage, 'debts'].",
     interviewLine: "Reads go up the prototype chain; writes stop at the object you wrote to. Mutating a value you read is not a write.",
     misconception: "Assuming reading a property through the prototype chain gives you your own copy of it. You get the same reference.",
     hints: [
       "Which of these two lines actually performs an assignment?"
     ],
     source: "advanced-javascript-6",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide"
   },
   {
     id: "javascript-event-loop-macrotask-microtask-order",
@@ -1317,14 +1342,15 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "B",
-    explanation: "The synchronous pass prints 1, then 4 (the Promise executor runs immediately), then 7. Only when the stack empties does the microtask queue drain: the .then prints 5 and schedules another setTimeout. Then macrotasks run in scheduling order \u2014 the first timer prints 2 and queues a microtask, which drains before the next macrotask, giving 3. Finally the timer scheduled from inside the microtask prints 6.",
-    interviewLine: "The whole microtask queue drains between every pair of macrotasks \u2014 not one microtask, all of them.",
+    explanation: "The synchronous pass prints 1, then 4 (the Promise executor runs immediately), then 7. Only when the stack empties does the microtask queue drain: the .then prints 5 and schedules another setTimeout. Then macrotasks run in scheduling order, the first timer prints 2 and queues a microtask, which drains before the next macrotask, giving 3. Finally the timer scheduled from inside the microtask prints 6.",
+    interviewLine: "The whole microtask queue drains between every pair of macrotasks, not one microtask, all of them.",
     misconception: "Treating setTimeout(fn, 0) as 'run next'. It is a macrotask and always yields to every pending microtask.",
     hints: [
       "A Promise executor body is synchronous; only .then callbacks are deferred."
     ],
     source: "advanced-javascript-6",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this"
   },
   {
     id: "javascript-await-vs-then-scheduling",
@@ -1354,7 +1380,7 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
         id: "B",
         text: "1 2 3 6 4 5",
         isCorrect: false,
-        explanation: "Code after await never runs synchronously \u2014 it always resumes in a microtask."
+        explanation: "Code after await never runs synchronously, it always resumes in a microtask."
       },
       {
         id: "C",
@@ -1370,14 +1396,15 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Calling asyncFunc() runs its body synchronously until the first await, so 1 and 2 print in order. The await on an already-resolved promise queues the continuation as a microtask \u2014 and it is queued before the .then chain is registered on the following line. Then 6 prints, ending the synchronous pass. The microtask queue drains in order: 3 (the await continuation), then 4, and only once that handler returns is the second .then queued, giving 5.",
-    interviewLine: "await is a microtask boundary \u2014 the body runs synchronously up to it, and everything after resumes in queue order.",
+    explanation: "Calling asyncFunc() runs its body synchronously until the first await, so 1 and 2 print in order. The await on an already-resolved promise queues the continuation as a microtask, and it is queued before the .then chain is registered on the following line. Then 6 prints, ending the synchronous pass. The microtask queue drains in order: 3 (the await continuation), then 4, and only once that handler returns is the second .then queued, giving 5.",
+    interviewLine: "await is a microtask boundary, the body runs synchronously up to it, and everything after resumes in queue order.",
     misconception: "Assuming a .then registered earlier in the source always runs before an await continuation. What matters is the order the callbacks were queued.",
     hints: [
       "Which continuation reaches the microtask queue first?"
     ],
     source: "advanced-javascript-6",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises"
   },
   {
     id: "javascript-promise-all-fail-fast",
@@ -1406,7 +1433,7 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
         id: "B",
         text: "The array comes back with undefined in the failed position",
         isCorrect: false,
-        explanation: "There is no partial array \u2014 the aggregate promise rejects instead of fulfilling."
+        explanation: "There is no partial array, the aggregate promise rejects instead of fulfilling."
       },
       {
         id: "C",
@@ -1422,14 +1449,15 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Promise.all fulfils with an array of values only if every input fulfils; the first rejection rejects the aggregate immediately with that reason. Two consequences catch people out. The successful results are simply gone \u2014 there is no way to reach them from the rejected promise. And the other operations are not cancelled: they run to completion in the background, so any side effects still happen and a later rejection among them can surface as an unhandled rejection.",
+    explanation: "Promise.all fulfils with an array of values only if every input fulfils; the first rejection rejects the aggregate immediately with that reason. Two consequences catch people out. The successful results are simply gone, there is no way to reach them from the rejected promise. And the other operations are not cancelled: they run to completion in the background, so any side effects still happen and a later rejection among them can surface as an unhandled rejection.",
     interviewLine: "all is fail-fast and all-or-nothing. It doesn't cancel the others, it just stops caring about them.",
     misconception: "Expecting a partial array on failure. You get a rejection, not partial results.",
     hints: [
       "Is there any way to reach the two successful values afterwards?"
     ],
     source: "typescript-masterclass",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise"
   },
   {
     id: "javascript-promise-allsettled-result-shape",
@@ -1456,7 +1484,7 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
       },
       {
         id: "B",
-        text: "[1] \u2014 rejected entries are omitted",
+        text: "[1], rejected entries are omitted",
         isCorrect: false,
         explanation: "Nothing is omitted; the array always has one entry per input, in order."
       },
@@ -1474,14 +1502,15 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Promise.allSettled waits for every input to settle and always fulfils, with one descriptor per input in the original order. A fulfilled entry carries status: 'fulfilled' and value; a rejected entry carries status: 'rejected' and reason. Because it never rejects, it also means none of the inputs produce an unhandled rejection. That makes it the right tool when partial success is acceptable \u2014 fanning out to several independent services, or a batch where you want to report which items failed.",
+    explanation: "Promise.allSettled waits for every input to settle and always fulfils, with one descriptor per input in the original order. A fulfilled entry carries status: 'fulfilled' and value; a rejected entry carries status: 'rejected' and reason. Because it never rejects, it also means none of the inputs produce an unhandled rejection. That makes it the right tool when partial success is acceptable, fanning out to several independent services, or a batch where you want to report which items failed.",
     interviewLine: "allSettled always fulfils and hands you a descriptor per input. Use it when partial success is a real outcome, not a failure.",
     misconception: "Expecting bare values. Every entry is wrapped, so you must branch on status before reading value.",
     hints: [
       "How would you tell success from failure if the values came back bare?"
     ],
     source: "typescript-masterclass",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise"
   },
   {
     id: "javascript-promise-all-vs-allsettled-choice",
@@ -1498,7 +1527,7 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
       "allSettled",
       "design"
     ],
-    codeSnippet: "const [a, b, c] = await Promise.allSettled([loadA(), loadB(), loadC()]);\n\nrender({\n  a: a.status === \"fulfilled\" ? a.value : null,\n  b: b.status === \"fulfilled\" ? b.value : null,\n  c: c.status === \"fulfilled\" ? c.value : null,\n});",
+    codeSnippet: "const [a, b, c] = await Promise.allSettled([loadA(), loadB(), loadC()]);\n\nrender({\n  a: a.status === \"fulfilled\" ? a.value: null,\n  b: b.status === \"fulfilled\" ? b.value: null,\n  c: c.status === \"fulfilled\" ? c.value: null,\n});",
     codeLanguage: "javascript",
     options: [
       {
@@ -1511,7 +1540,7 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
         id: "B",
         text: "Promise.race, to return as soon as the fastest widget resolves",
         isCorrect: false,
-        explanation: "race gives you one result and discards the rest \u2014 wrong shape for rendering three widgets."
+        explanation: "race gives you one result and discards the rest, wrong shape for rendering three widgets."
       },
       {
         id: "C",
@@ -1527,14 +1556,15 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The choice follows from whether the results are interdependent. If you need all three to proceed \u2014 say three parts of a single transaction \u2014 Promise.all is right, because a partial result is meaningless and failing fast is the honest outcome. If the results are independent, as with dashboard widgets, all throws away two perfectly good responses because a third failed. allSettled preserves them and lets each widget render its own error state. The performance is identical either way; both start all the work concurrently.",
+    explanation: "The choice follows from whether the results are interdependent. If you need all three to proceed, say three parts of a single transaction, Promise.all is right, because a partial result is meaningless and failing fast is the honest outcome. If the results are independent, as with dashboard widgets, all throws away two perfectly good responses because a third failed. allSettled preserves them and lets each widget render its own error state. The performance is identical either way; both start all the work concurrently.",
     interviewLine: "all when a partial result is meaningless; allSettled when it isn't. It's a question about your data, not about speed.",
     misconception: "Reaching for Promise.all reflexively and turning one flaky dependency into a blank page.",
     hints: [
       "Is a dashboard with two of three widgets loaded a useful screen, or a failure?"
     ],
     source: "typescript-masterclass",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise"
   },
   {
     id: "javascript-promise-race-vs-any",
@@ -1564,7 +1594,7 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
         id: "B",
         text: "Both fulfil with \"ok\"",
         isCorrect: false,
-        explanation: "race does not skip rejections \u2014 the first settlement wins whatever it is."
+        explanation: "race does not skip rejections, the first settlement wins whatever it is."
       },
       {
         id: "C",
@@ -1580,14 +1610,15 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "D",
-    explanation: "race settles as soon as any input settles, adopting that outcome whether it fulfilled or rejected \u2014 which is what makes it right for timeouts, where you deliberately want the timer's rejection to win. any is success-seeking: it ignores rejections and fulfils with the first value to arrive, rejecting only if every input rejects, and then with an AggregateError carrying all the reasons. Reach for race to bound how long you wait, and for any to take whichever redundant source answers first.",
+    explanation: "race settles as soon as any input settles, adopting that outcome whether it fulfilled or rejected, which is what makes it right for timeouts, where you deliberately want the timer's rejection to win. any is success-seeking: it ignores rejections and fulfils with the first value to arrive, rejecting only if every input rejects, and then with an AggregateError carrying all the reasons. Reach for race to bound how long you wait, and for any to take whichever redundant source answers first.",
     interviewLine: "race takes the first settlement; any takes the first success. That's why race is the timeout tool and any is the redundancy tool.",
     misconception: "Expecting race to skip a rejection and wait for a value. It adopts whatever settles first.",
     hints: [
       "Which of the two can reject before every input has settled?"
     ],
     source: "typescript-masterclass",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise"
   },
   {
     id: "javascript-promise-resolve-semantics",
@@ -1603,7 +1634,7 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
       "promise-resolve",
       "thenable"
     ],
-    codeSnippet: "const p = Promise.resolve(42);\nPromise.resolve(p) === p;           // true \u2014 passed through\n\nconst thenable = { then: (res) => res(\"hi\") };\nawait Promise.resolve(thenable);   // \"hi\" \u2014 adopted",
+    codeSnippet: "const p = Promise.resolve(42);\nPromise.resolve(p) === p;           // true, passed through\n\nconst thenable = { then: (res) => res(\"hi\") };\nawait Promise.resolve(thenable);   // \"hi\": adopted",
     codeLanguage: "javascript",
     options: [
       {
@@ -1622,7 +1653,7 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
         id: "C",
         text: "It returns the argument unchanged if it is already a promise, adopts a thenable, and otherwise wraps the value",
         isCorrect: true,
-        explanation: "Correct \u2014 which is what makes it the safe way to normalise a value of unknown promise-ness."
+        explanation: "Correct, which is what makes it the safe way to normalise a value of unknown promise-ness."
       },
       {
         id: "D",
@@ -1632,14 +1663,15 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "C",
-    explanation: "Promise.resolve normalises. Hand it a native promise and you get that exact promise back \u2014 no wrapping, no extra tick. Hand it a thenable, any object with a then method, and it adopts its eventual state, which is how interop with older promise libraries works. Hand it a plain value and you get an already-fulfilled promise. That is why it is the idiomatic way to accept 'a value or a promise of one', and why Promise.resolve().then(fn) is a common way to queue a microtask. Being settled does not make it synchronous \u2014 the callback still waits for the microtask queue.",
-    interviewLine: "Promise.resolve normalises rather than wraps \u2014 same promise back if it already was one, adopted if it's a thenable.",
+    explanation: "Promise.resolve normalises. Hand it a native promise and you get that exact promise back, no wrapping, no extra tick. Hand it a thenable, any object with a then method, and it adopts its eventual state, which is how interop with older promise libraries works. Hand it a plain value and you get an already-fulfilled promise. That is why it is the idiomatic way to accept 'a value or a promise of one', and why Promise.resolve().then(fn) is a common way to queue a microtask. Being settled does not make it synchronous, the callback still waits for the microtask queue.",
+    interviewLine: "Promise.resolve normalises rather than wraps, same promise back if it already was one, adopted if it's a thenable.",
     misconception: "Assuming an already-resolved promise runs its .then synchronously. Settled still means a microtask.",
     hints: [
       "What does it return when the argument is already a native promise?"
     ],
     source: "typescript-masterclass",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise"
   },
   {
     id: "javascript-sequential-await-serialises-work",
@@ -1668,7 +1700,7 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
         id: "B",
         text: "Both take about 100ms; await does not block other work",
         isCorrect: false,
-        explanation: "await does not block the thread, but it does delay the next line \u2014 getB is not even started until getA resolves."
+        explanation: "await does not block the thread, but it does delay the next line, getB is not even started until getA resolves."
       },
       {
         id: "C",
@@ -1684,14 +1716,15 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "C",
-    explanation: "await suspends the function until its promise settles, so the next line \u2014 including the call that starts the next request \u2014 does not run until then. Three independent requests become a 300ms waterfall. Promise.all takes an array whose elements are already-started promises, so all three are in flight before anything is awaited and the total is roughly the slowest one. The distinction only matters when the calls are genuinely independent; if getB needs getA's id, the waterfall is the correct shape.",
-    interviewLine: "await doesn't block the thread, but it does block the next line \u2014 which is enough to turn independent calls into a waterfall.",
+    explanation: "await suspends the function until its promise settles, so the next line, including the call that starts the next request, does not run until then. Three independent requests become a 300ms waterfall. Promise.all takes an array whose elements are already-started promises, so all three are in flight before anything is awaited and the total is roughly the slowest one. The distinction only matters when the calls are genuinely independent; if getB needs getA's id, the waterfall is the correct shape.",
+    interviewLine: "await doesn't block the thread, but it does block the next line, which is enough to turn independent calls into a waterfall.",
     misconception: "Believing that because await is non-blocking, sequential awaits are already concurrent.",
     hints: [
       "When exactly does getB() get called in the first version?"
     ],
     source: "typescript-masterclass",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise"
   },
   {
     id: "javascript-promise-all-unhandled-rejection",
@@ -1714,7 +1747,7 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
         id: "A",
         text: "Promise.all attaches a handler to every input, so it is observed and silently discarded",
         isCorrect: true,
-        explanation: "Correct. all subscribes to all of them, so the later rejection is handled \u2014 not reported, but not unhandled either."
+        explanation: "Correct. all subscribes to all of them, so the later rejection is handled, not reported, but not unhandled either."
       },
       {
         id: "B",
@@ -1726,7 +1759,7 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
         id: "C",
         text: "It cancels the remaining work, so the second rejection never occurs",
         isCorrect: false,
-        explanation: "Nothing is cancelled and the second rejection does occur \u2014 it is just absorbed."
+        explanation: "Nothing is cancelled and the second rejection does occur, it is just absorbed."
       },
       {
         id: "D",
@@ -1736,13 +1769,14 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Promise.all subscribes to every input as it is passed in, so each has a handler attached from the start. When a second input rejects after the aggregate has already settled, that rejection is observed and dropped on the floor \u2014 no unhandledrejection event, and no way for your catch to see it. The failure is invisible rather than noisy, which is worse for diagnosis. If you need every failure, allSettled and inspect each reason. The genuine unhandled-rejection hazard is the opposite shape: creating promises first and awaiting them later, so one rejects before anything is listening.",
+    explanation: "Promise.all subscribes to every input as it is passed in, so each has a handler attached from the start. When a second input rejects after the aggregate has already settled, that rejection is observed and dropped on the floor, no unhandledrejection event, and no way for your catch to see it. The failure is invisible rather than noisy, which is worse for diagnosis. If you need every failure, allSettled and inspect each reason. The genuine unhandled-rejection hazard is the opposite shape: creating promises first and awaiting them later, so one rejects before anything is listening.",
     interviewLine: "all attaches handlers to every input, so later rejections are swallowed rather than reported. If you need every error, that's allSettled.",
     misconception: "Assuming a rejection nobody reported must have triggered an unhandledrejection. Being handled and being reported are different things.",
     hints: [
       "Did anything subscribe to the second promise?"
     ],
     source: "typescript-masterclass",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise"
   }
 ];

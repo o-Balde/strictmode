@@ -47,10 +47,11 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What React hooks do you know?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What React hooks do you know?.",
     hints: [
-      "Consider the core principles and trade-offs of What React hooks do you know?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "44-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "performance-what-is-virtual-dom",
@@ -97,10 +98,11 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is Virtual DOM?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is Virtual DOM?.",
     hints: [
-      "Consider the core principles and trade-offs of What is Virtual DOM?."
+      "React builds a description of the UI, diffs it against the previous one, and applies only the differences to the real DOM."
     ],
     source: "44-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/preserving-and-resetting-state"
   },
   {
     id: "performance-how-to-track-the-unmounting-of-a-functional-component",
@@ -148,10 +150,11 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to track the unmounting of a functional component?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to track the unmounting of a functional component?.",
     hints: [
-      "Consider the core principles and trade-offs of How to track the unmounting of a functional component?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "44-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "performance-what-is-the-difference-between-redux-and-mobx",
@@ -198,10 +201,11 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the difference between Redux and Mobx?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the difference between Redux and Mobx?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the difference between Redux and Mobx?."
+      "Ask where the state genuinely belongs: the URL, a server cache, a global store, or one component."
     ],
     source: "44-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://redux.js.org/style-guide/"
   },
   {
     id: "performance-what-is-usememo-used-for-and-how-does-it-work",
@@ -249,10 +253,11 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is useMemo used for and how does it work?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is useMemo used for and how does it work?.",
     hints: [
-      "Consider the core principles and trade-offs of What is useMemo used for and how does it work?."
+      "Memoisation trades comparison cost for computation cost. It only pays when the computation is genuinely expensive and the inputs are genuinely stable."
     ],
     source: "44-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useMemo"
   },
   {
     id: "performance-what-is-usecallback-used-for-and-how-does-it-work",
@@ -300,10 +305,11 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is useCallback used for and how does it work?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is useCallback used for and how does it work?.",
     hints: [
-      "Consider the core principles and trade-offs of What is useCallback used for and how does it work?."
+      "useCallback only helps if the child actually skips work because of it. On its own it is overhead."
     ],
     source: "44-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useCallback"
   },
   {
     id: "performance-what-is-the-difference-between-usememo-and-usecallback",
@@ -350,10 +356,11 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the difference between useMemo and useCallback?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the difference between useMemo and useCallback?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the difference between useMemo and useCallback?."
+      "Memoisation trades comparison cost for computation cost. It only pays when the computation is genuinely expensive and the inputs are genuinely stable."
     ],
     source: "44-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useMemo"
   },
   {
     id: "performance-what-is-usecontext-used-for-and-how-does-it-work",
@@ -401,10 +408,11 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is useContext used for and how does it work?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is useContext used for and how does it work?.",
     hints: [
-      "Consider the core principles and trade-offs of What is useContext used for and how does it work?."
+      "Context solves passing data down, not re-rendering. Every consumer re-renders when the value changes, so the value's identity matters."
     ],
     source: "44-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/reference/react/useContext"
   },
   {
     id: "performance-what-is-reactmemo",
@@ -448,14 +456,15 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "React.memo() is a higher\ufffd\ufffd\ufffdorder component. If your component always renders the same thing with non-changing props, you can wrap it in a React.memo() call to improve performance in some cases, thereby memorizing the result. This means that React will use the result of the last render, avoiding re-rendering. React.memo() only affects changes to the props. If a functional component is wrapped in React.memo and uses useState, useReducer, or useContext, it will be re-rendered when the state or context changes. Learn more",
+    explanation: "React.memo() is a higher, order component. If your component always renders the same thing with non-changing props, you can wrap it in a React.memo() call to improve performance in some cases, thereby memorizing the result. This means that React will use the result of the last render, avoiding re-rendering. React.memo() only affects changes to the props. If a functional component is wrapped in React.memo and uses useState, useReducer, or useContext, it will be re-rendered when the state or context changes. Learn more",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is React.memo()?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is React.memo()?.",
     hints: [
-      "Consider the core principles and trade-offs of What is React.memo()?."
+      "React re-renders a component when its state or its parent renders. Skipping that needs both a memo and props that stay identical."
     ],
     source: "44-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/memo"
   },
   {
     id: "performance-what-are-common-react-performance-optimization-techniqu",
@@ -502,10 +511,11 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are common React performance optimization techniques?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are common React performance optimization techniques?.",
     hints: [
-      "Consider the core principles and trade-offs of What are common React performance optimization techniques?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "performance-what-is-the-virtual-dom-how-does-react-use-the-virtual",
@@ -549,19 +559,20 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "As stated by the react team, virtual DOM is a concept where a virtual representation of the real DOM is kept inside the memory and is synced with the real DOM by a library such as ReactDOM. Why was virtual DOM introduced? DOM manipulation is an integral part of any web application, but DOM manipulation is quite slow when compared to other operations in JavaScript. The efficiency of the application gets affected when several DOM manipulations are being done. Most JavaScript frameworks update the entire DOM even when a small part of the DOM changes. For example, consider a list that is being rendered inside the DOM. If one of the items in the list changes, the entire list gets rendered again instead of just rendering the item that was changed/updated. This is called inefficient updating. To address the problem of inefficient updating, the react team introduced the concept of virtual DOM. How does it work? For every DOM object, there is a corresponding virtual DOM object(copy), which has the same properties. The main difference between the real DOM object and the virtual DOM object is that any changes in the virtual DOM object will not reflect on the screen directly. Consider a virtual DOM object as a blueprint of the real DOM object. Whenever a JSX element gets rendered, every virtual DOM object gets updated. **Note- One may think updating every virtual DOM object might be inefficient, but that\ufffd\ufffd\ufffds not the case. Updating the virtual DOM is much faster than updating the real DOM since we are just updating the blueprint of the real DOM. React uses two virtual DOMs to render the user interface. One of them is used to store the current state of the objects and the other to store the previous state of the objects. Whenever the virtual DOM gets updated, react compares the two virtual DOMs and gets to know about which virtual DOM objects were updated. After knowing which objects were updated, react renders only those objects inside the real DOM instead of rendering the complete real DOM. This way, with the use of virtual DOM, react solves the problem of inefficient updating.",
+    explanation: "As stated by the react team, virtual DOM is a concept where a virtual representation of the real DOM is kept inside the memory and is synced with the real DOM by a library such as ReactDOM. Why was virtual DOM introduced? DOM manipulation is an integral part of any web application, but DOM manipulation is quite slow when compared to other operations in JavaScript. The efficiency of the application gets affected when several DOM manipulations are being done. Most JavaScript frameworks update the entire DOM even when a small part of the DOM changes. For example, consider a list that is being rendered inside the DOM. If one of the items in the list changes, the entire list gets rendered again instead of just rendering the item that was changed/updated. This is called inefficient updating. To address the problem of inefficient updating, the react team introduced the concept of virtual DOM. How does it work? For every DOM object, there is a corresponding virtual DOM object(copy), which has the same properties. The main difference between the real DOM object and the virtual DOM object is that any changes in the virtual DOM object will not reflect on the screen directly. Consider a virtual DOM object as a blueprint of the real DOM object. Whenever a JSX element gets rendered, every virtual DOM object gets updated. **Note- One may think updating every virtual DOM object might be inefficient, but that, s not the case. Updating the virtual DOM is much faster than updating the real DOM since we are just updating the blueprint of the real DOM. React uses two virtual DOMs to render the user interface. One of them is used to store the current state of the objects and the other to store the previous state of the objects. Whenever the virtual DOM gets updated, react compares the two virtual DOMs and gets to know about which virtual DOM objects were updated. After knowing which objects were updated, react renders only those objects inside the real DOM instead of rendering the complete real DOM. This way, with the use of virtual DOM, react solves the problem of inefficient updating.",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the virtual DOM? How does react use the virtual DOM to render the UI?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the virtual DOM? How does react use the virtual DOM to render the UI?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the virtual DOM? How does react use the virtual DOM to render the UI?."
+      "React builds a description of the UI, diffs it against the previous one, and applies only the differences to the real DOM."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/preserving-and-resetting-state"
   },
   {
     id: "performance-explain-react-state-and-props",
     title: "Explain React state and props.",
-    prompt: "Explain React state and props. \u2014 explain the behavior and mechanism.",
+    prompt: "Explain React state and props., explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "performance",
@@ -600,19 +611,20 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Props State Immutable Owned by its component Has better performance Locally scoped Can be passed to child components Writeable/Mutable has setState() method to modify properties Changes to state can be asynchronous can only be passed as props React StateEvery component in react has a built-in state object, which contains all the property values that belong to that component.In other words, the state object controls the behaviour of a component. Any change in the property values of the state object leads to the re-rendering of the component. Note- State object is not available in functional components but, we can use React Hooks to add state to a functional component. How to declare a state object? Example: How to use and update the state object? As one can see in the code above, we can use the state by calling this.state.propertyName and we can change the state object property using setState method. React Props Every React component accepts a single object argument called props (which stands for \ufffd\ufffd\ufffdproperties\ufffd\ufffd\ufffd). These props can be passed to a component using HTML attributes and the component accepts these props as an argument. Using props, we can pass data from one component to another. Passing props to a component: While rendering a component, we can pass the props as an HTML attribute: The component receives the props: In Class component: In Functional component: Note- Props are read-only. They cannot be manipulated or changed inside a component.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain React state and props..",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain React state and props..",
+    explanation: "Props State Immutable Owned by its component Has better performance Locally scoped Can be passed to child components Writeable/Mutable has setState() method to modify properties Changes to state can be asynchronous can only be passed as props React StateEvery component in react has a built-in state object, which contains all the property values that belong to that component.In other words, the state object controls the behaviour of a component. Any change in the property values of the state object leads to the re-rendering of the component. Note- State object is not available in functional components but, we can use React Hooks to add state to a functional component. How to declare a state object? Example: How to use and update the state object? As one can see in the code above, we can use the state by calling this.state.propertyName and we can change the state object property using setState method. React Props Every React component accepts a single object argument called props (which stands for: properties: ). These props can be passed to a component using HTML attributes and the component accepts these props as an argument. Using props, we can pass data from one component to another. Passing props to a component: While rendering a component, we can pass the props as an HTML attribute: The component receives the props: In Class component: In Functional component: Note- Props are read-only. They cannot be manipulated or changed inside a component.",
+    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain React state and props.",
+    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain React state and props.",
     hints: [
-      "Consider the core principles and trade-offs of Explain React state and props.."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "performance-explain-about-types-of-side-effects-in-react-component",
     title: "Explain about types of side effects in React component.",
-    prompt: "Explain about types of side effects in React component. \u2014 explain the behavior and mechanism.",
+    prompt: "Explain about types of side effects in React component., explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "performance",
@@ -651,13 +663,14 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "A",
     explanation: "There are two types of side effects in React component. They are: Effects without Cleanup: This side effect will be used in useEffect which does not restrict the browser from screen update. It also improves the responsiveness of an application. A few common examples are network requests, Logging, manual DOM mutations, etc. Effects with Cleanup: Some of the Hook effects will require the cleanup after updating of DOM is done. For example, if you want to set up an external data source subscription, it requires cleaning up the memory else there might be a problem of memory leak. It is a known fact that React will carry out the cleanup of memory when the unmounting of components happens. But the effects will run for each render() method rather than for any specific method. Thus we can say that, before execution of the effects succeeding time the React will also cleanup effects from the preceding render. Get Access to 250+ Guides with Scaler Mobile App!Experience free learning content on the Scaler Mobile AppVideo CoursesExclusive EventsInterview GuidesFree Lectures4.5Rating100K+DownloadsPlay StoreDownload AppYour PDF Guide has been downloaded!Get Access to 250+ Guides with Scaler Mobile App!Experience free learning content on the Scaler Mobile AppVideo CoursesExclusive EventsInterview GuidesFree Lectures4.5Rating100K+DownloadsPlay StoreDownload App",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain about types of side effects in React component..",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain about types of side effects in React component..",
+    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain about types of side effects in React component.",
+    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain about types of side effects in React component.",
     hints: [
-      "Consider the core principles and trade-offs of Explain about types of side effects in React component.."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "performance-what-is-the-use-of-useeffect-react-hooks",
@@ -702,14 +715,15 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The useEffect React Hook is used for performing the side effects in functional components. With the help of useEffect, you will inform React that your component requires something to be done after rendering the component or after a state change. The function you have passed(can be referred to as \ufffd\ufffd\ufffdeffect\ufffd\ufffd\ufffd) will be remembered by React and call afterwards the performance of DOM updates is over. Using this, we can perform various calculations such as data fetching, setting up document title, manipulating DOM directly, etc, that don\ufffd\ufffd\ufffdt target the output value. The useEffect hook will run by default after the first render and also after each update of the component. React will guarantee that the DOM will be updated by the time when the effect has run by it. The useEffect React Hook will accept 2 arguments: useEffect(callback,[dependencies]); Where the first argument callback represents the function having the logic of side-effect and it will be immediately executed after changes were being pushed to DOM. The second argument dependencies represent an optional array of dependencies. The useEffect() will execute the callback only if there is a change in dependencies in between renderings. Example: The above code will update the document title which is considered to be a side-effect as it will not calculate the component output directly. That is why updating of document title has been placed in a callback and provided to useEffect(). Consider you don\ufffd\ufffd\ufffdt want to execute document title update each time on rendering of WelcomeGreetings component and you want it to be executed only when the name prop changes then you need to supply name as a dependency to useEffect(callback, [name]).",
+    explanation: "The useEffect React Hook is used for performing the side effects in functional components. With the help of useEffect, you will inform React that your component requires something to be done after rendering the component or after a state change. The function you have passed(can be referred to as, effect, ) will be remembered by React and call afterwards the performance of DOM updates is over. Using this, we can perform various calculations such as data fetching, setting up document title, manipulating DOM directly, etc, that don, t target the output value. The useEffect hook will run by default after the first render and also after each update of the component. React will guarantee that the DOM will be updated by the time when the effect has run by it. The useEffect React Hook will accept 2 arguments: useEffect(callback,[dependencies]); Where the first argument callback represents the function having the logic of side-effect and it will be immediately executed after changes were being pushed to DOM. The second argument dependencies represent an optional array of dependencies. The useEffect() will execute the callback only if there is a change in dependencies in between renderings. Example: The above code will update the document title which is considered to be a side-effect as it will not calculate the component output directly. That is why updating of document title has been placed in a callback and provided to useEffect(). Consider you don, t want to execute document title update each time on rendering of WelcomeGreetings component and you want it to be executed only when the name prop changes then you need to supply name as a dependency to useEffect(callback, [name]).",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the use of useEffect React Hooks?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the use of useEffect React Hooks?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the use of useEffect React Hooks?."
+      "An effect synchronises with something outside React. Ask what it subscribes to, and what its cleanup has to undo when the dependencies change."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useEffect"
   },
   {
     id: "performance-how-to-prevent-re-renders-in-react",
@@ -754,19 +768,20 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Reason for re-renders in React: Re-rendering of a component and its child components occur when props or the state of the component has been changed. Re-rendering components that are not updated, affects the performance of an application. How to prevent re-rendering: Consider the following components: The Parent component is the parent component and the Message is the child component. Any change in the parent component will lead to re-rendering of the child component as well. To prevent the re-rendering of child components, we use the shouldComponentUpdate( ) method: **Note- Use shouldComponentUpdate( ) method only when you are sure that it\ufffd\ufffd\ufffds a static component. As one can see in the code above, we have returned false from the shouldComponentUpdate( ) method, which prevents the child component from re-rendering.",
+    explanation: "Reason for re-renders in React: Re-rendering of a component and its child components occur when props or the state of the component has been changed. Re-rendering components that are not updated, affects the performance of an application. How to prevent re-rendering: Consider the following components: The Parent component is the parent component and the Message is the child component. Any change in the parent component will lead to re-rendering of the child component as well. To prevent the re-rendering of child components, we use the shouldComponentUpdate( ) method: **Note- Use shouldComponentUpdate( ) method only when you are sure that it, s a static component. As one can see in the code above, we have returned false from the shouldComponentUpdate( ) method, which prevents the child component from re-rendering.",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to prevent re-renders in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to prevent re-renders in React?.",
     hints: [
-      "Consider the core principles and trade-offs of How to prevent re-renders in React?."
+      "React re-renders a component when its state or its parent renders. Skipping that needs both a memo and props that stay identical."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/memo"
   },
   {
     id: "performance-name-a-few-techniques-to-optimize-react-app-performance",
     title: "Name a few techniques to optimize React app performance.",
-    prompt: "Name a few techniques to optimize React app performance. \u2014 explain the behavior and mechanism.",
+    prompt: "Name a few techniques to optimize React app performance., explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "performance",
@@ -780,7 +795,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "There are many ways through which one can optimize the performance of a React app, let\ufffd\ufffd\ufffds have a look at some of them: Using useMemo( ) - It is a React hook that is used for caching CPU-Expensive functions.",
+        text: "There are many ways through which one can optimize the performance of a React app, let, s have a look at some of them: Using useMemo( ) - It is a React hook that is used for caching CPU-Expensive functions.",
         isCorrect: true,
         explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
       },
@@ -804,14 +819,15 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "There are many ways through which one can optimize the performance of a React app, let\ufffd\ufffd\ufffds have a look at some of them: Using useMemo( ) - It is a React hook that is used for caching CPU-Expensive functions. Sometimes in a React app, a CPU-Expensive function gets called repeatedly due to re-renders of a component, which can lead to slow rendering.useMemo( ) hook can be used to cache such functions. By using useMemo( ), the CPU-Expensive function gets called only when it is needed. Using React.PureComponent - It is a base component class that checks the state and props of a component to know whether the component should be updated. Instead of using the simple React.Component, we can use React.PureComponent to reduce the re-renders of a component unnecessarily. Maintaining State Colocation - This is a process of moving the state as close to where you need it as possible. Sometimes in React app, we have a lot of unnecessary states inside the parent component which makes the code less readable and harder to maintain. Not to forget, having many states inside a single component leads to unnecessary re-renders for the component. It is better to shift states which are less valuable to the parent component, to a separate component. Lazy Loading - It is a technique used to reduce the load time of a React app. Lazy loading helps reduce the risk of web app performances to a minimum.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Name a few techniques to optimize React app performance..",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Name a few techniques to optimize React app performance..",
+    explanation: "There are many ways through which one can optimize the performance of a React app, let, s have a look at some of them: Using useMemo( ) - It is a React hook that is used for caching CPU-Expensive functions. Sometimes in a React app, a CPU-Expensive function gets called repeatedly due to re-renders of a component, which can lead to slow rendering.useMemo( ) hook can be used to cache such functions. By using useMemo( ), the CPU-Expensive function gets called only when it is needed. Using React.PureComponent - It is a base component class that checks the state and props of a component to know whether the component should be updated. Instead of using the simple React.Component, we can use React.PureComponent to reduce the re-renders of a component unnecessarily. Maintaining State Colocation - This is a process of moving the state as close to where you need it as possible. Sometimes in React app, we have a lot of unnecessary states inside the parent component which makes the code less readable and harder to maintain. Not to forget, having many states inside a single component leads to unnecessary re-renders for the component. It is better to shift states which are less valuable to the parent component, to a separate component. Lazy Loading - It is a technique used to reduce the load time of a React app. Lazy loading helps reduce the risk of web app performances to a minimum.",
+    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Name a few techniques to optimize React app performance.",
+    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Name a few techniques to optimize React app performance.",
     hints: [
-      "Consider the core principles and trade-offs of Name a few techniques to optimize React app performance.."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "performance-how-does-the-performance-of-using-hooks-will-differ-in",
@@ -859,10 +875,11 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How does the performance of using Hooks will differ in comparison with the classes?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How does the performance of using Hooks will differ in comparison with the classes?.",
     hints: [
-      "Consider the core principles and trade-offs of How does the performance of using Hooks will differ in comparison with the classes?."
+      "Measure before optimising. Ask what the user actually waits for, and whether this change moves that number."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://web.dev/articles/vitals"
   },
   {
     id: "performance-what-is-server-side-rendering-ssr-how-does-it-differ-fr",
@@ -906,19 +923,20 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "With server-side rendering, i.e, SSR, you don\ufffd\ufffd\ufffdt have to entirely build the UI in the browser; instead of that, it helps by generating the HTML on the server for each request and sending it to the browser. After the HTML is delivered, the browser displays content immediately, and React then hydrates the page to make it interactive. You can be asked the difference between Client-side-rendering and server-side rendering, so here are some points that you can keep in mind: Server-side rendering Client-side Rendering The initial render is done on the server as HTML before reaching the browser. The initial render is done on the browser using JS. You can see the content immediately on first load. CSR is a bit slower, the screen is blank, or it shows a loading process till JS executes. The server prepares the HTML, so the browser only needs to display it initially. The browser is responsible for creating and updating the DOM. The first render is faster because the content is already prepared. The first render might take time or feel slower on slow devices/networks. It is easy for a search engine to index content since it is present in the HTML. Search engines may come across difficulties here. (if JS is not executed properly) Requires a hydration step - because everything is rendered on a client. No hydration required. Part of the rendering work is done on the server to help reduce the client\ufffd\ufffd\ufffds initial workload. Most of the application logic is sent to the client as JavaScript. To quickly understand the advantages of SSR: It has a faster initial load time, Better SEO And improved perceived performance Now, here are some things you need to look out for, It has a higher server load, complex infrastructure, and hydration mismatch issues, sometimes even a slight delay before full interactivity. You can also be asked questions like, \" What is hydration? In the interviews, so here\ufffd\ufffd\ufffds how you can answer - Hydration is the process by which React attaches event listeners and restores component state on top of the server-rendered HTML. It converts static HTML into a fully interactive React app Must match the server-rendered output to avoid errors You should also note some modern approaches made by React:",
+    explanation: "With server-side rendering, i.e, SSR, you don, t have to entirely build the UI in the browser; instead of that, it helps by generating the HTML on the server for each request and sending it to the browser. After the HTML is delivered, the browser displays content immediately, and React then hydrates the page to make it interactive. You can be asked the difference between Client-side-rendering and server-side rendering, so here are some points that you can keep in mind: Server-side rendering Client-side Rendering The initial render is done on the server as HTML before reaching the browser. The initial render is done on the browser using JS. You can see the content immediately on first load. CSR is a bit slower, the screen is blank, or it shows a loading process till JS executes. The server prepares the HTML, so the browser only needs to display it initially. The browser is responsible for creating and updating the DOM. The first render is faster because the content is already prepared. The first render might take time or feel slower on slow devices/networks. It is easy for a search engine to index content since it is present in the HTML. Search engines may come across difficulties here. (if JS is not executed properly) Requires a hydration step - because everything is rendered on a client. No hydration required. Part of the rendering work is done on the server to help reduce the client, s initial workload. Most of the application logic is sent to the client as JavaScript. To quickly understand the advantages of SSR: It has a faster initial load time, Better SEO And improved perceived performance Now, here are some things you need to look out for, It has a higher server load, complex infrastructure, and hydration mismatch issues, sometimes even a slight delay before full interactivity. You can also be asked questions like, \" What is hydration? In the interviews, so here, s how you can answer - Hydration is the process by which React attaches event listeners and restores component state on top of the server-rendered HTML. It converts static HTML into a fully interactive React app Must match the server-rendered output to avoid errors You should also note some modern approaches made by React:",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is server-side rendering (SSR)? How does it differ from client-side rendering?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is server-side rendering (SSR)? How does it differ from client-side rendering?.",
     hints: [
-      "Consider the core principles and trade-offs of What is server-side rendering (SSR)? How does it differ from client-side rendering?."
+      "Hydration attaches listeners to server-rendered HTML. A mismatch between server and client output is what breaks it."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://nextjs.org/docs/app/building-your-application/rendering"
   },
   {
     id: "performance-context-api---this-is-used-when-the-state-has-to-be-sha",
     title: "Context API - This is used when the state has to be shared with multiple components, and it helps in avoiding prop drilling,g but please keep in mind that it can cause all consumers to re-render on updates.",
-    prompt: "Context API - This is used when the state has to be shared with multiple components, and it helps in avoiding prop drilling,g but please keep in mind that it can cause all consumers to re-render on updates. \u2014 explain the behavior and mechanism.",
+    prompt: "Context API - This is used when the state has to be shared with multiple components, and it helps in avoiding prop drilling,g but please keep in mind that it can cause all consumers to re-render on updates., explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "performance",
@@ -957,14 +975,15 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "2. Redux - When the state becomes more complex and interdependent throughout the application, external libraries like Redux are used. It provides a centralized store, predictable updates, and middleware support, but it comes with additional boilerplate. When you look into modern alternatives, Zustand and Jotai provide simpler APIs and more efficient updates, which are usually suitable for mid-sized applications. Here are some distinctions that you can note: Client state & Server state: Client state can be managed with local state, Context, or Redux. Server state is better handled by tools like React Query, which manage caching and synchronization. When NOT to use Redux: Redux is unnecessary for small or moderately complex applications, or when most of the state is server state. So, here\ufffd\ufffd\ufffds what you should do: Start with local state, then move to Context for shared state, and then use external libraries only when complexity or performance demands it.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Context API - This is used when the state has to be shared with multiple components, and it helps in avoiding prop drilling,g but please keep in mind that it can cause all consumers to re-render on updates..",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Context API - This is used when the state has to be shared with multiple components, and it helps in avoiding prop drilling,g but please keep in mind that it can cause all consumers to re-render on updates..",
+    explanation: "2. Redux - When the state becomes more complex and interdependent throughout the application, external libraries like Redux are used. It provides a centralized store, predictable updates, and middleware support, but it comes with additional boilerplate. When you look into modern alternatives, Zustand and Jotai provide simpler APIs and more efficient updates, which are usually suitable for mid-sized applications. Here are some distinctions that you can note: Client state & Server state: Client state can be managed with local state, Context, or Redux. Server state is better handled by tools like React Query, which manage caching and synchronization. When NOT to use Redux: Redux is unnecessary for small or moderately complex applications, or when most of the state is server state. So, here, s what you should do: Start with local state, then move to Context for shared state, and then use external libraries only when complexity or performance demands it.",
+    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Context API - This is used when the state has to be shared with multiple components, and it helps in avoiding prop drilling,g but please keep in mind that it can cause all consumers to re-render on updates.",
+    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Context API - This is used when the state has to be shared with multiple components, and it helps in avoiding prop drilling,g but please keep in mind that it can cause all consumers to re-render on updates.",
     hints: [
-      "Consider the core principles and trade-offs of Context API - This is used when the state has to be shared with multiple components, and it helps in avoiding prop drilling,g but please keep in mind that it can cause all consumers to re-render on updates.."
+      "Context solves passing data down, not re-rendering. Every consumer re-renders when the value changes, so the value's identity matters."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useContext"
   },
   {
     id: "performance-what-are-common-react-performance-optimization-techniqu-2",
@@ -1011,15 +1030,16 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are common React performance optimization techniques? (practical guide).",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are common React performance optimization techniques? (practical guide).",
     hints: [
-      "Consider the core principles and trade-offs of What are common React performance optimization techniques? (practical guide)."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "performance-prevent-unnecessary-re-renders---reactmemo",
     title: "Prevent unnecessary re-renders - React.memo",
-    prompt: "Prevent unnecessary re-renders - React.memo \u2014 explain the behavior and mechanism.",
+    prompt: "Prevent unnecessary re-renders - React.memo, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "performance",
@@ -1062,15 +1082,16 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Prevent unnecessary re-renders - React.memo.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Prevent unnecessary re-renders - React.memo.",
     hints: [
-      "Consider the core principles and trade-offs of Prevent unnecessary re-renders - React.memo."
+      "React re-renders a component when its state or its parent renders. Skipping that needs both a memo and props that stay identical."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/memo"
   },
   {
     id: "performance-stabilize-props---usecallback-usememo",
     title: "Stabilize props - useCallback, useMemo",
-    prompt: "Stabilize props - useCallback, useMemo \u2014 explain the behavior and mechanism.",
+    prompt: "Stabilize props - useCallback, useMemo, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "performance",
@@ -1112,15 +1133,16 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Stabilize props - useCallback, useMemo.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Stabilize props - useCallback, useMemo.",
     hints: [
-      "Consider the core principles and trade-offs of Stabilize props - useCallback, useMemo."
+      "Memoisation trades comparison cost for computation cost. It only pays when the computation is genuinely expensive and the inputs are genuinely stable."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useMemo"
   },
   {
     id: "performance-reduce-initial-load---code-splitting",
     title: "Reduce initial load - Code Splitting",
-    prompt: "Reduce initial load - Code Splitting \u2014 explain the behavior and mechanism.",
+    prompt: "Reduce initial load - Code Splitting, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "performance",
@@ -1162,15 +1184,16 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Reduce initial load - Code Splitting.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Reduce initial load - Code Splitting.",
     hints: [
-      "Consider the core principles and trade-offs of Reduce initial load - Code Splitting."
+      "Suspense lets a subtree declare it is not ready yet, so a fallback shows while the work is still in flight."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/Suspense"
   },
   {
     id: "performance-optimize-large-lists---virtualization",
     title: "Optimize large lists - Virtualization",
-    prompt: "Optimize large lists - Virtualization \u2014 explain the behavior and mechanism.",
+    prompt: "Optimize large lists - Virtualization, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "performance",
@@ -1212,10 +1235,11 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Optimize large lists - Virtualization.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Optimize large lists - Virtualization.",
     hints: [
-      "Consider the core principles and trade-offs of Optimize large lists - Virtualization."
+      "Measure before optimising. Ask what the user actually waits for, and whether this change moves that number."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://web.dev/articles/vitals"
   },
   {
     id: "performance-what-is-reactmemo-how-is-it-different-from-usememo-and",
@@ -1259,14 +1283,15 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Remember: React.memo works from outside, i.e, the props, and useMemo/useCallback work inside the component. You know how in React, whenever a component re-renders, all of its child components also re-render by default. And sometimes, this entire step becomes unnecessary. To prevent it from happening, we use the above three: React.memo, useMemo, & useCallback. But how are they different? Let me explain! React.memo It is an HOC (higher-order component) that is used to optimize performance and prevent a component from re-rendering if its props haven\ufffd\ufffd\ufffdt changed. In this case, React checks to see if the props are the same as before, If yes, it skips render If no, then re-render This comes in use a lot when a component ends up receiving the same data again and again. (becomes quite inconvenient!) But you should be careful, Even if the data looks the same, React may still think it changed. For example: Here, a new object is created every time, so React thinks props have changed, and then a re-render happens. Now, to prevent this from happening, we use: useMemo & useCallback a. useMemo stores/memorizes a value, so it doesn\ufffd\ufffd\ufffdt get recreated on every render. Eg: Now the same object is reused, and React.memo can work properly. b. useCallback is similar, but for functions. Eg: Without this, a new function is created every render, which can also break React.memo. You might be asked as a follow-up if a component wrapped in React.memo still re-renders, then what\ufffd\ufffd\ufffds the problem. You can answer this by listing errors, such as if Parent passes inline objects/functions, or the component consumes context.",
+    explanation: "Remember: React.memo works from outside, i.e, the props, and useMemo/useCallback work inside the component. You know how in React, whenever a component re-renders, all of its child components also re-render by default. And sometimes, this entire step becomes unnecessary. To prevent it from happening, we use the above three: React.memo, useMemo, & useCallback. But how are they different? Let me explain! React.memo It is an HOC (higher-order component) that is used to optimize performance and prevent a component from re-rendering if its props haven, t changed. In this case, React checks to see if the props are the same as before, If yes, it skips render If no, then re-render This comes in use a lot when a component ends up receiving the same data again and again. (becomes quite inconvenient!) But you should be careful, Even if the data looks the same, React may still think it changed. For example: Here, a new object is created every time, so React thinks props have changed, and then a re-render happens. Now, to prevent this from happening, we use: useMemo & useCallback a. useMemo stores/memorizes a value, so it doesn, t get recreated on every render. Eg: Now the same object is reused, and React.memo can work properly. b. useCallback is similar, but for functions. Eg: Without this, a new function is created every render, which can also break React.memo. You might be asked as a follow-up if a component wrapped in React.memo still re-renders, then what, s the problem. You can answer this by listing errors, such as if Parent passes inline objects/functions, or the component consumes context.",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is React.memo? How is it different from useMemo and useCallback?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is React.memo? How is it different from useMemo and useCallback?.",
     hints: [
-      "Consider the core principles and trade-offs of What is React.memo? How is it different from useMemo and useCallback?."
+      "Memoisation trades comparison cost for computation cost. It only pays when the computation is genuinely expensive and the inputs are genuinely stable."
     ],
     source: "interviewbit-70",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useMemo"
   },
   {
     id: "performance-what-is-the-consequence-of-using-array-indices-as-keys",
@@ -1313,10 +1338,11 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the consequence of using array indices as keys in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the consequence of using array indices as keys in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the consequence of using array indices as keys in React?."
+      "A key is an identity claim. Change it and React unmounts the old element and mounts a new one, resetting its state."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/rendering-lists#keeping-list-items-in-order-with-key"
   },
   {
     id: "performance-what-is-reconciliation",
@@ -1363,10 +1389,11 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is reconciliation?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is reconciliation?.",
     hints: [
-      "Consider the core principles and trade-offs of What is reconciliation?."
+      "A key is an identity claim. Change it and React unmounts the old element and mounts a new one, resetting its state."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/rendering-lists#keeping-list-items-in-order-with-key"
   },
   {
     id: "performance-what-is-the-difference-between-shadow-dom-and-virtual-d",
@@ -1413,10 +1440,11 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the difference between Shadow DOM and Virtual DOM?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the difference between Shadow DOM and Virtual DOM?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the difference between Shadow DOM and Virtual DOM?."
+      "React builds a description of the UI, diffs it against the previous one, and applies only the differences to the real DOM."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/preserving-and-resetting-state"
   },
   {
     id: "performance-what-are-pure-components",
@@ -1464,10 +1492,11 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are Pure Components?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are Pure Components?.",
     hints: [
-      "Consider the core principles and trade-offs of What are Pure Components?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "performance-what-is-the-usecallback-hook-in-react-and-when-should-i",
@@ -1516,10 +1545,11 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the useCallback hook in React and when should it be used?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the useCallback hook in React and when should it be used?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the useCallback hook in React and when should it be used?."
+      "useCallback only helps if the child actually skips work because of it. On its own it is overhead."
     ],
     source: "100-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/reference/react/useCallback"
   },
   {
     id: "performance-what-is-the-usememo-hook-in-react-and-when-should-it-be",
@@ -1568,10 +1598,11 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the useMemo hook in React and when should it be used?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the useMemo hook in React and when should it be used?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the useMemo hook in React and when should it be used?."
+      "Memoisation trades comparison cost for computation cost. It only pays when the computation is genuinely expensive and the inputs are genuinely stable."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useMemo"
   },
   {
     id: "performance-can-you-explain-how-to-create-and-use-custom-hooks-in-r",
@@ -1620,10 +1651,11 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Can you explain how to create and use custom hooks in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Can you explain how to create and use custom hooks in React?.",
     hints: [
-      "Consider the core principles and trade-offs of Can you explain how to create and use custom hooks in React?."
+      "Hooks are matched by call order, which is why they must run unconditionally at the top level of a component or another hook."
     ],
     source: "100-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/warnings/invalid-hook-call-warning"
   },
   {
     id: "react-what-is-react-suspense",
@@ -1671,10 +1703,11 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is React Suspense?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is React Suspense?.",
     hints: [
-      "Consider the core principles and trade-offs of What is React Suspense?."
+      "Suspense lets a subtree declare it is not ready yet, so a fallback shows while the work is still in flight."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/Suspense"
   },
   {
     id: "performance-what-is-code-splitting-in-a-react-application",
@@ -1722,10 +1755,11 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is code splitting in a React application?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is code splitting in a React application?.",
     hints: [
-      "Consider the core principles and trade-offs of What is code splitting in a React application?."
+      "Suspense lets a subtree declare it is not ready yet, so a fallback shows while the work is still in flight."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/Suspense"
   },
   {
     id: "performance-how-would-one-optimize-the-performance-of-react-context",
@@ -1774,10 +1808,11 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How would one optimize the performance of React contexts to reduce rerenders?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How would one optimize the performance of React contexts to reduce rerenders?.",
     hints: [
-      "Consider the core principles and trade-offs of How would one optimize the performance of React contexts to reduce rerenders?."
+      "React re-renders a component when its state or its parent renders. Skipping that needs both a memo and props that stay identical."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/memo"
   },
   {
     id: "performance-what-are-some-pitfalls-of-using-context-in-react",
@@ -1824,10 +1859,11 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are some pitfalls of using context in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are some pitfalls of using context in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What are some pitfalls of using context in React?."
+      "Context solves passing data down, not re-rendering. Every consumer re-renders when the value changes, so the value's identity matters."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useContext"
   },
   {
     id: "performance-explain-what-happens-when-setstate-is-called-in-react",
@@ -1875,15 +1911,16 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain what happens when setState is called in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain what happens when setState is called in React?.",
     hints: [
-      "Consider the core principles and trade-offs of Explain what happens when setState is called in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "performance-describe-lazy-loading-in-react",
     title: "Describe lazy loading in React",
-    prompt: "Describe lazy loading in React \u2014 explain the behavior and mechanism.",
+    prompt: "Describe lazy loading in React, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "performance",
@@ -1922,14 +1959,15 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Lazy loading in React is a technique where components are loaded only when they are needed, rather than at the initial page load. This helps reduce the initial load time and improve performance by splitting the code into smaller chunks. Example: In this example, LazyComponent is loaded only when it's rendered, and while loading, a fallback UI (Loading...) is displayed.",
+    explanation: "Lazy loading in React is a technique where components are loaded only when they are needed, rather than at the initial page load. This helps reduce the initial load time and improve performance by splitting the code into smaller chunks. Example: In this example, LazyComponent is loaded only when it's rendered, and while loading, a fallback UI (Loading.) is displayed.",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Describe lazy loading in React.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Describe lazy loading in React.",
     hints: [
-      "Consider the core principles and trade-offs of Describe lazy loading in React."
+      "Suspense lets a subtree declare it is not ready yet, so a fallback shows while the work is still in flight."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/Suspense"
   },
   {
     id: "performance-what-are-concurrent-features-in-react-and-how-do-they-i",
@@ -1977,10 +2015,11 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are concurrent features in React, and how do they improve rendering performance?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are concurrent features in React, and how do they improve rendering performance?.",
     hints: [
-      "Consider the core principles and trade-offs of What are concurrent features in React, and how do they improve rendering performance?."
+      "Concurrent features let React keep an urgent update responsive by letting a non-urgent one lag behind."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useTransition"
   },
   {
     id: "performance-how-would-you-handle-long-running-tasks-or-expensive-co",
@@ -2028,15 +2067,16 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How would you handle long-running tasks or expensive computations in React applications without blocking the UI?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How would you handle long-running tasks or expensive computations in React applications without blocking the UI?.",
     hints: [
-      "Consider the core principles and trade-offs of How would you handle long-running tasks or expensive computations in React applications without blocking the UI?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "performance-explain-static-generation-of-react-applications",
     title: "Explain static generation of React applications",
-    prompt: "Explain static generation of React applications \u2014 explain the behavior and mechanism.",
+    prompt: "Explain static generation of React applications, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "performance",
@@ -2078,10 +2118,11 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain static generation of React applications.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain static generation of React applications.",
     hints: [
-      "Consider the core principles and trade-offs of Explain static generation of React applications."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "performance-what-are-some-common-pitfalls-when-doing-data-fetching",
@@ -2128,10 +2169,11 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are some common pitfalls when doing data fetching in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are some common pitfalls when doing data fetching in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What are some common pitfalls when doing data fetching in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "performance-what-are-the-router-components-of-react-router-v6",
@@ -2178,10 +2220,11 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the <Router> components of React Router v6?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the <Router> components of React Router v6?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the <Router> components of React Router v6?."
+      "Routing maps a URL to a component. Ask what the URL owns, and what the component owns."
     ],
     source: "100-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://nextjs.org/docs/app/building-your-application/routing"
   },
   {
     id: "performance-what-is-the-react-compiler",
@@ -2228,15 +2271,16 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the React Compiler?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the React Compiler?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the React Compiler?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "100-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "performance-explain-the-building-blocks-of-react",
     title: "Explain the Building Blocks of React",
-    prompt: "Explain the Building Blocks of React \u2014 explain the behavior and mechanism.",
+    prompt: "Explain the Building Blocks of React, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "performance",
@@ -2250,7 +2294,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "React\ufffd\ufffd\ufffds main parts: Components: Reusable UI units that return JSX.",
+        text: "React, s main parts: Components: Reusable UI units that return JSX.",
         isCorrect: true,
         explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
       },
@@ -2274,14 +2318,15 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "React\ufffd\ufffd\ufffds main parts: Components: Reusable UI units that return JSX. JSX: JavaScript syntax extension that looks like HTML. Props and State: Props pass data in; state stores local, changeable data. Context: Share data across many components without prop drilling. Virtual DOM: An in-memory copy of the DOM used to compute minimal updates.",
+    explanation: "React, s main parts: Components: Reusable UI units that return JSX. JSX: JavaScript syntax extension that looks like HTML. Props and State: Props pass data in; state stores local, changeable data. Context: Share data across many components without prop drilling. Virtual DOM: An in-memory copy of the DOM used to compute minimal updates.",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain the Building Blocks of React.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain the Building Blocks of React.",
     hints: [
-      "Consider the core principles and trade-offs of Explain the Building Blocks of React."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "performance-what-is-virtual-dom-in-react",
@@ -2328,10 +2373,11 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is Virtual DOM in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is Virtual DOM in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What is Virtual DOM in React?."
+      "React builds a description of the UI, diffs it against the previous one, and applies only the differences to the real DOM."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/preserving-and-resetting-state"
   },
   {
     id: "performance-differentiate-between-real-dom-and-virtual-dom",
@@ -2378,10 +2424,11 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Differentiate Between Real DOM and Virtual DOM?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Differentiate Between Real DOM and Virtual DOM?.",
     hints: [
-      "Consider the core principles and trade-offs of Differentiate Between Real DOM and Virtual DOM?."
+      "React builds a description of the UI, diffs it against the previous one, and applies only the differences to the real DOM."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/preserving-and-resetting-state"
   },
   {
     id: "performance-what-is-thissetstate-function-in-react",
@@ -2428,10 +2475,11 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is this.setState Function in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is this.setState Function in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What is this.setState Function in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "performance-how-to-optimize-a-react-code",
@@ -2478,10 +2526,11 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to Optimize a React code?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to Optimize a React code?.",
     hints: [
-      "Consider the core principles and trade-offs of How to Optimize a React code?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "performance-how-can-you-optimize-react-performance",
@@ -2528,10 +2577,11 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How Can You Optimize React Performance?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How Can You Optimize React Performance?.",
     hints: [
-      "Consider the core principles and trade-offs of How Can You Optimize React Performance?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "performance-what-is-lazy-loading-in-react",
@@ -2578,10 +2628,11 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is Lazy Loading in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is Lazy Loading in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What is Lazy Loading in React?."
+      "Suspense lets a subtree declare it is not ready yet, so a fallback shows while the work is still in flight."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/Suspense"
   },
   {
     id: "performance-what-is-memoization-in-react",
@@ -2628,15 +2679,16 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is Memoization in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is Memoization in React?.",
     hints: [
-      "Consider the core principles and trade-offs of What is Memoization in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "performance-usestate-explained-local-state-inside-functional-compon",
     title: "useState explained: Local State Inside Functional Components",
-    prompt: "useState explained: Local State Inside Functional Components \u2014 explain the behavior and mechanism.",
+    prompt: "useState explained: Local State Inside Functional Components, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "performance",
@@ -2678,15 +2730,16 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of useState explained: Local State Inside Functional Components.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of useState explained: Local State Inside Functional Components.",
     hints: [
-      "Consider the core principles and trade-offs of useState explained: Local State Inside Functional Components."
+      "State is a snapshot. Setting it schedules a render, it does not change the variable you already read, so two updates from the same value collapse into one."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useState"
   },
   {
     id: "performance-keys-in-lists-why-unique-ids-matter-and-how-to-use-them",
     title: "Keys in Lists: Why Unique IDs Matter and How to Use Them",
-    prompt: "Keys in Lists: Why Unique IDs Matter and How to Use Them \u2014 explain the behavior and mechanism.",
+    prompt: "Keys in Lists: Why Unique IDs Matter and How to Use Them, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "performance",
@@ -2728,15 +2781,16 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Keys in Lists: Why Unique IDs Matter and How to Use Them.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Keys in Lists: Why Unique IDs Matter and How to Use Them.",
     hints: [
-      "Consider the core principles and trade-offs of Keys in Lists: Why Unique IDs Matter and How to Use Them."
+      "A key is an identity claim. Change it and React unmounts the old element and mounts a new one, resetting its state."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/rendering-lists#keeping-list-items-in-order-with-key"
   },
   {
     id: "performance-controlled-vs-uncontrolled-components-forms-and-when-to",
     title: "Controlled vs Uncontrolled Components: Forms and When to Pick Which",
-    prompt: "Controlled vs Uncontrolled Components: Forms and When to Pick Which \u2014 explain the behavior and mechanism.",
+    prompt: "Controlled vs Uncontrolled Components: Forms and When to Pick Which, explain the behavior and mechanism.",
     level: "intermediate",
     type: "concept",
     category: "performance",
@@ -2778,15 +2832,16 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Controlled vs Uncontrolled Components: Forms and When to Pick Which.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Controlled vs Uncontrolled Components: Forms and When to Pick Which.",
     hints: [
-      "Consider the core principles and trade-offs of Controlled vs Uncontrolled Components: Forms and When to Pick Which."
+      "A controlled input reads its value from state, so React is the single source of truth. An uncontrolled one leaves it in the DOM."
     ],
     source: "150-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://react.dev/reference/react-dom/components/input"
   },
   {
     id: "performance-styling-react-components-options-and-trade-offs",
     title: "Styling React Components: Options and Trade-Offs",
-    prompt: "Styling React Components: Options and Trade-Offs \u2014 explain the behavior and mechanism.",
+    prompt: "Styling React Components: Options and Trade-Offs, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "performance",
@@ -2828,15 +2883,16 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Styling React Components: Options and Trade-Offs.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Styling React Components: Options and Trade-Offs.",
     hints: [
-      "Consider the core principles and trade-offs of Styling React Components: Options and Trade-Offs."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "performance-re-render-on-resize-responsive-reactivity-without-waste",
-    title: "Re-render on Resize \ufffd\ufffd\ufffd Responsive Reactivity Without Waste",
-    prompt: "Re-render on Resize \ufffd\ufffd\ufffd Responsive Reactivity Without Waste \u2014 explain the behavior and mechanism.",
+    title: "Re-render on Resize, Responsive Reactivity Without Waste",
+    prompt: "Re-render on Resize, Responsive Reactivity Without Waste, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "performance",
@@ -2876,18 +2932,19 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "A",
     explanation: "Create a reusable hook that listens to window resize, throttles updates, and cleans up on unmount. Debounce with requestAnimationFrame or a small throttle to avoid many renders. Example hook: import { useState, useEffect } from 'react';function useWindowSize() { const [size, setSize] = useState({ w: 0, h: 0 }); useEffect(() => { function onResize() { setSize({ w: window.innerWidth, h: window.innerHeight }); } onResize(); let raf = null; function handler() { if (raf) cancelAnimationFrame(raf); raf = requestAnimationFrame(onResize); } window.addEventListener('resize', handler); return () => { window.removeEventListener('resize', handler); if (raf) cancelAnimationFrame(raf); }; }, []); return size;} Notes: Guard for SSR where window is undefined. Throttle or debounce to reduce rerenders on continuous resize.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Re-render on Resize \ufffd\ufffd\ufffd Responsive Reactivity Without Waste.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Re-render on Resize \ufffd\ufffd\ufffd Responsive Reactivity Without Waste.",
+    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Re-render on Resize, Responsive Reactivity Without Waste.",
+    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Re-render on Resize, Responsive Reactivity Without Waste.",
     hints: [
-      "Consider the core principles and trade-offs of Re-render on Resize \ufffd\ufffd\ufffd Responsive Reactivity Without Waste."
+      "React re-renders a component when its state or its parent renders. Skipping that needs both a memo and props that stay identical."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/memo"
   },
   {
     id: "performance-can-hooks-replace-redux-when-to-use-local-reducers-vs-a",
-    title: "Can Hooks Replace Redux \ufffd\ufffd\ufffd When to Use Local Reducers vs. a Full Store",
-    prompt: "Can Hooks Replace Redux \ufffd\ufffd\ufffd When to Use Local Reducers vs. a Full Store \u2014 explain the behavior and mechanism.",
+    title: "Can Hooks Replace Redux, When to Use Local Reducers vs. a Full Store",
+    prompt: "Can Hooks Replace Redux, When to Use Local Reducers vs. a Full Store, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "performance",
@@ -2927,18 +2984,19 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "A",
     explanation: "Hooks enable local reducer patterns (useReducer) and shared state via Context. For small to medium apps, useReducer + Context or libraries like Zustand can be simpler than Redux. Tradeoffs: Use hooks + context when the state is localized or only a few components consume it. Use Redux (or RTK) when you need time travel, complex middleware, predictable devtools, or a large normalized state with many consumers. For performance-sensitive apps, normalize state and use selectors (reselect) to avoid prop churn. Hybrid approaches: Keep UI state in hooks and complex domain state in Redux. Use Redux Toolkit to reduce boilerplate if choosing Redux.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Can Hooks Replace Redux \ufffd\ufffd\ufffd When to Use Local Reducers vs. a Full Store.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Can Hooks Replace Redux \ufffd\ufffd\ufffd When to Use Local Reducers vs. a Full Store.",
+    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Can Hooks Replace Redux, When to Use Local Reducers vs. a Full Store.",
+    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Can Hooks Replace Redux, When to Use Local Reducers vs. a Full Store.",
     hints: [
-      "Consider the core principles and trade-offs of Can Hooks Replace Redux \ufffd\ufffd\ufffd When to Use Local Reducers vs. a Full Store."
+      "Ask where the state genuinely belongs: the URL, a server cache, a global store, or one component."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://redux.js.org/style-guide/"
   },
   {
     id: "performance-performance-optimization-techniques-practical-checklist",
-    title: "Performance Optimization Techniques \ufffd\ufffd\ufffd Practical Checklist",
-    prompt: "Performance Optimization Techniques \ufffd\ufffd\ufffd Practical Checklist \u2014 explain the behavior and mechanism.",
+    title: "Performance Optimization Techniques, Practical Checklist",
+    prompt: "Performance Optimization Techniques, Practical Checklist, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "performance",
@@ -2976,19 +3034,20 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Memoize heavy computations with useMemo. Memoize handlers with useCallback to avoid child re-renders. Wrap pure components with React.memo or use PureComponent. Window large lists with react-window or react-virtualized. Lazy load routes and components with React.lazy and Suspense. Split bundles with dynamic imports and analyze bundles with source-map-explorer. Avoid unnecessary object/array allocations in render. Debounce user input and expensive updates. Use web workers for CPU work and server\ufffd\ufffd\ufffdside rendering for initial load.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Performance Optimization Techniques \ufffd\ufffd\ufffd Practical Checklist.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Performance Optimization Techniques \ufffd\ufffd\ufffd Practical Checklist.",
+    explanation: "Memoize heavy computations with useMemo. Memoize handlers with useCallback to avoid child re-renders. Wrap pure components with React.memo or use PureComponent. Window large lists with react-window or react-virtualized. Lazy load routes and components with React.lazy and Suspense. Split bundles with dynamic imports and analyze bundles with source-map-explorer. Avoid unnecessary object/array allocations in render. Debounce user input and expensive updates. Use web workers for CPU work and server, side rendering for initial load.",
+    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Performance Optimization Techniques, Practical Checklist.",
+    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Performance Optimization Techniques, Practical Checklist.",
     hints: [
-      "Consider the core principles and trade-offs of Performance Optimization Techniques \ufffd\ufffd\ufffd Practical Checklist."
+      "Measure before optimising. Ask what the user actually waits for, and whether this change moves that number."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://web.dev/articles/vitals"
   },
   {
     id: "performance-styling-react-components-options-and-when-to-pick-them",
-    title: "Styling React Components \ufffd\ufffd\ufffd Options and When to Pick Them",
-    prompt: "Styling React Components \ufffd\ufffd\ufffd Options and When to Pick Them \u2014 explain the behavior and mechanism.",
+    title: "Styling React Components, Options and When to Pick Them",
+    prompt: "Styling React Components, Options and When to Pick Them, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "performance",
@@ -3026,19 +3085,20 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Common choices: CSS files and modules: predictable, caches well, CSS module scoping. CSS-in-JS: styled-components, emotion \ufffd\ufffd\ufffd dynamic styles and theming. Utility frameworks: Tailwind for rapid layout and low runtime CSS. Inline styles for simple dynamic rules or critical styling. Classnames library for conditional classes. Selection guide: Choose CSS modules or plain CSS for performance-critical sites. Use CSS-in-JS when you need JS-driven theming or component-scoped styles. Keep class naming predictable and document style decisions.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Styling React Components \ufffd\ufffd\ufffd Options and When to Pick Them.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Styling React Components \ufffd\ufffd\ufffd Options and When to Pick Them.",
+    explanation: "Common choices: CSS files and modules: predictable, caches well, CSS module scoping. CSS-in-JS: styled-components, emotion, dynamic styles and theming. Utility frameworks: Tailwind for rapid layout and low runtime CSS. Inline styles for simple dynamic rules or critical styling. Classnames library for conditional classes. Selection guide: Choose CSS modules or plain CSS for performance-critical sites. Use CSS-in-JS when you need JS-driven theming or component-scoped styles. Keep class naming predictable and document style decisions.",
+    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Styling React Components, Options and When to Pick Them.",
+    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Styling React Components, Options and When to Pick Them.",
     hints: [
-      "Consider the core principles and trade-offs of Styling React Components \ufffd\ufffd\ufffd Options and When to Pick Them."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "performance-preventing-unnecessary-re-renders-patterns-and-examples",
-    title: "Preventing Unnecessary Re-renders \ufffd\ufffd\ufffd Patterns and Examples",
-    prompt: "Preventing Unnecessary Re-renders \ufffd\ufffd\ufffd Patterns and Examples \u2014 explain the behavior and mechanism.",
+    title: "Preventing Unnecessary Re-renders, Patterns and Examples",
+    prompt: "Preventing Unnecessary Re-renders, Patterns and Examples, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "performance",
@@ -3078,13 +3138,14 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "A",
     explanation: "Tools: shouldComponentUpdate in classes or React.PureComponent. React.memo for function components. useMemo and useCallback to stabilize references. Keep state local where possible and split components so only the necessary bits update. Example: const Message = React.memo(function Message({ text }) { return <p>{text}</p>;}); Avoid passing fresh objects: return <Child options={{ a: 1 }} />; // creates new object each render Instead: const opts = useMemo(() => ({ a: 1 }), []);return <Child options={opts} />;",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Preventing Unnecessary Re-renders \ufffd\ufffd\ufffd Patterns and Examples.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Preventing Unnecessary Re-renders \ufffd\ufffd\ufffd Patterns and Examples.",
+    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Preventing Unnecessary Re-renders, Patterns and Examples.",
+    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Preventing Unnecessary Re-renders, Patterns and Examples.",
     hints: [
-      "Consider the core principles and trade-offs of Preventing Unnecessary Re-renders \ufffd\ufffd\ufffd Patterns and Examples."
+      "React re-renders a component when its state or its parent renders. Skipping that needs both a memo and props that stay identical."
     ],
     source: "150-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/memo"
   },
   {
     id: "performance-how-to-bind-methods-or-event-handlers-in-jsx-callbacks",
@@ -3128,14 +3189,15 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "There are 3 possible ways to achieve this: Binding in Constructor: In JavaScript classes, the methods are not bound by default. The same thing applies for React event handlers defined as class methods. Normally we bind them in constructor. Public class fields syntax: If you don't like to use bind approach then public class fields syntax can be used to correctly bind callbacks. Arrow functions in callbacks: You can use arrow functions directly in the callbacks. Note: If the callback is passed as prop to child components, those components might do an extra re-rendering. In those cases, it is preferred to go with .bind() or public class fields syntax approach considering performance. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "There are 3 possible ways to achieve this: Binding in Constructor: In JavaScript classes, the methods are not bound by default. The same thing applies for React event handlers defined as class methods. Normally we bind them in constructor. Public class fields syntax: If you don't like to use bind approach then public class fields syntax can be used to correctly bind callbacks. Arrow functions in callbacks: You can use arrow functions directly in the callbacks. Note: If the callback is passed as prop to child components, those components might do an extra re-rendering. In those cases, it is preferred to go with .bind() or public class fields syntax approach considering performance.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to bind methods or event handlers in JSX callbacks?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to bind methods or event handlers in JSX callbacks?.",
     hints: [
-      "Consider the core principles and trade-offs of How to bind methods or event handlers in JSX callbacks?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "performance-what-is-key-prop-and-what-is-the-benefit-of-using-it-in",
@@ -3179,14 +3241,15 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "A key is a special string attribute you should include when creating arrays of elements. Key prop helps React identify which items have changed, are added, or are removed. Most often we use ID from our data as key: When you don't have stable IDs for rendered items, you may use the item index as a key as a last resort: Note: Using indexes for keys is not recommended if the order of items may change. This can negatively impact performance and may cause issues with component state. If you extract list item as separate component then apply keys on list component instead of li tag. There will be a warning message in the console if the key prop is not present on list items. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "A key is a special string attribute you should include when creating arrays of elements. Key prop helps React identify which items have changed, are added, or are removed. Most often we use ID from our data as key: When you don't have stable IDs for rendered items, you may use the item index as a key as a last resort: Note: Using indexes for keys is not recommended if the order of items may change. This can negatively impact performance and may cause issues with component state. If you extract list item as separate component then apply keys on list component instead of li tag. There will be a warning message in the console if the key prop is not present on list items.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is \"key\" prop and what is the benefit of using it in arrays of elements?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is \"key\" prop and what is the benefit of using it in arrays of elements?.",
     hints: [
-      "Consider the core principles and trade-offs of What is \"key\" prop and what is the benefit of using it in arrays of elements?."
+      "A key is an identity claim. Change it and React unmounts the old element and mounts a new one, resetting its state."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/rendering-lists#keeping-list-items-in-order-with-key"
   },
   {
     id: "performance-why-are-string-refs-legacy",
@@ -3230,14 +3293,15 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "If you worked with React before, you might be familiar with an older API where the ref attribute is a string, like ref={'textInput'}, and the DOM node is accessed as this.refs.textInput. We advise against it because string refs have below issues, and are considered legacy. String refs were removed in React v16. They force React to keep track of currently executing component. This is problematic because it makes react module stateful, and thus causes weird errors when react module is duplicated in the bundle. They are not composable \ufffd\ufffd\ufffd if a library puts a ref on the passed child, the user can't put another ref on it. Callback refs are perfectly composable. They don't work with static analysis like Flow. Flow can't guess the magic that framework does to make the string ref appear on this.refs, as well as its type (which could be different). Callback refs are friendlier to static analysis. It doesn't work as most people would expect with the \"render callback\" pattern (e.g. ) \ufffd\ufffd\ufffd Back to Top",
+    explanation: "If you worked with React before, you might be familiar with an older API where the ref attribute is a string, like ref={'textInput'}, and the DOM node is accessed as this.refs.textInput. We advise against it because string refs have below issues, and are considered legacy. String refs were removed in React v16. They force React to keep track of currently executing component. This is problematic because it makes react module stateful, and thus causes weird errors when react module is duplicated in the bundle. They are not composable, if a library puts a ref on the passed child, the user can't put another ref on it. Callback refs are perfectly composable. They don't work with static analysis like Flow. Flow can't guess the magic that framework does to make the string ref appear on this.refs, as well as its type (which could be different). Callback refs are friendlier to static analysis. It doesn't work as most people would expect with the \"render callback\" pattern (e.g. ): ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Why are String Refs legacy?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Why are String Refs legacy?.",
     hints: [
-      "Consider the core principles and trade-offs of Why are String Refs legacy?."
+      "Both refs and state survive a render. Only state causes one, so refs are for values the UI does not display."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useRef"
   },
   {
     id: "performance-is-lazy-function-supports-named-exports",
@@ -3281,14 +3345,15 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "No, currently React.lazy function supports default exports only. If you would like to import modules which are named exports, you can create an intermediate module that reexports it as the default. It also ensures that tree shaking keeps working and don\ufffd\ufffd\ufffdt pull unused components. Let's take a component file which exports multiple named components, and reexport MoreComponents.js components in an intermediate file IntermediateComponent.js Now you can import the module using lazy function as below, \ufffd\ufffd\ufffd Back to Top",
+    explanation: "No, currently React.lazy function supports default exports only. If you would like to import modules which are named exports, you can create an intermediate module that reexports it as the default. It also ensures that tree shaking keeps working and don, t pull unused components. Let's take a component file which exports multiple named components, and reexport MoreComponents.js components in an intermediate file IntermediateComponent.js Now you can import the module using lazy function as below,: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Is lazy function supports named exports?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Is lazy function supports named exports?.",
     hints: [
-      "Consider the core principles and trade-offs of Is lazy function supports named exports?."
+      "Suspense lets a subtree declare it is not ready yet, so a fallback shows while the work is still in flight."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/Suspense"
   },
   {
     id: "performance-why-fragments-are-better-than-container-divs",
@@ -3331,14 +3396,15 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Below are the list of reasons, Fragments are a bit faster and use less memory by not creating an extra DOM node. This only has a real benefit on very large and deep trees. Some CSS mechanisms like Flexbox and CSS Grid have a special parent-child relationships, and adding divs in the middle makes it hard to keep the desired layout. The DOM Inspector is less cluttered. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Below are the list of reasons, Fragments are a bit faster and use less memory by not creating an extra DOM node. This only has a real benefit on very large and deep trees. Some CSS mechanisms like Flexbox and CSS Grid have a special parent-child relationships, and adding divs in the middle makes it hard to keep the desired layout. The DOM Inspector is less cluttered.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Why fragments are better than container divs?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Why fragments are better than container divs?.",
     hints: [
-      "Consider the core principles and trade-offs of Why fragments are better than container divs?."
+      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/render-and-commit"
   },
   {
     id: "performance-how-to-apply-validation-on-props-in-react",
@@ -3382,14 +3448,15 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "When the application is running in development mode, React will automatically check all props that we set on components to make sure they have correct type. If the type is incorrect, React will generate warning messages in the console. It's disabled in production mode due to performance impact. The mandatory props are defined with isRequired. The set of predefined prop types: PropTypes.number PropTypes.string PropTypes.array PropTypes.object PropTypes.func PropTypes.node PropTypes.element PropTypes.bool PropTypes.symbol PropTypes.any We can define propTypes for User component as below: Note: In React v15.5 PropTypes were moved from React.PropTypes to prop-types library. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "When the application is running in development mode, React will automatically check all props that we set on components to make sure they have correct type. If the type is incorrect, React will generate warning messages in the console. It's disabled in production mode due to performance impact. The mandatory props are defined with isRequired. The set of predefined prop types: PropTypes.number PropTypes.string PropTypes.array PropTypes.object PropTypes.func PropTypes.node PropTypes.element PropTypes.bool PropTypes.symbol PropTypes.any We can define propTypes for User component as below: Note: In React v15.5 PropTypes were moved from React.PropTypes to prop-types library.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to apply validation on props in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to apply validation on props in React?.",
     hints: [
-      "Consider the core principles and trade-offs of How to apply validation on props in React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "performance-what-are-the-advantages-of-react",
@@ -3432,14 +3499,15 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Below are the list of main advantages of React, Increases the application's performance with Virtual DOM. JSX makes code easy to read and write. It renders both on client and server side (SSR). Easy to integrate with frameworks (Angular, Backbone) since it is only a view library. Easy to write unit and integration tests with tools such as Jest. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Below are the list of main advantages of React, Increases the application's performance with Virtual DOM. JSX makes code easy to read and write. It renders both on client and server side (SSR). Easy to integrate with frameworks (Angular, Backbone) since it is only a view library. Easy to write unit and integration tests with tools such as Jest.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the advantages of React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the advantages of React?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the advantages of React?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "performance-how-do-you-memoize-a-component",
@@ -3483,14 +3551,15 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "There are memoize libraries available which can be used on function components. For example moize library can memoize the component in another component. Update: Since React v16.6.0, we have a React.memo. It provides a higher order component which memoizes component unless the props change. To use it, simply wrap the component using React.memo before you use it. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "There are memoize libraries available which can be used on function components. For example moize library can memoize the component in another component. Update: Since React v16.6.0, we have a React.memo. It provides a higher order component which memoizes component unless the props change. To use it, simply wrap the component using React.memo before you use it.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you memoize a component?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you memoize a component?.",
     hints: [
-      "Consider the core principles and trade-offs of How do you memoize a component?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "performance-why-we-need-to-pass-a-function-to-setstate",
@@ -3534,14 +3603,15 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The reason behind for this is that setState() is an asynchronous operation. React batches state changes for performance reasons, so the state may not change immediately after setState() is called. That means you should not rely on the current state when calling setState()\ufffd\ufffd\ufffdsince you can't be sure what that state will be. The solution is to pass a function to setState(), with the previous state as an argument. By doing this you can avoid issues with the user getting the old state value on access due to the asynchronous nature of setState(). Let's say the initial count value is zero. After three consecutive increment operations, the value is going to be incremented only by one. If we pass a function to setState(), the count gets incremented correctly. (OR)",
+    explanation: "The reason behind for this is that setState() is an asynchronous operation. React batches state changes for performance reasons, so the state may not change immediately after setState() is called. That means you should not rely on the current state when calling setState(), since you can't be sure what that state will be. The solution is to pass a function to setState(), with the previous state as an argument. By doing this you can avoid issues with the user getting the old state value on access due to the asynchronous nature of setState(). Let's say the initial count value is zero. After three consecutive increment operations, the value is going to be incremented only by one. If we pass a function to setState(), the count gets incremented correctly. (OR)",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Why we need to pass a function to setState()?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Why we need to pass a function to setState()?.",
     hints: [
-      "Consider the core principles and trade-offs of Why we need to pass a function to setState()?."
+      "await does not block the thread, but it does block the next line."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises"
   },
   {
     id: "performance-why-function-is-preferred-over-object-for-setstate",
@@ -3585,14 +3655,15 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "React may batch multiple setState() calls into a single update for performance. Because this.props and this.state may be updated asynchronously, you should not rely on their values for calculating the next state. This counter example will fail to update as expected: The preferred approach is to call setState() with function rather than object. That function will receive the previous state as the first argument, and the props at the time the update is applied as the second argument. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "React may batch multiple setState() calls into a single update for performance. Because this.props and this.state may be updated asynchronously, you should not rely on their values for calculating the next state. This counter example will fail to update as expected: The preferred approach is to call setState() with function rather than object. That function will receive the previous state as the first argument, and the props at the time the update is applied as the second argument.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Why function is preferred over object for setState()?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Why function is preferred over object for setState()?.",
     hints: [
-      "Consider the core principles and trade-offs of Why function is preferred over object for setState()?."
+      "await does not block the thread, but it does block the next line."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises"
   },
   {
     id: "performance-what-are-react-mixins",
@@ -3636,14 +3707,15 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Mixins are a way to totally separate components to have a common functionality. Mixins should not be used and can be replaced with higher-order components or decorators. One of the most commonly used mixins is PureRenderMixin. You might be using it in some components to prevent unnecessary re-renders when the props and state are shallowly equal to the previous props and state: \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Mixins are a way to totally separate components to have a common functionality. Mixins should not be used and can be replaced with higher-order components or decorators. One of the most commonly used mixins is PureRenderMixin. You might be using it in some components to prevent unnecessary re-renders when the props and state are shallowly equal to the previous props and state:: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are React Mixins?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are React Mixins?.",
     hints: [
-      "Consider the core principles and trade-offs of What are React Mixins?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "performance-how-react-router-is-different-from-history-library",
@@ -3686,14 +3758,15 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "React Router is a wrapper around the history library which handles interaction with the browser's window.history with its browser and hash histories. It also provides memory history which is useful for environments that don't have global history, such as mobile app development (React Native) and unit testing with Node. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "React Router is a wrapper around the history library which handles interaction with the browser's window.history with its browser and hash histories. It also provides memory history which is useful for environments that don't have global history, such as mobile app development (React Native) and unit testing with Node.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How React Router is different from history library?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How React Router is different from history library?.",
     hints: [
-      "Consider the core principles and trade-offs of How React Router is different from history library?."
+      "Routing maps a URL to a component. Ask what the URL owns, and what the component owns."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://nextjs.org/docs/app/building-your-application/routing"
   },
   {
     id: "performance-what-are-the-router-components-of-react-router-v4",
@@ -3736,14 +3809,15 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "React Router v4 provides below 3 <Router> components: <BrowserRouter> <HashRouter> <MemoryRouter> The above components will create browser, hash, and memory history instances. React Router v4 makes the properties and methods of the history instance associated with your router available through the context in the router object. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "React Router v4 provides below 3 <Router> components: <BrowserRouter> <HashRouter> <MemoryRouter> The above components will create browser, hash, and memory history instances. React Router v4 makes the properties and methods of the history instance associated with your router available through the context in the router object.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the <Router> components of React Router v4?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the <Router> components of React Router v4?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the <Router> components of React Router v4?."
+      "Routing maps a URL to a component. Ask what the URL owns, and what the component owns."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://nextjs.org/docs/app/building-your-application/routing"
   },
   {
     id: "system_design-what-is-reselect-and-how-it-works",
@@ -3786,14 +3860,15 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Reselect is a selector library (for Redux) which uses memoization concept. It was originally written to compute derived data from Redux-like applications state, but it can't be tied to any architecture or library. Reselect keeps a copy of the last inputs/outputs of the last call, and recomputes the result only if one of the inputs changes. If the the same inputs are provided twice in a row, Reselect returns the cached output. It's memoization and cache are fully customizable. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Reselect is a selector library (for Redux) which uses memoization concept. It was originally written to compute derived data from Redux-like applications state, but it can't be tied to any architecture or library. Reselect keeps a copy of the last inputs/outputs of the last call, and recomputes the result only if one of the inputs changes. If the the same inputs are provided twice in a row, Reselect returns the cached output. It's memoization and cache are fully customizable.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is reselect and how it works?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is reselect and how it works?.",
     hints: [
-      "Consider the core principles and trade-offs of What is reselect and how it works?."
+      "Measure before optimising. Ask what the user actually waits for."
     ],
     source: "300-react",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://web.dev/articles/vitals"
   },
   {
     id: "performance-what-is-react-memo-function",
@@ -3837,14 +3912,15 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Class components can be restricted from rendering when their input props are the same using PureComponent or shouldComponentUpdate. Now you can do the same with function components by wrapping them in React.memo. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Class components can be restricted from rendering when their input props are the same using PureComponent or shouldComponentUpdate. Now you can do the same with function components by wrapping them in React.memo.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is React memo function?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is React memo function?.",
     hints: [
-      "Consider the core principles and trade-offs of What is React memo function?."
+      "React re-renders a component when its state or its parent renders. Skipping that needs both a memo and props that stay identical."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/memo"
   },
   {
     id: "performance-what-is-react-lazy-function",
@@ -3888,14 +3964,15 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The React.lazy function lets you render an dynamic import as a regular component. It will automatically load the bundle containing the OtherComponent when the component gets rendered. This must return a Promise which resolves to a module with a default export containing a React component. Note: React.lazy and Suspense is not yet available for server-side rendering. If you want to do code-splitting in a server rendered app, we still recommend React Loadable. \ufffd\ufffd\ufffd Back to Top",
+    explanation: "The React.lazy function lets you render an dynamic import as a regular component. It will automatically load the bundle containing the OtherComponent when the component gets rendered. This must return a Promise which resolves to a module with a default export containing a React component. Note: React.lazy and Suspense is not yet available for server-side rendering. If you want to do code-splitting in a server rendered app, we still recommend React Loadable.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is React lazy function?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is React lazy function?.",
     hints: [
-      "Consider the core principles and trade-offs of What is React lazy function?."
+      "Suspense lets a subtree declare it is not ready yet, so a fallback shows while the work is still in flight."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/Suspense"
   },
   {
     id: "performance-how-to-prevent-unnecessary-updates-using-setstate",
@@ -3939,14 +4016,15 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "You can compare current value of the state with an existing state value and decide whether to rerender the page or not. If the values are same then you need to return null to stop re-rendering otherwise return the latest state value. For example, the user profile information is conditionally rendered as follows, \ufffd\ufffd\ufffd Back to Top",
+    explanation: "You can compare current value of the state with an existing state value and decide whether to rerender the page or not. If the values are same then you need to return null to stop re-rendering otherwise return the latest state value. For example, the user profile information is conditionally rendered as follows,: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to prevent unnecessary updates using setState?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to prevent unnecessary updates using setState?.",
     hints: [
-      "Consider the core principles and trade-offs of How to prevent unnecessary updates using setState?."
+      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/render-and-commit"
   },
   {
     id: "performance-what-is-code-splitting",
@@ -3990,14 +4068,15 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Code-Splitting is a feature supported by bundlers like Webpack and Browserify which can create multiple bundles that can be dynamically loaded at runtime. The react project supports code splitting via dynamic import() feature. For example, in the below code snippets, it will make moduleA.js and all its unique dependencies as a separate chunk that only loads after the user clicks the 'Load' button. moduleA.js App.js \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Code-Splitting is a feature supported by bundlers like Webpack and Browserify which can create multiple bundles that can be dynamically loaded at runtime. The react project supports code splitting via dynamic import() feature. For example, in the below code snippets, it will make moduleA.js and all its unique dependencies as a separate chunk that only loads after the user clicks the 'Load' button. moduleA.js App.js: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is code-splitting?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is code-splitting?.",
     hints: [
-      "Consider the core principles and trade-offs of What is code-splitting?."
+      "Suspense lets a subtree declare it is not ready yet, so a fallback shows while the work is still in flight."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/Suspense"
   },
   {
     id: "performance-what-are-the-limitations-with-hocs",
@@ -4041,14 +4120,15 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Higher-order components come with a few caveats apart from its benefits. Below are the few listed in an order, Don\ufffd\ufffd\ufffdt use HOCs inside the render method: It is not recommended to apply a HOC to a component within the render method of a component. The above code impact performance by remounting a component that causes the state of that component and all of its children to be lost. Instead, apply HOCs outside the component definition so that the resulting component is created only once. Static methods must be copied over: When you apply a HOC to a component the new component does not have any of the static methods of the original component You can overcome this by copying the methods onto the container before returning it, Refs aren\ufffd\ufffd\ufffdt passed through: For HOCs you need to pass through all props to the wrapped component but this does not work for refs. This is because ref is not really a prop similar to key. In this case you need to use the React.forwardRef API \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Higher-order components come with a few caveats apart from its benefits. Below are the few listed in an order, Don, t use HOCs inside the render method: It is not recommended to apply a HOC to a component within the render method of a component. The above code impact performance by remounting a component that causes the state of that component and all of its children to be lost. Instead, apply HOCs outside the component definition so that the resulting component is created only once. Static methods must be copied over: When you apply a HOC to a component the new component does not have any of the static methods of the original component You can overcome this by copying the methods onto the container before returning it, Refs aren, t passed through: For HOCs you need to pass through all props to the wrapped component but this does not work for refs. This is because ref is not really a prop similar to key. In this case you need to use the React.forwardRef API: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the limitations with HOCs?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the limitations with HOCs?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the limitations with HOCs?."
+      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/render-and-commit"
   },
   {
     id: "performance-is-it-good-to-use-arrow-functions-in-render-methods",
@@ -4093,14 +4173,15 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Yes, You can use. It is often the easiest way to pass parameters to callback functions. But you need to optimize the performance while using it. Note: Using an arrow function in render method creates a new function each time the component renders, which may have performance implications \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Yes, You can use. It is often the easiest way to pass parameters to callback functions. But you need to optimize the performance while using it. Note: Using an arrow function in render method creates a new function each time the component renders, which may have performance implications: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Is it good to use arrow functions in render methods?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Is it good to use arrow functions in render methods?.",
     hints: [
-      "Consider the core principles and trade-offs of Is it good to use arrow functions in render methods?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "performance-what-are-loadable-components",
@@ -4144,14 +4225,15 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "If you want to do code-splitting in a server rendered app, it is recommend to use Loadable Components because React.lazy and Suspense is not yet available for server-side rendering. Loadable lets you render a dynamic import as a regular component. Lets take an example, Now OtherComponent will be loaded in a separated bundle \ufffd\ufffd\ufffd Back to Top",
+    explanation: "If you want to do code-splitting in a server rendered app, it is recommend to use Loadable Components because React.lazy and Suspense is not yet available for server-side rendering. Loadable lets you render a dynamic import as a regular component. Lets take an example, Now OtherComponent will be loaded in a separated bundle: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are loadable components?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are loadable components?.",
     hints: [
-      "Consider the core principles and trade-offs of What are loadable components?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "performance-how-do-you-solve-performance-corner-cases-while-using-c",
@@ -4171,7 +4253,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "The context uses reference identity to determine when to re-render, there are some gotchas that could trigger unintentional renders in consumers when a provider\ufffd\ufffd\ufffds parent re-renders.",
+        text: "The context uses reference identity to determine when to re-render, there are some gotchas that could trigger unintentional renders in consumers when a provider, s parent re-renders.",
         isCorrect: true,
         explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
       },
@@ -4195,14 +4277,15 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "The context uses reference identity to determine when to re-render, there are some gotchas that could trigger unintentional renders in consumers when a provider\ufffd\ufffd\ufffds parent re-renders. For example, the code below will re-render all consumers every time the Provider re-renders because a new object is always created for value. This can be solved by lifting up the value to parent state, \ufffd\ufffd\ufffd Back to Top",
+    explanation: "The context uses reference identity to determine when to re-render, there are some gotchas that could trigger unintentional renders in consumers when a provider, s parent re-renders. For example, the code below will re-render all consumers every time the Provider re-renders because a new object is always created for value. This can be solved by lifting up the value to parent state,: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you solve performance corner cases while using context?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you solve performance corner cases while using context?.",
     hints: [
-      "Consider the core principles and trade-offs of How do you solve performance corner cases while using context?."
+      "Context solves passing data down, not re-rendering. Every consumer re-renders when the value changes, so the value's identity matters."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/useContext"
   },
   {
     id: "performance-what-is-the-difference-between-real-dom-and-virtual-dom",
@@ -4245,14 +4328,15 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Below are the main differences between Real DOM and Virtual DOM, Real DOM Virtual DOM Updates are slow Updates are fast DOM manipulation is very expensive. DOM manipulation is very easy You can update HTML directly. You Can\ufffd\ufffd\ufffdt directly update HTML It causes too much of memory wastage There is no memory wastage Creates a new DOM if element updates It updates the JSX if element update \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Below are the main differences between Real DOM and Virtual DOM, Real DOM Virtual DOM Updates are slow Updates are fast DOM manipulation is very expensive. DOM manipulation is very easy You can update HTML directly. You Can, t directly update HTML It causes too much of memory wastage There is no memory wastage Creates a new DOM if element updates It updates the JSX if element update: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the difference between Real DOM and Virtual DOM?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the difference between Real DOM and Virtual DOM?.",
     hints: [
-      "Consider the core principles and trade-offs of What is the difference between Real DOM and Virtual DOM?."
+      "React builds a description of the UI, diffs it against the previous one, and applies only the differences to the real DOM."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/preserving-and-resetting-state"
   },
   {
     id: "performance-how-to-add-bootstrap-to-a-react-application",
@@ -4296,14 +4380,15 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Bootstrap can be added to your React app in a three possible ways, Using the Bootstrap CDN: This is the easiest way to add bootstrap. Add both bootstrap CSS and JS resources in a head tag. Bootstrap as Dependency: If you are using a build tool or a module bundler such as Webpack, then this is the preferred option for adding Bootstrap to your React application React Bootstrap Package: In this case, you can add Bootstrap to our React app is by using a package that has rebuilt Bootstrap components to work particularly as React components. Below packages are popular in this category, react-bootstrap reactstrap \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Bootstrap can be added to your React app in a three possible ways, Using the Bootstrap CDN: This is the easiest way to add bootstrap. Add both bootstrap CSS and JS resources in a head tag. Bootstrap as Dependency: If you are using a build tool or a module bundler such as Webpack, then this is the preferred option for adding Bootstrap to your React application React Bootstrap Package: In this case, you can add Bootstrap to our React app is by using a package that has rebuilt Bootstrap components to work particularly as React components. Below packages are popular in this category, react-bootstrap reactstrap: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to add Bootstrap to a react application?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to add Bootstrap to a react application?.",
     hints: [
-      "Consider the core principles and trade-offs of How to add Bootstrap to a react application?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "performance-what-are-the-differences-between-redux-and-mobx",
@@ -4346,14 +4431,15 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Below are the main differences between Redux and MobX, Topic Redux MobX Definition It is a javascript library for managing the application state It is a library for reactively managing the state of your applications Programming It is mainly written in ES6 It is written in JavaScript(ES5) Data Store There is only one large store exist for data storage There is more than one store for storage Usage Mainly used for large and complex applications Used for simple applications Performance Need to be improved Provides better performance How it stores Uses JS Object to store Uses observable to store the data \ufffd\ufffd\ufffd Back to Top",
+    explanation: "Below are the main differences between Redux and MobX, Topic Redux MobX Definition It is a javascript library for managing the application state It is a library for reactively managing the state of your applications Programming It is mainly written in ES6 It is written in JavaScript(ES5) Data Store There is only one large store exist for data storage There is more than one store for storage Usage Mainly used for large and complex applications Used for simple applications Performance Need to be improved Provides better performance How it stores Uses JS Object to store Uses observable to store the data: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the differences between Redux and MobX?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the differences between Redux and MobX?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the differences between Redux and MobX?."
+      "Ask where the state genuinely belongs: the URL, a server cache, a global store, or one component."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://redux.js.org/style-guide/"
   },
   {
     id: "performance-what-are-the-benefits-of-new-jsx-transform",
@@ -4400,15 +4486,16 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the benefits of new JSX transform?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the benefits of new JSX transform?.",
     hints: [
-      "Consider the core principles and trade-offs of What are the benefits of new JSX transform?."
+      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
     source: "300-react",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
   },
   {
     id: "system_design-how-do-you-design-a-frontend-caching-strategy-with-serv",
-    title: "How do you design a frontend caching strategy with Service Workers? n   Answer Service Workers sit between the browser and network, enabling offline support and advanced caching. Service Worker caching strategies: Cache First \\227 serve from cache, fall back to network \\(static assets\\) Network First \\227 try network, fall back to cache \\(API data\\) Stale While Revalidate \\227 serve cache immediately, update in background Network Only \\227 always fetch from network \\(auth, payments\\) Cache Only \\227 serve from cache only \\(offline fallbacks\\) What to cache: App shell \\227 HTML, CSS, JS bundles \\(Cache First, long TTL\\) Images \\227 Cache First with expiry API responses \\227 Stale While Revalidate for listings DO NOT cache \\227 auth tokens, payment flows, real-time data Workbox \\(Google's SW library\\): Built-in strategies Background sync for offline form submissions Used by create-react-app and Vite  1 // Workbox in vite.config.ts \\(VitePWA plugin\\)  2 import   {   VitePWA   }   from   'vite-plugin-pwa'  3 export   default   {   plugins :   [ VitePWA \\( {  4     strategies :   'generateSW' ,  5     workbox :   {  6         // Cache First: static assets \\227 serve instantly  7         runtimeCaching :   [ {  8             urlPattern :   / \\\\ . \\( ? : js | css | woff2 \\) $ / ,  9             handler :   'CacheFirst' , 10             options :   { 11                 cacheName :   'static-assets' , 12                 expiration :   {   maxAgeSeconds :   30   *   24   *   3600   }     // 30 days 13             } 14         } ,   { 15             // Stale While Revalidate: images 16             urlPattern :   / \\\\ . \\( ? : png | jpg | webp | svg \\) $ / , 17             handler :   'StaleWhileRevalidate' , 18             options :   {   cacheName :   'images' ,   expiration :   {   maxEntries :   100   }   } 19         } ,   { 20             // Network First: API responses 21             urlPattern :   / ^ \\\\ / api \\\\ //, 22             handler :   'NetworkFirst' , 23             options :   {   cacheName :   'api-cache' ,   networkTimeoutSeconds :   3   } 24         } ] 25     } 26 } \\) ] } 27 Kaushal Singh Follow for Frontend \\267 System Design \\267 Interview Prep nn  Frontend System Design  |  Comment 'FSD' for full PDF  |  Save \\267 Share \\267 Repost 15/42",
-    prompt: "How do you design a frontend caching strategy with Service Workers? n   Answer Service Workers sit between the browser and network, enabling offline support and advanced caching. Service Worker caching strategies: Cache First \\227 serve from cache, fall back to network \\(static assets\\) Network First \\227 try network, fall back to cache \\(API data\\) Stale While Revalidate \\227 serve cache immediately, update in background Network Only \\227 always fetch from network \\(auth, payments\\) Cache Only \\227 serve from cache only \\(offline fallbacks\\) What to cache: App shell \\227 HTML, CSS, JS bundles \\(Cache First, long TTL\\) Images \\227 Cache First with expiry API responses \\227 Stale While Revalidate for listings DO NOT cache \\227 auth tokens, payment flows, real-time data Workbox \\(Google's SW library\\): Built-in strategies Background sync for offline form submissions Used by create-react-app and Vite  1 // Workbox in vite.config.ts \\(VitePWA plugin\\)  2 import   {   VitePWA   }   from   'vite-plugin-pwa'  3 export   default   {   plugins :   [ VitePWA \\( {  4     strategies :   'generateSW' ,  5     workbox :   {  6         // Cache First: static assets \\227 serve instantly  7         runtimeCaching :   [ {  8             urlPattern :   / \\\\ . \\( ? : js | css | woff2 \\) $ / ,  9             handler :   'CacheFirst' , 10             options :   { 11                 cacheName :   'static-assets' , 12                 expiration :   {   maxAgeSeconds :   30   *   24   *   3600   }     // 30 days 13             } 14         } ,   { 15             // Stale While Revalidate: images 16             urlPattern :   / \\\\ . \\( ? : png | jpg | webp | svg \\) $ / , 17             handler :   'StaleWhileRevalidate' , 18             options :   {   cacheName :   'images' ,   expiration :   {   maxEntries :   100   }   } 19         } ,   { 20             // Network First: API responses 21             urlPattern :   / ^ \\\\ / api \\\\ //, 22             handler :   'NetworkFirst' , 23             options :   {   cacheName :   'api-cache' ,   networkTimeoutSeconds :   3   } 24         } ] 25     } 26 } \\) ] } 27 Kaushal Singh Follow for Frontend \\267 System Design \\267 Interview Prep nn  Frontend System Design  |  Comment 'FSD' for full PDF  |  Save \\267 Share \\267 Repost 15/42",
+    title: "How do you design a frontend caching strategy with Service Workers?",
+    prompt: "How do you design a frontend caching strategy with Service Workers?",
     level: "senior",
     type: "concept",
     category: "system_design",
@@ -4446,19 +4533,20 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "28 // Manual SW: offline fallback page 29 self . addEventListener ( 'fetch' , ( event ) = > { 30 if ( event . request . mode = = = 'navigate' ) { 31 event . respondWith ( 32 fetch ( event . request ) . catch ( ( ) = > 33 caches . match ( '/offline.html' ) // show offline page 34 ) 35 ) 36 } 37 } ) n Interview Tip: Cache First for JS/CSS bundles with content-hash filenames. The hash changes when content changes, so you can safely cache forever. Old versions are automatically busted because the filename is different. This is the most important Service Worker pattern. Kaushal Singh Follow for Frontend \\267 System Design \\267 Interview Prep nn Frontend System Design | Comment 'FSD' for full PDF | Save \\267 Share \\267 Repost 15/42 nn FE Design",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you design a frontend caching strategy with Service Workers? n   Answer Service Workers sit between the browser and network, enabling offline support and advanced caching. Service Worker caching strategies: Cache First \\227 serve from cache, fall back to network \\(static assets\\) Network First \\227 try network, fall back to cache \\(API data\\) Stale While Revalidate \\227 serve cache immediately, update in background Network Only \\227 always fetch from network \\(auth, payments\\) Cache Only \\227 serve from cache only \\(offline fallbacks\\) What to cache: App shell \\227 HTML, CSS, JS bundles \\(Cache First, long TTL\\) Images \\227 Cache First with expiry API responses \\227 Stale While Revalidate for listings DO NOT cache \\227 auth tokens, payment flows, real-time data Workbox \\(Google's SW library\\): Built-in strategies Background sync for offline form submissions Used by create-react-app and Vite  1 // Workbox in vite.config.ts \\(VitePWA plugin\\)  2 import   {   VitePWA   }   from   'vite-plugin-pwa'  3 export   default   {   plugins :   [ VitePWA \\( {  4     strategies :   'generateSW' ,  5     workbox :   {  6         // Cache First: static assets \\227 serve instantly  7         runtimeCaching :   [ {  8             urlPattern :   / \\\\ . \\( ? : js | css | woff2 \\) $ / ,  9             handler :   'CacheFirst' , 10             options :   { 11                 cacheName :   'static-assets' , 12                 expiration :   {   maxAgeSeconds :   30   *   24   *   3600   }     // 30 days 13             } 14         } ,   { 15             // Stale While Revalidate: images 16             urlPattern :   / \\\\ . \\( ? : png | jpg | webp | svg \\) $ / , 17             handler :   'StaleWhileRevalidate' , 18             options :   {   cacheName :   'images' ,   expiration :   {   maxEntries :   100   }   } 19         } ,   { 20             // Network First: API responses 21             urlPattern :   / ^ \\\\ / api \\\\ //, 22             handler :   'NetworkFirst' , 23             options :   {   cacheName :   'api-cache' ,   networkTimeoutSeconds :   3   } 24         } ] 25     } 26 } \\) ] } 27 Kaushal Singh Follow for Frontend \\267 System Design \\267 Interview Prep nn  Frontend System Design  |  Comment 'FSD' for full PDF  |  Save \\267 Share \\267 Repost 15/42.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you design a frontend caching strategy with Service Workers? n   Answer Service Workers sit between the browser and network, enabling offline support and advanced caching. Service Worker caching strategies: Cache First \\227 serve from cache, fall back to network \\(static assets\\) Network First \\227 try network, fall back to cache \\(API data\\) Stale While Revalidate \\227 serve cache immediately, update in background Network Only \\227 always fetch from network \\(auth, payments\\) Cache Only \\227 serve from cache only \\(offline fallbacks\\) What to cache: App shell \\227 HTML, CSS, JS bundles \\(Cache First, long TTL\\) Images \\227 Cache First with expiry API responses \\227 Stale While Revalidate for listings DO NOT cache \\227 auth tokens, payment flows, real-time data Workbox \\(Google's SW library\\): Built-in strategies Background sync for offline form submissions Used by create-react-app and Vite  1 // Workbox in vite.config.ts \\(VitePWA plugin\\)  2 import   {   VitePWA   }   from   'vite-plugin-pwa'  3 export   default   {   plugins :   [ VitePWA \\( {  4     strategies :   'generateSW' ,  5     workbox :   {  6         // Cache First: static assets \\227 serve instantly  7         runtimeCaching :   [ {  8             urlPattern :   / \\\\ . \\( ? : js | css | woff2 \\) $ / ,  9             handler :   'CacheFirst' , 10             options :   { 11                 cacheName :   'static-assets' , 12                 expiration :   {   maxAgeSeconds :   30   *   24   *   3600   }     // 30 days 13             } 14         } ,   { 15             // Stale While Revalidate: images 16             urlPattern :   / \\\\ . \\( ? : png | jpg | webp | svg \\) $ / , 17             handler :   'StaleWhileRevalidate' , 18             options :   {   cacheName :   'images' ,   expiration :   {   maxEntries :   100   }   } 19         } ,   { 20             // Network First: API responses 21             urlPattern :   / ^ \\\\ / api \\\\ //, 22             handler :   'NetworkFirst' , 23             options :   {   cacheName :   'api-cache' ,   networkTimeoutSeconds :   3   } 24         } ] 25     } 26 } \\) ] } 27 Kaushal Singh Follow for Frontend \\267 System Design \\267 Interview Prep nn  Frontend System Design  |  Comment 'FSD' for full PDF  |  Save \\267 Share \\267 Repost 15/42.",
+    explanation: "Service Workers sit between the browser and network, enabling offline support and advanced caching. Service Worker caching strategies: Cache First, serve from cache, fall back to network (static assets) Network First, try network, fall back to cache (API data) Stale While Revalidate, serve cache immediately, update in background Network Only, always fetch from network (auth, payments) Cache Only, serve from cache only (offline fallbacks) What to cache: App shell, HTML, CSS, JS bundles (Cache First, long TTL) Images, Cache First with expiry API responses, Stale While Revalidate for listings DO NOT cache, auth tokens, payment flows, real-time data Workbox (Google's SW library): Built-in strategies Background sync for offline form submissions Used by create-react-app and Vite 1 // Workbox in vite.config.ts (VitePWA plugin) 2 import { VitePWA } from 'vite-plugin-pwa' 3 export default { plugins: [ VitePWA ( { 4 strategies: 'generateSW', 5 workbox: { 6 // Cache First: static assets, serve instantly 7 runtimeCaching: [ { 8 urlPattern: / \\\\. (?: js | css | woff2 ) $ /, 9 handler: 'CacheFirst', 10 options: { 11 cacheName: 'static-assets', 12 expiration: { maxAgeSeconds: 30 * 24 * 3600 } // 30 days 13 } 14 }, { 15 // Stale While Revalidate: images 16 urlPattern: / \\\\. (?: png | jpg | webp | svg ) $ /, 17 handler: 'StaleWhileRevalidate', 18 options: { cacheName: 'images', expiration: { maxEntries: 100 } } 19 }, { 20 // Network First: API responses 21 urlPattern: / ^ \\\\ / api \\\\ //, 22 handler: 'NetworkFirst', 23 options: { cacheName: 'api-cache', networkTimeoutSeconds: 3 } 24 } ] 25 } 26 } ) ] } 27",
+    interviewLine: "Service Workers sit between the browser and network, enabling offline support and advanced caching.",
+    misconception: "Service Worker caching strategies: Cache First, serve from cache, fall back to network (static assets) Network First, try network, fall back to cache (API data) Stale While Revalidate, serve cache immediately, update in back",
     hints: [
-      "Consider the core principles and trade-offs of How do you design a frontend caching strategy with Service Workers? n   Answer Service Workers sit between the browser and network, enabling offline support and advanced caching. Service Worker caching strategies: Cache First \\227 serve from cache, fall back to network \\(static assets\\) Network First \\227 try network, fall back to cache \\(API data\\) Stale While Revalidate \\227 serve cache immediately, update in background Network Only \\227 always fetch from network \\(auth, payments\\) Cache Only \\227 serve from cache only \\(offline fallbacks\\) What to cache: App shell \\227 HTML, CSS, JS bundles \\(Cache First, long TTL\\) Images \\227 Cache First with expiry API responses \\227 Stale While Revalidate for listings DO NOT cache \\227 auth tokens, payment flows, real-time data Workbox \\(Google's SW library\\): Built-in strategies Background sync for offline form submissions Used by create-react-app and Vite  1 // Workbox in vite.config.ts \\(VitePWA plugin\\)  2 import   {   VitePWA   }   from   'vite-plugin-pwa'  3 export   default   {   plugins :   [ VitePWA \\( {  4     strategies :   'generateSW' ,  5     workbox :   {  6         // Cache First: static assets \\227 serve instantly  7         runtimeCaching :   [ {  8             urlPattern :   / \\\\ . \\( ? : js | css | woff2 \\) $ / ,  9             handler :   'CacheFirst' , 10             options :   { 11                 cacheName :   'static-assets' , 12                 expiration :   {   maxAgeSeconds :   30   *   24   *   3600   }     // 30 days 13             } 14         } ,   { 15             // Stale While Revalidate: images 16             urlPattern :   / \\\\ . \\( ? : png | jpg | webp | svg \\) $ / , 17             handler :   'StaleWhileRevalidate' , 18             options :   {   cacheName :   'images' ,   expiration :   {   maxEntries :   100   }   } 19         } ,   { 20             // Network First: API responses 21             urlPattern :   / ^ \\\\ / api \\\\ //, 22             handler :   'NetworkFirst' , 23             options :   {   cacheName :   'api-cache' ,   networkTimeoutSeconds :   3   } 24         } ] 25     } 26 } \\) ] } 27 Kaushal Singh Follow for Frontend \\267 System Design \\267 Interview Prep nn  Frontend System Design  |  Comment 'FSD' for full PDF  |  Save \\267 Share \\267 Repost 15/42."
+      "Ask who owns the cache, when it is invalidated, and what the user sees while it is stale."
     ],
     source: "frontend-system-design-50",
-    estimatedMinutes: 4
+    estimatedMinutes: 4,
+    bestPracticeRef: "https://nextjs.org/docs/app/building-your-application/caching"
   },
   {
     id: "performance-explain",
     title: "Explain",
-    prompt: "Explain \u2014 explain the behavior and mechanism.",
+    prompt: "Explain, explain the behavior and mechanism.",
     level: "junior",
     type: "concept",
     category: "performance",
@@ -4500,10 +4588,11 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain.",
     hints: [
-      "Consider the core principles and trade-offs of Explain."
+      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
     source: "dsa-interview",
-    estimatedMinutes: 2
+    estimatedMinutes: 2,
+    bestPracticeRef: "https://react.dev/reference/react/hooks"
   },
   {
     id: "react-optimization-techniques-when-they-help",
@@ -4539,7 +4628,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
         id: "C",
         text: "useMemo around an expensive computation whose inputs rarely change",
         isCorrect: true,
-        explanation: "Correct. Real work, stable inputs \u2014 that is where the cache pays for itself."
+        explanation: "Correct. Real work, stable inputs, that is where the cache pays for itself."
       },
       {
         id: "D",
@@ -4549,13 +4638,14 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "C",
-    explanation: "Memoization trades memory and comparison cost for skipped work, so it only wins when the skipped work is genuinely expensive and the inputs are genuinely stable. useMemo around a real computation over a large list qualifies. Wrapping trivial expressions does not \u2014 the bookkeeping costs more than recomputing. React.memo and useCallback only pay off together, on a component that would otherwise re-render often with unchanged props. Measure first; most render cost turns out to be somewhere else.",
-    interviewLine: "Memoization isn't free \u2014 you're trading comparison cost for computation cost. It only wins when the computation is the expensive half.",
+    explanation: "Memoization trades memory and comparison cost for skipped work, so it only wins when the skipped work is genuinely expensive and the inputs are genuinely stable. useMemo around a real computation over a large list qualifies. Wrapping trivial expressions does not, the bookkeeping costs more than recomputing. React.memo and useCallback only pay off together, on a component that would otherwise re-render often with unchanged props. Measure first; most render cost turns out to be somewhere else.",
+    interviewLine: "Memoization isn't free, you're trading comparison cost for computation cost. It only wins when the computation is the expensive half.",
     misconception: "Treating useMemo and React.memo as free speedups to apply everywhere.",
     hints: [
       "What does the memoization itself cost on every render?"
     ],
     source: "react-17-2025",
-    estimatedMinutes: 3
+    estimatedMinutes: 3,
+    bestPracticeRef: "https://web.dev/articles/vitals"
   }
 ];

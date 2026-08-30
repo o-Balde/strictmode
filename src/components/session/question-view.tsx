@@ -154,12 +154,13 @@ export function QuestionView({
               </span>
               <span
                 className={cn(
-                  "min-w-0 flex-1",
+                  "min-w-0 flex-1 break-words",
                   optionTerminal
                     ? "text-bone text-[13.5px]/[1.7] whitespace-pre-wrap"
                     : "text-bone text-[13.5px]/[1.6]",
                   selected === option.id && !optionTerminal && "text-parchment",
                 )}
+                style={{ overflowWrap: "anywhere" }}
               >
                 <OptionText text={option.text} terminal={optionTerminal} />
               </span>

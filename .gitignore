@@ -42,6 +42,7 @@ next-env.d.ts
 
 # python
 __pycache__/
+scripts/authored
 
 # project
 .venv/
@@ -50,5 +51,6 @@ _REFERENCES/
 tsconfig.tsbuildinfo
 src/generated/
 .DS_Store
+
 # generated question payloads
 public/q/

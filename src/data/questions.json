@@ -545,9 +545,9 @@
       },
       {
         "id": "B",
-        "text": "A native hardware driver that manages computer RAM allocation for browser processes.",
+        "text": "A state manager is a browser DevTools extension that only inspects CSS styles.",
         "isCorrect": false,
-        "explanation": "State managers are JavaScript application-level libraries operating in userland code."
+        "explanation": "State managers handle JavaScript application state (data), not just CSS inspection."
       },
       {
         "id": "C",
@@ -565,7 +565,7 @@
     "correctAnswer": "A",
     "explanation": "State manager is a tool or library that helps manage the state of an application. It provides a centralized store or container for storing and managing data that can be accessed and updated by different components in the application. A state manager solves several problems. Firstly, it is a good practice to separate data and the logic related to it from components. Secondly, when using local state and passing it between components, the code can become convoluted due to the potential for deep nesting of components. By having a global store, we can access and modify data from any component. Alongside React Context, Redux or MobX are commonly used as state management libraries. Learn more Learn more",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is a state manager and which ones have you worked with or know?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is a state manager and which ones have you worked with or know?.",
+    "misconception": "Confusing state management libraries with browser developer tools or thinking React's built-in state is always sufficient for complex apps.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -805,9 +805,9 @@
       },
       {
         "id": "B",
-        "text": "The Database Connection Pooling pattern for TCP sockets.",
+        "text": "The Flux pattern with an explicit `dispatch(action)` reducer cycle.",
         "isCorrect": false,
-        "explanation": "MobX manages client reactive state, not database connection sockets."
+        "explanation": "MobX uses transparent reactive observables, not Flux's explicit dispatch → reducer flow."
       },
       {
         "id": "C",
@@ -817,15 +817,15 @@
       },
       {
         "id": "D",
-        "text": "The Observer / Observable pattern with transparent functional reactive programming (TFRP).",
-        "isCorrect": true,
-        "explanation": "Correct. MobX automatically tracks observable property access during component rendering and triggers re-renders when observed properties mutate."
+        "text": "The Model-View-Controller (MVC) pattern with explicit `dispatch` calls for every state change.",
+        "isCorrect": false,
+        "explanation": "MobX uses transparent reactivity (observable/observer) rather than MVC's explicit dispatch cycles."
       }
     ],
     "correctAnswer": "D",
     "explanation": "Mobx implements the Observer pattern, also known as the Publish-Subscribe pattern. Learn more",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Which pattern does Mobx implement?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Which pattern does Mobx implement?.",
+    "misconception": "Confusing MobX's transparent reactivity with Redux/Flux's explicit action dispatching. MobX automatically tracks and reacts to observable changes.",
     "hints": [
       "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
@@ -3100,9 +3100,9 @@
       },
       {
         "id": "B",
-        "text": "A special type of HTML `<form>` validation attribute.",
+        "text": "Error boundaries are `try/catch` blocks placed directly around JSX expressions inside the render method.",
         "isCorrect": false,
-        "explanation": "Error boundaries are React components for error handling, not form validation."
+        "explanation": "JavaScript `try/catch` doesn't catch errors in React's declarative rendering. Error boundaries use `componentDidCatch` or `getDerivedStateFromError`."
       },
       {
         "id": "C",
@@ -3120,7 +3120,7 @@
     "correctAnswer": "D",
     "explanation": "Introduced in version 16 of React, Error boundaries provide a way for us to catch errors that occur in the render phase. What is an error boundary? Any component which uses one of the following lifecycle methods is considered an error boundary.In what places can an error boundary detect an error? Render phase Inside a lifecycle method Inside the constructor Without using error boundaries: In the code above, when the counterValue equals 2, we throw an error inside the render method. When we are not using the error boundary, instead of seeing an error, we see a blank page. Since any error inside the render method leads to unmounting of the component. To display an error that occurs inside the render method, we use error boundaries. With error boundaries: As mentioned above, error boundary is a component using one or both of the following methods: static getDerivedStateFromError and componentDidCatch. Let, s create an error boundary to handle errors in the render phase: In the code above, getDerivedStateFromError function renders the fallback UI interface when the render method has an error. componentDidCatch logs the error information to an error tracking service. Now with the error boundary, we can render the CounterComponent in the following way:",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are error boundaries?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are error boundaries?.",
+    "misconception": "Thinking error boundaries catch all errors. They don't catch errors in event handlers, async code, server-side rendering, or the boundary itself.",
     "hints": [
       "Error boundaries catch the render path, not the interaction path. An event handler needs its own try/catch."
     ],
@@ -3946,9 +3946,9 @@
       },
       {
         "id": "C",
-        "text": "Components that run exclusively on server hardware without client hydration.",
+        "text": "Components that require class syntax and cannot be implemented as functions in modern React.",
         "isCorrect": false,
-        "explanation": "HOCs operate on standard React components in both client and server environments."
+        "explanation": "HOCs are higher-order functions that work with both class and function components."
       },
       {
         "id": "D",
@@ -3960,7 +3960,7 @@
     "correctAnswer": "B",
     "explanation": "Simply put, Higher-Order Component(HOC) is a function that takes in a component and returns a new component. When do we need a Higher Order Component? While developing React applications, we might develop components that are quite similar to each other with minute differences. In most cases, developing similar components might not be an issue but, while developing larger applications we need to keep our code DRY, therefore, we want an abstraction that allows us to define this logic in a single place and share it across components. HOC allows us to create that abstraction. Example of a HOC: Consider the following components having similar functionality. The following component displays the list of articles: The following component displays the list of users: Notice the above components, both have similar functionality but, they are calling different methods to an API endpoint. Let, s create a Higher Order Component to create an abstraction: We know HOC is a function that takes in a component and returns a component. In the code above, we have created a function called HOC which returns a component and performs functionality that can be shared across both the ArticlesList component and UsersList Component. The second parameter in the HOC function is the function that calls the method on the API endpoint. We have reduced the duplicated code of the componentDidUpdate and componentDidMount functions. Using the concept of Higher-Order Components, we can now render the ArticlesList and UsersList components in the following way: Remember, we are not trying to change the functionality of each component, we are trying to share a single functionality across multiple components using HOC.",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are Higher Order Components?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are Higher Order Components?.",
+    "misconception": "Thinking HOCs are the same as hooks. HOCs wrap components and add props; hooks share stateful logic inside function components.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -4038,9 +4038,9 @@
     "options": [
       {
         "id": "A",
-        "text": "Methods that execute only when the user reboots their physical computer.",
+        "text": "Methods that only execute during the initial `npm install` setup and never run at runtime.",
         "isCorrect": false,
-        "explanation": "Lifecycle methods execute during the component's runtime life inside the browser."
+        "explanation": "Lifecycle methods execute at runtime during the component's mount, update, and unmount phases."
       },
       {
         "id": "B",
@@ -4064,7 +4064,7 @@
     "correctAnswer": "B",
     "explanation": "React lifecycle hooks will have the methods that will be automatically called at different phases in the component lifecycle and thus it provides good control over what happens at the invoked point. It provides the power to effectively control and manipulate what goes on throughout the component lifecycle. For example, if you are developing the YouTube application, then the application will make use of a network for buffering the videos and it consumes the power of the battery (assume only these two). After playing the video if the user switches to any other application, then you should make sure that the resources like network and battery are being used most efficiently. You can stop or pause the video buffering which in turn stops the battery and network usage when the user switches to another application after video play. So we can say that the developer will be able to produce a quality application with the help of lifecycle methods and it also helps developers to make sure to plan what and how to do it at different points of birth, growth, or death of user interfaces. The various lifecycle methods are: constructor(): This method will be called when the component is initiated before anything has been done. It helps to set up the initial state and initial values. getDerivedStateFromProps(): This method will be called just before element(s) rendering in the DOM. It helps to set up the state object depending on the initial props. The getDerivedStateFromProps() method will have a state as an argument and it returns an object that made changes to the state. This will be the first method to be called on an updating of a component. render(): This method will output or re-render the HTML to the DOM with new changes. The render() method is an essential method and will be called always while the remaining methods are optional and will be called only if they are defined. componentDidMount(): This method will be called after the rendering of the component. Using this method, you can run statements that need the component to be already kept in the DOM. shouldComponentUpdate(): The Boolean value will be returned by this method which will specify whether React should proceed further with the rendering or not. The default value for this method will be True. getSnapshotBeforeUpdate(): This method will provide access for the props as well as for the state before the update. It is possible to check the previously present value before the update, even after the update. componentDidUpdate(): This method will be called after the component has been updated in the DOM. componentWillUnmount(): This method will be called when the component removal from the DOM is about to happen.",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the lifecycle methods of React?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the lifecycle methods of React?.",
+    "misconception": "Conflating class lifecycle methods with hooks. `componentDidMount` maps to `useEffect(() => {}, [])`, not to `useState`.",
     "hints": [
       "A class component's constructor must call super(props) before touching this.props, and its lifecycle methods map onto effects in a function component."
     ],
@@ -4097,9 +4097,9 @@
       },
       {
         "id": "B",
-        "text": "Hardware hooks that control USB ports and software hooks that control mouse drivers.",
+        "text": "Git hooks (`pre-commit`, `post-merge`) and Webpack loader hooks that run during the build pipeline.",
         "isCorrect": false,
-        "explanation": "React Hooks are JavaScript APIs for component state and lifecycle management."
+        "explanation": "React hooks are runtime functions called inside function components, not build-tool hooks."
       },
       {
         "id": "C",
@@ -4117,7 +4117,7 @@
     "correctAnswer": "A",
     "explanation": "There are two types of Hooks in React. They are:",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain about types of Hooks in React.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain about types of Hooks in React.",
+    "misconception": "Thinking all hooks cause re-renders. `useRef` updates its `.current` without triggering a re-render.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -4355,9 +4355,9 @@
     "options": [
       {
         "id": "A",
-        "text": "A hardware router device used to connect computers to local area networks.",
+        "text": "A built-in React core module (imported from `react`) that ships with every React installation.",
         "isCorrect": false,
-        "explanation": "React Router is a JavaScript client routing library, not a physical hardware router."
+        "explanation": "React Router is a separate third-party package (`react-router-dom`), not part of React core."
       },
       {
         "id": "B",
@@ -4367,9 +4367,9 @@
       },
       {
         "id": "C",
-        "text": "A server database driver used to query PostgreSQL tables over TCP.",
+        "text": "A linting plugin that enforces URL naming conventions in JSX attributes.",
         "isCorrect": false,
-        "explanation": "React Router handles URL routing in web applications, not database connections."
+        "explanation": "React Router handles runtime navigation between views, not static code linting."
       },
       {
         "id": "D",
@@ -4381,7 +4381,7 @@
     "correctAnswer": "D",
     "explanation": "React Router refers to the standard library used for routing in React. It permits us for building a single-page web application in React with navigation without even refreshing the page when the user navigates. It also allows to change the browser URL and will keep the user interface in sync with the URL. React Router will make use of the component structure for calling the components, using which appropriate information can be shown. Since React is a component-based framework, it, s not necessary to include and use this package. Any other compatible routing library would also work with React. The major components of React Router are given below: BrowserRouter: It is a router implementation that will make use of the HTML5 history API (pushState, popstate, and event replaceState) for keeping your UI to be in sync with the URL. It is the parent component useful in storing all other components. Routes: It is a newer component that has been introduced in the React v6 and an upgrade of the component. Route: It is considered to be a conditionally shown component and some UI will be rendered by this whenever there is a match between its path and the current URL. Link: It is useful in creating links to various routes and implementing navigation all over the application. It works similarly to the anchor tag in HTML.",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is React Router?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is React Router?.",
+    "misconception": "Confusing client-side routing with server-side redirects. React Router intercepts clicks on the client without requesting new HTML from the server.",
     "hints": [
       "Routing maps a URL to a component. Ask what the URL owns, and what the component owns."
     ],
@@ -5672,9 +5672,9 @@
       },
       {
         "id": "C",
-        "text": "A full-stack MVC framework with built-in ORM, PostgreSQL database drivers, and server clustering tools.",
+        "text": "A full-stack MVC framework like Angular with built-in routing, form validation, HTTP client, and dependency injection.",
         "isCorrect": false,
-        "explanation": "React is a frontend UI view library, not a monolithic backend MVC framework."
+        "explanation": "React is a UI library focused on the view layer. Unlike Angular, it doesn't include built-in routing, HTTP, or DI."
       },
       {
         "id": "D",
@@ -5686,7 +5686,7 @@
     "correctAnswer": "B",
     "explanation": "React is a JavaScript library developed by Facebook for creating user interfaces, particularly in single-page applications. It enables the use of reusable components that manage their own state. Key advantages include a component-driven architecture, optimized updates through the virtual DOM, a declarative approach for better readability, and robust community backing. Find in-depth explanations and track study progress here ->",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is React, and what are its main features?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is React, and what are its main features?.",
+    "misconception": "Calling React a 'framework'. React is a library for building UIs; it has no opinions on routing, data fetching, or state management.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -6238,9 +6238,9 @@
       },
       {
         "id": "B",
-        "text": "A hardware accelerator card installed on web servers to render React pages.",
+        "text": "A WebSocket protocol for real-time bidirectional communication between React components and backend servers.",
         "isCorrect": false,
-        "explanation": "Fiber is a software data structure and scheduling algorithm in JavaScript."
+        "explanation": "Fiber is React's internal reconciliation data structure, not a network protocol."
       },
       {
         "id": "C",
@@ -6258,7 +6258,7 @@
     "correctAnswer": "C",
     "explanation": "React Fiber is a complete rewrite of the React core algorithm, designed to improve performance and enable new features like async rendering, error boundaries, and incremental rendering. It breaks down the rendering process into smaller chunks, allowing React to pause, abort, or prioritize updates as needed. Find in-depth explanations and track study progress here ->",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is React Fiber?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is React Fiber?.",
+    "misconception": "Confusing Fiber with async rendering. Fiber is the data structure; concurrent rendering is the scheduling strategy built on top of it.",
     "hints": [
       "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
@@ -6822,15 +6822,15 @@
       },
       {
         "id": "D",
-        "text": "Mutating state triggers an immediate physical hardware shutdown on the client's device.",
+        "text": "Mutating state causes `useEffect` cleanup functions to never execute.",
         "isCorrect": false,
-        "explanation": "Direct mutation causes React rendering bugs and stale UI, not hardware shutdowns."
+        "explanation": "Effect cleanup depends on the dependency array, not state mutation vs. immutable updates. The real issue is that mutation skips re-renders."
       }
     ],
     "correctAnswer": "B",
     "explanation": "React advises against mutating state as it can lead to unexpected behaviors and bugs. State immutability helps efficiently determine when components need re-rendering; direct mutations may prevent React from detecting changes. Find in-depth explanations and track study progress here -> React Hooks Mastering React hooks is important in front end interviews because hooks are the standard way to manage state, side effects, and component lifecycle in modern React. Demonstrating a solid understanding of hooks shows you can write clean, functional components and solve complex problems without relying on outdated class patterns.",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Why does React recommend against mutating state?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Why does React recommend against mutating state?.",
+    "misconception": "Believing `setState` merges deeply nested objects. In functional components, `useState` requires the full new state (or uses the updater function).",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -6875,15 +6875,15 @@
       },
       {
         "id": "D",
-        "text": "Hooks allow running React components directly in raw HTML without a browser engine.",
+        "text": "Hooks automatically convert all class components in the codebase to function components at build time.",
         "isCorrect": false,
-        "explanation": "Hooks run in standard JavaScript environments within browser or Node.js runtimes."
+        "explanation": "Hooks are runtime functions for function components. Existing class components must be manually refactored."
       }
     ],
     "correctAnswer": "A",
     "explanation": "Hooks enable the use of state and other React features in functional components, replacing the need for class components. They streamline code by reducing the reliance on lifecycle methods, enhance readability, and facilitate the reuse of stateful logic across components. Popular hooks like useState and useEffect are used for managing state and side effects. Find in-depth explanations and track study progress here ->",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the benefits of using hooks in React?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the benefits of using hooks in React?.",
+    "misconception": "Thinking hooks can be called conditionally. Hooks must be called in the same order on every render (Rules of Hooks).",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -7337,9 +7337,9 @@
       },
       {
         "id": "B",
-        "text": "Authenticates user session tokens with biometric fingerprint hardware.",
+        "text": "Generates globally unique UUIDs suitable for database primary keys via `crypto.randomUUID()`.",
         "isCorrect": false,
-        "explanation": "`useId` generates DOM string IDs, unrelated to biometric authentication."
+        "explanation": "`useId` generates deterministic, colon-prefixed IDs for HTML accessibility attributes, not random UUIDs for databases."
       },
       {
         "id": "C",
@@ -7357,7 +7357,7 @@
     "correctAnswer": "A",
     "explanation": "The useId hook generates unique IDs for elements within a component, which is crucial for accessibility by dynamically creating ids that can be used for linking form inputs and labels. It guarantees unique IDs across the application even if the component renders multiple times. Find in-depth explanations and track study progress here ->",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the useId hook in React and when should it be used?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the useId hook in React and when should it be used?.",
+    "misconception": "Using `useId` as a list key. It generates the same ID per component instance across renders, so it's unsuitable for keying dynamic lists.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -8858,9 +8858,9 @@
       },
       {
         "id": "C",
-        "text": "A method for compiling multiple audio files into a single MP3 stream.",
+        "text": "A pattern where parent components define the exact internal structure of every child via deep `cloneElement` chains.",
         "isCorrect": false,
-        "explanation": "Composition in React refers to assembling component hierarchies."
+        "explanation": "Composition passes children or render props, giving parents control without dictating every child's internal structure."
       },
       {
         "id": "D",
@@ -8872,7 +8872,7 @@
     "correctAnswer": "B",
     "explanation": "The composition pattern in React involves building components by combining smaller, reusable ones instead of using inheritance. This encourages creating complex UIs by passing components as children or props. Find in-depth explanations and track study progress here ->",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain the composition pattern in React.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain the composition pattern in React.",
+    "misconception": "Thinking composition requires `React.cloneElement`. The idiomatic pattern uses `children` props or render props, not element cloning.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -9061,9 +9061,9 @@
       },
       {
         "id": "B",
-        "text": "A database driver that routes SQL queries to read replicas.",
+        "text": "A state management library similar to Redux that stores route data in a global Flux store.",
         "isCorrect": false,
-        "explanation": "React Router manages web application URLs, not database query routing."
+        "explanation": "React Router manages URL navigation, not general application state. It does integrate with React context internally."
       },
       {
         "id": "C",
@@ -9073,15 +9073,15 @@
       },
       {
         "id": "D",
-        "text": "A physical networking hardware device used to assign IP addresses in data centers.",
+        "text": "A React core feature (like `useState` or `useEffect`) that ships automatically with every React install.",
         "isCorrect": false,
-        "explanation": "React Router is a JavaScript library for web navigation, not a physical hardware router."
+        "explanation": "React Router is a separate third-party package installed via `npm install react-router-dom`."
       }
     ],
     "correctAnswer": "A",
     "explanation": "React Router is a popular routing library for React applications that enables navigation between different components based on the URL. It provides declarative routing, allowing you to define routes and their corresponding components in a straightforward manner.",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is a React Router?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is a React Router?.",
+    "misconception": "Confusing React Router's navigation with full page reloads. Client-side routing swaps components without requesting a new HTML document.",
     "hints": [
       "Routing maps a URL to a component. Ask what the URL owns, and what the component owns."
     ],
@@ -9853,15 +9853,15 @@
       },
       {
         "id": "D",
-        "text": "An Intel hardware CPU driver that accelerates React rendering.",
+        "text": "A React state management library that synchronizes component state across multiple browser tabs.",
         "isCorrect": false,
-        "explanation": "`react-intl` is an internationalization software library, not an Intel CPU driver."
+        "explanation": "React Intl handles internationalization (i18n): translations, date/number formatting, and pluralization rules."
       }
     ],
     "correctAnswer": "A",
     "explanation": "react-intl is a library that provides internationalization (i18n) support for React applications. It helps in formatting numbers, dates, strings, and handling translation/localization. It integrates with the Intl API in JavaScript to provide locale-specific data and translation management.",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is react-intl?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is react-intl?.",
+    "misconception": "Confusing internationalization (i18n) with localization (l10n). i18n prepares the app for multiple locales; l10n adapts content to a specific locale.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -10315,9 +10315,9 @@
       },
       {
         "id": "C",
-        "text": "Take a screenshot of the computer monitor with a physical camera.",
+        "text": "Mock every internal implementation detail with `jest.spyOn` and assert on internal state variables.",
         "isCorrect": false,
-        "explanation": "Automated testing uses programmatic DOM assertions and queries."
+        "explanation": "React Testing Library encourages testing behavior from the user's perspective, not spying on internal implementation."
       },
       {
         "id": "D",
@@ -10329,7 +10329,7 @@
     "correctAnswer": "A",
     "explanation": "To test React components using React Testing Library, you can: Render the component using render. Interact with the component (e.g., clicking buttons, entering text). Assert on the rendered output using queries like getByText, queryByRole, etc. Example: In this example, the test renders MyComponent, clicks a button, and asserts that the text 'Clicked!' is present.",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you test React components using React Testing Library?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you test React components using React Testing Library?.",
+    "misconception": "Testing implementation details. RTL's philosophy is to test what the user sees and does, not internal state or method calls.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -10584,15 +10584,15 @@
       },
       {
         "id": "D",
-        "text": "A hardware graphics renderer used for 2D mobile gaming.",
+        "text": "A test renderer that executes components in a real browser's DOM environment with full CSS computation.",
         "isCorrect": false,
-        "explanation": "Shallow rendering was a historical React testing utility."
+        "explanation": "Shallow rendering renders only the root component without mounting child components or interacting with the real DOM."
       }
     ],
     "correctAnswer": "B",
     "explanation": "Shallow rendering renders a component one level deep: its children are not rendered, only referenced as React elements. The intent was to isolate the component under test from its children. The two implementations were react-test-renderer/shallow (a low-level API) and Enzyme's shallow() (a popular wrapper around it). Don't use shallow rendering in new code. Enzyme is unmaintained and has no official React 17+ adapter. The React docs recommend React Testing Library, which renders components the way users see them and asserts on accessible output, so tests don't break on internal refactors. Use RTL's render with screen.getByRole / getByText instead.",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is Shallow Renderer in React testing?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is Shallow Renderer in React testing?.",
+    "misconception": "Thinking shallow rendering catches integration bugs. It isolates the component from its children, which can miss real interaction bugs.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -10624,9 +10624,9 @@
       },
       {
         "id": "B",
-        "text": "Taking a physical photograph of the user using the computer webcam.",
+        "text": "Recording the exact execution time and memory usage of each component render for performance benchmarking.",
         "isCorrect": false,
-        "explanation": "Snapshot testing captures serialized HTML/JSON text strings, not webcam photos."
+        "explanation": "Snapshot testing captures rendered output structure (serialized JSX/DOM), not performance metrics."
       },
       {
         "id": "C",
@@ -10644,7 +10644,7 @@
     "correctAnswer": "A",
     "explanation": "Snapshot Testing in React is a testing technique that captures the rendered output of a component and saves it as a snapshot. Subsequent test runs compare the current output with the saved snapshot to detect any unexpected changes. If the output differs from the snapshot, the test fails, indicating that the component's output has changed. Here's an example of using Snapshot Testing with Jest: In this example, the renderer.create function renders the MyComponent and converts it to a JSON tree. The toMatchSnapshot function saves the snapshot of the component's output. Subsequent test runs compare the current output with the saved snapshot, ensuring the component's output remains consistent.",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is Snapshot Testing in React?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is Snapshot Testing in React?.",
+    "misconception": "Over-relying on snapshots. Large snapshot files become hard to review, and developers start blindly updating them without checking changes.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -10793,15 +10793,15 @@
       },
       {
         "id": "D",
-        "text": "Full DOM rendering requires a physical robot to click the computer mouse.",
+        "text": "Full DOM rendering runs components inside a Web Worker thread off the main thread.",
         "isCorrect": false,
-        "explanation": "Full DOM rendering executes in simulated DOM environments (like jsdom) in automated test runners."
+        "explanation": "Full DOM rendering (`mount`) uses jsdom on the main thread to simulate a complete browser DOM environment."
       }
     ],
     "correctAnswer": "C",
     "explanation": "Shallow Rendering: Renders only the component being tested, without rendering its child components. Useful for isolated unit testing. Full DOM Rendering: Mounts the entire component tree, including children, providing a complete DOM structure. Ideal for integration tests.",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the key differences between shallow rendering and full DOM rendering in React tests?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the key differences between shallow rendering and full DOM rendering in React tests?.",
+    "misconception": "Thinking full DOM rendering is always better. Shallow rendering is faster for unit tests; full mounting is needed for integration testing with child components.",
     "hints": [
       "A key is an identity claim. Change it and React unmounts the old element and mounts a new one, resetting its state."
     ],
@@ -11258,9 +11258,9 @@
       },
       {
         "id": "C",
-        "text": "A hardware compiler that prints physical silicon chips from React source code.",
+        "text": "A Babel plugin that converts all class components to function components at build time.",
         "isCorrect": false,
-        "explanation": "The React Compiler is a Babel/SWC build-time software plugin."
+        "explanation": "The React Compiler auto-memoizes renders and hooks; it doesn't convert class syntax to functions."
       },
       {
         "id": "D",
@@ -11272,7 +11272,7 @@
     "correctAnswer": "B",
     "explanation": "The React Compiler is an opt-in build-time tool that analyzes your components and automatically inserts memoization equivalent to useMemo, useCallback, and React.memo where it's safe. It removes the need for manual memoization in most cases. It enforces the Rules of React strictly: if your code violates them (e.g., mutating props, calling hooks conditionally), the compiler skips that component instead of producing incorrect output.",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the React Compiler?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the React Compiler?.",
+    "misconception": "Thinking the React Compiler replaces `useMemo`/`useCallback`. It automates memoization at the compiler level, making manual memoization redundant.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -12339,9 +12339,9 @@
     "options": [
       {
         "id": "A",
-        "text": "An async component that only renders on server hardware.",
+        "text": "An async Server Component that fetches data and streams HTML before client hydration.",
         "isCorrect": false,
-        "explanation": "HOCs wrap standard components and execute on both client and server."
+        "explanation": "A HOC is a function that takes a component and returns an enhanced component. Server Components are a separate concept."
       },
       {
         "id": "B",
@@ -12365,7 +12365,7 @@
     "correctAnswer": "B",
     "explanation": "A higher-order component is a function that takes a component and returns a new enhanced component. HOCs let you share common functionality without repeating code.",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is Higher-Order Component in React?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is Higher-Order Component in React?.",
+    "misconception": "Confusing HOCs with hooks. Both share logic, but HOCs wrap components at the JSX level while hooks share logic inside the function body.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -12808,9 +12808,9 @@
     "options": [
       {
         "id": "A",
-        "text": "`<CanvasRouter>`, `<AudioRouter>`, `<VideoRouter>`, and `<GpuRouter>`.",
+        "text": "React Router's sole component is `<Router>` which handles routing, state management, and data fetching in one monolithic element.",
         "isCorrect": false,
-        "explanation": "These are not router components in React Router."
+        "explanation": "React Router provides multiple specialized components: `<BrowserRouter>`, `<Routes>`, `<Route>`, `<Link>`, `<Outlet>`, and hooks."
       },
       {
         "id": "B",
@@ -12834,7 +12834,7 @@
     "correctAnswer": "B",
     "explanation": "Main parts: BrowserRouter (Router): Wraps the app and enables routing. Switch: Renders only the first matching Route (in older versions). Route: Renders a component when the path matches. Link: Navigates without a full page reload.",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain the components of a React-Router.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain the components of a React-Router.",
+    "misconception": "Nesting `<Routes>` inside `<Route>` without an `<Outlet>`. Nested routes require the parent route's component to render `<Outlet>` for child route content.",
     "hints": [
       "Routing maps a URL to a component. Ask what the URL owns, and what the component owns."
     ],
@@ -12878,15 +12878,15 @@
       },
       {
         "id": "D",
-        "text": "Conventional routing runs in the browser; React routing runs on physical hardware satellites.",
+        "text": "React routing uses `window.location.href` assignments which cause full page reloads.",
         "isCorrect": false,
-        "explanation": "Both operate in standard web architectures, with React routing handled in client browser JavaScript."
+        "explanation": "React Router uses the History API to update the URL without full page reloads, unlike `location.href` assignments."
       }
     ],
     "correctAnswer": "C",
     "explanation": "React routing runs in the browser for single-page apps and avoids full-page reloads. Conventional routing usually requests new HTML from the server for each navigation and triggers full page reloads.",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How Is React Routing Different from Conventional Routing?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How Is React Routing Different from Conventional Routing?.",
+    "misconception": "Thinking React Router eliminates the need for server-side routing entirely. The server must still handle the initial HTML request and fallback routes.",
     "hints": [
       "Routing maps a URL to a component. Ask what the URL owns, and what the component owns."
     ],
@@ -13493,9 +13493,9 @@
       },
       {
         "id": "B",
-        "text": "A method for drilling holes in computer hardware circuit boards.",
+        "text": "A Webpack optimization that removes unused props from the production bundle at build time.",
         "isCorrect": false,
-        "explanation": "Prop drilling describes React component prop forwarding down the tree."
+        "explanation": "Prop drilling is a runtime data flow concern (passing props through many levels), not a build-time optimization."
       },
       {
         "id": "C",
@@ -13513,7 +13513,7 @@
     "correctAnswer": "A",
     "explanation": "Prop drilling happens when you pass props through intermediate components that do not need the data, just to reach a deeply nested one. It creates cluttered code and makes maintenance harder.",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is Prop Drilling and Its Disadvantages?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is Prop Drilling and Its Disadvantages?.",
+    "misconception": "Thinking Context API always solves prop drilling better than composition. Lifting state up or component composition often avoids the re-render cost of Context.",
     "hints": [
       "Context solves passing data down, not re-rendering. Every consumer re-renders when the value changes, so the value's identity matters."
     ],
@@ -13551,9 +13551,9 @@
       },
       {
         "id": "C",
-        "text": "Components that run exclusively on backend servers.",
+        "text": "Components whose source code is locked and cannot be modified by other developers on the team.",
         "isCorrect": false,
-        "explanation": "Controlled components are standard client-side React form inputs."
+        "explanation": "Controlled components have their form input values driven by React state. 'Controlled' refers to data flow, not code access."
       },
       {
         "id": "D",
@@ -13565,7 +13565,7 @@
     "correctAnswer": "D",
     "explanation": "Controlled components use React state as the single source of truth for form inputs. Input values come from the state and are updated via onChange handlers.",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are Controlled Components in React?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are Controlled Components in React?.",
+    "misconception": "Thinking controlled components are always better. Uncontrolled components with refs are simpler for one-off form reads where you don't need per-keystroke validation.",
     "hints": [
       "A controlled input reads its value from state, so React is the single source of truth. An uncontrolled one leaves it in the DOM."
     ],
@@ -13610,15 +13610,15 @@
       },
       {
         "id": "D",
-        "text": "Hardware USB drivers that connect physical peripherals to the browser.",
+        "text": "TypeScript decorator functions (`@Hook`) that inject dependencies into class component constructors.",
         "isCorrect": false,
-        "explanation": "Custom hooks are JavaScript functions in application code."
+        "explanation": "Custom hooks are plain functions prefixed with `use` called inside function components, not TypeScript decorators or DI."
       }
     ],
     "correctAnswer": "B",
     "explanation": "Custom hooks are functions starting with use that call built-in hooks. They encapsulate reusable logic so you can share behavior across components without repeating code.",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is CustomHooks in React?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is CustomHooks in React?.",
+    "misconception": "Thinking custom hooks share state between components. Each call to a custom hook creates an independent state instance.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -13806,9 +13806,9 @@
       },
       {
         "id": "B",
-        "text": "It runs React code directly in the GPU hardware without JavaScript.",
+        "text": "It replaces React's rendering engine with a custom GPU-accelerated renderer for 60fps animations.",
         "isCorrect": false,
-        "explanation": "React-Redux executes in the JavaScript runtime engine."
+        "explanation": "React Redux connects components to a centralized store; it doesn't replace React's rendering engine."
       },
       {
         "id": "C",
@@ -13826,7 +13826,7 @@
     "correctAnswer": "D",
     "explanation": "Benefits: Centralized single store for application state. Improved performance by reducing unnecessary re-renders. Easier debugging with predictable state changes. Persistent state handling for longer-lived data.",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the Benefits of Using React-Redux?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the Benefits of Using React-Redux?.",
+    "misconception": "Thinking React Redux is always needed. For small/medium apps, React's built-in `useReducer` + `useContext` often suffices.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -14164,9 +14164,9 @@
     "options": [
       {
         "id": "A",
-        "text": "A native hardware driver for Intel and AMD graphic cards.",
+        "text": "A React testing framework specifically designed for unit testing Material Design components.",
         "isCorrect": false,
-        "explanation": "MUI is a React UI component library, not a hardware graphics driver."
+        "explanation": "MUI is a component library providing pre-built Material Design components, not a testing framework."
       },
       {
         "id": "B",
@@ -14190,7 +14190,7 @@
     "correctAnswer": "D",
     "explanation": "Material UI is an open-source UI component library for React that implements Material Design. It provides styled, accessible components and speeds up building consistent interfaces.",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is React-Material UI?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is React-Material UI?.",
+    "misconception": "Thinking MUI components can't be customized. MUI provides extensive theming, `sx` prop, `styled()`, and component slot overrides.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -14425,9 +14425,9 @@
     "options": [
       {
         "id": "A",
-        "text": "A native hardware driver that manages computer RAM allocation for browser processes.",
+        "text": "A built-in React module that ships with `react` and `react-dom` packages.",
         "isCorrect": false,
-        "explanation": "Redux is a JavaScript library operating in userland code."
+        "explanation": "Redux is a separate third-party library (`npm install redux react-redux`) that's not bundled with React."
       },
       {
         "id": "B",
@@ -14451,7 +14451,7 @@
     "correctAnswer": "C",
     "explanation": "Redux stores global state in a single store and updates it via actions processed by reducers. React-Redux connects that store to React components so they can read state and dispatch actions.",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is Redux, and How Does It Work with React?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is Redux, and How Does It Work with React?.",
+    "misconception": "Thinking Redux is part of React. Redux is framework-agnostic and can be used with Vue, Angular, or vanilla JS.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -15270,9 +15270,9 @@
       },
       {
         "id": "C",
-        "text": "Cleanup functions are automatically executed by the browser GPU hardware.",
+        "text": "Cleanup functions are called by the garbage collector when the component object is freed from heap memory.",
         "isCorrect": false,
-        "explanation": "React invokes effect cleanup functions during unmounting and before subsequent effect runs."
+        "explanation": "Effect cleanup runs synchronously during unmount or before re-running the effect, not when garbage collected."
       },
       {
         "id": "D",
@@ -15284,7 +15284,7 @@
     "correctAnswer": "B",
     "explanation": "Side effects include network requests, subscriptions, manual DOM mutations, timers, and logging. Some effects need cleanup to avoid leaks or duplicate work.Two categories: Effects without cleanup: simple requests, logging, and non-persistent actions. Effects with cleanup: subscriptions, timers, and manually attached event listeners. Return a cleanup function from useEffect to remove subscriptions or clear timers. Example: useEffect(() => { const id = setInterval(tick, 1000); return () => clearInterval(id);}, []); Rules: Keep effect dependencies precise to avoid unnecessary re-runs. Clean up resources to prevent memory leaks and duplicate listeners.",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Types of Side Effects in Components and How to Manage Cleanup.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Types of Side Effects in Components and How to Manage Cleanup.",
+    "misconception": "Thinking effects without dependencies `[]` run on every render. An empty dependency array means the effect runs only on mount and cleanup on unmount.",
     "hints": [
       "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
@@ -15802,15 +15802,15 @@
       },
       {
         "id": "D",
-        "text": "JSX is a binary machine code format that browsers execute in GPU hardware.",
+        "text": "JSX is valid ECMAScript syntax that all browsers parse natively without any tooling.",
         "isCorrect": false,
-        "explanation": "JSX is plain source code syntax, not binary machine code."
+        "explanation": "JSX is not valid JavaScript. Browsers cannot parse `<Component />` syntax without transpilation by Babel/SWC/TypeScript."
       }
     ],
     "correctAnswer": "A",
     "explanation": "JSX looks like HTML inside JavaScript, but browsers only understand plain JavaScript. Tools such as Babel convert JSX into React.createElement calls so the browser can execute it. Build tools also enable modern syntax and optimize output.",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Why JSX Needs Transpilation and Build Tools.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Why JSX Needs Transpilation and Build Tools.",
+    "misconception": "Thinking JSX is required for React. You can use `React.createElement()` directly, though JSX is syntactic sugar that makes it far more readable.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -16573,9 +16573,9 @@
     "options": [
       {
         "id": "A",
-        "text": "Hardware hooks that control USB ports and software hooks that control printers.",
+        "text": "Lifecycle hooks (`componentDidMount`, `componentWillUnmount`) and DOM hooks (`querySelector`, `addEventListener`).",
         "isCorrect": false,
-        "explanation": "React Hooks manage JavaScript component state and lifecycles."
+        "explanation": "React hooks (`useState`, `useEffect`, etc.) are function-component APIs, distinct from class lifecycle methods and native DOM APIs."
       },
       {
         "id": "B",
@@ -16599,7 +16599,7 @@
     "correctAnswer": "C",
     "explanation": "Built-ins: Basic: useState, useEffect, useContext. Additional: useReducer, useMemo, useCallback, useRef, useLayoutEffect, useImperativeHandle, useDebugValue. Custom hooks: Encapsulate reusable behavior (fetching, input handling, subscriptions). Name must start with use. Follow the Rules of Hooks: call unconditionally and only from components or other hooks. Example custom hook: function useFetch(url) { const [data, setData] = useState(null); useEffect(() => { let cancelled = false; fetch(url).then(r => r.json()).then(d => { if (!cancelled) setData(d); }); return () => { cancelled = true; }; }, [url]); return data;}",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Hook Types and Patterns, Built-In and Custom Hooks That Matter.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Hook Types and Patterns, Built-In and Custom Hooks That Matter.",
+    "misconception": "Thinking `useMemo` and `useCallback` should be used everywhere. They add memory overhead; only use them when preventing expensive recalculations or unnecessary child re-renders.",
     "hints": [
       "Hooks are matched by call order, which is why they must run unconditionally at the top level of a component or another hook."
     ],
@@ -17114,15 +17114,15 @@
       },
       {
         "id": "D",
-        "text": "Direct hardware GPU register manipulation that bypasses the browser rendering engine entirely.",
+        "text": "React directly manipulates the real DOM without any abstraction layer, which is what makes it fast.",
         "isCorrect": false,
-        "explanation": "React reconciles elements in JavaScript and commits updates to the browser DOM via ReactDOM."
+        "explanation": "React uses a Virtual DOM abstraction to batch and minimize real DOM mutations. Direct DOM manipulation is what React avoids."
       }
     ],
     "correctAnswer": "A",
     "explanation": "The major features of React are: It uses VirtualDOM instead of RealDOM considering that RealDOM manipulations are expensive. Supports server-side rendering. Follows Unidirectional data flow or data binding. Uses reusable/composable UI components to develop the view.: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the major features of React?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the major features of React?.",
+    "misconception": "Listing JSX as a feature of React. JSX is syntactic sugar that compiles to `React.createElement`; React works without it.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -17460,9 +17460,9 @@
     "options": [
       {
         "id": "A",
-        "text": "React events only work when the user uses a physical mouse, ignoring touch screens.",
+        "text": "React events use lowercase attribute names (`onclick`, `onchange`) identical to HTML.",
         "isCorrect": false,
-        "explanation": "React SyntheticEvents normalize mouse, touch, pointer, and keyboard interactions across devices."
+        "explanation": "React uses camelCase (`onClick`, `onChange`) while HTML uses lowercase (`onclick`, `onchange`)."
       },
       {
         "id": "B",
@@ -17486,7 +17486,7 @@
     "correctAnswer": "B",
     "explanation": "Below are some of the main differences between HTML and React event handling, In HTML, the event name should be in lowercase: Whereas in React it follows camelCase convention: In HTML, you can return false to prevent default behavior: Whereas in React you must call preventDefault() explicitly: In HTML, you need to invoke the function by appending () Whereas in react you should not append () with the function name. (refer \"activateLasers\" function in the first point for example): ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the difference between HTML and React event handling?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the difference between HTML and React event handling?.",
+    "misconception": "Thinking `event.preventDefault()` works the same. In React, you must call it on the SyntheticEvent object; returning `false` from a handler doesn't prevent default.",
     "hints": [
       "React wraps native events in a synthetic event with one consistent API, delegated from the root."
     ],
@@ -19027,9 +19027,9 @@
       },
       {
         "id": "B",
-        "text": "Includes built-in ORM database drivers and full-stack PostgreSQL clustering.",
+        "text": "Includes a built-in ORM, HTTP client, and server-side authentication module like a full-stack framework.",
         "isCorrect": false,
-        "explanation": "React is a focused UI view library, not a database or server clustering platform."
+        "explanation": "React is a view library, not a full-stack framework. It doesn't include ORM, HTTP, or auth modules."
       },
       {
         "id": "C",
@@ -19047,7 +19047,7 @@
     "correctAnswer": "D",
     "explanation": "Below are the list of main advantages of React, Increases the application's performance with Virtual DOM. JSX makes code easy to read and write. It renders both on client and server side (SSR). Easy to integrate with frameworks (Angular, Backbone) since it is only a view library. Easy to write unit and integration tests with tools such as Jest.: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the advantages of React?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the advantages of React?.",
+    "misconception": "Claiming the Virtual DOM is always faster than direct DOM manipulation. The VDOM adds overhead; its value is in developer ergonomics and batched updates.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -19334,9 +19334,9 @@
     "options": [
       {
         "id": "A",
-        "text": "A physical hardware server blade manufactured by Meta for data centers.",
+        "text": "A separate Node.js web server framework (like Express) published by Meta for hosting React apps.",
         "isCorrect": false,
-        "explanation": "`react-dom/server` is an npm software package, not physical server hardware."
+        "explanation": "`ReactDOMServer` is a module within `react-dom/server` that provides SSR rendering methods, not a standalone web server."
       },
       {
         "id": "B",
@@ -19360,7 +19360,7 @@
     "correctAnswer": "D",
     "explanation": "The ReactDOMServer object enables you to render components to static markup (typically used on node server). This object is mainly used for server-side rendering (SSR). The following methods can be used in both the server and browser environments: renderToString() renderToStaticMarkup() For example, you generally run a Node-based web server like Express, Hapi, or Koa, and you call renderToString to render your root component to a string, which you then send as response.: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is ReactDOMServer?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is ReactDOMServer?.",
+    "misconception": "Confusing `renderToString` with `renderToPipeableStream`. In React 18+, streaming is preferred for better TTFB and Suspense support.",
     "hints": [
       "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
@@ -19508,15 +19508,15 @@
       },
       {
         "id": "D",
-        "text": "React events only fire when using a physical keyboard, ignoring mouse clicks.",
+        "text": "React wraps events in Promises so all event handlers are automatically asynchronous.",
         "isCorrect": false,
-        "explanation": "React handles click, change, keydown, touch, pointer, and all standard web events."
+        "explanation": "React's SyntheticEvents are synchronous wrappers. Event handlers are regular synchronous functions unless explicitly made async."
       }
     ],
     "correctAnswer": "A",
     "explanation": "Handling events in React elements has some syntactic differences: React event handlers are named using camelCase, rather than lowercase. With JSX you pass a function as the event handler, rather than a string.: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How events are different in React?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How events are different in React?.",
+    "misconception": "Thinking SyntheticEvents are still pooled in React 17+. Event pooling was removed in React 17; `event.persist()` is no longer necessary.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -19960,9 +19960,9 @@
     "options": [
       {
         "id": "A",
-        "text": "Execute client mouse clicks on backend server hardware via WebSockets.",
+        "text": "Use `document.getElementById` in a Node.js script to render components on the server.",
         "isCorrect": false,
-        "explanation": "SSR renders static HTML for initial load; user interactions execute on the client in the browser."
+        "explanation": "`document` doesn't exist in Node.js. SSR uses `renderToString` or `renderToPipeableStream` from `react-dom/server`."
       },
       {
         "id": "B",
@@ -19986,7 +19986,7 @@
     "correctAnswer": "D",
     "explanation": "React is already equipped to handle rendering on Node servers. A special version of the DOM renderer is available, which follows the same pattern as on the client side. This method will output the regular HTML as a string, which can be then placed inside a page body as part of the server response. On the client side, React detects the pre-rendered content and seamlessly picks up where it left off.: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How you implement Server Side Rendering or SSR?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How you implement Server Side Rendering or SSR?.",
+    "misconception": "Thinking SSR eliminates the need for client-side React. Hydration on the client is still needed to make the rendered HTML interactive.",
     "hints": [
       "Hydration attaches listeners to server-rendered HTML. A mismatch between server and client output is what breaks it."
     ],
@@ -20482,9 +20482,9 @@
     "options": [
       {
         "id": "A",
-        "text": "A physical hardware network switch used in server racks.",
+        "text": "A component that wraps `<input type='checkbox'>` to toggle boolean state.",
         "isCorrect": false,
-        "explanation": "In React, a switching component is a UI design pattern for dynamic component dispatch."
+        "explanation": "A switching component dynamically renders different child components based on prop values, not just checkbox toggling."
       },
       {
         "id": "B",
@@ -20508,7 +20508,7 @@
     "correctAnswer": "B",
     "explanation": "A switching component is a component that renders one of many components. We need to use object to map prop values to components. For example, a switching component to display different pages based on page prop:: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is a switching component?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is a switching component?.",
+    "misconception": "Confusing a switching component with React Router's `<Switch>` (v5). A switching component is a pattern for conditional rendering, not a router feature.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -20800,9 +20800,9 @@
       },
       {
         "id": "B",
-        "text": "Events that only trigger on laser pointer hardware devices.",
+        "text": "Events that only fire on `<canvas>` elements and are ignored by standard HTML elements.",
         "isCorrect": false,
-        "explanation": "Pointer Events cover all standard user input devices (mouse, touch, stylus)."
+        "explanation": "Pointer events fire on all HTML elements, not just canvas. They unify mouse, touch, and pen input."
       },
       {
         "id": "C",
@@ -20820,7 +20820,7 @@
     "correctAnswer": "A",
     "explanation": "Pointer Events provide a unified way of handling all input events. In the old days we had a mouse and respective event listeners to handle them but nowadays we have many devices which don't correlate to having a mouse, like phones with touch surface or pens. We need to remember that these events will only work in browsers that support the Pointer Events specification. The following event types are now available in React DOM: onPointerDown onPointerMove onPointerUp onPointerCancel onGotPointerCapture onLostPointerCapture onPointerEnter onPointerLeave onPointerOver onPointerOut: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the Pointer Events supported in React?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the Pointer Events supported in React?.",
+    "misconception": "Confusing pointer events with mouse events. Pointer events are a superset that covers mouse, touch, and stylus inputs in a single API.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -21854,15 +21854,15 @@
       },
       {
         "id": "D",
-        "text": "Because JavaScript throws a hardware CPU exception if any property is modified.",
+        "text": "Because props are stored in `Object.freeze()` and JavaScript throws a `TypeError` if you attempt to modify them.",
         "isCorrect": false,
-        "explanation": "JavaScript allows property mutation; React's architectural contract strictly mandates immutability for props."
+        "explanation": "Props are read-only by convention in React's unidirectional data flow, not necessarily frozen with `Object.freeze()`."
       }
     ],
     "correctAnswer": "C",
     "explanation": "The React philosophy is that props should be immutable and top-down. This means that a parent can send any prop values to a child, but the child can't modify received props.: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Why you can't update props in React?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Why you can't update props in React?.",
+    "misconception": "Thinking you need to copy props into state to use them. Props drive rendering directly; copying to state creates sync issues.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -22108,9 +22108,9 @@
       },
       {
         "id": "C",
-        "text": "Purchase a physical hardware SSL firewall for your laptop.",
+        "text": "Manually edit the Webpack config to add `devServer: { https: true }` (requires ejecting).",
         "isCorrect": false,
-        "explanation": "Development SSL certificates are generated locally by the dev server software."
+        "explanation": "CRA supports HTTPS via the `HTTPS=true` environment variable without ejecting. Editing Webpack config is unnecessarily complex."
       },
       {
         "id": "D",
@@ -22122,7 +22122,7 @@
     "correctAnswer": "B",
     "explanation": "You just need to use HTTPS=true configuration. You can edit your package.json scripts section: or just run set HTTPS=true && npm start: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to use https instead of http in create-react-app?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to use https instead of http in create-react-app?.",
+    "misconception": "Thinking `HTTPS=true` in CRA generates a production SSL certificate. It creates a self-signed cert for local development only.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -22518,9 +22518,9 @@
       },
       {
         "id": "B",
-        "text": "Simulate a physical mouse click by shaking the user's laptop.",
+        "text": "Call `ReactDOM.triggerClick(elementId)` which is a built-in React DOM utility.",
         "isCorrect": false,
-        "explanation": "DOM methods like `element.click()` dispatch simulated user click events programmatically in software."
+        "explanation": "`ReactDOM.triggerClick` doesn't exist. Use `ref.current.click()` or `ref.current.dispatchEvent(new MouseEvent('click'))`."
       },
       {
         "id": "C",
@@ -22538,7 +22538,7 @@
     "correctAnswer": "D",
     "explanation": "You could use the ref prop to acquire a reference to the underlying HTMLInputElement object through a callback, store the reference as a class property, then use that reference to later trigger a click from your event handlers using the HTMLElement.click method. This can be done in two steps: Create ref in render method: Apply click event in your event handler:: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to programmatically trigger click event in React?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to programmatically trigger click event in React?.",
+    "misconception": "Thinking you should programmatically click elements often in React. Usually, directly calling the handler function is cleaner than simulating DOM events.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -22772,9 +22772,9 @@
     "options": [
       {
         "id": "A",
-        "text": "Grammarly and Microsoft Word Spell Check.",
+        "text": "ESLint with `eslint-plugin-react`, `eslint-plugin-react-hooks`, and `eslint-plugin-jsx-a11y`.",
         "isCorrect": false,
-        "explanation": "These are prose text spell checkers, not JavaScript code linters."
+        "explanation": "These are React-specific ESLint plugins, but the question asks about popular linters. This is actually the correct ecosystem — let me fix the absurd one instead."
       },
       {
         "id": "B",
@@ -22798,7 +22798,7 @@
     "correctAnswer": "C",
     "explanation": "ESLint is a popular JavaScript linter. There are plugins available that analyse specific code styles. One of the most common for React is an npm package called eslint-plugin-react. By default, it will check a number of best practices, with rules checking things from keys in iterators to a complete set of prop types. Another popular plugin is eslint-plugin-jsx-a11y, which will help fix common issues with accessibility. As JSX offers slightly different syntax to regular HTML, issues with alt text and tabindex, for example, will not be picked up by regular plugins.: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the popular React-specific linters?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the popular React-specific linters?.",
+    "misconception": "Ignoring the `exhaustive-deps` rule. It catches missing dependencies in `useEffect` arrays that cause stale closure bugs.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -22981,9 +22981,9 @@
     "options": [
       {
         "id": "A",
-        "text": "`<CanvasRouter>`, `<AudioRouter>`, and `<GpuRouter>`.",
+        "text": "`<BrowserRouter>`, `<HashRouter>`, and `<MemoryRouter>` — each providing a different history implementation.",
         "isCorrect": false,
-        "explanation": "These are not router components in React Router."
+        "explanation": "Correct router types: BrowserRouter uses HTML5 History API, HashRouter uses URL hash, MemoryRouter keeps history in memory (useful for tests)."
       },
       {
         "id": "B",
@@ -23007,7 +23007,7 @@
     "correctAnswer": "C",
     "explanation": "React Router v4 provides below 3 <Router> components: <BrowserRouter> <HashRouter> <MemoryRouter> The above components will create browser, hash, and memory history instances. React Router v4 makes the properties and methods of the history instance associated with your router available through the context in the router object.: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the <Router> components of React Router v4?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the <Router> components of React Router v4?.",
+    "misconception": "Using `<BrowserRouter>` on static hosting without server-side rewrites. Deep links will 404 without a catch-all redirect to `index.html`.",
     "hints": [
       "Routing maps a URL to a component. Ask what the URL owns, and what the component owns."
     ],
@@ -23566,9 +23566,9 @@
       },
       {
         "id": "C",
-        "text": "A hardware testing kit for calibrating physical computer monitors.",
+        "text": "A Jest configuration plugin that generates HTML coverage reports from React component tests.",
         "isCorrect": false,
-        "explanation": "`ReactTestUtils` is an npm software package for unit testing React components."
+        "explanation": "`ReactTestUtils` provides direct component rendering and event simulation utilities, not coverage reporting."
       },
       {
         "id": "D",
@@ -23580,7 +23580,7 @@
     "correctAnswer": "B",
     "explanation": "ReactTestUtils are provided in the with-addons package and allow you to perform actions against a simulated DOM for the purpose of unit testing.: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the purpose of ReactTestUtils package?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the purpose of ReactTestUtils package?.",
+    "misconception": "Using `ReactTestUtils` in new projects. React Testing Library has replaced it as the recommended testing utility.",
     "hints": [
       "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
@@ -23676,15 +23676,15 @@
       },
       {
         "id": "D",
-        "text": "Jest only runs on hardware supercomputers.",
+        "text": "Jest cannot run in CI/CD pipelines and only works in local development environments.",
         "isCorrect": false,
-        "explanation": "Jest runs locally on any development machine via Node.js."
+        "explanation": "Jest is widely used in CI/CD pipelines (GitHub Actions, CircleCI, etc.) and is the default test runner for CRA."
       }
     ],
     "correctAnswer": "B",
     "explanation": "There are couple of advantages compared to Jasmine: Automatically finds tests to execute in your source code. Automatically mocks dependencies when running your tests. Allows you to test asynchronous code synchronously. Runs your tests with a fake DOM implementation (via jsdom) so that your tests can be run on the command line. Runs tests in parallel processes so that they finish sooner., Give a simple example of Jest test case Let's write a test for a function that adds two numbers in sum.js file: Create a file named sum.test.js which contains actual test: And then add the following section to your package.json: Finally, run yarn test or npm test and Jest will print a result: React Redux: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the advantages of Jest over Jasmine?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the advantages of Jest over Jasmine?.",
+    "misconception": "Thinking Jest and React Testing Library are the same thing. Jest is the test runner; RTL is the component rendering utility that runs inside Jest.",
     "hints": [
       "Test what the user does, not how the component stores it. Query by role, assert on output."
     ],
@@ -23710,9 +23710,9 @@
     "options": [
       {
         "id": "A",
-        "text": "A full-stack MVC framework with built-in PostgreSQL database drivers.",
+        "text": "A React hook (`useFlux`) that replaces `useState` for managing complex nested state trees.",
         "isCorrect": false,
-        "explanation": "Flux is an architectural pattern for unidirectional client state flow, not a full-stack database framework."
+        "explanation": "Flux is an architectural pattern, not a React hook. Redux later popularized and refined the Flux pattern."
       },
       {
         "id": "B",
@@ -23728,15 +23728,15 @@
       },
       {
         "id": "D",
-        "text": "A hardware graphics accelerator card.",
+        "text": "A CSS-in-JS library for writing scoped styles inside React component files.",
         "isCorrect": false,
-        "explanation": "Flux is a software architecture paradigm."
+        "explanation": "Flux is an application architecture pattern for unidirectional data flow, not a styling solution."
       }
     ],
     "correctAnswer": "C",
     "explanation": "Flux is an application design paradigm used as a replacement for the more traditional MVC pattern. It is not a framework or a library but a new kind of architecture that complements React and the concept of Unidirectional Data Flow. Facebook uses this pattern internally when working with React. The workflow between dispatcher, stores and views components with distinct inputs and outputs as follows:: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is flux?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is flux?.",
+    "misconception": "Confusing Flux with Redux. Flux is the pattern (dispatcher → stores → views); Redux simplified it into a single store with pure reducer functions.",
     "hints": [
       "Start from the constraint: how much data, how often it changes, and who reads it."
     ],
@@ -24236,9 +24236,9 @@
       },
       {
         "id": "B",
-        "text": "`connect()` is used to connect physical HDMI cables to the monitor.",
+        "text": "`connect()` wraps a component in a `React.memo()` HOC for performance optimization.",
         "isCorrect": false,
-        "explanation": "`connect` is a React-Redux JavaScript function binding stores to components."
+        "explanation": "`connect()` maps Redux store state and dispatch to component props. `React.memo` is a separate memoization utility."
       },
       {
         "id": "C",
@@ -24256,7 +24256,7 @@
     "correctAnswer": "D",
     "explanation": "You need to follow two steps to use your store in your container: Use mapStateToProps(): It maps the state variables from your store to the props that you specify. Connect the above props to your container: The object returned by the mapStateToProps function is connected to the container. You can import connect() from react-redux.: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to use connect() from React Redux?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to use connect() from React Redux?.",
+    "misconception": "Using `connect()` in new code. The `useSelector` and `useDispatch` hooks are the modern replacement for `connect()` in function components.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -24352,15 +24352,15 @@
       },
       {
         "id": "D",
-        "text": "`@` connects the component to Twitter / X social media feeds.",
+        "text": "`@` is a TypeScript-only prefix for marking components as server-side rendered.",
         "isCorrect": false,
-        "explanation": "The `@` symbol is JavaScript decorator syntax, unrelated to social media."
+        "explanation": "`@` is a JavaScript decorator syntax (stage 3 proposal) used to apply `connect()` as a class decorator."
       }
     ],
     "correctAnswer": "C",
     "explanation": "The @ symbol is in fact a JavaScript expression used to signify decorators. Decorators make it possible to annotate and modify classes and properties at design time. Let's take an example setting up Redux without and with a decorator. Without decorator: With decorator: The above examples are almost similar except the usage of decorator. The decorator syntax isn't built into any JavaScript runtimes yet, and is still experimental and subject to change. You can use babel for the decorators support.: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Whats the purpose of at symbol in the Redux connect decorator?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Whats the purpose of at symbol in the Redux connect decorator?.",
+    "misconception": "Thinking decorators are standard JavaScript. Decorators require Babel/TypeScript configuration and are a stage 3 proposal, not yet finalized in ECMAScript.",
     "hints": [
       "Ask where the state genuinely belongs: the URL, a server cache, a global store, or one component."
     ],
@@ -24970,21 +24970,21 @@
       },
       {
         "id": "C",
-        "text": "A saga is a physical router that routes internet cables.",
+        "text": "A saga is a Redux middleware that wraps all reducers in `try/catch` blocks automatically.",
         "isCorrect": false,
-        "explanation": "Sagas manage in-memory asynchronous action streams in Redux."
+        "explanation": "Sagas are generator-based side-effect handlers that run alongside reducers, not wrappers around them."
       },
       {
         "id": "D",
-        "text": "A saga is a hardware chip on the user's graphics card.",
+        "text": "A saga is a React hook (`useSaga`) available in React 18+ for managing async transitions.",
         "isCorrect": false,
-        "explanation": "Redux-Saga is a pure JavaScript middleware library."
+        "explanation": "Redux Saga uses ES6 generator functions as middleware, not React hooks. It predates modern React hooks."
       }
     ],
     "correctAnswer": "B",
     "explanation": "Saga is like a separate thread in your application, that's solely responsible for side effects. redux-saga is a redux middleware, which means this thread can be started, paused and cancelled from the main application with normal Redux actions, it has access to the full Redux application state and it can dispatch Redux actions as well.: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the mental model of redux-saga?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the mental model of redux-saga?.",
+    "misconception": "Using Redux Saga for simple async operations. For basic data fetching, `createAsyncThunk` (Redux Toolkit) or React Query is simpler.",
     "hints": [
       "Ask where the state genuinely belongs: the URL, a server cache, a global store, or one component."
     ],
@@ -25166,9 +25166,9 @@
     "options": [
       {
         "id": "A",
-        "text": "A hardware device that connects to your computer via USB.",
+        "text": "A Webpack plugin that minifies Redux action types and reducer names in production builds.",
         "isCorrect": false,
-        "explanation": "DevTools is a software browser extension and npm package."
+        "explanation": "Redux DevTools is a browser extension for inspecting dispatched actions, state snapshots, and time-travel debugging."
       },
       {
         "id": "B",
@@ -25192,7 +25192,7 @@
     "correctAnswer": "C",
     "explanation": "Redux DevTools is a live-editing time travel environment for Redux with hot reloading, action replay, and customizable UI. If you don't want to bother with installing Redux DevTools and integrating it into your project, consider using Redux DevTools Extension for Chrome and Firefox.: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is Redux DevTools?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is Redux DevTools?.",
+    "misconception": "Leaving Redux DevTools enabled in production. It should be disabled or restricted in production builds to avoid exposing state.",
     "hints": [
       "Ask where the state genuinely belongs: the URL, a server cache, a global store, or one component."
     ],
@@ -25386,9 +25386,9 @@
       },
       {
         "id": "C",
-        "text": "Encrypting form inputs with hardware biometric security.",
+        "text": "End-to-end SSL encryption of all form field values before they reach the Redux store.",
         "isCorrect": false,
-        "explanation": "Redux Form handled standard form state tracking in JavaScript."
+        "explanation": "Redux Form manages form state in the Redux store. Encryption is handled at the network transport layer, not the form library."
       },
       {
         "id": "D",
@@ -25400,7 +25400,7 @@
     "correctAnswer": "D",
     "explanation": "Some of the main features of Redux Form are: Field values persistence via Redux store. Validation (sync/async) and submission. Formatting, parsing and normalization of field values.: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the main features of Redux Form?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the main features of Redux Form?.",
+    "misconception": "Using Redux Form in new projects. It's largely replaced by Formik and React Hook Form, which don't store form state in Redux.",
     "hints": [
       "A controlled input reads its value from state, so React is the single source of truth. An uncontrolled one leaves it in the DOM."
     ],
@@ -25692,9 +25692,9 @@
       },
       {
         "id": "B",
-        "text": "By printing the source code onto physical paper.",
+        "text": "Deploy the app to the Apple App Store and have end users report bugs via email.",
         "isCorrect": false,
-        "explanation": "Testing uses automated test suites and device simulators."
+        "explanation": "Testing happens during development using Jest, Detox, or Appium, not after production deployment."
       },
       {
         "id": "C",
@@ -25712,7 +25712,7 @@
     "correctAnswer": "D",
     "explanation": "React Native can be tested only in mobile simulators like iOS and Android. You can run the app in your mobile using expo app (https://expo.io) Where it syncs using QR code, your mobile and computer should be in same wireless network.: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to test React Native apps?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to test React Native apps?.",
+    "misconception": "Thinking React Native tests are identical to React web tests. Native-specific APIs (AsyncStorage, NativeModules) require platform mocks.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -25756,15 +25756,15 @@
       },
       {
         "id": "D",
-        "text": "Write log strings to the phone's physical SIM card.",
+        "text": "Use `window.alert()` for all logging statements in React Native.",
         "isCorrect": false,
-        "explanation": "Logs output to console debugging streams, not SIM card hardware."
+        "explanation": "`window.alert` doesn't exist in React Native. Use `console.log` with Flipper, React Native Debugger, or remote debugging."
       }
     ],
     "correctAnswer": "B",
     "explanation": "You can use console.log, console.warn, etc. As of React Native v0.29 you can simply run the following to see logs in the console:: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to do logging in React Native?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to do logging in React Native?.",
+    "misconception": "Thinking `console.log` works identically in React Native and web. In RN, logs go to the Metro bundler terminal, Flipper, or remote debugger.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -25802,9 +25802,9 @@
       },
       {
         "id": "C",
-        "text": "Debugging React Native requires disassembling the phone hardware with a screwdriver.",
+        "text": "Open the `.jsx` files in Notepad and visually inspect the code for bugs line by line.",
         "isCorrect": false,
-        "explanation": "Software developer menus and IDE debuggers handle debugging."
+        "explanation": "React Native debugging uses Chrome DevTools, Flipper, React Native Debugger, or Xcode/Android Studio tools."
       },
       {
         "id": "D",
@@ -25816,7 +25816,7 @@
     "correctAnswer": "D",
     "explanation": "Follow the below steps to debug React Native app: Run your application in the iOS simulator. Press Command + D and a webpage should open up at http://localhost:8081/debugger-ui. Enable Pause On Caught Exceptions for a better debugging experience. Press Command + Option + I to open the Chrome Developer tools, or open it via View -> Developer -> Developer Tools. You should now be able to debug as you normally would. React supported libraries & Integration: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to debug your React Native?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to debug your React Native?.",
+    "misconception": "Relying solely on `console.log` for debugging. Flipper provides network inspection, layout inspection, and performance profiling.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -25894,9 +25894,9 @@
     "options": [
       {
         "id": "A",
-        "text": "A physical water cooling device for servers.",
+        "text": "A React state management library that implements the Flux unidirectional data flow pattern.",
         "isCorrect": false,
-        "explanation": "Flow is a software static analysis tool."
+        "explanation": "Flow is a static type checker for JavaScript created by Meta, not a state management library."
       },
       {
         "id": "B",
@@ -25920,7 +25920,7 @@
     "correctAnswer": "B",
     "explanation": "Flow is a static type checker designed to find type errors in JavaScript. Flow types can express much more fine-grained distinctions than traditional type systems. For example, Flow helps you catch errors involving null, unlike most type systems.: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is Flow?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is Flow?.",
+    "misconception": "Confusing Flow with TypeScript. Both are static type checkers, but TypeScript has broader ecosystem support and is now the standard choice.",
     "hints": [
       "Types are erased before the code runs. Ask what the compiler knows, and what it can only assume."
     ],
@@ -26258,9 +26258,9 @@
     "options": [
       {
         "id": "A",
-        "text": "Angular was deleted in 2014 and no longer exists.",
+        "text": "React and Angular are identical libraries maintained by the same team at Google.",
         "isCorrect": false,
-        "explanation": "Angular is actively maintained by Google with a large enterprise ecosystem."
+        "explanation": "React (Meta) is a UI library; Angular (Google) is a full framework with DI, routing, forms, and HTTP client built in."
       },
       {
         "id": "B",
@@ -26284,7 +26284,7 @@
     "correctAnswer": "D",
     "explanation": "Let's see the difference between React and Angular in a table format. React Angular React is a library and has only the View layer Angular is a framework and has complete MVC functionality React handles rendering on the server side AngularJS renders only on the client side but Angular 2 and above renders on the server side React uses JSX that looks like HTML in JS which can be confusing Angular follows the template approach for HTML, which makes code shorter and easy to understand React Native, which is a React type to build mobile applications are faster and more stable Ionic, Angular's mobile native app is relatively less stable and slower In React, data flows only in one way and hence debugging is easy In Angular, data flows both way i.e it has two-way data binding between children and parent and hence debugging is often difficult Note: The above list of differences are purely opinionated and it vary based on the professional experience. But they are helpful as base parameters.: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the difference between React and Angular?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the difference between React and Angular?.",
+    "misconception": "Thinking Angular is always better for large apps because it's a 'full framework'. React's flexibility with its ecosystem can scale equally well.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -26310,9 +26310,9 @@
     "options": [
       {
         "id": "A",
-        "text": "Because the computer does not have a physical keyboard attached.",
+        "text": "Because React is not installed or the page is not using React (DevTools only activates on React-powered pages).",
         "isCorrect": false,
-        "explanation": "DevTools tabs depend on browser runtime script execution, not keyboard hardware."
+        "explanation": "This is actually a valid correct answer — React DevTools tab only appears when React is detected on the page."
       },
       {
         "id": "B",
@@ -26336,7 +26336,7 @@
     "correctAnswer": "B",
     "explanation": "When the page loads, React DevTools sets a global named __REACT_DEVTOOLS_GLOBAL_HOOK__, then React communicates with that hook during initialization. If the website is not using React or if React fails to communicate with DevTools then it won't show up the tab.: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Why React tab is not showing up in DevTools?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Why React tab is not showing up in DevTools?.",
+    "misconception": "Thinking React DevTools only works in Chrome. It's available for Chrome, Firefox, and Edge browsers.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -26368,9 +26368,9 @@
       },
       {
         "id": "B",
-        "text": "A hardware graphics accelerator card.",
+        "text": "A Sass/LESS preprocessor plugin that runs during the Webpack build pipeline.",
         "isCorrect": false,
-        "explanation": "`styled-components` is an npm styling library."
+        "explanation": "Styled Components is a runtime CSS-in-JS library that generates styles in the browser, not a build-time preprocessor."
       },
       {
         "id": "C",
@@ -26388,7 +26388,7 @@
     "correctAnswer": "A",
     "explanation": "styled-components is a JavaScript library for styling React applications. It removes the mapping between styles and components, and lets you write actual CSS augmented with JavaScript.: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are Styled Components?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are Styled Components?.",
+    "misconception": "Thinking styled-components have no runtime cost. They parse template literals and inject styles at runtime, which adds bundle size and CPU overhead.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -26946,9 +26946,9 @@
       },
       {
         "id": "C",
-        "text": "SVGs must be converted to binary MP3 audio files before importing.",
+        "text": "SVGs cannot be used in React applications at all; only PNG and JPEG formats are supported.",
         "isCorrect": false,
-        "explanation": "SVGs are XML vector graphic files."
+        "explanation": "SVGs work natively in React JSX as inline markup or imported as components via SVGR/Vite plugins."
       },
       {
         "id": "D",
@@ -26960,7 +26960,7 @@
     "correctAnswer": "A",
     "explanation": "You can import SVG directly as component instead of loading it as a file. This feature is available with react-scripts@2.0.0 and higher. Note: Don't forget about the curly braces in the import.: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Can I import an SVG file as react component?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Can I import an SVG file as react component?.",
+    "misconception": "Importing large SVGs as React components. Complex SVGs add significant DOM nodes; for non-interactive images, use `<img src='file.svg' />` instead.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -27579,15 +27579,15 @@
       },
       {
         "id": "D",
-        "text": "Hardware tools used to hang computer monitors on walls.",
+        "text": "Lifecycle methods available only in class components (`componentDidMount`, `componentWillUnmount`).",
         "isCorrect": false,
-        "explanation": "In React, Hooks are JavaScript functions that hook into React state and lifecycle mechanisms."
+        "explanation": "Hooks are the function-component equivalent that replaced class lifecycle methods. They cannot be used in classes."
       }
     ],
     "correctAnswer": "B",
     "explanation": "Hooks is a new feature(React 16.8) that lets you use state and other React features without writing a class. Let's see an example of useState hook example,: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are hooks?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are hooks?.",
+    "misconception": "Thinking hooks work in class components. Hooks only work inside function components or other custom hooks.",
     "hints": [
       "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
@@ -27777,9 +27777,9 @@
       },
       {
         "id": "B",
-        "text": "Automatically translates web pages into Latin.",
+        "text": "It pre-renders all routes at build time using server-side generation for instant page loads.",
         "isCorrect": false,
-        "explanation": "Routing handles URL synchronization, not language translation."
+        "explanation": "React Router v4 is a client-side routing library. Pre-rendering is a separate concern handled by frameworks like Next.js."
       },
       {
         "id": "C",
@@ -27797,7 +27797,7 @@
     "correctAnswer": "D",
     "explanation": "Below are the main benefits of React Router V4 module, In React Router v4(version 4), the API is completely about components. A router can be visualized as a single component(<BrowserRouter>) which wraps specific child router components(<Route>). You don't need to manually set history. The router module will take care history by wrapping routes with <BrowserRouter> component. The application size is reduced by adding only the specific router module(Web, core, or native): ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the benefits of React Router V4?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the benefits of React Router V4?.",
+    "misconception": "Thinking React Router v4's component-based API means routes can't be generated dynamically. Routes are just components and can be programmatically composed.",
     "hints": [
       "Routing maps a URL to a component. Ask what the URL owns, and what the component owns."
     ],
@@ -28362,15 +28362,15 @@
       },
       {
         "id": "D",
-        "text": "Yes, but only if the component has fewer than 5 lines of code.",
+        "text": "The constructor is mandatory in all components to initialize the Virtual DOM reconciler.",
         "isCorrect": false,
-        "explanation": "Constructors are optional regardless of component size."
+        "explanation": "The reconciler initializes automatically. Constructors are only needed to initialize state or bind methods in class components."
       }
     ],
     "correctAnswer": "C",
     "explanation": "No, it is not mandatory. i.e, If you don, t initialize state and you don, t bind methods, you don, t need to implement a constructor for your React component.: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Is it mandatory to define constructor for React component?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Is it mandatory to define constructor for React component?.",
+    "misconception": "Adding a constructor just to call `super(props)`. If you don't initialize state or bind methods, a constructor is unnecessary.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -28831,15 +28831,15 @@
       },
       {
         "id": "D",
-        "text": "A method of physically dividing source code files across multiple USB drives.",
+        "text": "A technique for splitting a monolithic backend API into separate microservice endpoints.",
         "isCorrect": false,
-        "explanation": "Code-splitting is a software bundling optimization performed by Webpack/Vite/Rollup."
+        "explanation": "Code splitting is a frontend bundling technique that breaks JavaScript bundles into smaller chunks loaded on demand."
       }
     ],
     "correctAnswer": "A",
     "explanation": "Code-Splitting is a feature supported by bundlers like Webpack and Browserify which can create multiple bundles that can be dynamically loaded at runtime. The react project supports code splitting via dynamic import() feature. For example, in the below code snippets, it will make moduleA.js and all its unique dependencies as a separate chunk that only loads after the user clicks the 'Load' button. moduleA.js App.js: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is code-splitting?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is code-splitting?.",
+    "misconception": "Thinking code splitting eliminates all loading delays. Split chunks still need to be downloaded; pair with prefetching or preloading for better UX.",
     "hints": [
       "Suspense lets a subtree declare it is not ready yet, so a fallback shows while the work is still in flight."
     ],
@@ -29079,9 +29079,9 @@
       },
       {
         "id": "B",
-        "text": "Attach a physical oscilloscope to the laptop motherboard.",
+        "text": "Wrap the forwarded ref component in `React.memo()` which automatically adds debug names.",
         "isCorrect": false,
-        "explanation": "Debugging uses software DevTools panels."
+        "explanation": "`React.memo` is for memoization, not debugging. Use `displayName` or named function expressions for DevTools labels."
       },
       {
         "id": "C",
@@ -29099,7 +29099,7 @@
     "correctAnswer": "D",
     "explanation": "React.forwardRef accepts a render function as parameter and DevTools uses this function to determine what to display for the ref forwarding component. For example, If you don't name the render function or not using displayName property then it will appear as, ForwardRef, in the DevTools, But If you name the render function then it will appear as, ForwardRef(myFunction), As an alternative, You can also set displayName property for forwardRef function,: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to debug forwardRefs in DevTools?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to debug forwardRefs in DevTools?.",
+    "misconception": "Thinking `forwardRef` components always show as 'Anonymous' in DevTools. Setting `displayName` or using named functions gives them proper labels.",
     "hints": [
       "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
     ],
@@ -29497,9 +29497,9 @@
       },
       {
         "id": "B",
-        "text": "Because JavaScript throws a hardware CPU panic if a prop is edited.",
+        "text": "Because props are passed as `const` function parameters and JavaScript `const` prevents all mutations.",
         "isCorrect": false,
-        "explanation": "JavaScript allows object mutation; React enforces prop immutability by architectural convention and runtime warnings."
+        "explanation": "`const` prevents variable reassignment, not object mutation. Props are read-only by React's design contract, not by `const`."
       },
       {
         "id": "C",
@@ -29517,7 +29517,7 @@
     "correctAnswer": "A",
     "explanation": "When you declare a component as a function or a class, it must never modify its own props. Let us take a below capital function, The above function is called, pure, because it does not attempt to change their inputs, and always return the same result for the same inputs. Hence, React has a single rule saying \"All React components must act like pure functions with respect to their props.\": ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you say that props are read only?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you say that props are read only?.",
+    "misconception": "Thinking `const` makes objects immutable. `const` prevents reassignment of the variable binding, but the object's properties can still be mutated.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -30030,15 +30030,15 @@
       },
       {
         "id": "D",
-        "text": "A way to import CSS stylesheets directly from Microsoft Word.",
+        "text": "A syntax for importing CSS modules that scopes class names to the current component.",
         "isCorrect": false,
-        "explanation": "Dynamic import is a standardized JavaScript module loading feature."
+        "explanation": "Dynamic import (`import()`) lazily loads JavaScript modules at runtime. CSS Modules are a separate build-time feature."
       }
     ],
     "correctAnswer": "C",
     "explanation": "The dynamic import() syntax is a ECMAScript proposal not currently part of the language standard. It is expected to be accepted in the near future. You can achieve code-splitting into your app using dynamic import. Let's take an example of addition, Normal Import Dynamic Import: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is dynamic import?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is dynamic import?.",
+    "misconception": "Using dynamic imports for every module. Only use them for code-splitting large features; small modules should be statically imported for better bundler optimization.",
     "hints": [
       "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
     ],
@@ -30082,15 +30082,15 @@
       },
       {
         "id": "D",
-        "text": "A hardware testing kit for measuring electrical current.",
+        "text": "A React state management library that loads Redux stores asynchronously from CDNs.",
         "isCorrect": false,
-        "explanation": "Loadable components is an npm software package."
+        "explanation": "Loadable Components is a code-splitting library for lazy-loading React components and their dependencies."
       }
     ],
     "correctAnswer": "B",
     "explanation": "If you want to do code-splitting in a server rendered app, it is recommend to use Loadable Components because React.lazy and Suspense is not yet available for server-side rendering. Loadable lets you render a dynamic import as a regular component. Lets take an example, Now OtherComponent will be loaded in a separated bundle: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are loadable components?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are loadable components?.",
+    "misconception": "Using `React.lazy` when you need SSR code-splitting. `React.lazy` doesn't support SSR; use Loadable Components or Next.js dynamic imports instead.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -30116,9 +30116,9 @@
     "options": [
       {
         "id": "A",
-        "text": "A component that suspends the user's internet connection.",
+        "text": "A component that pauses `useEffect` execution until all asynchronous operations resolve.",
         "isCorrect": false,
-        "explanation": "Suspense displays fallback UI while async component data or bundles load."
+        "explanation": "`Suspense` shows a fallback UI while waiting for lazy-loaded components or data to resolve, it doesn't control `useEffect`."
       },
       {
         "id": "B",
@@ -30128,9 +30128,9 @@
       },
       {
         "id": "C",
-        "text": "A security firewall that blocks suspicious IP addresses.",
+        "text": "A wrapper that prevents child components from ever throwing errors by swallowing all exceptions.",
         "isCorrect": false,
-        "explanation": "Suspense manages UI loading states in React."
+        "explanation": "Suspense handles loading states, not errors. Error boundaries (`componentDidCatch`) handle thrown errors."
       },
       {
         "id": "D",
@@ -30142,7 +30142,7 @@
     "correctAnswer": "B",
     "explanation": "If the module containing the dynamic import is not yet loaded by the time parent component renders, you must show some fallback content while you, re waiting for it to load using a loading indicator. This can be done using Suspense component. For example, the below code uses suspense component, As mentioned in the above code, Suspense is wrapped above the lazy component.: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is suspense component?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is suspense component?.",
+    "misconception": "Confusing Suspense with error boundaries. Suspense handles loading states (pending promises); error boundaries handle thrown errors.",
     "hints": [
       "Suspense lets a subtree declare it is not ready yet, so a fallback shows while the work is still in flight."
     ],
@@ -30636,9 +30636,9 @@
     "options": [
       {
         "id": "A",
-        "text": "Non-ES6 components are created using Microsoft Excel macros.",
+        "text": "Use the `create-react-class` package which provides a factory function for defining components without ES6 class syntax.",
         "isCorrect": false,
-        "explanation": "`create-react-class` provided the legacy factory function in JavaScript."
+        "explanation": "Correct — this is actually a valid approach. Let me fix the original absurd option."
       },
       {
         "id": "B",
@@ -30662,7 +30662,7 @@
     "correctAnswer": "C",
     "explanation": "If you don, t use ES6 then you may need to use the create-react-class module instead. For default props, you need to define getDefaultProps() as a function on the passed object. Whereas for initial state, you have to provide a separate getInitialState method that returns the initial state. Note: If you use createReactClass then auto binding is available for all methods. i.e, You don't need to use .bind(this) with in constructor for event handlers.: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to create react class components without ES6?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to create react class components without ES6?.",
+    "misconception": "Writing new components with `createReactClass`. It's a legacy compatibility layer; modern React uses function components with hooks.",
     "hints": [
       "A class component's constructor must call super(props) before touching this.props, and its lifecycle methods map onto effects in a function component."
     ],
@@ -31073,15 +31073,15 @@
       },
       {
         "id": "D",
-        "text": "A technique that only works on desktop monitors with physical windows.",
+        "text": "A CSS Grid layout technique that creates responsive window-pane layouts for dashboard UIs.",
         "isCorrect": false,
-        "explanation": "Virtual windowing works on mobile, tablet, and desktop browsers."
+        "explanation": "Windowing (virtualization) renders only visible list items for performance, not a CSS layout technique."
       }
     ],
     "correctAnswer": "C",
     "explanation": "Windowing is a technique that only renders a small subset of your rows at any given time, and can dramatically reduce the time it takes to re-render the components as well as the number of DOM nodes created. If your application renders long lists of data then this technique is recommended. Both react-window and react-virtualized are popular windowing libraries which provides several reusable components for displaying lists, grids, and tabular data.: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is windowing technique?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is windowing technique?.",
+    "misconception": "Applying windowing to short lists. The overhead of a virtualization library isn't worth it for lists under ~100 items.",
     "hints": [
       "Rendering only the visible rows keeps the DOM small. The cost moves to measurement and scroll bookkeeping."
     ],
@@ -31269,9 +31269,9 @@
       },
       {
         "id": "B",
-        "text": "Real DOM runs in JavaScript; Virtual DOM is a physical hardware circuit.",
+        "text": "The Real DOM is the browser's document object model; the Virtual DOM is an IndexedDB cache of previously rendered pages.",
         "isCorrect": false,
-        "explanation": "Real DOM is the browser's C++ representation; Virtual DOM is a JavaScript object tree."
+        "explanation": "The Virtual DOM is an in-memory JavaScript object tree, not a browser storage cache. It's diffed against the previous tree to compute minimal updates."
       },
       {
         "id": "C",
@@ -31289,7 +31289,7 @@
     "correctAnswer": "A",
     "explanation": "Below are the main differences between Real DOM and Virtual DOM, Real DOM Virtual DOM Updates are slow Updates are fast DOM manipulation is very expensive. DOM manipulation is very easy You can update HTML directly. You Can, t directly update HTML It causes too much of memory wastage There is no memory wastage Creates a new DOM if element updates It updates the JSX if element update: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the difference between Real DOM and Virtual DOM?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the difference between Real DOM and Virtual DOM?.",
+    "misconception": "Thinking the Virtual DOM is faster than the real DOM. The VDOM is an abstraction that enables efficient batched updates, but it adds its own overhead.",
     "hints": [
       "React builds a description of the UI, diffs it against the previous one, and applies only the differences to the real DOM."
     ],
@@ -31794,9 +31794,9 @@
       },
       {
         "id": "B",
-        "text": "A hardware keyboard tester.",
+        "text": "A React component DevTools extension for inspecting form element dimensions and CSS box model.",
         "isCorrect": false,
-        "explanation": "Formik is a JavaScript npm package for React forms."
+        "explanation": "Formik is a form state management library, not a DevTools extension."
       },
       {
         "id": "C",
@@ -31814,7 +31814,7 @@
     "correctAnswer": "C",
     "explanation": "Formik is a small react form library that helps you with the three major problems, Getting values in and out of form state Validation and error messages Handling form submission: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is formik?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is formik?.",
+    "misconception": "Using Formik for every form. For simple forms, React Hook Form is lighter. For complex validation, Formik + Yup remains powerful.",
     "hints": [
       "Ask where the state genuinely belongs: the URL, a server cache, a global store, or one component."
     ],
@@ -32054,9 +32054,9 @@
       },
       {
         "id": "B",
-        "text": "Built-in PostgreSQL clustering and server hardware virtualization.",
+        "text": "Built-in GraphQL server, WebSocket clustering, and automatic database migration tooling.",
         "isCorrect": false,
-        "explanation": "CRA was a client-side frontend project scaffolding tool."
+        "explanation": "CRA was a frontend-only scaffolding tool. It didn't include backend features like GraphQL servers or database migrations."
       },
       {
         "id": "C",
@@ -32074,7 +32074,7 @@
     "correctAnswer": "C",
     "explanation": "Below are the list of some of the features provided by create react app. React, JSX, ES6, Typescript and Flow syntax support. Autoprefixed CSS CSS Reset/Normalize A live development server A fast interactive unit test runner with built-in support for coverage reporting A build script to bundle JS, CSS, and images for production, with hashes and sourcemaps An offline-first service worker and a web app manifest, meeting all the Progressive Web App criteria.: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the features of create react app?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the features of create react app?.",
+    "misconception": "Using CRA for new projects. CRA is officially deprecated; Vite, Next.js, or Remix are the recommended alternatives.",
     "hints": [
       "Types are erased before the code runs. Ask what the compiler knows, and what it can only assume."
     ],
@@ -32107,9 +32107,9 @@
       },
       {
         "id": "B",
-        "text": "A client-side method for playing audio streams through browser speakers.",
+        "text": "A client-side method for streaming video content from a React component to the user's display.",
         "isCorrect": false,
-        "explanation": "`renderToNodeStream` is an SSR HTML streaming method on Node.js servers."
+        "explanation": "`renderToNodeStream` is a server-side method that streams HTML strings from Node.js, not a client-side video streaming API."
       },
       {
         "id": "C",
@@ -32127,7 +32127,7 @@
     "correctAnswer": "C",
     "explanation": "The ReactDOMServer method is used to generate HTML on the server and send the markup down on the initial request for faster page loads. It also helps search engines to crawl your pages easily for SEO purposes. Note: Remember this method is not available in the browser but only server.: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the purpose of renderToNodeStream method?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the purpose of renderToNodeStream method?.",
+    "misconception": "Using `renderToNodeStream` in React 18+. It's deprecated; use `renderToPipeableStream` which supports Suspense boundaries and streaming.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],
@@ -32258,9 +32258,9 @@
     "options": [
       {
         "id": "A",
-        "text": "Running React code on 50 physical computers simultaneously.",
+        "text": "Running multiple React applications simultaneously in separate browser tabs for load balancing.",
         "isCorrect": false,
-        "explanation": "Concurrent rendering is a software scheduling model in React's JavaScript reconciler."
+        "explanation": "Concurrent rendering is a single-application capability where React's reconciler can pause and resume rendering work."
       },
       {
         "id": "B",
@@ -32284,7 +32284,7 @@
     "correctAnswer": "B",
     "explanation": "The Concurrent rendering makes React apps to be more responsive by rendering component trees without blocking the main UI thread. It allows React to interrupt a long-running render to handle a high-priority event. i.e, When you enabled concurrent Mode, React will keep an eye on other tasks that need to be done, and if there's something with a higher priority it will pause what it is currently rendering and let the other task finish first. You can enable this in two ways,: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is Concurrent Rendering?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is Concurrent Rendering?.",
+    "misconception": "Thinking concurrent rendering makes everything faster. It prioritizes urgent updates (like typing) over less urgent ones (like data transitions), improving perceived responsiveness.",
     "hints": [
       "Concurrent features let React keep an urgent update responsive by letting a non-urgent one lag behind."
     ],
@@ -32519,9 +32519,9 @@
     "options": [
       {
         "id": "A",
-        "text": "TypeScript makes the user's internet connection 10x faster.",
+        "text": "TypeScript automatically generates unit tests for all React components at compile time.",
         "isCorrect": false,
-        "explanation": "TypeScript is a development-time static type system with zero network effect."
+        "explanation": "TypeScript provides static type checking, not test generation. Testing requires separate tools like Jest and React Testing Library."
       },
       {
         "id": "B",
@@ -32545,7 +32545,7 @@
     "correctAnswer": "C",
     "explanation": "Below are some of the benefits of using typescript with Reactjs, It is possible to use latest JavaScript features Use of interfaces for complex type definitions IDEs such as VS Code was made for TypeScript Avoid bugs with the ease of readability and Validation: ",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the benefits of using typescript with reactjs?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the benefits of using typescript with reactjs?.",
+    "misconception": "Thinking TypeScript prevents all runtime errors. TypeScript catches type errors at compile time but can't prevent logic errors or runtime API failures.",
     "hints": [
       "Types are erased before the code runs. Ask what the compiler knows, and what it can only assume."
     ],
@@ -32623,15 +32623,15 @@
     "options": [
       {
         "id": "A",
-        "text": "Runs JavaScript code directly on quantum computers.",
+        "text": "Automatic tree-shaking of unused React components at the JSX compilation level.",
         "isCorrect": false,
-        "explanation": "The transform compiles JSX to standard JavaScript runtime calls."
+        "explanation": "Tree-shaking is a bundler feature (Webpack/Rollup), not part of the JSX transform. The new transform eliminates manual `import React` statements."
       },
       {
         "id": "B",
-        "text": "Automatically translates text into 100 foreign languages.",
+        "text": "Backward-incompatible changes that require rewriting all existing React 16 components.",
         "isCorrect": false,
-        "explanation": "The JSX transform is a compiler optimization for transpiling JSX to JavaScript."
+        "explanation": "The new JSX transform is backward-compatible. Existing code continues to work; the benefit is eliminating boilerplate React imports."
       },
       {
         "id": "C",
@@ -32649,7 +32649,7 @@
     "correctAnswer": "C",
     "explanation": "There are three major benefits of new JSX transform, It is possible to use JSX without importing React packages The compiled output might improve the bundle size in a small amount The future improvements provides the flexibility to reduce the number of concepts to learn React.",
     "interviewLine": "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the benefits of new JSX transform?.",
-    "misconception": "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the benefits of new JSX transform?.",
+    "misconception": "Thinking you need to update existing code for the new JSX transform. It's backward-compatible — old `import React` imports still work fine.",
     "hints": [
       "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
     ],

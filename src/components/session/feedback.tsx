@@ -17,6 +17,7 @@ import { Star } from "lucide-react";
 import { cn } from "@/lib/utils";
 import type { QuestionPayload } from "@/lib/question-payload";
 import { CodeWell } from "@/components/code-well";
+import { OptionText } from "@/components/option-text";
 import { stagger, staggerChild } from "@/lib/motion";
 
 export function Feedback({
@@ -89,16 +90,16 @@ export function Feedback({
               <div className="text-rust mb-2 font-mono text-[10.5px] font-medium tracking-[0.08em]">
                 YOU PICKED
               </div>
-              <div className="text-paper font-mono text-[13.5px]/[1.6]">
-                {chosen ? `${chosen.id} · ${chosen.text}` : "Skipped"}
+              <div className="text-paper text-[13.5px]/[1.6] break-words" style={{ overflowWrap: "anywhere" }}>
+                {chosen ? <><span className="font-mono">{chosen.id} · </span><OptionText text={chosen.text} terminal={false} /></> : "Skipped"}
               </div>
             </div>
             <div className="border-mint-line rounded-lg border bg-[#131a15] p-4">
               <div className="text-mint-text mb-2 font-mono text-[10.5px] font-medium tracking-[0.08em]">
                 ANSWER
               </div>
-              <div className="text-paper font-mono text-[13.5px]/[1.6]">
-                {answer ? `${answer.id} · ${answer.text}` : "—"}
+              <div className="text-paper text-[13.5px]/[1.6] break-words" style={{ overflowWrap: "anywhere" }}>
+                {answer ? <><span className="font-mono">{answer.id} · </span><OptionText text={answer.text} terminal={false} /></> : "—"}
               </div>
             </div>
           </motion.div>

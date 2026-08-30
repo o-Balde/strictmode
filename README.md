@@ -62,7 +62,7 @@ npm run lint       # ESLint check
 ### Zero Runtime Highlighter Bundle
 
 Syntax highlighting with Shiki is notoriously heavy for client bundles. In StrictMode:
-1. `scripts/build-index.ts` processes all **767 questions** at build time.
+1. `scripts/build-index.ts` processes all **743 questions** at build time.
 2. Code snippets are pre-rendered into static HTML with the custom `strictmode-flame` theme.
 3. Payloads are written to `public/q/<id>.json` (cached via CDN with immutable content addressing).
 4. **Zero syntax highlighter code** is bundled into either the client or edge runtime.
@@ -70,7 +70,7 @@ Syntax highlighting with Shiki is notoriously heavy for client bundles. In Stric
 ```
 scripts/build-index.ts  ──►  src/generated/question-index.json   (Packed columnar index + titles)
                              src/generated/bank-stats.json       (Taxonomy & subject totals)
-                             public/q/<id>.json                  (767 pre-highlighted payloads)
+                             public/q/<id>.json                  (743 pre-highlighted payloads)
 
 Client: Combines columnar index + local review schedule
        └─ lib/question-source.ts  ──►  GET /q/<id>.json (Static CDN, zero compute)
@@ -111,7 +111,7 @@ The metadata index uses packed base36 strings for categories, types, difficulty 
 
 ## 📚 Topic Taxonomy
 
-The 767-question bank spans 16 core frontend engineering subjects:
+The 743-question bank spans 16 core frontend engineering subjects:
 
 - **React Internals & Lifecycle**: `hooks`, `rendering-keys`, `state-management`, `server-components`
 - **TypeScript Type System**: `types`, `generics`, `narrowing`

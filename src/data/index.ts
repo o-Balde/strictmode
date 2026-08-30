@@ -36,7 +36,7 @@ export { PUZZLE_QUESTIONS } from './questions/puzzles';
 export { ALGORITHMS_DSA_QUESTIONS } from './questions/algorithms-dsa';
 
 /**
- * Master consolidated array of all questions (691 items organized across all modules)
+ * Master consolidated array of all questions (743 items organized across all modules)
  */
 export const ALL_QUESTIONS: QuizQuestion[] = [
   ...REACT_HOOKS_QUESTIONS,

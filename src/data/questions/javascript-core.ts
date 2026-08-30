@@ -19,27 +19,27 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "To use Redux Thunk, you need to import it as middleware.",
+        text: "Return a function `(dispatch, getState) => { ... }` from an action creator that executes async promises and dispatches standard actions when resolved.",
         isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        explanation: "Correct. Redux Thunk middleware intercepts functions returned by action creators, passing `dispatch` and `getState` to handle async flows."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Store all async API data directly in `window.__ASYNC_DATA__` global properties.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Redux manages state within its store; mutating global `window` properties bypasses the Redux pipeline."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Use synchronous `while` loops inside action creators to wait for API responses.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Synchronous while loops freeze the browser main thread and event loop completely."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "Dispatch raw unresolved Promise objects directly to reducers without middleware.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Redux reducers are pure synchronous functions; passing unresolved promises directly causes runtime errors without middleware."
       }
     ],
     correctAnswer: "A",
@@ -71,30 +71,30 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "StrictMode is a tool added in version 16.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "A production optimization mode that disables all error logging to speed up execution.",
+        isCorrect: false,
+        explanation: "StrictMode is active only in development and intentionally surfaces warnings rather than suppressing them."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "A compiler setting that disallows using JavaScript outside of WebAssembly.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "StrictMode is a standard React runtime component."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "A security firewall that encrypts all JSX DOM nodes in the browser.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "StrictMode is a developer diagnostic tool, not an encryption firewall."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
-        isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        text: "A development-only helper component that checks for side-effect bugs by intentionally double-invoking renders/effects and warning on deprecated APIs.",
+        isCorrect: true,
+        explanation: "Correct. `<React.StrictMode>` helps discover impure renders, missing effect cleanups, and legacy API usages during development without affecting production."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "D",
     explanation: "StrictMode is a tool added in version 16.3 of React to highlight potential problems in an application. It performs additional checks on the application. To enable StrictMode, <React.StrictMode> tags need to be added inside the application: StrictMode currently helps with the following issues: Identifying components with unsafe lifecycle methods: Certain lifecycle methods are unsafe to use in asynchronous react applications. With the use of third-party libraries, it becomes difficult to ensure that certain lifecycle methods are not used. StrictMode helps in providing us with a warning if any of the class components use an unsafe lifecycle method. Warning about the usage of legacy string API: If one is using an older version of React, callback ref is the recommended way to manage refs instead of using the string refs. StrictMode gives a warning if we are using string refs to manage refs. Warning about the usage of findDOMNode: Previously, findDOMNode( ) method was used to search the tree of a DOM node. This method is deprecated in React. Hence, the StrictMode gives us a warning about the usage of this method. Warning about the usage of legacy context API (because the API is error-prone).",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain Strict Mode in React.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain Strict Mode in React.",
@@ -122,30 +122,30 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Error boundaries catch JavaScript errors in their child components, log them, and display fallback UI instead of crashing the application.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Backend middleware that intercepts HTTP 500 status codes on API routes.",
+        isCorrect: false,
+        explanation: "Error boundaries catch client-side React rendering exceptions in the UI tree, not backend HTTP routes."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
-        isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        text: "Class components implementing `static getDerivedStateFromError` / `componentDidCatch` that catch errors during rendering, lifecycle, and constructors, displaying fallback UI.",
+        isCorrect: true,
+        explanation: "Correct. Error boundaries prevent full app crashes by catching render-phase errors in child subtrees and showing user-friendly fallback interfaces."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Linters that check TypeScript code for syntax errors before running.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Error boundaries are runtime React components."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "Try/catch blocks that automatically catch asynchronous errors in event handlers and timers.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Error boundaries do NOT catch errors in event handlers or async timers; standard `try/catch` is used there."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "B",
     explanation: "Error boundaries catch JavaScript errors in their child components, log them, and display fallback UI instead of crashing the application. They utilize componentDidCatch and static getDerivedStateFromError methods but do not catch errors in event handlers or asynchronous code. Find in-depth explanations and track study progress here ->",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are error boundaries in React for?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are error boundaries in React for?.",
@@ -174,30 +174,30 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Synthetic events in React are a wrapper around native DOM events that ensure consistent behavior across browsers.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Events that run in isolated Web Worker threads outside the DOM.",
+        isCorrect: false,
+        explanation: "Synthetic events originate from native browser DOM events on the main thread."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Simulated events used strictly in automated unit tests that never run in production.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Synthetic events are standard real runtime event wrappers in all React applications."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "A legacy event system that was completely removed in React 18.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Synthetic events remain the core event handling system in modern React."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
-        isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        text: "Cross-browser wrappers around native DOM events that normalize event properties across browsers, delegating event listeners to the React root container since React 17.",
+        isCorrect: true,
+        explanation: "Correct. React's `SyntheticEvent` normalizes differences across browsers, provides standard event methods, and uses root-level event delegation (event pooling was removed in React 17)."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "D",
     explanation: "Synthetic events in React are a wrapper around native DOM events that ensure consistent behavior across browsers. They normalize the way events are handled, providing a unified API for React applications. These events are wrapped in the SyntheticEvent object and expose the usual methods like preventDefault() and stopPropagation(). Since React 17, the root event listener is attached to the React root container (not document), which makes nested React trees work correctly together. Example: Older sources mention event pooling, where React reused the event object after the handler ran, which made the event unusable in async code. Event pooling was removed in React 17, so you can read or pass the event object asynchronously without calling event.persist().",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Discuss synthetic events in React.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Discuss synthetic events in React.",
@@ -226,30 +226,30 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "To test asynchronous code in React components, you can use async/await with waitFor from React Testing Library to handle asynchronous operations like data fetching or API calls.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Use synchronous `while(true)` loops to block execution until the network responds.",
+        isCorrect: false,
+        explanation: "Synchronous loops block the JavaScript thread and prevent async promises from ever resolving."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Add a hardcoded `sleep(10000)` before every single test assertion.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Hardcoded sleeps slow down test suites and cause flaky tests; `waitFor`/`findBy` polling is standard."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Asynchronous code cannot be tested in React components.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "React Testing Library provides first-class async helpers (`findByRole`, `waitFor`)."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
-        isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        text: "Use `async/await` with RTL's `waitFor()` or `findBy*` queries (e.g. `await screen.findByText('Loaded')`) to wait for async updates and DOM assertions.",
+        isCorrect: true,
+        explanation: "Correct. `findBy*` queries and `waitFor()` poll the DOM until elements appear or conditions are met, seamlessly handling asynchronous state updates and API resolutions."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "D",
     explanation: "To test asynchronous code in React components, you can use async/await with waitFor from React Testing Library to handle asynchronous operations like data fetching or API calls. Example: In this example, the test waits for the data to be loaded before asserting that the text 'Data loaded' is present.",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you test asynchronous code in React components?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you test asynchronous code in React components?.",
@@ -278,30 +278,30 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "By convention, an Action is an async function passed to a React API that runs it inside a transition: useActionState, startTransition (from useTransition), or a <form action={.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Redux action creators that must return an object with a `type` string.",
+        isCorrect: false,
+        explanation: "In React 19, Actions refer to async mutation functions integrated with React's form and transition APIs, distinct from Redux action objects."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Keyboard shortcuts that trigger operating system commands.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Actions are React 19 async function conventions for state and form mutations."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
-        isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        text: "Async functions executed inside transitions (via `useActionState`, `startTransition`, or `<form action>`), where React automatically manages pending states, error handling, and optimistic updates.",
+        isCorrect: true,
+        explanation: "Correct. Actions in React 19 standardize async data mutations by automatically tracking `isPending`, catching submission errors, and coordinating transitions declaratively."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "Native browser mouse click event listeners on `<button>` tags.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Actions are async mutation functions that handle data updates, not raw DOM click events."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "C",
     explanation: "By convention, an Action is an async function passed to a React API that runs it inside a transition: useActionState, startTransition (from useTransition), or a <form action={.}> prop. React tracks pending state, surfaces errors, and applies updates inside a transition so the UI stays responsive. This removes the usual boilerplate of toggling a loading flag, wrapping in try/catch, and managing error and data state separately.",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are Actions in React 19?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are Actions in React 19?.",
@@ -329,30 +329,30 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Styled-components lets you write component-scoped CSS inside JavaScript.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "A tool that only styles native Windows desktop applications.",
+        isCorrect: false,
+        explanation: "Styled-components is a web (and React Native) CSS-in-JS styling library."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
-        isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        text: "A popular CSS-in-JS library that uses tagged template literals to write actual CSS code scoped to React components (`const Button = styled.button`...``).",
+        isCorrect: true,
+        explanation: "Correct. Styled-components automatically scopes CSS class names, supports dynamic styling based on props, and simplifies theme distribution."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "A compiler that converts CSS files into SQL database tables.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Styled-components generates scoped CSS classes for React UI components."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "A deprecated library that is incompatible with React.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Styled-components is a widely used styling library in the React ecosystem."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "B",
     explanation: "Styled-components lets you write component-scoped CSS inside JavaScript. Install:npm i styled-components Example: import styled from 'styled-components';const Button = styled.div width: 100px; cursor: pointer; text-decoration: none;export default Button;",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain Styled Components in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain Styled Components in React?.",
@@ -380,30 +380,30 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Axios is a popular library for making HTTP requests and handling CRUD operations.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "A database engine that replaces MongoDB.",
+        isCorrect: false,
+        explanation: "Axios makes HTTP network requests from client or Node.js environments."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "A built-in React component that renders HTML forms automatically.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Axios is a third-party HTTP utility library, not a React UI component."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "A visual animation library that creates 3D WebGL scenes.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Axios is an HTTP networking client, not a 3D graphics library."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
-        isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        text: "A Promise-based HTTP client library supporting automatic JSON transformation, request/response interceptors, and error handling, used in `useEffect` or custom hooks for API calls.",
+        isCorrect: true,
+        explanation: "Correct. Axios simplifies network requests in JavaScript/React with built-in JSON parsing, interceptors, and timeout configuration."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "D",
     explanation: "Axios is a popular library for making HTTP requests and handling CRUD operations. It supports Promises and works well in React for API calls. Install with:npm i axios",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is Axios, and How to Use it in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is Axios, and How to Use it in React?.",
@@ -432,27 +432,27 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "useState: local state.",
+        text: "Common hooks: `useState` (state), `useEffect` (side effects), `useRef` (DOM/mutable refs), `useMemo` (cached values), `useCallback` (cached functions), and `useContext` (context read).",
         isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        explanation: "Correct. Mastering these core hooks provides the foundation for building performant, scalable React applications."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Common hooks only work in Node.js server scripts and fail in browsers.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "React Hooks execute in browser web applications as well as SSR environments."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Hooks replace all HTML tags with SVG graphics.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Hooks manage state and logic, while JSX continues to render HTML elements."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "Hooks must always be called inside `if` conditions and `for` loops.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "The Rules of Hooks require unconditional top-level invocation."
       }
     ],
     correctAnswer: "A",
@@ -484,30 +484,30 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Hooks remove instance allocation and binding overhead present in classes and enable flatter component composition.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Functions cannot be garbage collected by the browser engine.",
+        isCorrect: false,
+        explanation: "Function closures are garbage collected normally when no longer referenced."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
-        isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        text: "Hooks eliminate class instance allocation and binding overhead but require careful memoization (`useCallback`/`useMemo`) to prevent recreating inline closures on every render.",
+        isCorrect: true,
+        explanation: "Correct. Functions have lower instantiation overhead than class instances, but inline function/object references require memoization when passed to pure children."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "There are no performance differences between any programming paradigms.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Allocation patterns, closure creation, and tree depth directly affect runtime memory and execution speed."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "Classes execute 100x faster than functions because classes are compiled to C++ by V8.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Both execute in JavaScript; function components often have lower allocation overhead than class instances."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "B",
     explanation: "Hooks remove instance allocation and binding overhead present in classes and enable flatter component composition. But closures create different performance considerations.Performance notes: Hooks let you avoid wrapper components like some HOCs, reducing tree depth. Beware creating new functions/objects inline; they break referential equality and trigger child updates unless memoized. Profile with React DevTools profiler and Chrome to identify hotspots. Optimization tactics: Use React.memo, useCallback, and useMemo judiciously. Prefer immutable updates to make shallow comparisons effective.",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Hooks vs Classes Performance, Tradeoffs and Common Pitfalls.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Hooks vs Classes Performance, Tradeoffs and Common Pitfalls.",
@@ -536,30 +536,30 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Syntax: hooks use functions; classes use class syntax and this.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Classes support server-side rendering, while Hooks are prohibited in SSR.",
+        isCorrect: false,
+        explanation: "Both functional components with Hooks and class components support server-side rendering."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Classes are written in TypeScript, while Hooks can only be written in Python.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Both are written in JavaScript/TypeScript."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
-        isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        text: "Hooks use functions and avoid `this` binding, organize related logic together in custom hooks, and reduce wrapper component depth compared to class HOCs/render props.",
+        isCorrect: true,
+        explanation: "Correct. Hooks solve class pain points: fragmented lifecycle methods, `this` binding pitfalls, and complex wrapper hierarchies for logic reuse."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "Classes are mandatory for all components in React 19.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "React 19 focuses on functional components, deprecating several legacy class-centric patterns."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "C",
     explanation: "Syntax: hooks use functions; classes use class syntax and this. State setup: useState and useReducer vs this.state and setState. Lifecycle: useEffect vs lifecycle methods. Reuse: custom hooks replace many HOC and render-prop patterns. Instances: functions avoid instance creation but can introduce closure traps.",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Hooks Compared to Classes, Practical Differences.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Hooks Compared to Classes, Practical Differences.",
@@ -569,57 +569,6 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
     source: "150-react",
     estimatedMinutes: 3,
     bestPracticeRef: "https://react.dev/reference/react/hooks"
-  },
-  {
-    id: "react-does-hirevue-detect-ai-cheating-what-gets-flagged-2026",
-    title: "Does HireVue Detect AI Cheating? What Gets Flagged (2026)",
-    prompt: "Does HireVue Detect AI Cheating? What Gets Flagged (2026)",
-    level: "junior",
-    type: "concept",
-    category: "react",
-    subject: "async-await",
-    tags: [
-      "react",
-      "async-await",
-      "junior"
-    ],
-    codeLanguage: "typescript",
-    options: [
-      {
-        id: "A",
-        text: "HireVue's async video interviews don't record your screen.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
-      },
-      {
-        id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
-        isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
-      },
-      {
-        id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
-        isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
-      },
-      {
-        id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
-        isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
-      }
-    ],
-    correctAnswer: "A",
-    explanation: "HireVue's async video interviews don't record your screen. The real signals are response-similarity scoring and browser tab logging. Here's exactly what, June 18, 202617 min AI Interview Tools With Real Proof They Work (2026) Most AI interview tools claim they're undetectable and get you hired. Only one shows face-shown video of real interviews and verified offer letters. June 12, 202621 min",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Does HireVue Detect AI Cheating? What Gets Flagged (2026).",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Does HireVue Detect AI Cheating? What Gets Flagged (2026).",
-    hints: [
-      "await does not block the thread, but it does block the next line."
-    ],
-    source: "150-react",
-    estimatedMinutes: 2,
-    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Guide/Using_promises"
   },
   {
     id: "javascript-how-to-create-refs",
@@ -639,30 +588,30 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "There are two approaches This is a recently added approach.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "By assigning a random string `ref='myInput'` in modern React 19.",
+        isCorrect: false,
+        explanation: "Legacy string refs are deprecated and removed in modern React."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
-        isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        text: "In function components with `useRef()` (`const myRef = useRef(null)`); in class components with `React.createRef()` or callback refs (`ref={el => this.myRef = el}`).",
+        isCorrect: true,
+        explanation: "Correct. `useRef` persists the ref object across function component renders; `createRef` creates a ref instance in classes, and callback refs provide explicit mount/unmount access."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "By calling `document.getElementById` inside every render pass.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Querying the DOM inside render causes performance issues and bypasses React's virtual model."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "Refs are created automatically for every HTML tag and cannot be customized.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Refs must be explicitly created and attached to target elements or components."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "B",
     explanation: "There are two approaches This is a recently added approach. Refs are created using React.createRef() method and attached to React elements via the ref attribute. In order to use refs throughout the component, just assign the ref to the instance property within constructor. You can also use ref callbacks approach regardless of React version. For example, the search bar component's input element accessed as follows, You can also use refs in function components using closures. Note: You can also use inline ref callbacks even though it is not a recommended approach: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to create refs?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to create refs?.",
@@ -691,30 +640,30 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "The better approach is to use Array.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Assign `array[index] = undefined` without updating state length.",
+        isCorrect: false,
+        explanation: "Direct mutation without new array references prevents React from detecting state changes."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Delete the array from memory using the `delete` keyword.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "`delete array[index]` leaves a sparse empty hole in the array and mutates state in place."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Use `array.splice(index, 1)` directly on the existing state array in place.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "`splice` mutates the array in place, violating React state immutability rules and risking missed re-renders."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
-        isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        text: "Use immutable array filtering `setList(prev => prev.filter((_, i) => i !== indexToRemove))` or slice spreading to create a new array reference without mutating original state.",
+        isCorrect: true,
+        explanation: "Correct. `Array.prototype.filter()` returns a new array copy excluding the target item, preserving state immutability for React reconciliation."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "D",
     explanation: "The better approach is to use Array.prototype.filter() method. For example, let's create a removeItem() method for updating the state.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the recommended approach of removing an array element in React state?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the recommended approach of removing an array element in React state?.",
@@ -742,27 +691,27 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "If you want to use async/await in React, you will need Babel and transform-async-to-generator plugin.",
+        text: "Yes, `async/await` can be used inside event handlers, `useEffect` callbacks (via an inner async function), and natively in React 19 Server Components.",
         isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        explanation: "Correct. `async/await` is standard in modern JavaScript and React; in `useEffect`, define an async function inside the effect callback and call it immediately."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "`async` functions can be passed directly as the top-level `useEffect` callback argument.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "`useEffect` callbacks cannot be `async` directly because they must return a synchronous cleanup function or undefined; an inner async function is defined instead."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "No, `async/await` is strictly forbidden in React and causes build failures.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "`async/await` is supported throughout React application logic."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "`async/await` only works in Python, not JavaScript.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "`async/await` is a core feature of ECMAScript (ES2017+)."
       }
     ],
     correctAnswer: "A",
@@ -794,30 +743,30 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "There are couple of advantages compared to Jasmine: Automatically finds tests to execute in your source code.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Jest compiles JavaScript code directly into native iOS Swift binaries.",
+        isCorrect: false,
+        explanation: "Jest is a JavaScript test runner, not a native mobile compiler."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
-        isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        text: "Zero configuration test discovery, automated module and timer mocking, built-in jsdom environment, snapshot testing, and parallel test execution for speed.",
+        isCorrect: true,
+        explanation: "Correct. Jest built upon Jasmine by adding automatic mock generation, fast multi-threaded execution, snapshot assertions, and out-of-the-box code coverage."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Jest eliminates the need for writing unit tests.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Jest executes tests; developers still write test specifications."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "Jest only runs on hardware supercomputers.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Jest runs locally on any development machine via Node.js."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "B",
     explanation: "There are couple of advantages compared to Jasmine: Automatically finds tests to execute in your source code. Automatically mocks dependencies when running your tests. Allows you to test asynchronous code synchronously. Runs your tests with a fake DOM implementation (via jsdom) so that your tests can be run on the command line. Runs tests in parallel processes so that they finish sooner., Give a simple example of Jest test case Let's write a test for a function that adds two numbers in sum.js file: Create a file named sum.test.js which contains actual test: And then add the following section to your package.json: Finally, run yarn test or npm test and Jest will print a result: React Redux: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the advantages of Jest over Jasmine?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the advantages of Jest over Jasmine?.",
@@ -846,27 +795,27 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "You can use redux-thunk middleware which allows you to define async actions.",
+        text: "Use middleware like Redux Thunk (dispatching async functions), Redux Toolkit `createAsyncThunk` / RTK Query, or Redux Saga to handle async HTTP calls outside pure reducers.",
         isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        explanation: "Correct. Middleware intercepts async action creators, executes network calls, and dispatches success/error actions with payloads to pure reducers."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Write raw SQL queries inside the Redux action type string.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Action types are string identifiers; network calls are handled via async middleware."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Execute synchronous `fetch()` calls directly inside the pure reducer function body.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Reducers must remain pure synchronous functions with zero side effects; network calls in reducers violate Redux rules."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "AJAX requests are prohibited in Redux applications.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Redux Thunk and RTK Query are the industry standard for managing async requests in Redux."
       }
     ],
     correctAnswer: "A",
@@ -898,30 +847,30 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "redux-saga is a library that aims to make side effects (asynchronous things like data fetching and impure things like accessing the browser cache) in React/Redux applications easier and better.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "A native mobile rendering engine that replaces React Native.",
+        isCorrect: false,
+        explanation: "Redux-Saga is a middleware for Redux side-effect management, not a mobile UI renderer."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "A CSS stylesheet compiler that replaces Tailwind.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Redux-Saga handles state side effects, not CSS compilation."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
-        isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        text: "A Redux middleware library that uses ES6 Generators (`function*` / `yield`) to make asynchronous side effects (data fetching, caching) testable, composable, and manageable.",
+        isCorrect: true,
+        explanation: "Correct. Redux-Saga models asynchronous control flows as generator functions yielding declarative effect descriptions (e.g. `call`, `put`, `takeEvery`), enabling simple unit testing."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "A SQL database query builder for Node.js backends.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Redux-Saga manages client-side async action workflows in Redux."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "C",
     explanation: "redux-saga is a library that aims to make side effects (asynchronous things like data fetching and impure things like accessing the browser cache) in React/Redux applications easier and better. It is available in NPM:: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is redux-saga?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is redux-saga?.",
@@ -950,27 +899,27 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Both call() and put() are effect creator functions.",
+        text: "`call(fn, ...args)` creates an effect description instructing middleware to invoke a Promise-returning function; `put(action)` creates an effect instructing middleware to dispatch an action.",
         isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        explanation: "Correct. `call` invokes async services/promises, and `put` is the saga equivalent of `store.dispatch(action)`."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "`call()` is synchronous; `put()` is only used on mobile phones.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "`call` and `put` are universal effect creators in Redux-Saga used across all platforms."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "`call()` deletes the database; `put()` creates a new table.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Both are declarative effect creator functions in Redux-Saga."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "There is no difference; `call` and `put` are identical aliases.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "`call` invokes functions/promises, while `put` dispatches Redux actions."
       }
     ],
     correctAnswer: "A",
@@ -1001,30 +950,30 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Both Redux Thunk and Redux Saga take care of dealing with side effects.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Saga does not support asynchronous operations.",
+        isCorrect: false,
+        explanation: "Saga is designed specifically for managing complex asynchronous operations."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Thunk is deprecated and forbidden in modern JavaScript.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Thunk remains widely used and is the default async middleware in Redux Toolkit (`createAsyncThunk`)."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
-        isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        text: "Thunk uses simple Promise chaining inside dispatched functions; Saga uses Generator functions yielding pure effect objects, offering superior cancellation, debouncing, and testability.",
+        isCorrect: true,
+        explanation: "Correct. Thunk is straightforward and uses Promises; Saga is more powerful for complex workflows (race conditions, debouncing, throttling, task cancellation) using Generators."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "Thunk runs on the client; Saga runs exclusively on backend servers.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Both are client-side Redux middleware libraries."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "C",
     explanation: "Both Redux Thunk and Redux Saga take care of dealing with side effects. In most of the scenarios, Thunk uses Promises to deal with them, whereas Saga uses Generators. Thunk is simple to use and Promises are familiar to many developers, Sagas/Generators are more powerful but you will need to learn them. But both middleware can coexist, so you can start with Thunks and introduce Sagas when/if you need them.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the differences between redux-saga and redux-thunk?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the differences between redux-saga and redux-thunk?.",
@@ -1052,30 +1001,30 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Some of the main features of Redux Form are: Field values persistence via Redux store.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Directly modifying database tables on remote servers without an API.",
+        isCorrect: false,
+        explanation: "Redux Form operates entirely within client-side application state."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Automatically submitting forms without user interaction.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Form submission is triggered by user events."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Encrypting form inputs with hardware biometric security.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Redux Form handled standard form state tracking in JavaScript."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
-        isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        text: "Centralizing form field values in Redux store, synchronous/asynchronous validation, field normalization/formatting, and submission state tracking (`submitting`, `pristine`, `dirty`).",
+        isCorrect: true,
+        explanation: "Correct. Redux Form provided comprehensive form lifecycle management by tracking validation, touch states, and submissions in Redux."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "D",
     explanation: "Some of the main features of Redux Form are: Field values persistence via Redux store. Validation (sync/async) and submission. Formatting, parsing and normalization of field values.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the main features of Redux Form?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the main features of Redux Form?.",
@@ -1103,30 +1052,30 @@ export const JAVASCRIPT_CORE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Some of the popular middleware choices for handling asynchronous calls in Redux eco system are Redux Thunk, Redux Promise, Redux Saga.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "PostgreSQL, MongoDB, and Redis.",
+        isCorrect: false,
+        explanation: "These are backend database systems."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
-        isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        text: "Redux Thunk (default in Redux Toolkit), Redux Saga (Generators), Redux Observable (RxJS), and RTK Query (built-in data fetching and caching).",
+        isCorrect: true,
+        explanation: "Correct. These middleware solutions intercept dispatched actions to handle asynchronous requests, side effects, and state updates cleanly outside reducers."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Webpack, Babel, and ESLint.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "These are build tools and linters, not Redux runtime middlewares."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "React DOM, React Native, and React Three Fiber.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "These are React platform renderers."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "B",
     explanation: "Some of the popular middleware choices for handling asynchronous calls in Redux eco system are Redux Thunk, Redux Promise, Redux Saga.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are typical middleware choices for handling asynchronous calls in Redux?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are typical middleware choices for handling asynchronous calls in Redux?.",

@@ -18,30 +18,30 @@ export const FIX_THE_BUG_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Linters are tools used to check source code for potential errors, bugs, stylistic inconsistencies, and maintainability issues.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Compilers that bundle multiple images into a single SVG sprite file.",
+        isCorrect: false,
+        explanation: "Linters analyze code quality, not image assets."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Browser plugins that inject CSS animations into production websites.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Linters are developer tooling utilities used in code editors and CI pipelines, not CSS injectors."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
-        isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        text: "Static analysis tools (like ESLint) that inspect code for syntax errors, anti-patterns, style guide compliance, and Rules of Hooks violations before running.",
+        isCorrect: true,
+        explanation: "Correct. Linters analyze source code without execution, enforcing best practices (e.g. `react-hooks/exhaustive-deps`) and catching common bugs early."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "Database query optimizers that index SQL tables automatically.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Linters analyze programming language source code (JavaScript, TypeScript)."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "C",
     explanation: "Linters are tools used to check source code for potential errors, bugs, stylistic inconsistencies, and maintainability issues. They help enforce coding standards and ensure code quality and consistency across a codebase. Linters work by scanning the source code and comparing it against a set of predefined rules or guidelines. These rules can include syntax and formatting conventions, best practices, potential bugs, and code smells. When a linter identifies a violation of a rule, it generates a warning or an error, highlighting the specific line or lines of code that need attention. Using a linter can provide several benefits: Code Quality: Linters help identify and prevent potential bugs, code smells, and anti-patterns, leading to better code quality. Consistency: Linters enforce coding conventions and style guidelines, ensuring consistent formatting and code structure across the codebase, even when multiple developers are working on the same project. Maintainability: By catching issues early and promoting good coding practices, linters contribute to code maintainability, making it easier to understand, modify, and extend the codebase. Efficiency: Linters can save developers time by automating code review processes and catching common mistakes before they can cause issues during development or in production. Some popular linters are ESLint for JavaScript and Stylelint for CSS and Sass. Learn more",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are linters?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are linters?.",
@@ -69,30 +69,30 @@ export const FIX_THE_BUG_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "There are several architectural solutions and patterns for building React projects.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Requiring all components to inherit from a single giant BaseClass with 100 methods.",
+        isCorrect: false,
+        explanation: "React strongly recommends composition over class inheritance."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Placing all 500 components into a single `app.js` file with global mutable variables.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Monolithic files with global mutable variables represent an unmaintainable anti-pattern."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
-        isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        text: "Layered architectures (Feature-Sliced Design, Atomic Design), state boundaries (React Query for server state, Zustand for global UI), and hybrid SSR/Server Components.",
+        isCorrect: true,
+        explanation: "Correct. Modern React architectures combine modular folder structures (FSD/Atomic), clear state separation, and hybrid rendering strategies for maintainability at scale."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "Rewriting all components into raw jQuery DOM manipulation scripts.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Direct imperative DOM manipulation conflicts with React's declarative state reconciliation."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "C",
     explanation: "There are several architectural solutions and patterns for building React projects. Some popular ones include: MVC (Model-View-Controller): MVC is a traditional architectural pattern that separates an application into three main components - Model, View, and Controller. React can be used in the View layer to render the UI, while other libraries or frameworks can be used for the Model and Controller layers. Flux: Flux is an application architecture introduced by Facebook specifically for React applications. It follows a unidirectional data flow, where data flows in a single direction, making it easier to understand and debug the application's state changes. Atomic Design: Atomic Design is not specific to React but is a design methodology that divides the UI into smaller, reusable components. It encourages building components that are small, self-contained, and can be composed to create more complex UIs. Container and Component Pattern: This pattern separates the presentation (Component) from the logic and state management (Container). Components are responsible for rendering the UI, while Containers handle the business logic and state management. Feature-Sliced Design: It is a modern architectural approach used to organize and structure React applications. It aims to address the challenges of scalability, maintainability, and reusability by dividing the application codebase based on features or modules.",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What architectural solutions for React do you know?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What architectural solutions for React do you know?.",
@@ -120,31 +120,31 @@ export const FIX_THE_BUG_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "It is a modern architectural approach used to organize and structure React applications.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "A database sharding protocol for distributed SQL clusters.",
+        isCorrect: false,
+        explanation: "FSD is a frontend code architecture methodology."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
-        isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        text: "An architectural methodology organizing frontend applications into standardized layers (App, Pages, Widgets, Features, Entities, Shared) with unidirectional dependencies.",
+        isCorrect: true,
+        explanation: "Correct. Feature-Sliced Design (FSD) standardizes codebase structure, ensuring high cohesion, loose coupling, and scalable team workflows."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "A graphic design layout tool used for slicing Figma mockups into PNG files.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "FSD is a software engineering code organization standard for frontend applications."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "A Next.js compiler plugin that divides CSS files into 50 equal byte chunks.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "FSD is an architectural design methodology for code organization, not a CSS chunking plugin."
       }
     ],
-    correctAnswer: "A",
-    explanation: "It is a modern architectural approach used to organize and structure React applications. It aims to address the challenges of scalability, maintainability, and reusability by dividing the application codebase based on features or modules. In Feature-Sliced Design, each feature or module of the application is organized into a separate directory, containing all the necessary components, actions, reducers, and other related files. This helps in keeping the codebase modular and isolated, making it easier to develop, test, and maintain. Feature-Sliced Design promotes a clear separation of concerns and encapsulates the functionality within individual features. This allows different teams or developers to work on different features independently, without worrying about conflicts or dependencies. I highy recommend to click on the Learn more button to learn about Feature-Sliced Design Learn more Learn more I strongly recommend reading the rest of my articles on frontend interview questions, if you haven't already. 52 Frontend Interview Questions - JavaScript Yan Levin, Aug 12 '23 41 Frontend Interview Questions - CSS Yan Levin, Aug 25 '23 15 Popular Common Frontend Interview Questions Yan Levin, Sep 17 '23 Conclusion In conclusion, interviewing for a React Frontend Developer position requires a solid understanding of the framework's core concepts, principles, and related technologies. By preparing for the questions discussed in this article, you can showcase your React knowledge and demonstrate your ability to create efficient and maintainable user interfaces. Remember to not only focus on memorizing answers but also understanding the underlying concepts and being able to explain them clearly. Additionally, keep in mind that interviews are not just about the technical aspects but also about showcasing your problem-solving skills, communication abilities, and how well you can work in a team. By combining technical expertise with a strong overall skill set, you'll be well-equipped to excel in React frontend developer interviews and land your dream job in this exciting and rapidly evolving field. Good luck! Interview Questions (6 Part Series) 1 52 Frontend Interview Questions - JavaScript 2 41 Frontend Interview Questions - CSS. 2 more parts. 3 15 Popular Common Frontend Interview Questions 4 44 React Frontend Interview Questions 5 30 Frontend Interview Questions - TypeScript 6 12 Interview Questions - Git The DEV Team Promoted Dropdown menu What's a billboard? Manage preferences Report billboard Building a viral IMAX ticketing app that never crashes 150,000 tickets to The Odyssey in 70mm IMAX sold out almost instantly, but seats keep opening back up at odd hours. IMAXXING watches every 70mm showing in the US and pings 9,000+ subscribers the moment a good one frees up. Breaking down the architecture: durable execution, the entity workflow pattern, and serverless Temporal workers on Cloud Run. Read more, Read More Top comments (23) Subscribe Personal Trusted User Create template Templates let you quickly answer FAQs or store snippets for re-use. Submit Preview Dismiss Collapse Expand Peter Vivo Peter Vivo Peter Vivo Follow The Vibe Archeologist. Creator of mordorjs. |> and touch bar fanatic from Hungary. God speed you! 1John1 + 5John17 |> 1Moses1 = (1Moses2. 4.22John21); alpha & omega = !![]; Location Pomaz Education streetwise Work full stack developer at TCS Joined Jul 24, 2020, Oct 13 '23 Dropdown menu Hide This list is cover near every area of react/nextjs programing. Expect using of typescript, which is mandatroy some company, but other company is avoide. In my CV, I try to avoide amount of question with start talk about my module for react state handling: react-troll is the old one which is work well on interview, because on every interview is turn to talk about that module ( 1.5 years ago ). Now I switch the solution from JS to TS and this module is much more simple - give answer to type guarded useReducer: react-state-factory. So I think this is will be help me when I will change to new work (already not). Like comment: Like comment: 2 likes Like Comment button Reply Collapse Expand Christian Cho Christian Cho Christian Cho Follow Joined Sep 17, 2023, Oct 13 '23, Edited on Oct 13, Edited Dropdown menu Hide I think this is great for more junior engineers as a way to test their understanding of how to execute a narrowly defined technical problem for a product feature. I would caution, though, on absolutism. For example: Extract reusable logic into the custom hook. Not always. I've seen cases where developers will write a custom hook to encapsulate some business logic, but in doing so will end up obfuscating important binding points to side effects. I prefer more explicit binding until it becomes clear that there's a shared understanding of those custom hooks. Props are read-only and cannot be changed. Not true. Props can be changed and the values in memory can be altered as JavaScript does not have protected values or properties unless using const primitives. Props can be changed directly, but they won't be reflected in the UI because doing so doesn't trigger a render. This can lead to odd behaviors and difficulty with debugging. This approach minimizes the number of actual DOM manipulations and improves the overall performance of the application. Virtual DOM implementations are actually slower than direct DOM manipulation. The virtual DOM exists as a solution for developers to write declarative code. The clear separation of the virtual DOM and the actual DOM is a way to reduce unintended side effects - it's a principle from functional programming. There are other examples, but for the sake of your readers, I'll stop here. Overall, this is a great resource for interviewing prep, but don't take it as an authoritative guide. I've seen too many opinionated junior and mid-level developers make blanket statements and I've rejected people after interviews because of it, especially if they're stubborn after correction. Like comment: Like comment: 4 likes Like Comment button Reply Collapse Expand Risha Risha Risha Follow Joined Sep 1, 2023, Oct 13 '23 Dropdown menu Hide Thank you very much! you've done a great job Like comment: Like comment: 3 likes Like Comment button Reply Collapse Expand Cezary Tomczyk Cezary Tomczyk Cezary Tomczyk Follow Joined Feb 23, 2023, Oct 13 '23 Dropdown menu Hide I think all the questions are too focused on low-level problems. I ask questions that are general challenges and try to make the question reflect the problem rather than a detailed description of how to do it. For example: \"How can individual components loosely communicate with each other?\" Such a question does not impose a solution, but rather motivates and discovers different solutions to the same question. Like comment: Like comment: 1 like Like Comment button Reply Collapse Expand Marco Marco Marco Follow Just a developer as you Location Berlin Work Developer Joined Feb 27, 2023, Oct 13 '23 Dropdown menu Hide Thank you very much for this article! It's like a reference for react questions, even if your not in an interview. So for me, learning react currently, it was very interesting and helpful to read and discover new and old thinks of react in a \"nutshell\". Thanks Like comment: Like comment: 1 like Like Comment button Reply Collapse Expand Pawe, Ciosek Pawe, Ciosek Pawe, Ciosek Follow software developer Location Warsaw, Poland Work Software developer Joined Jul 8, 2020, Oct 14 '23 Dropdown menu Hide Great Article! Thank you!, Like comment: Like comment: 1 like Like Comment button Reply Collapse Expand Gulshan Negi Gulshan Negi Gulshan Negi Follow Software Developer Joined Sep 14, 2023, Oct 20 '23 Dropdown menu Hide Thanks a lot for sharing fantastic stuff here with us. Very detailed information with superb examples. I have also seen this post where the author listed 50 react interview questions with answers. Now I have found this one. Thanks Like comment: Like comment: Like Comment button Reply Collapse Expand olsard olsard olsard Follow Joined Apr 8, 2019, Oct 19 '23 Dropdown menu Hide Great article! Thank you! Like comment: Like comment: 1 like Like Comment button Reply Collapse Expand emmanuel ikeleji emmanuel ikeleji emmanuel ikeleji Follow Wait for it! I'm coming up with the brightest imagination yet to be unveiled Joined Sep 28, 2023, Oct 15 '23 Dropdown menu Hide Bootstrap fra Like comment: Like comment: 1 like Like Comment button Reply Collapse Expand emmanuel ikeleji emmanuel ikeleji emmanuel ikeleji Follow Wait for it! I'm coming up with the brightest imagination yet to be unveiled Joined Sep 28, 2023, Oct 15 '23 Dropdown menu Hide Bootstrap frameworks with React seems very interesting Like comment: Like comment: 1 like Like Comment button Reply View full discussion (23 comments) Some comments have been hidden by the post's author - find out more Code of Conduct, Are you sure you want to hide this comment? It will become hidden in your post, but will still be visible via the comment's permalink. Hide child comments as well Confirm For further actions, you may consider blocking this person and/or reporting abuse DEV Community Dropdown menu What's a billboard? Manage preferences Report billboard The data is in: AI is how developers learn now In Major League Hacking's latest Season Census, 75% of verified respondents said they use AI in some form to learn technical skills. That's ahead of YouTube (71%) and online courses (59%). AI is now the single most common way new developers learn. Read more, Yan Levin Follow Frontend Dev | Mentor | Open Source Contributor | 300k+ reads Location Georgia, Tbilisi Pronouns He/Him Joined Jul 18, 2023 More from Yan Levin How SkillHunt Uses Telegram for Faster Job Search From Idea to Alpha in 30 Days, Building SkillHunt as a Solo Founder Meet SkillHunt - a Career Platform for Developers The DEV Team Promoted Dropdown menu What's a billboard? Manage preferences Report billboard Hacktoberfest 2026: AI belongs to everyone We have some news we're excited to share today: Major League Hacking (MLH) and DEV are partnering with DigitalOcean to run Hacktoberfest 2026. This October, we, ll host over 300 in-person events (, Fests, ) plus a global online event, all about building with open source and open-weight AI. Read more, Kindness is contagious Dropdown menu What's a billboard? Manage preferences Report billboard If this **helped, please leave a, or a friendly comment! Okay DEV Community, A space to discuss and keep up software development and manage your software career Home DEV Challenges DEV++ Videos DEV Education Tracks DEV Help Advertise on DEV Organization Accounts DEV Showcase About Contact Free Postgres Database DEV Shop MLH Code of Conduct Privacy Policy Terms of Use Built on Forem, the open source software that powers DEV and other inclusive communities. Made with love and Ruby on Rails. DEV Community, 2016 - 2026. We're a place where coders share, stay up-to-date and grow their careers.",
+    correctAnswer: "B",
+    explanation: "Feature-Sliced Design (FSD) is an architectural methodology for frontend applications that organizes code into standardized hierarchical layers: App (setup), Processes (complex cross-page workflows), Pages (views), Widgets (composite UI blocks), Features (user interactions), Entities (business models), and Shared (reusable utils/UI). It enforces unidirectional dependencies where each layer can only import from layers strictly below it.",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is Feature-Sliced Design?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is Feature-Sliced Design?.",
     hints: [
@@ -172,30 +172,30 @@ export const FIX_THE_BUG_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "The react-router package will provide the component <Redirect> in React Router.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Use `window.stop()` to force the browser to redirect immediately.",
+        isCorrect: false,
+        explanation: "`window.stop()` stops page loading, but does not perform navigation redirects."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Delete the React root DOM container from the page.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Deleting the root container crashes the React application rather than redirecting."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Modify `document.title` to the target URL and wait for the browser to navigate.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "`document.title` only changes the tab header text and has no navigation behavior."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
-        isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        text: "Use React Router's `<Navigate to='/dashboard' replace />` component or `navigate('/dashboard')` hook when authentication state is confirmed.",
+        isCorrect: true,
+        explanation: "Correct. Modern React Router uses `useNavigate()` or `<Navigate />` to programmatically redirect users upon state changes like successful login."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "D",
     explanation: "The react-router package will provide the component <Redirect> in React Router. Rendering of a <Redirect> component will navigate to a newer location. In the history stack, the current location will be overridden by the new location just like the server-side redirects. Conclusion React has got more popularity among the top IT companies like Facebook, PayPal, Instagram, Uber, etc., around the world especially in India. Hooks is becoming a trend in the React community as it removes the state management complexities. This article includes the most frequently asked ReactJS and React Hooks interview questions and answers that will help you in interview preparations. Also, remember that your success during the interview is not all about your technical skills, it will also be based on your state of mind and the good impression that you will make at first. All the best!! Useful References and Resources: \"Beginning React with Hooks \" book by Greg Lim, Learn React Hooks, book by Daniel Bugl Node.js vs React.js React Native Interview Questions Angular Interview Questions and Answers",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to perform automatic redirect after login?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to perform automatic redirect after login?.",
@@ -224,30 +224,30 @@ export const FIX_THE_BUG_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Basic Hooks: useState(): This functional component is used to set and retrieve the state.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Visual hooks that output CSS and algorithmic hooks that calculate math.",
+        isCorrect: false,
+        explanation: "Hooks manage component state, side effects, refs, and memoization in JavaScript."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
-        isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        text: "Basic Hooks (`useState`, `useEffect`, `useContext`) and Additional/Advanced Hooks (`useReducer`, `useCallback`, `useMemo`, `useRef`, `useLayoutEffect`, `useImperativeHandle`).",
+        isCorrect: true,
+        explanation: "Correct. The React documentation historically groups hooks into foundational basic hooks and specialized additional hooks for performance and advanced ref manipulation."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Free hooks included in React and paid premium hooks available via subscription.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "All built-in React hooks are free and open-source under the MIT license."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "Client-side hooks that run in the browser and server-side hooks that compile to SQL.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Hooks execute in JavaScript runtimes; they do not compile to SQL queries."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "B",
     explanation: "Basic Hooks: useState(): This functional component is used to set and retrieve the state. useEffect(): It enables for performing the side effects in the functional components. useContext(): It is used for creating common data that is to be accessed by the components hierarchy without having to pass the props down to each level. Additional Hooks: useReducer(): It is used when there is a complex state logic that is having several sub-values or when the upcoming state is dependent on the previous state. It will also enable you to optimization of component performance that will trigger deeper updates as it is permitted to pass the dispatch down instead of callbacks. useMemo(): This will be used for recomputing the memoized value when there is a change in one of the dependencies. This optimization will help for avoiding expensive calculations on each render. useCallback(): This is useful while passing callbacks into the optimized child components and depends on the equality of reference for the prevention of unneeded renders. useImperativeHandle(): It will enable modifying the instance that will be passed with the ref object. useDebugValue(): It is used for displaying a label for custom hooks in React DevTools. useRef(): It will permit creating a reference to the DOM element directly within the functional component. useLayoutEffect(): It is used for the reading layout from the DOM and re-rendering synchronously. 2. Custom Hooks: A custom Hook is basically a function of JavaScript. The Custom Hook working is similar to a regular function. The, use, at the beginning of the Custom Hook Name is required for React to understand that this is a custom Hook and also it will describe that this specific function follows the rules of Hooks. Moreover, developing custom Hooks will enable you for extracting component logic from within reusable functions.",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Built-in Hooks: The built-in Hooks are divided into 2 parts as given below.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Built-in Hooks: The built-in Hooks are divided into 2 parts as given below.",
@@ -275,30 +275,30 @@ export const FIX_THE_BUG_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Prop drilling is the pattern of passing on data from the parent component through several levels down to the nested child component, but its process makes the code harder to maintain and debug.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Context should be used to replace all local `useState` calls in every component.",
+        isCorrect: false,
+        explanation: "Local state should remain local; Context is for shared cross-tree data."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
-        isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        text: "Use Context for relatively stable, app-wide global data (current authenticated user, theme, locale) that many components across the tree need to read without prop drilling.",
+        isCorrect: true,
+        explanation: "Correct. Context shines for broadcasting stable global values across the component hierarchy, avoiding tedious prop forwarding through intermediate containers."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Context is only usable when building server-side Node.js CLI tools.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "React Context is a core component hierarchy feature used extensively in frontend web and mobile apps."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "Use Context for high-frequency keystroke inputs in large forms.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Every keystroke would re-render all context consumers, leading to typing lag."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "B",
     explanation: "Prop drilling is the pattern of passing on data from the parent component through several levels down to the nested child component, but its process makes the code harder to maintain and debug. To avoid such problems, Context API, which is a built-in feature in React, helps in passing on the data, but without having to go through every level. This is how it works: You create a context using React.createContext(), then wrap part of your app with a Provider, and lastly, consume the value using useContext() Now, how does this actually help? For example: current user (auth) theme (dark/light) language/locale These are values that are needed across many components at different levels. Passing them manually quickly becomes messy, so Context helps in keeping it cleaner. But here, s where it gets a little confusing, Context is not meant for everything. If the data changes very frequently, such as form input or animations, then Context might even end up hurting the performance. And why is that? Because whenever the context value changes, all components consuming it re-render. So the better way to understand this is that you can use Context for global, relatively stable data and keep local or frequently changing state inside components. You can also split contexts based on how often they update, instead of putting everything into one. That, s the difference between Context and Redux! Context is built into React and works well for simpler cases. Redux, on the other hand, adds things like middleware, devtools, better control over updates, but it also comes with more setup. You can be asked some follow-up questions here, like: Q. What happens if Context values change frequently? Your ans: All consuming components re-render. Q. How do you optimize it? Your ans: I split contexts based on their use and memoize the value passed to the Provider.",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the Context API? When should you use it instead of prop drilling?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the Context API? When should you use it instead of prop drilling?.",
@@ -327,27 +327,27 @@ export const FIX_THE_BUG_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "In React, the key prop is used to uniquely identify elements in a list, allowing React to optimize rendering by updating and reordering items more efficiently.",
+        text: "Provides a stable identity for array elements so React's reconciliation engine can track which items were added, removed, or reordered without recreating DOM nodes.",
         isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        explanation: "Correct. Keys allow React to match previous and next virtual nodes efficiently, maintaining component state and DOM focus across renders."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Applies automatic alternating background colors to table rows.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Styling is handled via CSS; keys are reconciliation identifiers."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Encrypts list data using cryptographic hashing to prevent XSS attacks.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "`key` is a diffing hint for the Virtual DOM, not an encryption mechanism."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "Stores the list item data in local browser `sessionStorage`.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Keys do not store data in browser storage."
       }
     ],
     correctAnswer: "A",
@@ -378,30 +378,30 @@ export const FIX_THE_BUG_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "React advises against mutating state as it can lead to unexpected behaviors and bugs.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "JavaScript runtime engines permanently crash if an object property is reassigned.",
+        isCorrect: false,
+        explanation: "JavaScript allows mutation; React specifically requires immutability for its reactive rendering model."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
-        isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        text: "Mutating state directly bypasses React's shallow equality checks, preventing components from re-rendering and breaking time-travel debugging and concurrent features.",
+        isCorrect: true,
+        explanation: "Correct. React relies on immutable state transitions (new object references) to detect changes efficiently during reconciliation and maintain predictable state history."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Direct state mutation automatically publishes all user variables to public search engines.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "State immutability is about reconciliation predictability, not search engine publication."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "Mutating state triggers an immediate physical hardware shutdown on the client's device.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Direct mutation causes React rendering bugs and stale UI, not hardware shutdowns."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "B",
     explanation: "React advises against mutating state as it can lead to unexpected behaviors and bugs. State immutability helps efficiently determine when components need re-rendering; direct mutations may prevent React from detecting changes. Find in-depth explanations and track study progress here -> React Hooks Mastering React hooks is important in front end interviews because hooks are the standard way to manage state, side effects, and component lifecycle in modern React. Demonstrating a solid understanding of hooks shows you can write clean, functional components and solve complex problems without relying on outdated class patterns.",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Why does React recommend against mutating state?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Why does React recommend against mutating state?.",
@@ -429,30 +429,30 @@ export const FIX_THE_BUG_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "The Flux pattern manages application state through unidirectional data flow, simplifying debugging and enhancing maintainability with clear separation of concerns between Dispatcher, Stores, Actions, and Views.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "A database replication protocol that continuously flushes SQL transactions to disk.",
+        isCorrect: false,
+        explanation: "Flux is a frontend client application architecture pattern, not a database disk flush protocol."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "A CSS layout algorithm that calculates responsive grid flexbox coordinates.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Flux governs application state and data flow, not CSS rendering."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
-        isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        text: "An architectural pattern featuring strict unidirectional data flow: Actions are dispatched through a central Dispatcher to Stores, which update Views.",
+        isCorrect: true,
+        explanation: "Correct. Flux enforces predictable unidirectional data flow (Action -> Dispatcher -> Store -> View), preventing the tangled bidirectional updates of traditional MVC."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "A compiler that transpiles React code into Angular TypeScript services.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Flux is an architectural pattern popularized by Facebook for React state management."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "C",
     explanation: "The Flux pattern manages application state through unidirectional data flow, simplifying debugging and enhancing maintainability with clear separation of concerns between Dispatcher, Stores, Actions, and Views. Find in-depth explanations and track study progress here ->",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the Flux pattern?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the Flux pattern?.",
@@ -481,30 +481,30 @@ export const FIX_THE_BUG_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "You can format dates using the <FormattedDate /> component or the useIntl hook's formatDate method.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Call `date.toString()` and split the string manually with regex.",
+        isCorrect: false,
+        explanation: "Manual string splitting ignores locale conventions and produces poor localization."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Hardcode all month names in English strings.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Hardcoded strings fail internationalization requirements."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Dates cannot be formatted in React without installing jQuery plugins.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "`react-intl` formats dates using standard JavaScript `Intl.DateTimeFormat` APIs."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
-        isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        text: "Use the `<FormattedDate value={date} year='numeric' month='long' day='2-digit' />` component or `intl.formatDate(date, options)` from `useIntl()`.",
+        isCorrect: true,
+        explanation: "Correct. Both `<FormattedDate />` and `intl.formatDate()` produce locale-aware date strings following user regional conventions."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "D",
     explanation: "You can format dates using the <FormattedDate /> component or the useIntl hook's formatDate method. Using <FormattedDate /> component: Using useIntl hook: These methods allow you to format the date in a locale-sensitive manner. React Testing Understanding testing in React is important in front end interviews because it shows you can write reliable, maintainable code and catch bugs early through unit, integration, and UI tests. Proficiency with tools like Jest and React Testing Library signals that you prioritize code quality and can work effectively in team environments with CI/CD workflows.",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to format date using react-intl?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to format date using react-intl?.",
@@ -532,30 +532,30 @@ export const FIX_THE_BUG_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Benefits: Centralized single store for application state.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "It guarantees 0ms latency for all network API calls.",
+        isCorrect: false,
+        explanation: "State libraries cannot alter physical network transmission speeds."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "It runs React code directly in the GPU hardware without JavaScript.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "React-Redux executes in the JavaScript runtime engine."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "It completely eliminates the need for writing HTML or CSS.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "React-Redux manages JavaScript data flow; components still render HTML/CSS."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
-        isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        text: "Centralized predictable state store, time-travel debugging via Redux DevTools, powerful middleware ecosystem, and granular selector-based re-render optimization.",
+        isCorrect: true,
+        explanation: "Correct. React-Redux provides predictable state transitions, devtools inspectability, and efficient re-rendering through `useSelector` reference checks."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "D",
     explanation: "Benefits: Centralized single store for application state. Improved performance by reducing unnecessary re-renders. Easier debugging with predictable state changes. Persistent state handling for longer-lived data.",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the Benefits of Using React-Redux?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the Benefits of Using React-Redux?.",
@@ -583,30 +583,30 @@ export const FIX_THE_BUG_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Using a callback version of setState ensures you update state based on the latest value, preventing bugs when updates queue up.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Because updater callbacks run in parallel C++ threads on the GPU.",
+        isCorrect: false,
+        explanation: "Updater functions execute in the JavaScript event loop within React's update queue."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
-        isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        text: "Use the updater callback `setState(prevState => ({ count: prevState.count + 1 }))` when next state depends on current state to ensure updates read the most recent queued state during batched updates.",
+        isCorrect: true,
+        explanation: "Correct. Because React batches state updates asynchronously, reading state directly (e.g. `this.state.count` or closure `count`) can be stale; the updater function receives guaranteed latest state."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Because updater callbacks permanently save state to browser cookies.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Updater functions compute next state in memory during reconciliation."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "Updater callbacks are deprecated and prohibited in modern React.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Updater callbacks remain the standard best practice for state updates that depend on previous values."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "B",
     explanation: "Using a callback version of setState ensures you update state based on the latest value, preventing bugs when updates queue up.Example: this.setState(prevState => ({ count: prevState.count + 1}));",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain Why and How to Update State of Components Using Callback?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain Why and How to Update State of Components Using Callback?.",
@@ -635,30 +635,30 @@ export const FIX_THE_BUG_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Call Hooks only at the top level of your component.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Wrap every hook in a `try/catch` block to handle exceptions.",
+        isCorrect: false,
+        explanation: "Wrapping hooks in `try/catch` or conditional blocks violates the constant call order rule."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Limit components to a maximum of one hook invocation per file.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Components can call multiple hooks as long as the invocation order is unconditional and constant."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
-        isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        text: "1) Call hooks only at the top level (not in loops, conditions, or nested functions); 2) Call hooks only from React function components or custom hooks.",
+        isCorrect: true,
+        explanation: "Correct. Preserving constant call order allows React's internal fiber arrays to match hook state correctly across renders."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "Declare hooks in separate `.hook` binary files.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Hooks are standard JavaScript functions in `.js`/`.ts`/`.tsx` files."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "C",
     explanation: "Call Hooks only at the top level of your component. Do not call them inside loops, conditions, or nested functions. Call Hooks only from React function components or custom hooks. Why these rules matter: They keep the Hook call order stable so React can correctly associate state and effects with a component instance.",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Rules of Hooks: How to Avoid Subtle Bugs.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Rules of Hooks: How to Avoid Subtle Bugs.",
@@ -687,30 +687,30 @@ export const FIX_THE_BUG_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Built-ins: Basic: useState, useEffect, useContext.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Hardware hooks that control USB ports and software hooks that control printers.",
+        isCorrect: false,
+        explanation: "React Hooks manage JavaScript component state and lifecycles."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Free hooks included in React and paid premium hooks available via subscription.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "All built-in React hooks are free and open-source under the MIT license."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
-        isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        text: "Built-ins include State (`useState`, `useReducer`), Effects (`useEffect`, `useLayoutEffect`), Context (`useContext`), Refs (`useRef`, `useImperativeHandle`), and Performance (`useMemo`, `useCallback`).",
+        isCorrect: true,
+        explanation: "Correct. React categorizes hooks by function, and custom hooks compose these primitives to encapsulate domain-specific state and side effects."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "Synchronous hooks for HTML tags and asynchronous hooks for CSS stylesheets.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Hooks manage JavaScript logic within React components."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "C",
     explanation: "Built-ins: Basic: useState, useEffect, useContext. Additional: useReducer, useMemo, useCallback, useRef, useLayoutEffect, useImperativeHandle, useDebugValue. Custom hooks: Encapsulate reusable behavior (fetching, input handling, subscriptions). Name must start with use. Follow the Rules of Hooks: call unconditionally and only from components or other hooks. Example custom hook: function useFetch(url) { const [data, setData] = useState(null); useEffect(() => { let cancelled = false; fetch(url).then(r => r.json()).then(d => { if (!cancelled) setData(d); }); return () => { cancelled = true; }; }, [url]); return data;}",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Hook Types and Patterns, Built-In and Custom Hooks That Matter.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Hook Types and Patterns, Built-In and Custom Hooks That Matter.",
@@ -738,30 +738,30 @@ export const FIX_THE_BUG_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Redux follows three fundamental principles: Single source of truth: The state of your whole application is stored in an object tree within a single store.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "1) Global window variables; 2) Synchronous network calls; 3) Unencrypted passwords.",
+        isCorrect: false,
+        explanation: "These are anti-patterns, not Redux principles."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Redux has no principles and allows arbitrary programming patterns.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Redux is strictly governed by its three foundational principles."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "1) Two-way data binding; 2) Direct in-place state mutation; 3) Multiple decentralized stores.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "These are the exact opposites of Redux's core principles."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
-        isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        text: "1) Single source of truth (one store); 2) State is read-only (mutated only by dispatching actions); 3) Changes are made with pure functions (reducers).",
+        isCorrect: true,
+        explanation: "Correct. These three core principles ensure predictable state management, reproducible state history, and effortless time-travel debugging."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "D",
     explanation: "Redux follows three fundamental principles: Single source of truth: The state of your whole application is stored in an object tree within a single store. The single state tree makes it easier to keep track of changes over time and debug or inspect the application. State is read-only: The only way to change the state is to emit an action, an object describing what happened. This ensures that neither the views nor the network callbacks will ever write directly to the state. Changes are made with pure functions: To specify how the state tree is transformed by actions, you write reducers. Reducers are just pure functions that take the previous state and an action as parameters, and return the next state.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the core principles of Redux?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the core principles of Redux?.",
@@ -790,30 +790,30 @@ export const FIX_THE_BUG_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "The best way to access your store in a component is to use the connect() function, that creates a new component that wraps around your existing one.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Accessing the Redux store requires writing C++ kernel modules.",
+        isCorrect: false,
+        explanation: "React-Redux provides standard JavaScript hooks (`useSelector`, `useDispatch`)."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Read the store from global unreactive `window.store` on every frame.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Using `useSelector` ensures reactive updates and optimal memoization."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Directly mutate `store.getState().user = newUser` without dispatching actions.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Direct state mutation breaks Redux subscriptions and prevents components from updating."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
-        isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        text: "In modern React, use React-Redux hooks (`useSelector` with granular selectors and `useDispatch`), or `connect()` for class components, rather than reading the store directly.",
+        isCorrect: true,
+        explanation: "Correct. `useSelector` subscribes components to specific state slices with reference equality checks, preventing unnecessary re-renders when unrelated store state changes."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "D",
     explanation: "The best way to access your store in a component is to use the connect() function, that creates a new component that wraps around your existing one. This pattern is called Higher-Order Components, and is generally the preferred way of extending a component's functionality in React. This allows you to map state and action creators to your component, and have them passed in automatically as your store updates. Let's take an example of <FilterLink> component using connect: Due to it having quite a few performance optimizations and generally being less likely to cause bugs, the Redux developers almost always recommend using connect() over accessing the store directly (using context API).: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the proper way to access Redux store?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the proper way to access Redux store?.",
@@ -842,27 +842,27 @@ export const FIX_THE_BUG_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Constants allows you to easily find all usages of that specific functionality across the project when you use an IDE.",
+        text: "Defining action types as string constants (`export const ADD_TODO = 'todos/add'`) prevents typo bugs, enables IDE autocomplete/refactoring, and centralizes action definitions.",
         isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        explanation: "Correct. Using constants ensures that action creators and reducers reference identical string values, preventing silent mismatch bugs caused by typographical errors."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Constants convert JavaScript code into WebAssembly binaries.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Action type constants are standard JavaScript exported strings."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Constants are required by the operating system to allocate RAM.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Constants provide code safety, autocomplete, and prevent typos in Redux."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "Constants encrypt the Redux store with AES-256.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Action type constants are plain strings used to identify action types reliably."
       }
     ],
     correctAnswer: "A",
@@ -893,30 +893,30 @@ export const FIX_THE_BUG_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Some of the main features of Redux DevTools are below, Lets you inspect every state and action payload.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Generating native mobile binaries for iOS App Store submission.",
+        isCorrect: false,
+        explanation: "DevTools inspects client-side state transitions."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Editing browser C++ source code in real time.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "DevTools interacts with Redux JavaScript stores in the browser."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Automated SQL query optimization and database indexing.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "DevTools is a frontend debugging tool for Redux in-memory state."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
-        isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        text: "Inspecting action payloads, viewing real-time state trees/diffs, time-traveling (jumping/cancelling past actions), replaying actions, and persisting debug state across reloads.",
+        isCorrect: true,
+        explanation: "Correct. Redux DevTools offers comprehensive state visibility, time-travel scrubbing, and action logging for frictionless debugging."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "D",
     explanation: "Some of the main features of Redux DevTools are below, Lets you inspect every state and action payload. Lets you go back in time by cancelling actions. If you change the reducer code, each staged action will be re-evaluated. If the reducers throw, you will see during which action this happened, and what the error was. With persistState() store enhancer, you can persist debug sessions across page reloads.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the features of Redux DevTools?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the features of Redux DevTools?.",
@@ -944,30 +944,30 @@ export const FIX_THE_BUG_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Follow the below steps to debug React Native app: Run your application in the iOS simulator.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "React Native applications cannot be debugged.",
+        isCorrect: false,
+        explanation: "Comprehensive debugging tools (DevTools, Flipper, Chrome) are available."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Shake the computer monitor until the app reloads.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Keyboard shortcuts (`Cmd+D` / `Cmd+M`) or simulator shake gestures open the developer menu in software."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Debugging React Native requires disassembling the phone hardware with a screwdriver.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Software developer menus and IDE debuggers handle debugging."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
-        isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        text: "Open the In-App Developer Menu (`Cmd+D` in iOS simulator, `Cmd+M` on Android) to toggle React Native DevTools, Fast Refresh, Flipper, or remote Chrome debugger.",
+        isCorrect: true,
+        explanation: "Correct. The developer shake/shortcut menu provides instant access to element inspectors, performance overlays, and debugging connections."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "D",
     explanation: "Follow the below steps to debug React Native app: Run your application in the iOS simulator. Press Command + D and a webpage should open up at http://localhost:8081/debugger-ui. Enable Pause On Caught Exceptions for a better debugging experience. Press Command + Option + I to open the Chrome Developer tools, or open it via View -> Developer -> Developer Tools. You should now be able to debug as you normally would. React supported libraries & Integration: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to debug your React Native?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to debug your React Native?.",
@@ -995,30 +995,30 @@ export const FIX_THE_BUG_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Flow is a static analysis tool (static checker) which uses a superset of the language, allowing you to add type annotations to all of your code and catch an entire class of bugs at compile time.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "There is no difference; they are exact duplicates.",
+        isCorrect: false,
+        explanation: "Static compilation vs runtime checking is a fundamental architectural difference."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "PropTypes was replaced by PHP in React 18.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "PropTypes is a standalone npm library for runtime prop validation."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
-        isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        text: "Flow/TypeScript perform static compile-time type checking across the entire codebase with zero runtime overhead; PropTypes performs dynamic runtime checks on component props only in development.",
+        isCorrect: true,
+        explanation: "Correct. Static type checkers validate the full app before running with no bundle bloat; PropTypes runs checks in the browser during development when components mount/update."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "PropTypes checks code before compilation; TypeScript checks code in production browsers.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "TypeScript checks at compile time; PropTypes validates at runtime in development."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "C",
     explanation: "Flow is a static analysis tool (static checker) which uses a superset of the language, allowing you to add type annotations to all of your code and catch an entire class of bugs at compile time. PropTypes is a basic type checker (runtime checker) which has been patched onto React. It can't check anything other than the types of the props being passed to a given component. If you want more flexible typechecking for your entire project Flow/TypeScript are appropriate choices.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the difference between Flow and PropTypes?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the difference between Flow and PropTypes?.",
@@ -1046,30 +1046,30 @@ export const FIX_THE_BUG_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Let's see the difference between React and Angular in a table format.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Angular was deleted in 2014 and no longer exists.",
+        isCorrect: false,
+        explanation: "Angular is actively maintained by Google with a large enterprise ecosystem."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "React requires writing Java code; Angular requires C++.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Both are JavaScript and TypeScript technologies."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "React only runs on servers; Angular only runs on smartwatches.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Both are primary web development tools targeting modern browsers and platforms."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
-        isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        text: "React is a focused UI view library using JSX and unidirectional data flow; Angular is a comprehensive full-fledged MVC framework with built-in routing, HTTP client, dependency injection, and two-way binding.",
+        isCorrect: true,
+        explanation: "Correct. React gives developers freedom to select routing/state libraries, while Angular is an all-inclusive framework providing end-to-end conventions out of the box."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "D",
     explanation: "Let's see the difference between React and Angular in a table format. React Angular React is a library and has only the View layer Angular is a framework and has complete MVC functionality React handles rendering on the server side AngularJS renders only on the client side but Angular 2 and above renders on the server side React uses JSX that looks like HTML in JS which can be confusing Angular follows the template approach for HTML, which makes code shorter and easy to understand React Native, which is a React type to build mobile applications are faster and more stable Ionic, Angular's mobile native app is relatively less stable and slower In React, data flows only in one way and hence debugging is easy In Angular, data flows both way i.e it has two-way data binding between children and parent and hence debugging is often difficult Note: The above list of differences are purely opinionated and it vary based on the professional experience. But they are helpful as base parameters.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the difference between React and Angular?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the difference between React and Angular?.",
@@ -1097,30 +1097,30 @@ export const FIX_THE_BUG_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "It is up to developer decision.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Redux state must be reset to null on every keystroke.",
+        isCorrect: false,
+        explanation: "Redux maintains persistent application state across component lifecycles."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
-        isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        text: "No, use Redux for globally shared or cached domain data, but keep transient, localized UI state (like dropdown open/close or form draft inputs) in local component state (`useState`).",
+        isCorrect: true,
+        explanation: "Correct. Balancing global Redux state with local React state simplifies code, reduces unnecessary global re-renders, and keeps components modular."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Yes, storing any state in `useState` is an error if Redux is installed.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "`useState` and Redux are designed to coexist harmoniously."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "All state must be stored in browser cookies.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Cookies are for HTTP authentication and small tokens, not reactive UI state."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "B",
     explanation: "It is up to developer decision. i.e, It is developer job to determine what kinds of state make up your application, and where each piece of state should live. Some users prefer to keep every single piece of data in Redux, to maintain a fully serializable and controlled version of their application at all times. Others prefer to keep non-critical or UI state, such as, is this dropdown currently open, inside a component's internal state. Below are the thumb rules to determine what kind of data should be put into Redux Do other parts of the application care about this data? Do you need to be able to create further derived data based on this original data? Is the same data being used to drive multiple components? Is there value to you in being able to restore this state to a given point in time (ie, time travel debugging)? Do you want to cache the data (i.e, use what's in state if it's already there instead of re-requesting it)?: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Do I need to keep all my state into Redux? Should I ever use react internal state?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Do I need to keep all my state into Redux? Should I ever use react internal state?.",
@@ -1148,30 +1148,30 @@ export const FIX_THE_BUG_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Apart from error messages and javascript stack, React16 will display the component stack trace with file names and line numbers using error boundary concept.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "It automatically rewrites the buggy code and submits a pull request.",
+        isCorrect: false,
+        explanation: "Stack traces provide diagnostic logging information for developers."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "It increases website download speeds by 50%.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Stack traces are debugging diagnostics, not network accelerators."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
-        isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        text: "It provides the exact hierarchy of React components (with file names and line numbers) where the crash occurred, pinpointing the failed component faster than generic JS stack traces.",
+        isCorrect: true,
+        explanation: "Correct. Component stack traces show the JSX component ancestry (e.g. `App -> Layout -> BuggyWidget`), helping developers diagnose render failures instantly."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "It converts all component props into JSON files on disk.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Stack traces display component hierarchy in console error logs."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "C",
     explanation: "Apart from error messages and javascript stack, React16 will display the component stack trace with file names and line numbers using error boundary concept. For example, BuggyCounter component displays the component stack trace as below,: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the benefit of component stack trace from error boundary?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the benefit of component stack trace from error boundary?.",
@@ -1200,27 +1200,27 @@ export const FIX_THE_BUG_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "The displayName string is used in debugging messages.",
+        text: "A string property on components used in React DevTools and debugging messages, especially useful for giving clear names to HOC-wrapped components (`WithSubscription(UserList)`).",
         isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        explanation: "Correct. Setting `Component.displayName` provides human-readable component labels in React DevTools hierarchies and error stack traces."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "A property that sets the CSS `display: block` style.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "`displayName` is metadata for DevTools and debugging, not a CSS styling property."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "A database column name for user accounts.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "`displayName` is a component debugging identifier in React."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "A property that encrypts the component name for security.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "`displayName` explicitly makes component names readable in debugging tools."
       }
     ],
     correctAnswer: "A",
@@ -1252,30 +1252,30 @@ export const FIX_THE_BUG_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "How to debug forwardRefs in DevTools?: Core React and frontend architecture principle.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Disable the browser's JavaScript engine completely.",
+        isCorrect: false,
+        explanation: "Disabling JavaScript breaks the application entirely."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Attach a physical oscilloscope to the laptop motherboard.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Debugging uses software DevTools panels."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "ForwardRefs cannot be inspected in React DevTools.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "DevTools natively supports forwardRef and reads its `displayName` property."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
-        isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        text: "Assign a name to the forwardRef render function or set `forwardRefComponent.displayName = 'ForwardRef(MyComponent)'` so React DevTools displays a meaningful component label.",
+        isCorrect: true,
+        explanation: "Correct. Setting `displayName` or naming the inner function provides clear identification in the React DevTools component tree rather than generic `Anonymous ForwardRef`."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "D",
     explanation: "React.forwardRef accepts a render function as parameter and DevTools uses this function to determine what to display for the ref forwarding component. For example, If you don't name the render function or not using displayName property then it will appear as, ForwardRef, in the DevTools, But If you name the render function then it will appear as, ForwardRef(myFunction), As an alternative, You can also set displayName property for forwardRef function,: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to debug forwardRefs in DevTools?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to debug forwardRefs in DevTools?.",
@@ -1304,30 +1304,30 @@ export const FIX_THE_BUG_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "The ESLint plugin enforces rules of Hooks to avoid bugs.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "To count the number of characters in variable names.",
+        isCorrect: false,
+        explanation: "The plugin enforces the Rules of Hooks and dependency completeness."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
-        isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        text: "`eslint-plugin-react-hooks` statically enforces the Rules of Hooks (only calling hooks at top level and from React functions) and flags missing dependencies in `useEffect`/`useCallback` dependency arrays.",
+        isCorrect: true,
+        explanation: "Correct. The plugin prevents critical bugs like stale closures, skipped renders, and broken hook order by validating hook calls at development/lint time."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "To convert JavaScript code into Python.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "The plugin is an ESLint static analysis rule for JavaScript and TypeScript."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "To delete the `node_modules` folder if an error occurs.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "It surfaces lint errors and auto-fix suggestions in the developer's IDE."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "B",
     explanation: "The ESLint plugin enforces rules of Hooks to avoid bugs. It assumes that any function starting with, use, and a capital letter right after it is a Hook. In particular, the rule enforces that, Calls to Hooks are either inside a PascalCase function (assumed to be a component) or another useSomething function (assumed to be a custom Hook). Hooks are called in the same order on every render.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the purpose of eslint plugin for hooks?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the purpose of eslint plugin for hooks?.",
@@ -1355,30 +1355,30 @@ export const FIX_THE_BUG_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Below are some of the benefits of using typescript with Reactjs, It is possible to use latest JavaSc",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "TypeScript makes the user's internet connection 10x faster.",
+        isCorrect: false,
+        explanation: "TypeScript is a development-time static type system with zero network effect."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "TypeScript eliminates the need for writing components.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "TypeScript types the component code that developers write."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
-        isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        text: "Compile-time type safety across props, state, and hooks; intelligent IDE autocompletion and refactoring; self-documenting component APIs; and early error detection before runtime.",
+        isCorrect: true,
+        explanation: "Correct. TypeScript significantly improves maintainability, prevents common `undefined` property crashes, and ensures prop contracts are strictly validated across teams."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "TypeScript code cannot be debugged in browser DevTools.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Source maps allow seamless debugging of TypeScript files directly in browser DevTools."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "C",
     explanation: "Below are some of the benefits of using typescript with Reactjs, It is possible to use latest JavaScript features Use of interfaces for complex type definitions IDEs such as VS Code was made for TypeScript Avoid bugs with the ease of readability and Validation: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the benefits of using typescript with reactjs?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the benefits of using typescript with reactjs?.",
@@ -1406,30 +1406,30 @@ export const FIX_THE_BUG_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "27 setFilter: ( key, val ) = > setParams ( p = > { p.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Rely exclusively on URL query parameters to store all user authentication tokens and large nested JSON data collections.",
+        isCorrect: false,
+        explanation: "URLs have size limits, expose sensitive data in browser history/logs, and cannot store complex object hierarchies safely."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
-        isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        text: "Categorize state into local UI state (useState), server cache (React Query/SWR), global client state (Zustand/Redux), and URL state (search params), placing state as close to its consumer as possible.",
+        isCorrect: true,
+        explanation: "Correct. Modern frontend state architecture separates ephemeral UI state from server cache and URL parameters, avoiding bloated global stores."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Use React Context for high-frequency real-time stock ticker updates without selector optimizations.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Context without selectors triggers re-renders on all consuming components on every tick, causing severe frame drops."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "Store 100% of all data\u2014including input values, hover states, and modal toggles\u2014in a single global Redux store.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Storing ephemeral UI state globally causes unnecessary re-renders across the tree and boilerplates simple local interactions."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "B",
     explanation: "State management is one of the most critical frontend architecture decisions. Getting it wrong leads to prop drilling hell, stale data, and bugs. The 4 types of state: Local UI state, isOpen, inputValue, tab selection (useState) Server/cache state, API data, loading, errors (React Query/SWR) Global client state, auth user, theme, cart (Zustand/Redux) URL state, filters, pagination, search params (useSearchParams) Which tool for which state: useState, simple local UI state useReducer, complex local state with multiple actions Context, low-frequency global state (theme, locale) Zustand/Jotai, medium global state, simple API Redux Toolkit, large apps, complex async flows, devtools React Query/SWR, ALL server state (replaces 90% of Redux use) Rule of thumb: Put state as close to where it is used as possible Use React Query for server state before reaching for Redux 1 // React Query: server state (replaces Redux for API data) 2 const useProducts = ( filters ) = > { 3 return useQuery ( { 4 queryKey: [ 'products', filters ], 5 queryFn: ( ) = > api. getProducts ( filters ), 6 staleTime: 5 * 60 * 1000, // 5 min, don't refetch if fresh 7 gcTime: 10 * 60 * 1000, // 10 min, keep in memory 8 } ) 9 } 10 11 // Zustand: global client state (auth, cart, theme) 12 const useCartStore = create ( ( set, get ) = > ( { 13 items: [ ], 14 addItem: ( product ) = > set ( state = > ( { 15 items: [.. state. items, product ] 16 } ) ), 17 total: ( ) = > get ( ). items. reduce ( ( sum, i ) = > sum + i. price, 0 ), 18 clearCart: ( ) = > set ( { items: [ ] } ) 19 } ) ) 20 21 // URL state: filters and pagination (shareable, bookmarkable) 22 const useProductFilters = ( ) = > { 23 const [ params, setParams ] = useSearchParams ( ) 24 return { 25 category: params. get ( 'category' ) | | 'all', 26 page: Number ( params. get ( 'page' ) | | 1 )",
     interviewLine: "State management is one of the most critical frontend architecture decisions.",
     misconception: "Getting it wrong leads to prop drilling hell, stale data, and bugs.",
@@ -1457,30 +1457,30 @@ export const FIX_THE_BUG_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "29 const handleDragEnd = ( event ) = > { 30 const { active, over } = event 31 if (! over | | active.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Use HTML5 Drag and Drop API exclusively without polyfills or touch event abstractions for mobile devices.",
+        isCorrect: false,
+        explanation: "Native HTML5 Drag and Drop has poor mobile touch support and inconsistent cross-browser styling capabilities."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Write raw `mousemove` document event listeners and modify DOM `top`/`left` pixel styles synchronously in state on every tick.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Updating state on every raw mousemove causes severe React re-render lag and lacks collision math or keyboard accessibility."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Prevent users from reordering items using keyboard navigation (Space/Arrow keys).",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Accessible drag-and-drop requires keyboard navigation support for users who cannot use a mouse."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
-        isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        text: "Use an accessible drag-and-drop library (e.g. `@dnd-kit/core`), manage drop collision sensors, provide keyboard reordering, and apply optimistic state updates.",
+        isCorrect: true,
+        explanation: "Correct. Modern DnD architectures leverage sensor abstractions (pointer/keyboard), collision detection algorithms, and accessible ARIA announcements."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "D",
     explanation: "Drag and drop requires careful handling of mouse/touch events, accessibility, and state management. Libraries (use these, don't build from scratch): @dnd-kit/core, most modern, accessible, sortable, tree react-beautiful-dnd, kanban, lists (Atlassian's library) react-dropzone, file drag-and-drop only Key concepts in @dnd-kit: DndContext, wraps everything, handles drag events Draggable (useDraggable), items that can be picked up Droppable (useDroppable), areas that can receive items SortableContext, ordered list reordering arrayMove, reorder arrays after drop Accessibility for DnD: Keyboard support, Space to pick up, arrows to move, Space to drop Screen reader announcements, 'Dragging item X. Use arrow keys to move.' @dnd-kit handles this automatically 1 import { DndContext, closestCenter } from '@dnd-kit/core' 2 import { SortableContext, useSortable, arrayMove } from '@dnd-kit/sortable' 3 import { CSS } from '@dnd-kit/utilities' 4 5 // Sortable item 6 const SortableCard = ( { id, task } ) = > { 7 const { attributes, listeners, setNodeRef, 8 transform, transition, isDragging } = useSortable ( { id } ) 9 return ( 10 < div 11 ref = { setNodeRef } 12 style = { { 13 transform: CSS. Transform. toString ( transform ), 14 transition, 15 opacity: isDragging? 0. 5: 1, 16 } } 17 {.. attributes } 18 {.. listeners } 19 > 20 < TaskCard task = { task } / > 21 < / div > 22 ) 23 } 24 25 // Kanban board 26 const KanbanBoard = ( ) = > { 27 const [ tasks, setTasks ] = useState ( initialTasks ) 28",
     interviewLine: "Drag and drop requires careful handling of mouse/touch events, accessibility, and state management.",
     misconception: "Libraries (use these, don't build from scratch): @dnd-kit/core, most modern, accessible, sortable, tree react-beautiful-dnd, kanban, lists (Atlassian's library) react-dropzone, file drag-and-drop only Key concepts in @dnd-kit: DndContext, w",

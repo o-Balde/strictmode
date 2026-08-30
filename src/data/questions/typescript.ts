@@ -19,27 +19,27 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "A reducer is a pure function that takes the state and action as parameters.",
+        text: "A pure function that takes (state, action) and returns a new state object without mutating the previous state.",
         isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        explanation: "Correct. Reducers calculate (previousState, action) => newState immutably with zero side effects, enabling predictable state transitions."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "An asynchronous network handler that takes (url, callback) and executes an AJAX request.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Reducers must be 100% pure synchronous functions with no side effects or network calls."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "A function that mutates state.items.push(action.payload) and returns nothing.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Mutating state directly breaks Redux's shallow equality checks and prevents components from re-rendering."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "A DOM mutation method that takes (elementId, newHtml) and updates the browser view imperatively.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Reducers operate exclusively on state objects in memory; React components handle DOM rendering."
       }
     ],
     correctAnswer: "A",
@@ -71,30 +71,30 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Action is a simple JavaScript object that must have a field with a type.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "State is updated by calling `store.mutateState(key, value)` directly from UI components.",
+        isCorrect: false,
+        explanation: "Redux prohibits direct store mutations; dispatching actions is the only valid mutation path."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
-        isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        text: "An action is a plain JS object with a `type` property; state is updated by passing this action to `dispatch(action)`, which invokes reducers.",
+        isCorrect: true,
+        explanation: "Correct. In Redux, state changes occur exclusively by dispatching descriptive action objects to pure reducers."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "An action is an event listener that directly modifies `window.state`.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Redux maintains an isolated store object, not global `window` state properties."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "An action is an asynchronous thread that directly overwrites the Redux store memory buffer.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Actions are plain descriptive objects; state is computed synchronously by pure reducer functions."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "B",
     explanation: "Action is a simple JavaScript object that must have a field with a type. You can also optionally add some data as payload. In order to change the state, it is necessary to call the dispatch function, to which we pass action Learn more",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is an action and how can you change the state in Redux?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is an action and how can you change the state in Redux?.",
@@ -122,27 +122,27 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Mobx provides decorators like observable and computed to define observable state and reactive functions.",
+        text: "State is mutable and observable; components wrapped in `observer` automatically track which properties they read and re-render only when those mutate.",
         isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        explanation: "Correct. MobX provides granular reactivity by automatically subscribing components to exact accessed observable properties."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "MobX stores all state permanently in the browser URL query string.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "MobX stores state in JavaScript memory objects, not URL query strings."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Every single property change requires writing an explicit reducer switch statement and dispatching an action.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Redux requires reducers and action dispatching; MobX allows direct property mutation on observable objects."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "MobX can only be used with class components and does not support React functional components.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "MobX supports functional components via the `observer` HOC from `mobx-react-lite`."
       }
     ],
     correctAnswer: "A",
@@ -174,27 +174,27 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "In the context of index files, a Public API typically refers to the interface or functions that are exposed and accessible to external modules or components.",
+        text: "The exposed interface (props, methods, exports, forwarded refs) of a component or module intended for external consumers, hiding internal implementation details.",
         isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        explanation: "Correct. A public API defines how external code interacts with a component or library while encapsulating internal state and private helper functions."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "A free public REST API provided by government organizations on the internet.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "In software modularity and component design, public API refers to the exported interface of a module or component."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "A setting in `package.json` that publishes source code to the npm registry automatically.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Public API describes component contracts and exported interfaces, not npm publish configs."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "The raw HTML source code displayed in browser 'View Page Source'.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Public API is an architectural interface boundary, not raw rendered HTML source."
       }
     ],
     correctAnswer: "A",
@@ -226,30 +226,30 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "PropTypes was React's runtime prop type-checker.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "A compiler that converts React code into WebAssembly binaries.",
+        isCorrect: false,
+        explanation: "PropTypes is a runtime validation library, not a WebAssembly compiler."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "A tool that automatically formats CSS stylesheets inside JSX.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "PropTypes validates JavaScript prop types, not CSS formatting."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
-        isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        text: "`PropTypes` was React's runtime prop validation library that logged console warnings in development; it is deprecated in modern React in favor of static TypeScript type checking.",
+        isCorrect: true,
+        explanation: "Correct. PropTypes provided runtime type validation in development mode; TypeScript has superseded it by catching type mismatches at compile time with zero runtime bundle overhead."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "A security firewall that encrypts all network props sent to child components.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "PropTypes provides type validation checks, not cryptographic encryption."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "C",
     explanation: "PropTypes was React's runtime prop type-checker. You declared expected types, and React would warn in the console when a mismatch occurred in development. PropTypes is deprecated as of React 19 and no longer ships from the react package. Use TypeScript instead; it catches the same mismatches at compile time and integrates with editor tooling.",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the role of PropTypes in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the role of PropTypes in React?.",
@@ -278,27 +278,27 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Use TypeScript.",
+        text: "Use TypeScript by defining explicit prop interfaces/types (`type Props = { ... }`), enabling compile-time validation, IDE autocomplete, and zero runtime bundle overhead.",
         isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        explanation: "Correct. TypeScript is the industry standard for type checking React components, catching bugs at build time and integrating with editor tooling."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Rely entirely on runtime `console.log` statements inside the component render body.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Console logging is ad-hoc manual debugging, not automated static type checking."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Use raw JavaScript without any type checking or linter tools.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Unchecked JavaScript lacks type safety, refactoring support, and compile-time error detection."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "Write manual `typeof` validation checks at the top of every component function.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Manual runtime checks add boilerplate and runtime overhead compared to compile-time TypeScript."
       }
     ],
     correctAnswer: "A",
@@ -329,30 +329,30 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "React Router is a routing library for React that provides a declarative API for defining routes and handling navigation.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "React Router only works on mobile devices; `history` only works on desktop.",
+        isCorrect: false,
+        explanation: "Both operate across all JavaScript web platforms."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "The `history` library renders UI components directly to the DOM; React Router does not.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "`history` has no UI or React dependencies; React Router handles UI rendering."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
-        isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        text: "The `history` library is a low-level utility managing browser navigation history; React Router is a high-level framework built on top of `history` providing declarative routing, components, and hooks.",
+        isCorrect: true,
+        explanation: "Correct. React Router uses the `history` library under the hood to manage history stacks while providing JSX route matching, parameter parsing, and layout outlets."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "They are identical libraries maintained by different competing organizations.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "`history` is a lightweight primitive library maintained by the same team that created React Router."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "C",
     explanation: "React Router is a routing library for React that provides a declarative API for defining routes and handling navigation. It manages components and URLs. History library is a lower-level utility that only manages browser history (e.g., pushing and popping history entries). It doesn't handle UI rendering or routing, making it more generic and not React-specific. React Router uses the history library internally but adds additional features like routing and component management.",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How React Router is different from the history library?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How React Router is different from the history library?.",
@@ -381,31 +381,31 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "React 19 lets you pass a function directly to <form action> (and <button formAction>).",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Forces the browser to perform a synchronous full-page HTTP POST reload.",
+        isCorrect: false,
+        explanation: "React intercepts the submission to execute the async action in a client transition without full page reloads."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Requires installing 15 third-party form packages before forms can submit.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Form Actions are natively integrated into React 19 core without third-party dependencies."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
-        isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        text: "Allows passing async functions directly to `<form action={fn}>`, automatically receiving `FormData`, running inside a transition, and coordinating with `useActionState` and `useFormStatus`.",
+        isCorrect: true,
+        explanation: "Correct. React 19 elevates `<form action>` so that async actions receive native FormData instances, track pending states automatically, and reset uncontrolled inputs on success."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "Disallows user text input inside `<input>` fields within the form.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Form Actions work seamlessly with standard controlled and uncontrolled inputs."
       }
     ],
-    correctAnswer: "A",
-    explanation: "React 19 lets you pass a function directly to <form action> (and <button formAction>). React calls the function with a FormData argument when the form is submitted, runs it inside a transition, and resets uncontrolled inputs on success. Combine it with useActionState or useFormStatus for pending state and error handling without manual onSubmit plumbing. Conclusion These 100+ questions should give you a good idea on what to expect in React interviews. If you're looking for more in-depth React interview preparation materials, check out these: React Interview Playbook Practice React coding interview questions Practice React quiz interview questions You can also explore the Top ReactJS Interview Questions repo - a collection of 50 commonly asked questions compiled from real interview experiences. Related articles 30 Basic to Advanced React Interview Questions with SolutionsJul 1, 2025Tags+ 1 more30 React interview questions and solutions, covering basic to advanced topics. Ideal for developers preparing for their next job interview in 2025 Footer Subscribe to our newsletterEmailNotify me Practice Get started JavaScript functions User interface coding System design Quiz Guides Front End Interview Playbook Front End System Design Playbook React Interview Playbook Behavioral Interview Playbook Study Plans 1 Week Plan 1 Month Plan 3 Months Plan Company Pricing Promotions Roadmap About Team Contact us Become an affiliate Careers Blog Medium DEV Community",
+    correctAnswer: "C",
+    explanation: "React 19 lets you pass async functions directly to <form action> and <button formAction>. React automatically passes a FormData instance to the action, manages pending states via useActionState or useFormStatus, and resets uncontrolled inputs upon successful submission.",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How does the new form action prop work in React 19?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How does the new form action prop work in React 19?.",
     hints: [
@@ -432,30 +432,30 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Material UI is an open-source UI component library for React that implements Material Design.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "A native hardware driver for Intel and AMD graphic cards.",
+        isCorrect: false,
+        explanation: "MUI is a React UI component library, not a hardware graphics driver."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "An operating system kernel developed for mobile devices.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "MUI is a JavaScript/TypeScript React component library."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "A database migration tool for PostgreSQL servers.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "MUI provides React UI components and styles."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
-        isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        text: "MUI (formerly Material-UI) is a comprehensive open-source React component library implementing Google's Material Design system with ready-to-use accessible UI components.",
+        isCorrect: true,
+        explanation: "Correct. MUI provides pre-built buttons, dialogs, inputs, data grids, and theming tools following Material Design principles."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "D",
     explanation: "Material UI is an open-source UI component library for React that implements Material Design. It provides styled, accessible components and speeds up building consistent interfaces.",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is React-Material UI?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is React-Material UI?.",
@@ -483,30 +483,30 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Reconciliation is React, s process for updating the DOM when state or props change.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "A security authentication protocol for encrypting user passwords in transit.",
+        isCorrect: false,
+        explanation: "Reconciliation manages Virtual DOM rendering, not user authentication."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
-        isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        text: "React's internal diffing algorithm (powered by Fiber) that compares the previous and new Virtual DOM trees to compute the minimal real DOM mutations required.",
+        isCorrect: true,
+        explanation: "Correct. Reconciliation achieves linear O(n) performance using element type matching and list keys to update the real DOM efficiently."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "An exhaustive O(n^3) tree diff that compares every node against all other nodes.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "A general tree diff is O(n^3); React uses heuristic assumptions to achieve linear O(n) performance."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "A sorting algorithm that orders database rows alphabetically in O(n log n) time.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Reconciliation is React's Virtual DOM tree diffing process, not a database sort."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "B",
     explanation: "Reconciliation is React, s process for updating the DOM when state or props change. React diffs the old and new Virtual DOM trees, computes the minimal updates, and applies them to the real DOM. The Fiber algorithm lets React pause and prioritize parts of this work so complex apps remain responsive. Related Reading Vibe Coding Leetcode Blind 75 C# Interview Questions Leetcode 75 Jenkins Interview Questions Leetcode Patterns Java Interview Questions And Answers Kubernetes Interview Questions AWS Interview Questions Angular Interview Questions SQL Server Interview Questions AngularJS Interview Questions Vibe Coding Leetcode Blind 75 C# Interview Questions Jenkins Interview Questions React Interview Questions Leetcode Patterns Java Interview Questions And Answers Kubernetes Interview Questions AWS Interview Questions Angular Interview Questions SQL Server Interview Questions AngularJS Interview Questions TypeScript Interview Questions Azure Interview Questions 20 More React Interview Questions and Answers For Freshers",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is Reconciliation in React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is Reconciliation in React?.",
@@ -534,27 +534,27 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Props are read-only inputs passed from parent to child.",
+        text: "Props flow strictly from parent to child as read-only data inputs; child components request state updates by invoking callback functions passed down through props.",
         isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        explanation: "Correct. Unidirectional data flow ensures clear data ownership and makes component behavior predictable and testable."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Props are sent over WebSockets to backend servers on every render.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Props are passed in memory between parent and child components in the React tree."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Child components can directly mutate `props.data = newValues` to update parents.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Props are strictly read-only in children; mutating props directly causes bugs and breaks React's unidirectional flow."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "Props flow bidirectionally with automatic two-way binding on all object properties.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "React rejects automatic two-way binding in favor of explicit unidirectional prop and callback flow."
       }
     ],
     correctAnswer: "A",
@@ -585,27 +585,27 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Implement a switcher via a mapping object, dynamic import for code splitting, and type checks for safety.",
+        text: "Map page identifiers to component definitions in an object dictionary `const PAGES = { home: Home, about: About }`, render dynamically `<Comp {...props} />`, and type with TypeScript union.",
         isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        explanation: "Correct. Object dictionary mapping provides a clean, extensible switching pattern with full TypeScript safety, easily combined with `React.lazy` for code splitting."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Hardcode 50 nested `if/else` statements modifying `document.body.innerHTML` directly.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Directly modifying `innerHTML` breaks React virtual DOM mounting and lifecycle tracking."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Use `eval()` to execute strings of JSX code fetched from external URLs.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "`eval()` is insecure, slow, and completely inappropriate for React component switching."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "Create 50 separate `index.html` files and reload the browser page on every switch.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Full page reloads negate single-page application benefits and reset client state."
       }
     ],
     correctAnswer: "A",
@@ -637,30 +637,30 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Hooks work well with TypeScript.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Hooks reject TypeScript and only accept untyped JavaScript files.",
+        isCorrect: false,
+        explanation: "React Hooks have comprehensive first-class TypeScript support in `@types/react`."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Only `useEffect` supports types; all other hooks must use `any`.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "All built-in hooks provide robust generic type parameters."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "TypeScript compiler removes all React hooks during compile time.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "TypeScript transpiles types and preserves runtime JavaScript function calls."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
-        isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        text: "TypeScript types hook state generics (`useState<User | null>(null)`), action union types in `useReducer`, ref DOM elements (`useRef<HTMLInputElement>(null)`), and prop interfaces.",
+        isCorrect: true,
+        explanation: "Correct. TypeScript integrates deeply with React Hooks, inferring state types or accepting explicit generics to guarantee full type safety."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "D",
     explanation: "Hooks work well with TypeScript. Type component props, state generics, dispatch signatures, and refs. Examples: const [count, setCount] = useState<number>(0);type Action = { type: 'inc' } | { type: 'dec' };const [state, dispatch] = useReducer((s: number, a: Action) => ., 0); Typing refs: const inputRef = useRef<HTMLInputElement | null>(null);",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Static Typing with Hooks, TypeScript Patterns and Examples.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Static Typing with Hooks, TypeScript Patterns and Examples.",
@@ -688,30 +688,30 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Normally we use PropTypes library (React.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Rely entirely on runtime `console.log()` statements inside component bodies.",
+        isCorrect: false,
+        explanation: "Console logging is manual debugging, not static compile-time type checking."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
-        isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        text: "Use TypeScript (or Flow) to provide compile-time type validation, auto-completion, and refactoring safety across components, props, and hooks.",
+        isCorrect: true,
+        explanation: "Correct. TypeScript has become the industry standard for static type checking in React applications, catching bugs at build time with zero runtime bundle overhead."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Inspect JavaScript source files with a hex editor before deploying.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Static type checking uses dedicated language servers and compilers (TypeScript)."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "Disable all type checking to speed up code execution.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Static type checking runs at build time and prevents production runtime crashes."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "B",
     explanation: "Normally we use PropTypes library (React.PropTypes moved to a prop-types package since React v15.5) for type checking in the React applications. For large code bases, it is recommended to use static type checkers such as Flow or TypeScript, that perform type checking at compile time and provide auto-completion features.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the recommended ways for static type checking?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the recommended ways for static type checking?.",
@@ -739,27 +739,27 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "You should use Webpack's DefinePlugin method to set NODE_ENV to production, by which it strip out things like propType validation and extra warnings.",
+        text: "Set `NODE_ENV=production` during build bundling (handled automatically by Vite/Next.js/Webpack), which strips development warnings, disables StrictMode double-invoking, and minifies bundles.",
         isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        explanation: "Correct. Bundlers use the `NODE_ENV=production` flag to perform dead-code elimination (stripping development checks and warnings) and create optimized, minified production assets."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Add `production: true` as a prop on every single HTML `<div>` tag.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Production mode is a global build-time environment variable, not a JSX prop."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Edit browser settings to enable 'Production Browser Mode'.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Production optimization happens at code build/bundling time on the developer/CI machine."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "Production mode is enabled by purchasing a paid license from Meta.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "React is free and open-source under the MIT license."
       }
     ],
     correctAnswer: "A",
@@ -790,27 +790,27 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Pointer Events provide a unified way of handling all input events.",
+        text: "Unified hardware-agnostic input events including `onPointerDown`, `onPointerMove`, `onPointerUp`, `onPointerCancel`, `onPointerEnter`, and `onPointerLeave`.",
         isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        explanation: "Correct. Pointer Events provide a single standard interface for handling mouse, touch screen, and pen/stylus interactions uniformly across modern browsers."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Events that only trigger on laser pointer hardware devices.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Pointer Events cover all standard user input devices (mouse, touch, stylus)."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Events that measure computer memory pointer addresses in C++.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Pointer Events handle UI hardware input (mouse/pen/touch), not C++ memory pointers."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "Pointer events are not supported in React DOM.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "React DOM has full built-in support for the W3C Pointer Events specification."
       }
     ],
     correctAnswer: "A",
@@ -842,27 +842,27 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "You can simply use Array.",
+        text: "Use `Array.prototype.map()` with an inline callback returning JSX elements with unique keys; standard `for` loop statements cannot be embedded directly inside JSX expressions.",
         isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        explanation: "Correct. JSX expressions `{}` only accept JavaScript expressions that evaluate to a value (like `array.map()`), not control flow statements (`for`, `while`)."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "JSX does not support iterating over arrays.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Iterating over arrays using `map()` is fundamental to React list rendering."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Use `while(true)` loops inside JSX attributes.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Infinite loops freeze the JavaScript thread and crash the browser."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "Use a standard `for (let i=0; i<items.length; i++)` loop statement directly inside JSX tags.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "`for` statements cannot be placed inside JSX expression curly braces."
       }
     ],
     correctAnswer: "A",
@@ -894,30 +894,30 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "If you want to pass an array of objects to a component with a particular shape then use React.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "An array sorting algorithm that arranges items by color.",
+        isCorrect: false,
+        explanation: "`arrayOf(shape(...))` is a type validation schema definition."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "A method that creates 3D geometric shapes inside HTML5 Canvas.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "PropTypes validates component prop types, unrelated to 3D Canvas rendering."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
-        isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        text: "Combine `PropTypes.arrayOf()` with `PropTypes.shape({...})` to validate an array of objects matching a specific schema (e.g. `PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.number }))`).",
+        isCorrect: true,
+        explanation: "Correct. Nesting `PropTypes.shape` inside `PropTypes.arrayOf` validates that each item in the passed array conforms to the specified object structure."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "A database schema validator for backend SQL queries.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "PropTypes is a React client runtime prop validation library."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "C",
     explanation: "If you want to pass an array of objects to a component with a particular shape then use React.PropTypes.shape() as an argument to React.PropTypes.arrayOf().: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is React proptype array with shape?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is React proptype array with shape?.",
@@ -946,27 +946,27 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "There are approaches to include polyfills in create-react-app, Manual import from core-js: Create a file called (something like) polyfills.",
+        text: "Import specific `core-js` polyfill features (e.g. `import 'core-js/stable'`) at the entry point `index.js`, or include polyfill CDN scripts in `index.html`.",
         isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        explanation: "Correct. Importing polyfills at the application entry point ensures necessary ECMAScript features (Promises, Array methods, Object.assign) exist before React code executes."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Edit the user's computer motherboard firmware.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Polyfills are userland JavaScript scripts, not hardware firmware."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Polyfills are completely banned in modern web development.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Polyfills are essential when supporting legacy browser environments lacking modern APIs."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "Polyfills can only be compiled in Python.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Polyfills are standard JavaScript compatibility libraries."
       }
     ],
     correctAnswer: "A",
@@ -998,27 +998,27 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "There are two common practices for React project file structure.",
+        text: "Grouping by feature/domain (locating components, styles, hooks, and tests together per feature) or grouping by file type/role (`components/`, `hooks/`, `services/`, `utils/`).",
         isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        explanation: "Correct. Feature-based folder structures scale well for large applications, while type-based structures are common in smaller projects."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "React enforces a mandatory rigid folder structure and errors if changed.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "React is unopinionated about directory organization, allowing teams to choose what fits best."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Placing all 5,000 files in a single flat root folder with no subdirectories.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Flat monolithic folders become unmaintainable and cluttered."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "Structuring folders strictly by file size in kilobytes.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Folder structures organize code by domain responsibility or technical layer."
       }
     ],
     correctAnswer: "A",
@@ -1049,30 +1049,30 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Instead of saying downsides we can say that there are few compromises of using Redux over Flux.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Redux deletes the user's hard drive if a reducer returns undefined.",
+        isCorrect: false,
+        explanation: "Redux simply logs a console error if a reducer returns undefined."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Redux can only run on Linux servers and fails in web browsers.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Redux runs in all JavaScript environments, web browsers, Node.js, and mobile."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
-        isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        text: "Enforces strict immutability (requiring careful copying or tools like Immer), higher boilerplate for actions/types (mitigated by Redux Toolkit), and learning curve for reducers.",
+        isCorrect: true,
+        explanation: "Correct. Redux requires developers to manage immutability strictly and configure middleware, though Redux Toolkit has streamlined modern Redux development dramatically."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "Redux completely disables all React hooks in the application.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "React-Redux provides first-class hooks like `useSelector` and `useDispatch`."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "C",
     explanation: "Instead of saying downsides we can say that there are few compromises of using Redux over Flux. Those are as follows: You will need to learn to avoid mutations: Flux is un-opinionated about mutating data, but Redux doesn't like mutations and many packages complementary to Redux assume you never mutate the state. You can enforce this with dev-only packages like redux-immutable-state-invariant, Immutable.js, or instructing your team to write non-mutating code. You're going to have to carefully pick your packages: While Flux explicitly doesn't try to solve problems such as undo/redo, persistence, or forms, Redux has extension points such as middleware and store enhancers, and it has spawned a rich ecosystem. There is no nice Flow integration yet: Flux currently lets you do very impressive static type checks which Redux doesn't support yet.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the downsides of Redux compared to Flux?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the downsides of Redux compared to Flux?.",
@@ -1101,27 +1101,27 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Actions are plain JavaScript objects or payloads of information that send data from your application to your store.",
+        text: "A plain JavaScript object representing an intention to change state, requiring a `type` property (string identifier) and optional payload data (`{ type: 'todos/add', payload: text }`).",
         isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        explanation: "Correct. Actions are the only way to send data to the Redux store, acting as serialized descriptions of events that occurred in the application."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "A database stored procedure executed inside PostgreSQL.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Actions are in-memory JavaScript objects dispatched to the Redux store."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "A CSS stylesheet rule that animates buttons.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Actions describe state update intentions in Redux."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "A synchronous infinite loop that halts the browser.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Actions are lightweight data objects, not loops."
       }
     ],
     correctAnswer: "A",
@@ -1152,30 +1152,30 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "React is a JavaScript library, supporting both front end web and being run on the server, for building user interfaces and web applications.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "React Native is written in Swift and cannot use JavaScript.",
+        isCorrect: false,
+        explanation: "React Native code is written in JavaScript/TypeScript using React paradigms."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "There is no difference; they are exact duplicates.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "They target different platforms: React for Web DOM, React Native for native OS widgets."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
-        isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        text: "React (React DOM) targets the browser web DOM using HTML/CSS; React Native compiles to native iOS/Android mobile components (`<View>`, `<Text>`) using native bridge/JSI architectures.",
+        isCorrect: true,
+        explanation: "Correct. Both share the same React component and hook paradigms, but target completely different rendering backends (browser DOM vs native mobile platform UI primitives)."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "React runs on mobile phones; React Native runs only on smart TVs.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "React Native is designed for native mobile platforms (iOS, Android) and desktop."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "C",
     explanation: "React is a JavaScript library, supporting both front end web and being run on the server, for building user interfaces and web applications. React Native is a mobile framework that compiles to native app components, allowing you to build native mobile applications (iOS, Android, and Windows) in JavaScript that allows you to use React to build your components, and implements React under the hood.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the difference between React Native and React?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the difference between React Native and React?.",
@@ -1203,30 +1203,30 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Flow is a static type checker designed to find type errors in JavaScript.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "A physical water cooling device for servers.",
+        isCorrect: false,
+        explanation: "Flow is a software static analysis tool."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
-        isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        text: "A static type checker for JavaScript developed by Meta that annotates variables, functions, and components to detect type errors at compile time.",
+        isCorrect: true,
+        explanation: "Correct. Flow introduced static type safety to JavaScript codebases (heavily used internally at Meta), though TypeScript has become the broader industry standard."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "A database management system for streaming real-time video.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Flow checks JavaScript code types statically at build time."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "A CSS animation framework for creating liquid fluid effects.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Flow is a static type checker, not an animation library."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "B",
     explanation: "Flow is a static type checker designed to find type errors in JavaScript. Flow types can express much more fine-grained distinctions than traditional type systems. For example, Flow helps you catch errors involving null, unlike most type systems.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is Flow?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is Flow?.",
@@ -1255,30 +1255,30 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Starting from react-scripts@2.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Install the Java Development Kit (JDK) on the web server.",
+        isCorrect: false,
+        explanation: "TypeScript is compiled via the TypeScript compiler / Babel in Node.js, not the Java JDK."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Rename all files to `.html` and disable JavaScript.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "TypeScript uses `.ts` and `.tsx` file extensions for components."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "TypeScript is incompatible with React applications.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "TypeScript is the industry standard for type-safe React development."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
-        isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        text: "Create a new app with `npx create-react-app my-app --template typescript` or add `typescript @types/react @types/react-dom` to an existing project and rename files to `.tsx`.",
+        isCorrect: true,
+        explanation: "Correct. Create React App natively supported TypeScript via `--template typescript` (or in modern tooling, `npm create vite@latest -- --template react-ts`)."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "D",
     explanation: "Starting from react-scripts@2.1.0 or higher, there is a built-in support for typescript. i.e, create-react-app now supports typescript natively. You can just pass, typescript option as below But for lower versions of react scripts, just supply, scripts-version option as react-scripts-ts while you create a new project. react-scripts-ts is a set of adjustments to take the standard create-react-app project pipeline and bring TypeScript into the mix. Now the project layout should look like the following: Miscellaneous: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to use TypeScript in create-react-app application?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to use TypeScript in create-react-app application?.",
@@ -1307,30 +1307,30 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "You can use oneOfType() method of PropTypes.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Pass a comma-separated string `PropTypes.stringOrNumber`.",
+        isCorrect: false,
+        explanation: "`oneOfType` takes an array of PropType validators; there is no `stringOrNumber` property."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Union types are impossible in PropTypes.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "`PropTypes.oneOfType([ ... ])` specifically handles union types."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "PropTypes only permits one global type for all props across the entire application.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "PropTypes validates individual props with rich primitive and compound validators."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
-        isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        text: "Use `PropTypes.oneOfType([PropTypes.string, PropTypes.number])` to allow a prop to accept any one of several specified types.",
+        isCorrect: true,
+        explanation: "Correct. `PropTypes.oneOfType` creates a union validator that passes if the prop matches any of the provided PropTypes validators (e.g. `string | number`)."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "D",
     explanation: "You can use oneOfType() method of PropTypes. For example, the height property can be defined with either string or number type as below:: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How React PropTypes allow different types for one prop?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How React PropTypes allow different types for one prop?.",
@@ -1358,30 +1358,30 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "The granularity of error boundaries usage is up to the developer based on project needs.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Error boundaries must only be used once per domain name.",
+        isCorrect: false,
+        explanation: "You can nest multiple error boundaries granularly across component subtrees."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Place an Error Boundary around every single HTML `<span>` and `<b>` tag in the app.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Overusing boundaries on every inline tag creates massive boilerplate without benefit."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
-        isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        text: "Wrap top-level routes to display a global fallback page, and wrap isolated interactive widgets (e.g. sidebar, chat panel) so a failure in one widget doesn't crash the whole app.",
+        isCorrect: true,
+        explanation: "Correct. Strategic placement of Error Boundaries isolates failures to individual widgets while providing a top-level fallback for fatal app-wide crashes."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "Error boundaries should only be placed in the backend database.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Error boundaries are frontend React UI components."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "C",
     explanation: "The granularity of error boundaries usage is up to the developer based on project needs. You can follow either of these approaches, You can wrap top-level route components to display a generic error message for the entire application. You can also wrap individual components in an error boundary to protect them from crashing the rest of the application.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the proper placement for error boundaries?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the proper placement for error boundaries?.",
@@ -1409,30 +1409,30 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "When you start using forwardRef in a component library, you should treat it as a breaking change and release a new major version of your library.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Because `forwardRef` deletes the library's `package.json` file.",
+        isCorrect: false,
+        explanation: "The care needed relates to API breaking changes and ref assignment semantics."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Because component libraries must be written in assembly language.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Component libraries are written in JavaScript and TypeScript."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
-        isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        text: "Adding `forwardRef` to an existing component changes what `ref` attaches to (e.g. from the component instance to the underlying DOM node), which is a breaking change for library consumers.",
+        isCorrect: true,
+        explanation: "Correct. When a library adopts `forwardRef`, consumers expecting a component instance ref will now receive a DOM node ref, requiring a major semantic version bump."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "Because component libraries cannot use CSS stylesheets.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "Component libraries distribute both JS/TS components and CSS styles."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "C",
     explanation: "When you start using forwardRef in a component library, you should treat it as a breaking change and release a new major version of your library. This is because your library likely has a different behavior such as what refs get assigned to, and what types are exported. These changes can break apps and other libraries that depend on the old behavior.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Why do you need additional care for component libraries while using forward refs?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Why do you need additional care for component libraries while using forward refs?.",
@@ -1460,30 +1460,30 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Below are the list of some of the features provided by create react app.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Automatic conversion of React components into iOS Swift binaries.",
+        isCorrect: false,
+        explanation: "CRA bundled web JavaScript/TypeScript applications."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Built-in PostgreSQL clustering and server hardware virtualization.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "CRA was a client-side frontend project scaffolding tool."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
-        isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        text: "Zero-config project setup, built-in Babel/Webpack bundling, TypeScript/Flow support, Jest test runner, ESLint linting, live dev server with Fast Refresh, and production minification.",
+        isCorrect: true,
+        explanation: "Correct. Create React App bundled a complete developer environment out-of-the-box without requiring manual Webpack/Babel configuration."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
+        text: "CRA had zero features and could only display static text.",
         isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        explanation: "CRA provided an end-to-end frontend build toolchain."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "C",
     explanation: "Below are the list of some of the features provided by create react app. React, JSX, ES6, Typescript and Flow syntax support. Autoprefixed CSS CSS Reset/Normalize A live development server A fast interactive unit test runner with built-in support for coverage reporting A build script to bundle JS, CSS, and images for production, with hashes and sourcemaps An offline-first service worker and a web app manifest, meeting all the Progressive Web App criteria.: ",
     interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the features of create react app?.",
     misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the features of create react app?.",
@@ -1513,30 +1513,30 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "29 30 return ( 31 < form onSubmit = { handleSubmit ( onSubmit ) } > 32 < Input label = 'Name' {.",
-        isCorrect: true,
-        explanation: "Correct: aligns with standard React, JavaScript, and algorithm principles."
+        text: "Disallow any client-side validation and submit raw unvalidated form data to the server on every change.",
+        isCorrect: false,
+        explanation: "Client validation gives instant feedback (required fields, email format) before network roundtrips."
       },
       {
         id: "B",
-        text: "It is deprecated in modern React 18+ and should be replaced with direct imperative DOM manipulation.",
+        text: "Bind every keystroke of 100 form inputs to a top-level React state that re-renders the entire page on every character.",
         isCorrect: false,
-        explanation: "Incorrect: violates React declarative state paradigm."
+        explanation: "Top-level state for large forms causes severe typing lag because every keystroke re-renders every untouched input."
       },
       {
         id: "C",
-        text: "It executes strictly on background Web Worker threads outside of the main browser event loop.",
+        text: "Store form input values strictly in global `window` object variables without React state or refs.",
         isCorrect: false,
-        explanation: "Incorrect: runs inside the standard main execution thread / reconciliation cycle."
+        explanation: "Global `window` mutations bypass React lifecycle, reactivity, and component isolation."
       },
       {
         id: "D",
-        text: "It is an exclusive feature of React Native for mobile and is unsupported in web browsers.",
-        isCorrect: false,
-        explanation: "Incorrect: fundamental to standard web development."
+        text: "Manage uncontrolled input refs or subscription-based field state, integrate schema validation (Zod/Yup), track touched/dirty/error states, and prevent unnecessary form-wide re-renders.",
+        isCorrect: true,
+        explanation: "Correct. Form libraries (React Hook Form, Formik) optimize performance by isolating re-renders per field and validating against declarative schemas."
       }
     ],
-    correctAnswer: "A",
+    correctAnswer: "D",
     explanation: "Forms are complex: validation, error display, async validation, nested fields, arrays, submission. Form libraries to know: React Hook Form, most performant (uncontrolled), small bundle Formik, popular, controlled inputs Zod, schema validation, TypeScript-first Form architecture: Validation schema, define rules once (Zod) Reusable form fields, abstract Input, Select, Checkbox Error messages, show at field level, summary at top Async validation, check email uniqueness on server Dynamic fields, add/remove array items React Hook Form performance: Uncontrolled inputs, no re-render on every keystroke Re-renders only on submit or validation 10x fewer renders than Formik for large forms 1 import { useForm, useFieldArray } from 'react-hook-form' 2 import { zodResolver } from '@hookform/resolvers/zod' 3 import { z } from 'zod' 4 5 // Zod schema, single source of truth for validation 6 const schema = z. object ( { 7 name: z. string ( ). min ( 2, 'Name must be at least 2 characters' ), 8 email: z. string ( ). email ( 'Invalid email' ), 9 age: z. number ( ). min ( 18, 'Must be 18+' ). max ( 120 ), 10 skills: z. array ( z. string ( ) ). min ( 1, 'Add at least one skill' ), 11 password: z. string ( ). min ( 8 ), 12 confirm: z. string ( ) 13 } ). refine ( d = > d. password = = = d. confirm, { 14 message: 'Passwords do not match', 15 path: [ 'confirm' ] 16 } ) 17 18 const RegisterForm = ( ) = > { 19 const { register, control, handleSubmit, formState: { errors, isSubmitting } } = 20 useForm ( { resolver: zodResolver ( schema ) } ) 21 22 // Dynamic skills array 23 const { fields, append, remove } = useFieldArray ( { control, name: 'skills' } ) 24 25 const onSubmit = async ( data ) = > { 26 await api. register ( data ) // isSubmitting = true during this 27 navigate ( '/dashboard' ) 28 }",
     interviewLine: "Forms are complex: validation, error display, async validation, nested fields, arrays, submission.",
     misconception: "Form libraries to know: React Hook Form, most performant (uncontrolled), small bundle Formik, popular, controlled inputs Zod, schema validation, TypeScript-first Form architecture: Validation schema, define rules once (Zo",

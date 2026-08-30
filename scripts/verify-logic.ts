@@ -107,7 +107,7 @@ ok("mixed review draws only from the wrong pile", review.rows.every((x) => wrong
 
 console.log("\n— index integrity —");
 eq("index covers the whole bank", QUESTION_INDEX.length, BANK_TOTAL);
-eq("index count matches the bank", BANK_TOTAL, 767);
+eq("index count matches the bank", BANK_TOTAL, 743);
 ok("every row decodes", QUESTION_INDEX.every((x) => x.id && x.subject && x.category && x.type && x.level && x.minutes > 0));
 ok("every row carries a title", QUESTION_INDEX.every((x) => typeof x.title === "string" && x.title.length > 0));
 ok("titles line up with ids", QUESTION_INDEX.every((x) => INDEX_BY_ID.get(x.id)!.title === x.title));

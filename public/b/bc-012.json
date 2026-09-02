@@ -1,0 +1,1 @@
+{"id":"bc-012","statement":"A component returning `null` renders nothing yet **stays mounted**.","truth":true,"explanation":"`null` suppresses output, not the instance: its Hooks and state survive the render. To actually discard that state the parent has to stop rendering the element.","level":"junior","category":"react","subject":"rendering-keys","codeHtml":null}

@@ -1,0 +1,1 @@
+{"id":"bc-010","statement":"Setting state in a parent re-renders it and reconciles its subtree.","truth":true,"explanation":"A changed value marks the owner dirty, so React re-runs it and diffs the children it returned. Descendants skip that work only behind `memo` or an unchanged element reference.","level":"junior","category":"react","subject":"rendering-keys","codeHtml":null}

@@ -1,0 +1,1 @@
+{"id":"bc-162","statement":"`declare` emits nothing, so it cannot collide with a second declaration.","truth":true,"explanation":"It only describes something that already exists at runtime. A `const` emits a binding, and declaring the same binding twice in one scope is an error.","level":"senior","category":"typescript","subject":"types","codeHtml":null}

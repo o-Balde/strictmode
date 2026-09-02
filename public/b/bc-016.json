@@ -1,0 +1,1 @@
+{"id":"bc-016","statement":"Keys must be unique across **the entire app**.","truth":false,"explanation":"Uniqueness is required only among **siblings** in the same list. Two unrelated lists can both use key `1` with no interference.","level":"junior","category":"react","subject":"rendering-keys","codeHtml":null}

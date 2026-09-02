@@ -1,0 +1,1 @@
+{"id":"bc-132","statement":"The `exhaustive-deps` rule exists to catch **stale closure** bugs.","truth":true,"explanation":"A missing dependency freezes whatever the effect captured on its last run. Silencing the rule is how a subscription keeps calling last week's `onChange`.","level":"intermediate","category":"react","subject":"hooks","codeHtml":null}

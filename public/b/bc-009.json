@@ -1,0 +1,1 @@
+{"id":"bc-009","statement":"Props are a **read-only** snapshot for the render that received them.","truth":true,"explanation":"Writing to a prop desynchronises parent and child without scheduling any render. New values arrive only when the parent re-renders and passes them down.","level":"junior","category":"react","subject":"state-management","codeHtml":null}

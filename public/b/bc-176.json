@@ -1,0 +1,1 @@
+{"id":"bc-176","statement":"A closure over a large object releases it once the outer function returns.","truth":false,"explanation":"The captured binding keeps that object reachable for as long as the closure lives, which is the shape of most listener leaks. Capture the single field you need instead.","level":"senior","category":"javascript","subject":"closures","codeHtml":null}

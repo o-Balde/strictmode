@@ -1,0 +1,1 @@
+{"id":"bc-049","statement":"`memo` pays off only when the skipped render costs more than the prop comparison.","truth":true,"explanation":"Every render still runs the comparison and holds the previous props in memory. On a cheap component, or one whose props change each time, it is pure overhead.","level":"senior","category":"react","subject":"performance","codeHtml":null}

@@ -1,0 +1,1 @@
+{"id":"bc-119","statement":"A closure **re-evaluates** the expression it captured when it is finally called.","truth":false,"explanation":"It closes over the binding, and that binding already holds a finished value. Only reassigning the variable changes what the closure sees later.","level":"junior","category":"javascript","subject":"closures","codeHtml":null}

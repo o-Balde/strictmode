@@ -25,6 +25,10 @@
   --flame-dim: #3d2a22;
   --flame-deep: #221a16;
   --flame-wash: rgb(228 87 46 / 0.09);
+  --binary: #8b91ff;
+  --binary-soft: #b9bcff;
+  --binary-deep: #1c1d32;
+  --binary-line: #393b68;
   --mint: #4fb477;
   --mint-soft: #8fd6a9;
   --mint-deep: #1c2a20;
@@ -128,6 +132,10 @@
   --color-flame: var(--flame);
   --color-flame-dim: var(--flame-dim);
   --color-flame-deep: var(--flame-deep);
+  --color-binary: var(--binary);
+  --color-binary-soft: var(--binary-soft);
+  --color-binary-deep: var(--binary-deep);
+  --color-binary-line: var(--binary-line);
   --color-mint: var(--mint);
   --color-mint-soft: var(--mint-soft);
   --color-mint-deep: var(--mint-deep);

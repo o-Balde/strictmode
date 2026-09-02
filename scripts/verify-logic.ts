@@ -8,12 +8,16 @@
  */
 import { emptyProgress, streakHealth, nextStreak, dayNumber, migrate, importProgress, exportProgress,
   applyAnswer, completeDailyDrill, addPracticeTime, toggleSavedQuestion, forgetQuestions,
+  commitBinarySession, emptyBinaryProgress,
   type StoredProgress } from "@/lib/progress";
 import { grade, isDue, initialRecord } from "@/lib/scheduler";
 import { dayKey, addDays, daysBetween, formatCountdown, formatClock, formatDuration } from "@/lib/dates";
 import { composeDrill } from "@/lib/drill";
 import { QUESTION_INDEX, INDEX_BY_ID, SUBJECTS, BANK_TOTAL, isQuick, isCode } from "@/lib/question-index";
 import { isTerminalOption, optionsAreTerminal } from "@/lib/terminal";
+import { BINARY_CARDS } from "@/data/binary-cards";
+import { BINARY_CARD_INDEX, composeBinaryDeck } from "@/lib/binary";
+import { emphasisedPhrases, stripMarkers } from "@/lib/statement-tokens";
 
 let pass = 0, fail = 0;
 const eq = (label: string, got: unknown, want: unknown) => {
@@ -105,6 +109,101 @@ const wrongIds = [QUESTION_INDEX[10].id, QUESTION_INDEX[20].id, QUESTION_INDEX[3
 const review = composeDrill({ seenIds: wrongIds, reviewState: {}, wrongOnly: wrongIds, today: TODAY });
 ok("mixed review draws only from the wrong pile", review.rows.every((x) => wrongIds.includes(x.id)));
 
+console.log("\n— Binary Cards bank and composition —");
+eq("Binary bank has 180 cards", BINARY_CARDS.length, 180);
+eq("Binary index has 180 rows", BINARY_CARD_INDEX.length, 180);
+eq("Binary levels are 60/60/60", [
+  BINARY_CARDS.filter((card) => card.level === "junior").length,
+  BINARY_CARDS.filter((card) => card.level === "intermediate").length,
+  BINARY_CARDS.filter((card) => card.level === "senior").length,
+], [60, 60, 60]);
+eq("Binary categories are react 70 / TS 65 / JS 45", [
+  BINARY_CARDS.filter((card) => card.category === "react").length,
+  BINARY_CARDS.filter((card) => card.category === "typescript").length,
+  BINARY_CARDS.filter((card) => card.category === "javascript").length,
+], [70, 65, 45]);
+ok("Binary code mix meets or exceeds the 35% floor", BINARY_CARDS.filter((card) => card.codeSnippet).length >= 63);
+ok("Binary ids are unique", new Set(BINARY_CARDS.map((card) => card.id)).size === 180);
+ok(
+  "Binary statements are unique",
+  new Set(BINARY_CARDS.map((card) => stripMarkers(card.statement).toLowerCase())).size === 180,
+);
+
+// Each level is balanced on its own, since a deck is drawn from one level.
+for (const level of ["junior", "intermediate", "senior"] as const) {
+  const pool = BINARY_CARDS.filter((card) => card.level === level);
+  const trues = pool.filter((card) => card.truth).length;
+  ok(
+    `Binary ${level} truth gap is within 8 (${trues}T/${pool.length - trues}F)`,
+    Math.abs(trues - (pool.length - trues)) <= 8,
+  );
+}
+
+// Guessing from phrasing alone must stay close to guessing the majority class,
+// otherwise the deck is answerable without knowing React or TypeScript.
+const ABSOLUTE_WORD = /\b(always|never|every|automatically|guarantees?|entire|only|any)\b/i;
+const binaryTrues = BINARY_CARDS.filter((card) => card.truth).length;
+const binaryBaseline =
+  Math.max(binaryTrues, BINARY_CARDS.length - binaryTrues) / BINARY_CARDS.length;
+const binaryWording =
+  BINARY_CARDS.filter(
+    (card) => !ABSOLUTE_WORD.test(stripMarkers(card.statement)) === card.truth,
+  ).length / BINARY_CARDS.length;
+ok(
+  `Binary wording heuristic (${(binaryWording * 100).toFixed(0)}%) beats the ` +
+    `${(binaryBaseline * 100).toFixed(0)}% baseline by at most 8pts`,
+  binaryWording <= binaryBaseline + 0.08,
+);
+
+const emphasisShare = (truth: boolean) => {
+  const pool = BINARY_CARDS.filter((card) => card.truth === truth);
+  return pool.filter((card) => emphasisedPhrases(card.statement).length > 0).length / pool.length;
+};
+ok(
+  "Binary emphasis does not signal the answer",
+  Math.abs(emphasisShare(true) - emphasisShare(false)) <= 0.15,
+);
+
+ok(
+  "Binary statements fit their front type size",
+  BINARY_CARDS.every(
+    (card) => stripMarkers(card.statement).length <= (card.codeSnippet ? 80 : 100),
+  ),
+);
+ok(
+  "Binary explanations are 90-210 chars",
+  BINARY_CARDS.every((card) => {
+    const length = stripMarkers(card.explanation).length;
+    return length >= 90 && length <= 210;
+  }),
+);
+
+const binaryFresh = composeBinaryDeck({
+  difficulty: "intermediate",
+  progress: emptyBinaryProgress(),
+  today: TODAY,
+  seed: 42,
+});
+eq("Binary deck has ten cards", binaryFresh.length, 10);
+ok("Binary deck has no duplicates", new Set(binaryFresh.map((card) => card.id)).size === 10);
+ok("Binary difficulty filter holds", binaryFresh.every((card) => card.level === "intermediate"));
+
+const binaryDueId = BINARY_CARD_INDEX.find((card) => card.level === "senior")!.id;
+const binaryProgress = {
+  ...emptyBinaryProgress(),
+  seenCardIds: [binaryDueId],
+  reviewState: {
+    [binaryDueId]: { ...initialRecord(TODAY), due: addDays(TODAY, -3), streak: 1 },
+  },
+};
+const binaryWithDue = composeBinaryDeck({
+  difficulty: "senior",
+  progress: binaryProgress,
+  today: TODAY,
+  seed: 9,
+});
+eq("due Binary review leads the deck", binaryWithDue[0].id, binaryDueId);
+
 console.log("\n— index integrity —");
 eq("index covers the whole bank", QUESTION_INDEX.length, BANK_TOTAL);
 eq("index count matches the bank", BANK_TOTAL, 743);
@@ -139,7 +238,8 @@ ok("an output question with prose options does not", !optionsAreTerminal(["The m
 
 console.log("\n— progress record —");
 const migrated = migrate({ seenQuestionIds: ["a"], streakDays: 3 });
-eq("partial records migrate", [migrated.version, migrated.seenQuestionIds, migrated.streakDays, migrated.bestStreak], [1, ["a"], 3, 3]);
+eq("partial records migrate", [migrated.version, migrated.seenQuestionIds, migrated.streakDays, migrated.bestStreak], [2, ["a"], 3, 3]);
+eq("older records gain empty Binary progress", migrated.binary, emptyBinaryProgress());
 eq("garbage migrates to empty", migrate("nonsense").seenQuestionIds, []);
 eq("null migrates to empty", migrate(null).streakDays, 0);
 ok("bad array members are dropped", migrate({ seenQuestionIds: ["a", 5, null, "b"] }).seenQuestionIds.join() === "a,b");
@@ -193,6 +293,38 @@ eq("best streak tracks the peak", twice.bestStreak, 4);
 const free = addPracticeTime(p({ streakDays: 7, lastCompletedDate: addDays(TODAY, -1) }), 2000);
 eq("free play never touches the streak", [free.streakDays, free.lastCompletedDate], [7, addDays(TODAY, -1)]);
 eq("free play records time", free.totalMs, 2000);
+
+const binaryCommitted = commitBinarySession(
+  p({}),
+  {
+    answers: [
+      { cardId: "bc-001", choice: true, correct: true, elapsedMs: 1200 },
+      { cardId: "bc-003", choice: null, correct: false, elapsedMs: 1800 },
+    ],
+    totalMs: 3000,
+    countsForDaily: true,
+  },
+  TODAY,
+);
+eq("Binary commit records independent seen and latest-state sets", [
+  binaryCommitted.binary.seenCardIds,
+  binaryCommitted.binary.correctCardIds,
+  binaryCommitted.binary.wrongCardIds,
+], [["bc-001", "bc-003"], ["bc-001"], ["bc-003"]]);
+eq("Binary commit records lifetime accuracy", [
+  binaryCommitted.binary.correctAnswers,
+  binaryCommitted.binary.totalAnswers,
+], [1, 2]);
+eq("wrong Binary card returns tomorrow", binaryCommitted.binary.reviewState["bc-003"].due, addDays(TODAY, 1));
+eq("Binary session updates shared activity only when committed", binaryCommitted.activityHeatmap?.[TODAY], 2);
+eq("daily Binary deck advances the shared streak", [
+  binaryCommitted.streakDays,
+  binaryCommitted.lastCompletedDate,
+], [1, TODAY]);
+eq("Binary timing is tracked separately and globally", [
+  binaryCommitted.binary.totalMs,
+  binaryCommitted.totalMs,
+], [3000, 3000]);
 
 const saved = toggleSavedQuestion(p({}), q);
 eq("saving is a toggle", [saved.savedQuestionIds, toggleSavedQuestion(saved, q).savedQuestionIds], [[q], []]);

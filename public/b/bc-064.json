@@ -1,0 +1,1 @@
+{"id":"bc-064","statement":"A type assertion converts the value to the asserted type **at runtime**.","truth":false,"explanation":"It changes only what the checker believes: no code is emitted and nothing is inspected. Assert the wrong shape and the failure surfaces later, far from the cast.","level":"junior","category":"typescript","subject":"types","codeHtml":null}

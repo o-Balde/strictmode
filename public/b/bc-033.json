@@ -1,0 +1,1 @@
+{"id":"bc-033","statement":"In development, Strict Mode sets up, tears down, then sets up each effect again.","truth":true,"explanation":"That extra cycle proves setup and cleanup are symmetric, surfacing a missing unsubscribe immediately. Production runs the effect once.","level":"intermediate","category":"react","subject":"hooks","codeHtml":null}

@@ -1,0 +1,1 @@
+{"id":"bc-156","statement":"The function from `useEffectEvent` belongs in the effect's dependency array.","truth":false,"explanation":"It is deliberately **stable** while still reading the latest props and state. Listing it changes nothing, and needing it at all is a signal the logic wanted an event handler.","level":"senior","category":"react","subject":"hooks","codeHtml":null}

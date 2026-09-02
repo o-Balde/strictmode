@@ -1,0 +1,1 @@
+{"id":"bc-030","statement":"`startTransition` marks its updates non-urgent so input stays responsive.","truth":true,"explanation":"Transition renders are interruptible: React can abandon an in-progress result to process an urgent update first, then restart the transition work.","level":"intermediate","category":"react","subject":"concurrency","codeHtml":null}

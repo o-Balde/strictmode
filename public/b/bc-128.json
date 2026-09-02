@@ -1,0 +1,1 @@
+{"id":"bc-128","statement":"A dependency array cannot stop the effect firing on **mount**.","truth":true,"explanation":"Dependencies mean 'after every render where one changed', and the first render always counts as a change. Skipping the initial run takes a ref guard.","level":"intermediate","category":"react","subject":"hooks","codeHtml":null}

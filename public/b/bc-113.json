@@ -1,0 +1,1 @@
+{"id":"bc-113","statement":"Every `.ts` file automatically gets its **own module scope**.","truth":false,"explanation":"Without a top-level `import` or `export` the file is a script sharing the global scope, which is how two files collide on the same `const`. Adding `export {}` makes it a module.","level":"junior","category":"typescript","subject":"types","codeHtml":null}

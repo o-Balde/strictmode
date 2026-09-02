@@ -16,6 +16,8 @@ import { subjectProgress } from "@/lib/drill";
 import { formatDuration } from "@/lib/dates";
 import { streakHealth } from "@/lib/progress";
 import { stagger, staggerChild } from "@/lib/motion";
+import { BINARY_BANK_SIZE } from "@/lib/binary";
+import { isDue } from "@/lib/scheduler";
 
 export function ProgressView() {
   const { progress, hydrated, resetAll } = useProgress();
@@ -34,6 +36,11 @@ export function ProgressView() {
   const accuracy = seen > 0 ? Math.round((correct / seen) * 100) : 0;
   const cells = buildCells(progress.activityHeatmap ?? {}, 84);
   const health = streakHealth(progress);
+  const binary = progress.binary;
+  const binaryAccuracy = binary.totalAnswers > 0
+    ? Math.round((binary.correctAnswers / binary.totalAnswers) * 100)
+    : 0;
+  const binaryDue = Object.values(binary.reviewState).filter((record) => isDue(record)).length;
 
   return (
     <div className="mx-auto min-h-dvh w-full max-w-[860px] px-6 py-8 sm:px-9 sm:py-10">
@@ -76,6 +83,32 @@ export function ProgressView() {
           </div>
           <Heatmap cells={cells} columns={28} className="mb-8" />
         </motion.div>
+
+        <motion.section variants={staggerChild} className="mb-8">
+          <div className="mb-3 flex items-center justify-between gap-4">
+            <div className="text-binary-soft font-mono text-[11px] font-medium tracking-[0.09em]">
+              BINARY CARDS
+            </div>
+            <Link href="/binary" className="text-binary-soft hover:text-parchment text-[12px] transition-colors">
+              Play a deck →
+            </Link>
+          </div>
+          <div className="border-binary-line bg-binary-deep grid overflow-hidden rounded-[9px] border sm:grid-cols-4">
+            <BinaryStat value={`${binary.seenCardIds.length}/${BINARY_BANK_SIZE}`} label="cards seen" />
+            <BinaryStat value={`${binaryAccuracy}%`} label="lifetime accuracy" />
+            <BinaryStat value={String(binaryDue)} label="due now" />
+            <BinaryStat value={String(binary.bestCorrectRun)} label="best correct run" />
+          </div>
+          {binary.totalAnswers === 0 ? (
+            <p className="text-ash mt-3 text-[12.5px]/[1.6]">
+              Binary progress stays separate from Classic mastery because true-or-false cards have a different guess rate.
+            </p>
+          ) : (
+            <p className="text-slate mt-3 text-[12px]">
+              {binary.totalAnswers} answers · {formatDuration(binary.totalMs)} practiced · {binary.wrongCardIds.length} currently need work
+            </p>
+          )}
+        </motion.section>
 
         <motion.div variants={staggerChild}>
           <div className="text-slate mb-4 font-mono text-[11px] font-medium tracking-[0.09em]">
@@ -122,7 +155,7 @@ export function ProgressView() {
           </motion.p>
         ) : null}
 
-        {hydrated && seen > 0 ? (
+        {hydrated && (seen > 0 || binary.totalAnswers > 0) ? (
           <motion.div variants={staggerChild} className="border-line border-t pt-6">
             <button
               type="button"
@@ -142,6 +175,15 @@ export function ProgressView() {
           </motion.div>
         ) : null}
       </motion.div>
+    </div>
+  );
+}
+
+function BinaryStat({ value, label }: { value: string; label: string }) {
+  return (
+    <div className="border-binary-line border-b p-4 last:border-b-0 sm:border-r sm:border-b-0 sm:last:border-r-0">
+      <div className="text-parchment font-mono text-[21px] font-semibold tabular-nums">{value}</div>
+      <div className="text-ash mt-1 text-[11.5px]">{label}</div>
     </div>
   );
 }

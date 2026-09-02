@@ -1,0 +1,1 @@
+{"id":"bc-133","statement":"`React.lazy` handles code-splitting during server rendering too.","truth":false,"explanation":"`React.lazy` targets the client and has no server story of its own; SSR splitting comes from the framework's dynamic import. Suspense supplies the fallback, not the split.","level":"intermediate","category":"react","subject":"rendering-keys","codeHtml":null}

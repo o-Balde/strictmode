@@ -1,0 +1,1 @@
+{"id":"bc-062","statement":"An optional property is **always** present at runtime holding `undefined`.","truth":false,"explanation":"It can be **absent entirely**, which `in` and `Object.keys` distinguish from a present `undefined`. `exactOptionalPropertyTypes` makes that difference visible in the type.","level":"junior","category":"typescript","subject":"types","codeHtml":null}

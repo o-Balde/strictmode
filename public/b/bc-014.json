@@ -1,0 +1,1 @@
+{"id":"bc-014","statement":"A controlled input takes `value` from state and reports edits via `onChange`.","truth":true,"explanation":"That pairing makes state the single source of truth for what the field shows. Supply `value` with no `onChange` and the input becomes effectively read-only.","level":"junior","category":"react","subject":"state-management","codeHtml":null}

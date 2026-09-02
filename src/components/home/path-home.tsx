@@ -137,16 +137,24 @@ export function PathHome({ initialHud }: { initialHud: HudCookie | null }) {
           </motion.div>
 
           <motion.div variants={staggerChild} className="w-full">
-            <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.99 }}>
-              <Link
-                href={s.doneToday ? "/drill?mode=extra" : "/drill"}
-                className="bg-flame text-ink block rounded-[9px] py-[17px] text-center text-base font-semibold"
-              >
-                {s.doneToday
-                  ? "One extra round · 5 min"
-                  : `Start · ${s.drill?.estimatedMinutes ?? 10} min`}
-              </Link>
-            </motion.div>
+            <div className="grid gap-2.5 sm:grid-cols-2">
+              <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.99 }}>
+                <Link
+                  href={s.doneToday ? "/drill?mode=extra" : "/drill"}
+                  className="bg-flame text-ink flex min-h-[58px] items-center justify-center rounded-[9px] px-3 text-center text-[14px] font-semibold"
+                >
+                  Classic · 5 questions
+                </Link>
+              </motion.div>
+              <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.99 }}>
+                <Link
+                  href="/binary"
+                  className="bg-binary text-ink flex min-h-[58px] items-center justify-center rounded-[9px] px-3 text-center text-[14px] font-semibold"
+                >
+                  Binary · 10 cards
+                </Link>
+              </motion.div>
+            </div>
             <div className="text-ash mt-3.5 text-[13px]">
               or{" "}
               <Link href="/topics" className="text-clay underline underline-offset-2">

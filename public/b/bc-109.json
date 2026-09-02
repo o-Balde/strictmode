@@ -1,0 +1,1 @@
+{"id":"bc-109","statement":"TypeScript prevents runtime errors from a malformed API response.","truth":false,"explanation":"It checks only what is visible at compile time, and every annotation is erased. A response whose shape drifted fails at the first property read, with no type error anywhere.","level":"junior","category":"typescript","subject":"types","codeHtml":null}

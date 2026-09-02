@@ -1,0 +1,1 @@
+{"id":"bc-102","statement":"JSX compiles to **HTML strings** that React inserts into the document.","truth":false,"explanation":"It compiles to `React.createElement` calls producing plain JavaScript objects — the element tree React diffs. HTML is only what the DOM ends up holding.","level":"junior","category":"react","subject":"rendering-keys","codeHtml":null}

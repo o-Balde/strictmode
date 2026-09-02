@@ -1,0 +1,1 @@
+{"id":"bc-120","statement":"An `async` function's body runs **synchronously** up to its first `await`.","truth":true,"explanation":"Calling it executes eagerly until the first suspension point, then hands back a pending promise. Work you meant to defer has to sit after an `await`.","level":"junior","category":"javascript","subject":"async-await","codeHtml":null}

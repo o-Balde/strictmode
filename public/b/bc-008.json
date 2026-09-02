@@ -1,0 +1,1 @@
+{"id":"bc-008","statement":"A component must return exactly **one DOM element**.","truth":false,"explanation":"It must return a single React **node**, and a Fragment, string, number, portal, or `null` all qualify. The constraint is on node count, not on DOM elements.","level":"junior","category":"react","subject":"rendering-keys","codeHtml":null}

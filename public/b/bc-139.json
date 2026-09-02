@@ -1,0 +1,1 @@
+{"id":"bc-139","statement":"An overload's implementation signature is **not** callable by consumers.","truth":true,"explanation":"Only the declared overloads are visible, so a permissive implementation signature never widens the public API. It exists to satisfy the compiler inside the body.","level":"intermediate","category":"typescript","subject":"types","codeHtml":null}

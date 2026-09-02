@@ -1,0 +1,1 @@
+{"id":"bc-011","statement":"An effect's cleanup runs **only** on unmount.","truth":false,"explanation":"**only** is what breaks this. Cleanup also runs before each re-run of the effect, whenever a dependency changed. Drop that word and the claim is correct.","level":"junior","category":"react","subject":"hooks","codeHtml":null}

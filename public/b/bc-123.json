@@ -1,0 +1,1 @@
+{"id":"bc-123","statement":"`await` inside a loop lets the next iteration start while the promise is pending.","truth":false,"explanation":"`await` suspends the whole function, so each iteration waits for the previous one. Start every promise first and `await Promise.all` when you want the overlap.","level":"junior","category":"javascript","subject":"event-loop","codeHtml":null}

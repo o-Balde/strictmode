@@ -1,0 +1,1 @@
+{"id":"bc-150","statement":"A long synchronous loop delays timers but still lets promise callbacks run.","truth":false,"explanation":"Both queues wait for the call stack to empty, because there is one thread — painting stalls too. Chunk the work or move it to a worker.","level":"intermediate","category":"javascript","subject":"event-loop","codeHtml":null}

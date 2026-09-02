@@ -1,0 +1,1 @@
+{"id":"bc-027","statement":"A `useReducer` dispatch keeps a **stable identity** for the component's lifetime.","truth":true,"explanation":"React guarantees it, so handing `dispatch` to a memoized child never breaks memoization and omitting it from a dependency array is safe.","level":"intermediate","category":"react","subject":"hooks","codeHtml":null}

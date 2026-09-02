@@ -1,0 +1,1 @@
+{"id":"bc-046","statement":"`useLayoutEffect` runs before paint and can therefore delay it.","truth":true,"explanation":"That blocking behaviour is exactly what makes it right for measuring or correcting layout without a visible flicker — and wrong for fetching or subscriptions, which belong in `useEffect`.","level":"senior","category":"react","subject":"hooks","codeHtml":null}

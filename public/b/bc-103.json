@@ -1,0 +1,1 @@
+{"id":"bc-103","statement":"`useRef` is the right home for a value the UI **displays**.","truth":false,"explanation":"Writing to `.current` never schedules a render, so the screen keeps showing the old value. Refs suit values the UI does not read: timers, DOM nodes, the previous prop.","level":"junior","category":"react","subject":"hooks","codeHtml":null}

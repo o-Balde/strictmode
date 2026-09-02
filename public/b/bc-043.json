@@ -1,0 +1,1 @@
+{"id":"bc-043","statement":"React's `cache` also serves as a **cross-request** application cache.","truth":false,"explanation":"Its lifetime is a **single request** and the next one starts empty. Durable caching needs the framework's data cache or an external store.","level":"senior","category":"react","subject":"data-fetching","codeHtml":null}

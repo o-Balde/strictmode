@@ -9,13 +9,29 @@
  * hydration. The cookie is written from the client and read by the server only
  * for that first paint — it is never authoritative and never used for tracking.
  */
-import type { UserDrillProgress, QuestionSubject } from "@/data/types";
+import type { UserDrillProgress, QuestionLevel, QuestionSubject } from "@/data/types";
+import type { BinaryAnswer } from "@/data/binary-types";
 import { dayKey, daysBetween } from "./dates";
 import { grade, type ReviewRecord } from "./scheduler";
 
 export const STORAGE_KEY = "strictmode.progress.v1";
 export const HUD_COOKIE = "sm_hud";
-export const SCHEMA_VERSION = 1;
+export const SCHEMA_VERSION = 2;
+
+export interface BinaryProgress {
+  seenCardIds: string[];
+  /** Membership reflects the most recent completed answer for each card. */
+  correctCardIds: string[];
+  wrongCardIds: string[];
+  reviewState: Record<string, ReviewRecord>;
+  totalAnswers: number;
+  correctAnswers: number;
+  totalMs: number;
+  perCardMs: Record<string, number>;
+  currentCorrectRun: number;
+  bestCorrectRun: number;
+  lastDifficulty: QuestionLevel;
+}
 
 /** Extends the shipped UserDrillProgress with scheduling and timing. */
 export interface StoredProgress extends UserDrillProgress {
@@ -30,6 +46,8 @@ export interface StoredProgress extends UserDrillProgress {
   perQuestionMs: Record<string, number>;
   /** Which home direction the user prefers: the dashboard or the path. */
   homeVariant: "dashboard" | "path";
+  /** Independent knowledge metrics for the faster, 50/50 Binary format. */
+  binary: BinaryProgress;
 }
 
 export interface HudCookie {
@@ -55,6 +73,23 @@ export function emptyProgress(): StoredProgress {
     totalMs: 0,
     perQuestionMs: {},
     homeVariant: "dashboard",
+    binary: emptyBinaryProgress(),
+  };
+}
+
+export function emptyBinaryProgress(): BinaryProgress {
+  return {
+    seenCardIds: [],
+    correctCardIds: [],
+    wrongCardIds: [],
+    reviewState: {},
+    totalAnswers: 0,
+    correctAnswers: 0,
+    totalMs: 0,
+    perCardMs: {},
+    currentCorrectRun: 0,
+    bestCorrectRun: 0,
+    lastDifficulty: "intermediate",
   };
 }
 
@@ -84,6 +119,36 @@ export function migrate(raw: unknown): StoredProgress {
     bestStreak: typeof p.bestStreak === "number" ? p.bestStreak : (p.streakDays ?? 0),
     totalMs: typeof p.totalMs === "number" ? p.totalMs : 0,
     homeVariant: p.homeVariant === "path" ? "path" : "dashboard",
+    binary: migrateBinaryProgress(p.binary),
+  };
+}
+
+function migrateBinaryProgress(raw: unknown): BinaryProgress {
+  const base = emptyBinaryProgress();
+  if (!raw || typeof raw !== "object") return base;
+  const binary = raw as Partial<BinaryProgress>;
+  const strings = (value: unknown) =>
+    Array.isArray(value)
+      ? value.filter((item): item is string => typeof item === "string")
+      : [];
+  const number = (value: unknown) =>
+    typeof value === "number" && Number.isFinite(value) && value >= 0 ? value : 0;
+  const candidate = binary.lastDifficulty;
+  const lastDifficulty: QuestionLevel =
+    candidate === "junior" || candidate === "senior" ? candidate : "intermediate";
+
+  return {
+    seenCardIds: strings(binary.seenCardIds),
+    correctCardIds: strings(binary.correctCardIds),
+    wrongCardIds: strings(binary.wrongCardIds),
+    reviewState: binary.reviewState ?? {},
+    totalAnswers: number(binary.totalAnswers),
+    correctAnswers: number(binary.correctAnswers),
+    totalMs: number(binary.totalMs),
+    perCardMs: binary.perCardMs ?? {},
+    currentCorrectRun: number(binary.currentCorrectRun),
+    bestCorrectRun: number(binary.bestCorrectRun),
+    lastDifficulty,
   };
 }
 
@@ -283,6 +348,72 @@ export function addPracticeTime(p: StoredProgress, totalMs: number): StoredProgr
   return { ...p, totalMs: p.totalMs + totalMs };
 }
 
+export interface BinarySessionCommit {
+  answers: BinaryAnswer[];
+  totalMs: number;
+  countsForDaily: boolean;
+}
+
+/** Commit a completed Binary deck atomically. */
+export function commitBinarySession(
+  p: StoredProgress,
+  { answers, totalMs, countsForDaily }: BinarySessionCommit,
+  today = dayKey(),
+): StoredProgress {
+  let binary = p.binary;
+  for (const answer of answers) {
+    const seenCardIds = binary.seenCardIds.includes(answer.cardId)
+      ? binary.seenCardIds
+      : [...binary.seenCardIds, answer.cardId];
+    const correctCardIds = answer.correct
+      ? [...new Set([...binary.correctCardIds, answer.cardId])]
+      : binary.correctCardIds.filter((id) => id !== answer.cardId);
+    const wrongCardIds = answer.correct
+      ? binary.wrongCardIds.filter((id) => id !== answer.cardId)
+      : [...new Set([...binary.wrongCardIds, answer.cardId])];
+    const currentCorrectRun = answer.correct ? binary.currentCorrectRun + 1 : 0;
+    const best = binary.perCardMs[answer.cardId];
+
+    binary = {
+      ...binary,
+      seenCardIds,
+      correctCardIds,
+      wrongCardIds,
+      reviewState: {
+        ...binary.reviewState,
+        [answer.cardId]: grade(binary.reviewState[answer.cardId], answer.correct, today),
+      },
+      totalAnswers: binary.totalAnswers + 1,
+      correctAnswers: binary.correctAnswers + Number(answer.correct),
+      perCardMs: {
+        ...binary.perCardMs,
+        [answer.cardId]: best === undefined ? answer.elapsedMs : Math.min(best, answer.elapsedMs),
+      },
+      currentCorrectRun,
+      bestCorrectRun: Math.max(binary.bestCorrectRun, currentCorrectRun),
+    };
+  }
+
+  const withAnswers: StoredProgress = {
+    ...p,
+    binary: { ...binary, totalMs: binary.totalMs + totalMs },
+    activityHeatmap: {
+      ...p.activityHeatmap,
+      [today]: (p.activityHeatmap?.[today] ?? 0) + answers.length,
+    },
+  };
+  return countsForDaily
+    ? completeDailyDrill(withAnswers, totalMs, today)
+    : addPracticeTime(withAnswers, totalMs);
+}
+
+export function chooseBinaryDifficulty(
+  p: StoredProgress,
+  lastDifficulty: QuestionLevel,
+): StoredProgress {
+  return { ...p, binary: { ...p.binary, lastDifficulty } };
+}
+
 export function toggleSavedQuestion(p: StoredProgress, id: string): StoredProgress {
   return {
     ...p,
@@ -339,6 +470,12 @@ export function importProgress(current: StoredProgress, json: string): StoredPro
     if (!mine || rec.streak > mine.streak) reviewState[id] = rec;
   }
 
+  const binaryReviewState = { ...current.binary.reviewState };
+  for (const [id, rec] of Object.entries(incoming.binary.reviewState)) {
+    const mine = binaryReviewState[id];
+    if (!mine || rec.streak > mine.streak) binaryReviewState[id] = rec;
+  }
+
   return {
     ...current,
     seenQuestionIds: union(current.seenQuestionIds, incoming.seenQuestionIds),
@@ -354,5 +491,24 @@ export function importProgress(current: StoredProgress, json: string): StoredPro
     lastCompletedDate:
       [current.lastCompletedDate, incoming.lastCompletedDate].filter(Boolean).sort().pop() ??
       undefined,
+    binary: {
+      ...current.binary,
+      seenCardIds: union(current.binary.seenCardIds, incoming.binary.seenCardIds),
+      correctCardIds: union(current.binary.correctCardIds, incoming.binary.correctCardIds),
+      wrongCardIds: union(current.binary.wrongCardIds, incoming.binary.wrongCardIds),
+      reviewState: binaryReviewState,
+      totalAnswers: current.binary.totalAnswers + incoming.binary.totalAnswers,
+      correctAnswers: current.binary.correctAnswers + incoming.binary.correctAnswers,
+      totalMs: current.binary.totalMs + incoming.binary.totalMs,
+      perCardMs: { ...incoming.binary.perCardMs, ...current.binary.perCardMs },
+      currentCorrectRun: Math.max(
+        current.binary.currentCorrectRun,
+        incoming.binary.currentCorrectRun,
+      ),
+      bestCorrectRun: Math.max(
+        current.binary.bestCorrectRun,
+        incoming.binary.bestCorrectRun,
+      ),
+    },
   };
 }

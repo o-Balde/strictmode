@@ -1,0 +1,1 @@
+{"id":"bc-058","statement":"TypeScript compares object types by **shape**, not by declared name.","truth":true,"explanation":"A value is assignable once it supplies the required members, whatever interface it was declared against. Add a unique literal field when you need nominal-style separation.","level":"junior","category":"typescript","subject":"types","codeHtml":null}

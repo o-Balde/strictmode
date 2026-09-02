@@ -1,0 +1,1 @@
+{"id":"bc-042","statement":"React's `cache` collapses same-argument calls **within one server request**.","truth":true,"explanation":"Two components can each ask for the current user and share a single query. The entry is scoped to the request, so it cannot leak one user's data into another's render.","level":"senior","category":"react","subject":"data-fetching","codeHtml":null}

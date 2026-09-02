@@ -1,0 +1,1 @@
+{"id":"bc-131","statement":"Virtual DOM diffing is **faster** than a targeted direct DOM update.","truth":false,"explanation":"The diff is extra work layered on top of the same DOM writes, so hand-tuned updates win on raw speed. Its value is correct, batched updates you did not have to write.","level":"intermediate","category":"react","subject":"performance","codeHtml":null}

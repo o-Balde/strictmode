@@ -7,7 +7,7 @@
  */
 import Link from "next/link";
 import { motion } from "motion/react";
-import { Flame, Shuffle } from "lucide-react";
+import { Flame, Layers3, ListChecks, Shuffle } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { Brand } from "@/components/brand";
 import { Heatmap, HeatmapAxis, buildCells } from "@/components/heatmap";
@@ -66,20 +66,52 @@ export function Dashboard({ initialHud }: { initialHud: HudCookie | null }) {
                 variants={staggerChild}
                 className="text-parchment m-0 mb-1.5 text-[28px]/[1.15] font-semibold tracking-[-0.025em] text-balance sm:text-[34px]/[1.15]"
               >
-                Day {s.day} · {s.drill?.rows.length ?? 5} items, about{" "}
-                {s.drill?.estimatedMinutes ?? 10} minutes
+                Day {s.day} · choose today&apos;s format
               </motion.h1>
               <motion.p variants={staggerChild} className="text-stone m-0 mb-7 text-[14.5px]/[1.6]">
-                {s.weakest.length > 0
-                  ? `${s.weakest.map((w) => w.title).join(" and ")} ${s.weakest.length === 1 ? "is" : "are"} due for review. `
-                  : `${s.focusTitles.slice(0, 2).join(" and ") || "A mix of topics"} today. `}
-                {s.drill?.recycled
-                  ? "You've seen everything here before — these are coming back around."
-                  : "Nothing here repeats what you've already answered."}
+                Take the five-question Classic drill or a ten-card Binary deck. Finishing either one holds today&apos;s streak; the other stays open for extra practice.
               </motion.p>
             </>
           )}
 
+          <motion.div variants={staggerChild} className="mb-7 grid gap-3 sm:grid-cols-2">
+            <Link
+              href={s.doneToday ? "/drill?mode=extra" : "/drill"}
+              className="border-line-3 bg-surface hover:border-flame group rounded-xl border p-5 transition-colors focus-visible:ring-2 focus-visible:ring-flame focus-visible:outline-none"
+            >
+              <div className="mb-5 flex items-start justify-between gap-4">
+                <span className="bg-flame-deep text-clay grid size-9 place-items-center rounded-lg">
+                  <ListChecks className="size-4" />
+                </span>
+                <span className="text-slate font-mono text-[10px] tracking-[0.08em] uppercase">5 questions · ~10 min</span>
+              </div>
+              <div className="text-parchment text-[17px] font-semibold">Classic Drill</div>
+              <p className="text-ash mt-1.5 mb-4 text-[12.5px]/[1.55]">Multiple choice, code output, and fixes.</p>
+              <span className="text-flame text-[13px] font-semibold group-hover:underline group-hover:underline-offset-4">
+                {s.doneToday ? "Extra classic round →" : "Choose Classic →"}
+              </span>
+            </Link>
+            <Link
+              href="/binary"
+              className="border-binary-line bg-binary-deep group rounded-xl border p-5 transition-colors hover:border-binary focus-visible:ring-2 focus-visible:ring-binary focus-visible:outline-none"
+            >
+              <div className="mb-5 flex items-start justify-between gap-4">
+                <span className="bg-binary text-ink grid size-9 place-items-center rounded-lg">
+                  <Layers3 className="size-4" />
+                </span>
+                <span className="text-slate font-mono text-[10px] tracking-[0.08em] uppercase">10 cards · ~3 min</span>
+              </div>
+              <div className="text-parchment text-[17px] font-semibold">Binary Cards</div>
+              <p className="text-ash mt-1.5 mb-4 text-[12.5px]/[1.55]">Swipe true or false. Misses return later.</p>
+              <span className="text-binary-soft text-[13px] font-semibold group-hover:underline group-hover:underline-offset-4">
+                {s.doneToday ? "Extra Binary deck →" : "Choose Binary →"}
+              </span>
+            </Link>
+          </motion.div>
+
+          <motion.div variants={staggerChild} className="text-slate mb-3 font-mono text-[10.5px] tracking-[0.08em] uppercase">
+            Classic queue preview
+          </motion.div>
           <motion.ol
             variants={stagger(0.05, 0.15)}
             className="bg-line border-line mb-7 grid gap-px overflow-hidden rounded-[9px] border"
@@ -124,14 +156,6 @@ export function Dashboard({ initialHud }: { initialHud: HudCookie | null }) {
           </motion.ol>
 
           <motion.div variants={staggerChild} className="flex flex-wrap items-center gap-3.5">
-            <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
-              <Link
-                href={s.doneToday ? "/drill?mode=extra" : "/drill"}
-                className="bg-flame text-ink inline-block rounded-lg px-7 py-[15px] text-[15px] font-semibold"
-              >
-                {s.doneToday ? "One extra round →" : "Start →"}
-              </Link>
-            </motion.div>
             <Link
               href="/topics"
               className="border-line-3 text-bone hover:border-line-2 flex items-center gap-2 rounded-lg border px-5 py-[15px] text-[14px] font-medium transition-colors"

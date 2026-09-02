@@ -1,0 +1,1 @@
+{"id":"bc-142","statement":"The `in` and `out` annotations describe assignability, not what `T` may be.","truth":true,"explanation":"They tell the checker how two instantiations relate so it can skip structural comparison. Restricting the argument itself is still `extends`.","level":"intermediate","category":"typescript","subject":"generics","codeHtml":null}

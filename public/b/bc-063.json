@@ -1,0 +1,1 @@
+{"id":"bc-063","statement":"Type annotations and interfaces are **erased** from the emitted JavaScript.","truth":true,"explanation":"They guide the checker and then vanish, so nothing validates data at runtime. Payloads crossing a boundary still need a schema validator.","level":"junior","category":"typescript","subject":"types","codeHtml":null}

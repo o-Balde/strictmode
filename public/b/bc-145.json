@@ -1,0 +1,1 @@
+{"id":"bc-145","statement":"A rejected promise with no handler crashes the process immediately.","truth":false,"explanation":"It emits `unhandledrejection` first. Node can be configured to exit on it, browsers only log, and either way the failure may surface far from its origin.","level":"intermediate","category":"javascript","subject":"async-await","codeHtml":null}

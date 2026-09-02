@@ -14,7 +14,7 @@ Built with **Next.js 16 (App Router)**, **React 19**, **Tailwind CSS v4**, **Mot
 ```bash
 npm run dev        # Build columnar index + question payloads, then start on :3000
 npm run build      # Production build with Turbopack
-npm run verify     # 97 pure-logic assertions (streaks, scheduler, transitions, index)
+npm run verify     # 122 pure-logic assertions (streaks, schedulers, transitions, indexes, card-bank invariants)
 npm run typecheck  # Strict TypeScript verification (tsc --noEmit)
 npm run lint       # ESLint check
 ```
@@ -30,8 +30,10 @@ npm run lint       # ESLint check
 - ⌨️ **Keyboard-First Experience**: Unrestricted hotkey navigation (`A`–`D` select, `Space`/`Enter` submit, `H` hint, `S` skip, `Esc` exit). Inputs are never locked during animations.
 - 🖥️ **Dual Code Surfaces**: Strict visual distinction between source code (custom editor theme) and standard output (phosphor CRT terminal scanlines). Rich tokenized option rendering for code literals.
 - 📊 **Progress & Mastery Dashboard**: Activity heatmap, topic mastery breakdowns, speed metrics, saved questions, and non-destructive JSON backup import/export.
+- 🃏 **Binary Cards**: A tactile 10-card True/False game with swipe, button, and keyboard controls, drawn from a 180-card bank of React, TypeScript, and JavaScript claims. Statements mark their load-bearing words, wrong answers flip into concise explanations, and misses return through an independent spaced-review schedule. The build enforces anti-gameability invariants so the deck cannot be answered from phrasing alone.
 - 🎯 **Multiple Practice Modes**:
-  - **Daily Drill**: 5 balanced questions (3 quick conceptual/output + 2 code/fix) that update your streak and review schedule.
+  - **Daily Challenge**: Choose either the 5-question Classic Drill or a 10-card Binary deck to update your streak.
+  - **Daily Drill**: 5 balanced questions (3 quick conceptual/output + 2 code/fix) that update your review schedule.
   - **Topic Practice**: Deep-dive into 16 focused subjects.
   - **Single-Focus Path**: Targeted continuous training on specific concepts.
   - **Free Play / Extra Rounds**: Extra reps that record practice time and review state without penalizing streaks.
@@ -46,6 +48,8 @@ npm run lint       # ESLint check
 | **Dashboard** | `/` (returning) | `components/home/dashboard.tsx` | Daily queue, streak radar, review stats, heatmap |
 | **Focus Path** | `/path` | `components/home/path-home.tsx` | Single-topic focused repetition flow |
 | **Drill Runner** | `/drill` | `components/session/drill-runner.tsx` | Active 5-question session with clock & progress |
+| **Binary Cards** | `/binary` | `components/binary/binary-game.tsx` | 10-card difficulty-filtered swipe deck |
+| **Binary Summary** | `/binary/done` | `components/binary/binary-summary.tsx` | Score, misses, and scheduled reviews |
 | **Question View** | `/drill` | `components/session/question-view.tsx` | Code well, options, terminal detection, hint panel |
 | **Feedback Panel**| `/drill` (inline) | `components/session/feedback.tsx` | Correct/wrong verdict, misconception & explanation |
 | **Summary** | `/drill/done` | `components/session/session-summary.tsx` | Session accuracy, speed, interval updates, streak |
@@ -73,6 +77,7 @@ scripts/build-index.ts  ──►  src/generated/question-index.json   (Packed c
                              public/q/<id>.json                  (743 pre-highlighted payloads)
 
 Client: Combines columnar index + local review schedule
+       ├─ Binary metadata + 180 pre-highlighted payloads under public/b/
        └─ lib/question-source.ts  ──►  GET /q/<id>.json (Static CDN, zero compute)
                                   └─►  POST /api/questions (Fallback handler)
 ```
@@ -131,6 +136,8 @@ The 743-question bank spans 16 core frontend engineering subjects:
 | <kbd>H</kbd> | Toggle hint and documentation link |
 | <kbd>S</kbd> | Skip question |
 | <kbd>Esc</kbd> | Exit session to dashboard |
+
+Binary Cards use <kbd>←</kbd> for False, <kbd>↓</kbd> for “I don’t know,” <kbd>→</kbd> for True, and <kbd>Enter</kbd> to continue after a correction.
 
 ---
 

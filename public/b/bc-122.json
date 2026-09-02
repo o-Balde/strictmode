@@ -1,0 +1,1 @@
+{"id":"bc-122","statement":"`Promise.all` returns the values that succeeded when one input rejects.","truth":false,"explanation":"You get a rejection, and the successful values are discarded with it. `Promise.allSettled` is the variant that reports every outcome individually.","level":"junior","category":"javascript","subject":"concurrency","codeHtml":null}

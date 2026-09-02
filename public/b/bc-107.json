@@ -1,0 +1,1 @@
+{"id":"bc-107","statement":"Returning `false` from a React handler does **not** prevent the default action.","truth":true,"explanation":"That shortcut belongs to inline HTML handlers and jQuery. React honours only an explicit `event.preventDefault()` on the synthetic event.","level":"junior","category":"react","subject":"hooks","codeHtml":null}

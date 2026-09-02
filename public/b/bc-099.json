@@ -1,0 +1,1 @@
+{"id":"bc-099","statement":"Asserting an API payload to an interface still leaves it unvalidated.","truth":true,"explanation":"The assertion is erased and inspects nothing, so a renamed field fails at the first property read instead of at the boundary. Parse with a schema where the data arrives.","level":"senior","category":"typescript","subject":"data-fetching","codeHtml":null}

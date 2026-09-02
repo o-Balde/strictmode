@@ -1,0 +1,1 @@
+{"id":"bc-048","statement":"Sibling Server Components can start their data reads **concurrently**.","truth":true,"explanation":"React renders siblings together, so each one's `await` begins without waiting for the other to finish. Awaiting both inside one parent serialises them into a waterfall.","level":"senior","category":"react","subject":"data-fetching","codeHtml":null}

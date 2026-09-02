@@ -1,0 +1,1 @@
+{"id":"bc-154","statement":"A `useMemo` cache is **shared by every instance** of the component.","truth":false,"explanation":"Hook state is **per instance**, so each mounted copy keeps its own cache and loses it on unmount. Cross-instance reuse needs a module-level `Map` or `React.cache` on the server.","level":"senior","category":"react","subject":"performance","codeHtml":null}

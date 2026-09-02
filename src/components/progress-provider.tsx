@@ -13,6 +13,8 @@ import {
   addPracticeTime,
   applyAnswer,
   chooseHomeVariant,
+  chooseBinaryDifficulty,
+  commitBinarySession,
   completeDailyDrill,
   emptyProgress,
   exportProgress,
@@ -20,6 +22,7 @@ import {
   importProgress,
   toggleSavedQuestion,
   type AnswerEvent,
+  type BinarySessionCommit,
   type StoredProgress,
 } from "@/lib/progress";
 import * as store from "@/lib/progress-store";
@@ -33,6 +36,8 @@ interface ProgressContextValue {
   recordAnswer: (a: AnswerEvent) => void;
   completeDaily: (totalMs: number) => void;
   recordFreePlay: (totalMs: number) => void;
+  commitBinary: (session: BinarySessionCommit) => void;
+  setBinaryDifficulty: (level: StoredProgress["binary"]["lastDifficulty"]) => void;
   toggleSaved: (id: string) => void;
   setHomeVariant: (v: StoredProgress["homeVariant"]) => void;
   resetSubject: (ids: string[]) => void;
@@ -63,6 +68,15 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
     (totalMs: number) => store.update((p) => addPracticeTime(p, totalMs)),
     [],
   );
+  const commitBinary = useCallback(
+    (session: BinarySessionCommit) => store.update((p) => commitBinarySession(p, session)),
+    [],
+  );
+  const setBinaryDifficulty = useCallback(
+    (level: StoredProgress["binary"]["lastDifficulty"]) =>
+      store.update((p) => chooseBinaryDifficulty(p, level)),
+    [],
+  );
   const toggleSaved = useCallback(
     (id: string) => store.update((p) => toggleSavedQuestion(p, id)),
     [],
@@ -84,6 +98,8 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       recordAnswer,
       completeDaily,
       recordFreePlay,
+      commitBinary,
+      setBinaryDifficulty,
       toggleSaved,
       setHomeVariant,
       resetSubject,
@@ -97,6 +113,8 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
       recordAnswer,
       completeDaily,
       recordFreePlay,
+      commitBinary,
+      setBinaryDifficulty,
       toggleSaved,
       setHomeVariant,
       resetSubject,

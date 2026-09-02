@@ -1,12 +1,15 @@
 "use client";
 
-import { useMemo } from "react";
+import { useCallback, useMemo, useState } from "react";
 import Link from "next/link";
 import { motion } from "motion/react";
-import { Check, Layers3, RotateCcw, X } from "lucide-react";
+import { Check, Copy, Layers3, RotateCcw, X } from "lucide-react";
+import { toast } from "sonner";
 import { CountUp } from "@/components/meters";
 import { StatementText } from "@/components/binary/statement-text";
 import { useHydrated } from "@/hooks/use-hydrated";
+import { copyToClipboard, formatBinaryCardPrompt, formatBinaryCardsListPrompt } from "@/lib/ai-prompt";
+import type { BinaryAnswer, BinaryCardPayload } from "@/data/binary-types";
 import { readBinaryResult } from "@/lib/binary";
 import { formatDuration } from "@/lib/dates";
 import { stagger, staggerChild } from "@/lib/motion";
@@ -15,6 +18,45 @@ import { cn } from "@/lib/utils";
 export function BinarySummary() {
   const hydrated = useHydrated();
   const result = useMemo(() => (hydrated ? readBinaryResult() : null), [hydrated]);
+  const [copiedCardId, setCopiedCardId] = useState<string | null>(null);
+  const [copiedAll, setCopiedAll] = useState(false);
+
+  const cards = useMemo(
+    () => (result ? new Map(result.cards.map((card) => [card.id, card])) : new Map<string, BinaryCardPayload>()),
+    [result],
+  );
+  const missed = useMemo(
+    () => (result ? result.answers.filter((answer) => !answer.correct) : []),
+    [result],
+  );
+
+  const handleCopySingle = useCallback(async (card: BinaryCardPayload, answer: BinaryAnswer) => {
+    const prompt = formatBinaryCardPrompt(card, answer);
+    const ok = await copyToClipboard(prompt);
+    if (ok) {
+      setCopiedCardId(card.id);
+      toast.success("Copied question for AI explanation");
+      window.setTimeout(() => setCopiedCardId(null), 2000);
+    } else {
+      toast.error("Failed to copy to clipboard");
+    }
+  }, []);
+
+  const handleCopyAllMissed = useCallback(async () => {
+    const missedCards = missed
+      .map((a) => cards.get(a.cardId))
+      .filter((c): c is BinaryCardPayload => Boolean(c));
+    if (missedCards.length === 0) return;
+    const prompt = formatBinaryCardsListPrompt(missedCards);
+    const ok = await copyToClipboard(prompt);
+    if (ok) {
+      setCopiedAll(true);
+      toast.success(`Copied ${missedCards.length} missed questions for AI`);
+      window.setTimeout(() => setCopiedAll(false), 2000);
+    } else {
+      toast.error("Failed to copy to clipboard");
+    }
+  }, [missed, cards]);
 
   if (!hydrated) return <div className="min-h-dvh" />;
   if (!result) {
@@ -32,8 +74,6 @@ export function BinarySummary() {
   }
 
   const correct = result.answers.filter((answer) => answer.correct).length;
-  const missed = result.answers.filter((answer) => !answer.correct);
-  const cards = new Map(result.cards.map((card) => [card.id, card]));
 
   return (
     <div className="grid min-h-dvh place-items-center px-5 py-10">
@@ -75,27 +115,63 @@ export function BinarySummary() {
 
         {missed.length > 0 ? (
           <motion.section variants={staggerChild} className="border-line bg-surface rounded-xl border p-4 sm:p-5">
-            <div className="text-slate mb-4 font-mono text-[10.5px] tracking-[0.09em] uppercase">
-              Returning tomorrow
+            <div className="mb-4 flex items-center justify-between gap-3">
+              <div className="text-slate font-mono text-[10.5px] tracking-[0.09em] uppercase">
+                Returning tomorrow ({missed.length})
+              </div>
+              <button
+                type="button"
+                onClick={handleCopyAllMissed}
+                className={cn(
+                  "flex items-center gap-1.5 rounded-md border px-2.5 py-1 font-mono text-[10px] font-semibold tracking-[0.08em] uppercase transition-all",
+                  copiedAll
+                    ? "border-mint-line bg-mint-deep text-mint-soft"
+                    : "border-line-3 bg-surface-3 text-ash hover:border-line-2 hover:text-bone active:scale-95",
+                )}
+                title="Copy all missed questions formatted for AI explanation"
+              >
+                {copiedAll ? <Check className="size-3 text-mint" /> : <Copy className="size-3" />}
+                <span>{copiedAll ? "Copied all" : "Copy all missed for AI explanation"}</span>
+              </button>
             </div>
             <div className="divide-line flex flex-col divide-y">
               {missed.map((answer) => {
                 const card = cards.get(answer.cardId);
                 if (!card) return null;
                 return (
-                  <div key={answer.cardId} className="grid grid-cols-[22px_1fr_auto] gap-3 py-3 first:pt-0 last:pb-0">
-                    <X className="text-flame mt-0.5 size-4" aria-hidden />
-                    <p className="text-bone m-0 text-[13.5px]/[1.55]">
+                  <div key={answer.cardId} className="grid grid-cols-[22px_1fr_auto] items-start gap-3 py-3 first:pt-0 last:pb-0">
+                    <X className="text-flame mt-0.5 size-4 shrink-0" aria-hidden />
+                    <p className="text-bone m-0 text-[13.5px]/[1.55] select-text">
                       <StatementText text={card.statement} />
                     </p>
-                    <span className={cn(
-                      "h-fit rounded border px-2 py-1 font-mono text-[10px] font-semibold uppercase",
-                      card.truth
-                        ? "border-mint-line bg-mint-deep text-mint-soft"
-                        : "border-rust-line bg-rust-bg text-salmon",
-                    )}>
-                      {card.truth ? "True" : "False"}
-                    </span>
+                    <div className="flex items-center gap-2 shrink-0">
+                      <button
+                        type="button"
+                        onClick={() => handleCopySingle(card, answer)}
+                        className={cn(
+                          "rounded border p-1 text-ash transition-all",
+                          copiedCardId === card.id
+                            ? "border-mint-line bg-mint-deep text-mint-soft"
+                            : "border-line-3 bg-surface-3 hover:border-line-2 hover:text-bone active:scale-95",
+                        )}
+                        title="Copy prompt for AI explanation"
+                        aria-label="Copy prompt for AI explanation"
+                      >
+                        {copiedCardId === card.id ? (
+                          <Check className="size-3 text-mint" />
+                        ) : (
+                          <Copy className="size-3" />
+                        )}
+                      </button>
+                      <span className={cn(
+                        "h-fit rounded border px-2 py-1 font-mono text-[10px] font-semibold uppercase",
+                        card.truth
+                          ? "border-mint-line bg-mint-deep text-mint-soft"
+                          : "border-rust-line bg-rust-bg text-salmon",
+                      )}>
+                        {card.truth ? "True" : "False"}
+                      </span>
+                    </div>
                   </div>
                 );
               })}

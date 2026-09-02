@@ -1,15 +1,18 @@
 "use client";
 
+import { useCallback, useEffect, useState } from "react";
 import {
   motion,
   useMotionValue,
   useReducedMotion,
   useTransform,
 } from "motion/react";
-import { Check, X } from "lucide-react";
+import { Check, Copy, X } from "lucide-react";
+import { toast } from "sonner";
 import type { BinaryAnswer, BinaryCardPayload, BinaryChoice } from "@/data/binary-types";
 import { CodeWell } from "@/components/code-well";
 import { StatementText } from "@/components/binary/statement-text";
+import { copyToClipboard, formatBinaryCardPrompt } from "@/lib/ai-prompt";
 import { cn } from "@/lib/utils";
 
 const SWIPE_THRESHOLD = 92;
@@ -129,7 +132,10 @@ function SwipeCard({
 
   return (
     <motion.article
-      className="absolute inset-0 z-10 touch-pan-y select-none"
+      className={cn(
+        "absolute inset-0 z-10 touch-pan-y",
+        showingExplanation ? "select-text" : "select-none",
+      )}
       style={{ x, rotate }}
       drag={!showingExplanation ? "x" : false}
       dragConstraints={{ left: 0, right: 0 }}
@@ -162,15 +168,50 @@ function CardFace({
   falseOpacity: ReturnType<typeof useTransform<number, number>>;
   trueOpacity: ReturnType<typeof useTransform<number, number>>;
 }) {
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = useCallback(async () => {
+    const prompt = formatBinaryCardPrompt(card, null);
+    const ok = await copyToClipboard(prompt);
+    if (ok) {
+      setCopied(true);
+      toast.success("Prompt copied for AI explanation");
+      window.setTimeout(() => setCopied(false), 2000);
+    } else {
+      toast.error("Failed to copy to clipboard");
+    }
+  }, [card]);
+
   return (
     <div className="border-binary-line bg-surface-2 absolute inset-0 flex h-full flex-col overflow-hidden rounded-[18px] border p-5 shadow-[0_24px_70px_rgb(0_0_0/0.34)] [backface-visibility:hidden] sm:p-8">
       <div className="mb-5 flex items-center justify-between gap-3">
-        <span className="border-binary-line bg-binary-deep text-binary-soft rounded-md border px-2.5 py-1 font-mono text-[10.5px] tracking-[0.08em] uppercase">
-          {card.category}
-        </span>
-        <span className="text-slate font-mono text-[10.5px] tracking-[0.08em] uppercase">
-          {card.level}
-        </span>
+        <div className="flex items-center gap-2">
+          <span className="border-binary-line bg-binary-deep text-binary-soft rounded-md border px-2.5 py-1 font-mono text-[10.5px] tracking-[0.08em] uppercase">
+            {card.category}
+          </span>
+          <span className="text-slate font-mono text-[10.5px] tracking-[0.08em] uppercase">
+            {card.level}
+          </span>
+        </div>
+        <button
+          type="button"
+          onPointerDown={(e) => e.stopPropagation()}
+          onClick={(e) => {
+            e.stopPropagation();
+            void handleCopy();
+          }}
+          className={cn(
+            "flex items-center gap-1.5 rounded-md border px-2.5 py-1 font-mono text-[11px] font-semibold tracking-[0.08em] uppercase transition-all",
+            copied
+              ? "border-mint-line bg-mint-deep text-mint-soft"
+              : "border-line-3 bg-surface-3 text-ash hover:border-line-2 hover:text-bone active:scale-95",
+          )}
+          title="Copy prompt for AI explanation"
+          aria-label="Copy prompt for AI explanation"
+        >
+          {copied ? <Check className="size-3.5 text-mint" /> : <Copy className="size-3.5" />}
+          <span>{copied ? "Copied" : "Copy for AI explanation"}</span>
+        </button>
       </div>
 
       <div className="scrollbar-hairline flex min-h-0 flex-1 flex-col justify-center overflow-y-auto py-2">
@@ -239,24 +280,50 @@ function CardFace({
 function CardBack({
   card,
   lastAnswer,
-  onContinue,
 }: {
   card: BinaryCardPayload;
   lastAnswer?: BinaryAnswer | null;
-  onContinue: () => void;
+  onContinue?: () => void;
 }) {
   const isCorrect = lastAnswer?.correct;
   const isSkipped = lastAnswer?.choice === null;
+  const [copied, setCopied] = useState(false);
+
+  const handleCopy = useCallback(async (e?: React.MouseEvent) => {
+    e?.stopPropagation();
+    const prompt = formatBinaryCardPrompt(card, lastAnswer);
+    const ok = await copyToClipboard(prompt);
+    if (ok) {
+      setCopied(true);
+      toast.success("Copied to clipboard for AI explanation");
+      window.setTimeout(() => setCopied(false), 2000);
+    } else {
+      toast.error("Failed to copy to clipboard");
+    }
+  }, [card, lastAnswer]);
+
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.repeat || e.metaKey || e.ctrlKey || e.altKey) return;
+      const target = e.target as HTMLElement | null;
+      if (target && /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName)) return;
+      if (e.key === "c" || e.key === "C") {
+        e.preventDefault();
+        void handleCopy();
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [handleCopy]);
 
   return (
     <div
       className={cn(
-        "bg-surface-2 absolute inset-0 flex h-full flex-col overflow-hidden rounded-[18px] border p-6 shadow-[0_24px_70px_rgb(0_0_0/0.34)] [backface-visibility:hidden] [transform:rotateY(180deg)] sm:p-9",
+        "bg-surface-2 absolute inset-0 flex h-full flex-col overflow-hidden rounded-[18px] border p-6 select-text shadow-[0_24px_70px_rgb(0_0_0/0.34)] [backface-visibility:hidden] [transform:rotateY(180deg)] sm:p-9",
         isCorrect ? "border-mint-line" : isSkipped ? "border-line-3" : "border-rust-line",
       )}
-      onDoubleClick={onContinue}
     >
-      <div className="mb-6 flex items-center justify-between gap-3">
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3">
         {isCorrect ? (
           <span className="border-mint-line bg-mint-deep text-mint-soft flex items-center gap-1.5 rounded-md border px-2.5 py-1 font-mono text-[10.5px] font-semibold tracking-[0.08em] uppercase">
             <Check className="size-3.5" /> Correct
@@ -270,19 +337,36 @@ function CardBack({
             <X className="size-3.5" /> Missed · Review
           </span>
         )}
-        <span
-          className={cn(
-            "rounded-md border px-3 py-1 font-mono text-[11px] font-semibold tracking-[0.08em] uppercase",
-            card.truth
-              ? "border-mint-line bg-mint-deep text-mint-soft"
-              : "border-rust-line bg-rust-bg text-salmon",
-          )}
-        >
-          {card.truth ? "Truth: True" : "Truth: False"}
-        </span>
+        <div className="flex items-center gap-2">
+          <button
+            type="button"
+            onClick={handleCopy}
+            className={cn(
+              "flex items-center gap-1.5 rounded-md border px-2.5 py-1 font-mono text-[11px] font-semibold tracking-[0.08em] uppercase transition-all",
+              copied
+                ? "border-mint-line bg-mint-deep text-mint-soft"
+                : "border-line-3 bg-surface-3 text-ash hover:border-line-2 hover:text-bone active:scale-95",
+            )}
+            title="Copy prompt formatted for AI (or press C)"
+            aria-label="Copy card for AI explanation"
+          >
+            {copied ? <Check className="size-3.5 text-mint" /> : <Copy className="size-3.5" />}
+            <span>{copied ? "Copied" : "Copy for AI explanation"}</span>
+          </button>
+          <span
+            className={cn(
+              "rounded-md border px-3 py-1 font-mono text-[11px] font-semibold tracking-[0.08em] uppercase",
+              card.truth
+                ? "border-mint-line bg-mint-deep text-mint-soft"
+                : "border-rust-line bg-rust-bg text-salmon",
+            )}
+          >
+            {card.truth ? "Truth: True" : "Truth: False"}
+          </span>
+        </div>
       </div>
 
-      <div className="scrollbar-hairline min-h-0 flex-1 overflow-y-auto">
+      <div className="scrollbar-hairline min-h-0 flex-1 overflow-y-auto select-text">
         <p className="text-bone m-0 mb-4 text-[16px]/[1.6] font-medium text-pretty sm:text-[18px]/[1.6]">
           <StatementText text={card.statement} />
         </p>
@@ -303,7 +387,13 @@ function CardBack({
           </p>
         </div>
       </div>
-      <p className="text-slate m-0 mt-5 text-center text-[11.5px]">Enter or continue button to proceed</p>
+      <p className="text-slate m-0 mt-5 text-center text-[11.5px]">
+        Enter or continue button to proceed · Press{" "}
+        <kbd className="border-line-3 bg-surface-3 text-bone rounded border px-1 py-0.5 font-mono text-[10px]">
+          C
+        </kbd>{" "}
+        to copy for AI explanation
+      </p>
     </div>
   );
 }

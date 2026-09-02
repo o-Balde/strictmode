@@ -34,7 +34,10 @@ export function ProgressView() {
   // "first-try correct" here means currently-correct over currently-seen; a
   // question re-answered right stops counting against you.
   const accuracy = seen > 0 ? Math.round((correct / seen) * 100) : 0;
-  const cells = buildCells(progress.activityHeatmap ?? {}, 84);
+  const cells = buildCells(progress.activityHeatmap ?? {}, 84, {
+    dailyBreakdown: progress.dailyBreakdown,
+    completedDays: progress.completedDays,
+  });
   const health = streakHealth(progress);
   const binary = progress.binary;
   const binaryAccuracy = binary.totalAnswers > 0

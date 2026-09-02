@@ -12,13 +12,16 @@
  * explanation and the recorded misconception, both of which are populated for
  * all 691 questions.
  */
+import { useCallback, useState } from "react";
 import { motion } from "motion/react";
-import { Star } from "lucide-react";
+import { Check, Copy, Star } from "lucide-react";
+import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import type { QuestionPayload } from "@/lib/question-payload";
 import { CodeWell } from "@/components/code-well";
 import { OptionText } from "@/components/option-text";
 import { stagger, staggerChild } from "@/lib/motion";
+import { copyToClipboard, formatQuestionPrompt } from "@/lib/ai-prompt";
 
 export function Feedback({
   question,
@@ -41,6 +44,19 @@ export function Feedback({
 }) {
   const chosen = question.options.find((o) => o.id === selected);
   const answer = question.options.find((o) => o.id === question.correctAnswer);
+  const [copied, setCopied] = useState(false);
+
+  const handleCopyForAI = useCallback(async () => {
+    const prompt = formatQuestionPrompt(question, selected);
+    const ok = await copyToClipboard(prompt);
+    if (ok) {
+      setCopied(true);
+      toast.success("Copied question for AI explanation");
+      window.setTimeout(() => setCopied(false), 2000);
+    } else {
+      toast.error("Failed to copy to clipboard");
+    }
+  }, [question, selected]);
 
   return (
     <div className="border-line border-t">
@@ -175,6 +191,21 @@ export function Feedback({
           >
             <Star className={cn("size-3.5", saved && "fill-clay")} />
             {saved ? "Saved" : "Save to review"}
+          </button>
+          <button
+            type="button"
+            data-copy-prompt
+            onClick={handleCopyForAI}
+            className={cn(
+              "border-line-3 flex items-center gap-2 rounded-lg border px-[18px] py-[13px] text-[13.5px] font-medium transition-all",
+              copied
+                ? "border-mint-line bg-mint-deep text-mint-soft"
+                : "text-bone hover:border-line-2 active:scale-95",
+            )}
+            title="Copy prompt for AI explanation (Press C)"
+          >
+            {copied ? <Check className="size-3.5 text-mint" /> : <Copy className="size-3.5" />}
+            <span>{copied ? "Copied for AI explanation" : "Copy for AI explanation"}</span>
           </button>
           {!correct ? (
             <span className="text-ash text-[13px]">

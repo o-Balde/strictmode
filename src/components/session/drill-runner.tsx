@@ -164,6 +164,11 @@ export function DrillRunner({
         document.querySelector<HTMLButtonElement>("[data-hint-toggle]")?.click();
         return;
       }
+      if (key === "c" && !e.metaKey && !e.ctrlKey) {
+        e.preventDefault();
+        document.querySelector<HTMLButtonElement>("[data-copy-prompt]")?.click();
+        return;
+      }
       if ((key === "enter" || key === " ") && selected) {
         e.preventDefault();
         submit();

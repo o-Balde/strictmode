@@ -21,7 +21,10 @@ import { stagger, staggerChild } from "@/lib/motion";
 
 export function Dashboard({ initialHud }: { initialHud: HudCookie | null }) {
   const s = useHomeState(initialHud);
-  const cells = buildCells(s.progress.activityHeatmap ?? {}, 84);
+  const cells = buildCells(s.progress.activityHeatmap ?? {}, 84, {
+    dailyBreakdown: s.progress.dailyBreakdown,
+    completedDays: s.progress.completedDays,
+  });
 
   return (
     <div className="min-h-dvh">
@@ -93,17 +96,17 @@ export function Dashboard({ initialHud }: { initialHud: HudCookie | null }) {
             </Link>
             <Link
               href="/binary"
-              className="border-binary-line bg-binary-deep group rounded-xl border p-5 transition-colors hover:border-binary focus-visible:ring-2 focus-visible:ring-binary focus-visible:outline-none"
+              className="border-line-3 bg-surface group rounded-xl border p-5 transition-colors hover:border-binary focus-visible:ring-2 focus-visible:ring-binary focus-visible:outline-none"
             >
               <div className="mb-5 flex items-start justify-between gap-4">
-                <span className="bg-binary text-ink grid size-9 place-items-center rounded-lg">
+                <span className="bg-binary-deep text-binary-soft grid size-9 place-items-center rounded-lg">
                   <Layers3 className="size-4" />
                 </span>
                 <span className="text-slate font-mono text-[10px] tracking-[0.08em] uppercase">10 cards · ~3 min</span>
               </div>
               <div className="text-parchment text-[17px] font-semibold">Binary Cards</div>
               <p className="text-ash mt-1.5 mb-4 text-[12.5px]/[1.55]">Swipe true or false. Misses return later.</p>
-              <span className="text-binary-soft text-[13px] font-semibold group-hover:underline group-hover:underline-offset-4">
+              <span className="text-binary text-[13px] font-semibold group-hover:underline group-hover:underline-offset-4">
                 {s.doneToday ? "Extra Binary deck →" : "Choose Binary →"}
               </span>
             </Link>

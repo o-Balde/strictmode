@@ -7,7 +7,10 @@
  * Every question in the bank is four-option multiple choice, so the format is
  * shared; what changes per type is the chrome and how much room the code gets.
  */
+import { useState } from "react";
 import { motion } from "motion/react";
+import { Copy, Check } from "lucide-react";
+import { toast } from "sonner";
 import { cn } from "@/lib/utils";
 import type { QuestionPayload } from "@/lib/question-payload";
 import { CodeWell } from "@/components/code-well";
@@ -15,6 +18,7 @@ import { TypeBadge, typeLabel } from "@/components/chrome";
 import { stagger, staggerChild } from "@/lib/motion";
 import { isTerminalOption, optionsAreTerminal } from "@/lib/terminal";
 import { OptionText } from "@/components/option-text";
+import { copyToClipboard, formatQuestionPrompt } from "@/lib/ai-prompt";
 
 const LETTERS = ["A", "B", "C", "D"] as const;
 
@@ -53,7 +57,24 @@ export function QuestionView({
   answered: boolean;
   onSelect: (id: string) => void;
 }) {
+  const [copied, setCopied] = useState(false);
   const codeIsHero = question.type === "live_code" || question.type === "fix";
+
+  const handleCopyPrompt = async () => {
+    try {
+      const prompt = formatQuestionPrompt(question, selected);
+      const ok = await copyToClipboard(prompt);
+      if (ok) {
+        setCopied(true);
+        toast.success("Prompt copied for AI explanation");
+        setTimeout(() => setCopied(false), 2000);
+      } else {
+        toast.error("Failed to copy to clipboard");
+      }
+    } catch {
+      toast.error("Failed to copy to clipboard");
+    }
+  };
 
   // Presentation policy is decided here, not baked into the payload — a change
   // to the skin rule is a client change, not a cache invalidation.
@@ -67,10 +88,25 @@ export function QuestionView({
   return (
     <div className={cn("px-6 py-8 sm:px-10 sm:py-9")}>
       <motion.div variants={stagger(0.05)} initial="hidden" animate="show">
-        <motion.div variants={staggerChild} className="mb-[18px] flex flex-wrap gap-2">
-          <TypeBadge tone="accent">{typeLabel(question.type)}</TypeBadge>
-          <TypeBadge>{question.category.replace("_", " ")}</TypeBadge>
-          <TypeBadge>{question.subjectTitle}</TypeBadge>
+        <motion.div variants={staggerChild} className="mb-[18px] flex flex-wrap items-center justify-between gap-3">
+          <div className="flex flex-wrap items-center gap-2">
+            <TypeBadge tone="accent">{typeLabel(question.type)}</TypeBadge>
+            <TypeBadge>{question.category.replace("_", " ")}</TypeBadge>
+            <TypeBadge>{question.subjectTitle}</TypeBadge>
+          </div>
+          <button
+            type="button"
+            data-copy-prompt
+            onClick={handleCopyPrompt}
+            className={cn(
+              "border-line-3 text-ash hover:text-bone hover:border-line flex items-center gap-1.5 rounded-md border px-2.5 py-1 text-xs font-medium transition-all active:scale-95",
+              copied && "border-mint-line bg-mint-deep text-mint-soft",
+            )}
+            title="Copy prompt for AI explanation (Press C)"
+          >
+            {copied ? <Check className="size-3 text-mint" /> : <Copy className="size-3" />}
+            <span>{copied ? "Copied" : "Copy for AI explanation"}</span>
+          </button>
         </motion.div>
 
         <motion.h1

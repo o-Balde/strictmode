@@ -33,6 +33,11 @@ export interface BinaryProgress {
   lastDifficulty: QuestionLevel;
 }
 
+export interface DailyBreakdown {
+  drills: number;
+  binary: number;
+}
+
 /** Extends the shipped UserDrillProgress with scheduling and timing. */
 export interface StoredProgress extends UserDrillProgress {
   version: number;
@@ -48,6 +53,8 @@ export interface StoredProgress extends UserDrillProgress {
   homeVariant: "dashboard" | "path";
   /** Independent knowledge metrics for the faster, 50/50 Binary format. */
   binary: BinaryProgress;
+  /** Daily breakdown between standard drill questions and binary cards. */
+  dailyBreakdown?: Record<string, DailyBreakdown>;
 }
 
 export interface HudCookie {
@@ -74,6 +81,7 @@ export function emptyProgress(): StoredProgress {
     perQuestionMs: {},
     homeVariant: "dashboard",
     binary: emptyBinaryProgress(),
+    dailyBreakdown: {},
   };
 }
 
@@ -113,6 +121,10 @@ export function migrate(raw: unknown): StoredProgress {
     savedQuestionIds: arr(p.savedQuestionIds),
     completedDays: arr(p.completedDays),
     activityHeatmap: p.activityHeatmap ?? {},
+    dailyBreakdown:
+      typeof p.dailyBreakdown === "object" && p.dailyBreakdown !== null
+        ? (p.dailyBreakdown as Record<string, DailyBreakdown>)
+        : {},
     reviewState: p.reviewState ?? {},
     perQuestionMs: p.perQuestionMs ?? {},
     streakDays: typeof p.streakDays === "number" ? p.streakDays : 0,
@@ -314,6 +326,13 @@ export function applyAnswer(
       ...p.activityHeatmap,
       [today]: (p.activityHeatmap?.[today] ?? 0) + 1,
     },
+    dailyBreakdown: {
+      ...p.dailyBreakdown,
+      [today]: {
+        drills: (p.dailyBreakdown?.[today]?.drills ?? 0) + 1,
+        binary: p.dailyBreakdown?.[today]?.binary ?? 0,
+      },
+    },
   };
 }
 
@@ -401,6 +420,13 @@ export function commitBinarySession(
       ...p.activityHeatmap,
       [today]: (p.activityHeatmap?.[today] ?? 0) + answers.length,
     },
+    dailyBreakdown: {
+      ...p.dailyBreakdown,
+      [today]: {
+        drills: p.dailyBreakdown?.[today]?.drills ?? 0,
+        binary: (p.dailyBreakdown?.[today]?.binary ?? 0) + answers.length,
+      },
+    },
   };
   return countsForDaily
     ? completeDailyDrill(withAnswers, totalMs, today)
@@ -463,6 +489,15 @@ export function importProgress(current: StoredProgress, json: string): StoredPro
     heatmap[day] = Math.max(heatmap[day] ?? 0, n);
   }
 
+  const breakdown: Record<string, DailyBreakdown> = { ...current.dailyBreakdown };
+  for (const [day, b] of Object.entries(incoming.dailyBreakdown ?? {})) {
+    const existing = breakdown[day] ?? { drills: 0, binary: 0 };
+    breakdown[day] = {
+      drills: Math.max(existing.drills, b.drills ?? 0),
+      binary: Math.max(existing.binary, b.binary ?? 0),
+    };
+  }
+
   const reviewState = { ...current.reviewState };
   for (const [id, rec] of Object.entries(incoming.reviewState)) {
     const mine = reviewState[id];
@@ -484,6 +519,7 @@ export function importProgress(current: StoredProgress, json: string): StoredPro
     savedQuestionIds: union(current.savedQuestionIds, incoming.savedQuestionIds),
     completedDays: union(current.completedDays, incoming.completedDays).sort(),
     activityHeatmap: heatmap,
+    dailyBreakdown: breakdown,
     reviewState,
     streakDays: Math.max(current.streakDays, incoming.streakDays),
     bestStreak: Math.max(current.bestStreak, incoming.bestStreak),

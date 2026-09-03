@@ -13,7 +13,7 @@ import type {
   QuestionLevel,
   QuestionSubject,
   QuestionType,
-} from "@/data/types";
+} from "@data";
 
 export interface IndexRow {
   id: string;

@@ -8,7 +8,7 @@
  */
 import { useRef, useState } from "react";
 import { toast } from "sonner";
-import { useProgress } from "@/components/progress-provider";
+import { useProgress } from "@components";
 
 export function ProgressTransfer() {
   const { exportJson, importJson, progress } = useProgress();

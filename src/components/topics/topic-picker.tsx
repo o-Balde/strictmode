@@ -11,13 +11,16 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { motion } from "motion/react";
 import { ArrowLeft } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { useProgress } from "@/components/progress-provider";
-import { CoverageRing } from "@/components/meters";
-import { CATEGORIES, SUBJECTS } from "@/lib/question-index";
-import { subjectProgress } from "@/lib/drill";
-import type { QuestionCategory } from "@/data/types";
-import { stagger, staggerChild } from "@/lib/motion";
+import { CoverageRing, useProgress } from "@components";
+import type { QuestionCategory } from "@data";
+import {
+  CATEGORIES,
+  SUBJECTS,
+  cn,
+  stagger,
+  staggerChild,
+  subjectProgress,
+} from "@lib";
 
 type Filter = QuestionCategory | "all" | "code";
 
@@ -40,26 +43,26 @@ export function TopicPicker() {
       subjectProgress(
         progress.seenQuestionIds,
         progress.correctQuestionIds,
-        SUBJECTS.map((s) => ({ subject: s.subject, total: s.total })),
+        SUBJECTS.map((subjectItem) => ({ subject: subjectItem.subject, total: subjectItem.total })),
       ),
     [progress.seenQuestionIds, progress.correctQuestionIds],
   );
 
   const byId = useMemo(
-    () => new Map(coverage.map((c) => [c.subject, c])),
+    () => new Map(coverage.map((coverageItem) => [coverageItem.subject, coverageItem])),
     [coverage],
   );
 
-  const visible = SUBJECTS.filter((s) => {
+  const visible = SUBJECTS.filter((subjectItem) => {
     if (filter === "all") return true;
     if (filter === "code") return true;
-    return s.category === filter;
+    return subjectItem.category === filter;
   });
 
   const wrongCount = progress.wrongQuestionIds.length;
 
   return (
-    <div className="mx-auto min-h-dvh w-full max-w-[860px] px-6 py-8 sm:px-9 sm:py-10">
+    <div className="mx-auto min-h-dvh w-full max-w-215 px-6 py-8 sm:px-9 sm:py-10">
       <Link
         href="/"
         className="text-ash hover:text-bone mb-7 inline-flex items-center gap-2 text-[13px] transition-colors"
@@ -79,9 +82,9 @@ export function TopicPicker() {
         <FilterPill active={filter === "all"} onClick={() => setFilter("all")}>
           All
         </FilterPill>
-        {CATEGORIES.map((c) => (
-          <FilterPill key={c} active={filter === c} onClick={() => setFilter(c)}>
-            {CATEGORY_LABEL[c] ?? c}
+        {CATEGORIES.map((category) => (
+          <FilterPill key={category} active={filter === category} onClick={() => setFilter(category)}>
+            {CATEGORY_LABEL[category] ?? category}
           </FilterPill>
         ))}
       </div>
@@ -93,26 +96,26 @@ export function TopicPicker() {
         animate="show"
         className="grid gap-3 sm:grid-cols-2 lg:grid-cols-3"
       >
-        {visible.map((s, i) => {
-          const c = byId.get(s.subject);
-          const seen = c?.seen ?? 0;
-          const percent = s.total > 0 ? (seen / s.total) * 100 : 0;
+        {visible.map((subjectItem, subjectIndex) => {
+          const progressItem = byId.get(subjectItem.subject);
+          const seen = progressItem?.seen ?? 0;
+          const percent = subjectItem.total > 0 ? (seen / subjectItem.total) * 100 : 0;
           return (
-            <motion.div key={s.subject} variants={staggerChild}>
+            <motion.div key={subjectItem.subject} variants={staggerChild}>
               <Link
-                href={`/topics/${s.subject}`}
-                className="border-line-2 bg-surface-2 hover:border-line-3 block h-full rounded-[9px] border p-[18px] transition-colors"
+                href={`/topics/${subjectItem.subject}`}
+                className="border-line-2 bg-surface-2 hover:border-line-3 block h-full rounded-[9px] border p-4.5 transition-colors"
               >
                 <div className="mb-6 flex items-start justify-between">
                   <span className="text-slate font-mono text-[10.5px] font-medium tracking-[0.07em] uppercase">
-                    {CATEGORY_LABEL[s.category] ?? s.category}
+                    {CATEGORY_LABEL[subjectItem.category] ?? subjectItem.category}
                   </span>
-                  <CoverageRing percent={percent} delay={0.1 + i * 0.04} />
+                  <CoverageRing percent={percent} delay={0.1 + subjectIndex * 0.04} />
                 </div>
-                <div className="text-paper mb-1.5 text-[15.5px] font-semibold">{s.title}</div>
-                <div className="text-ash font-mono text-[12px]">
-                  {seen} / {s.total} seen
-                  {c?.exhausted ? " · cleared" : ""}
+                <div className="text-paper mb-1.5 text-[15.5px] font-semibold">{subjectItem.title}</div>
+                <div className="text-ash font-mono text-xs">
+                  {seen} / {subjectItem.total} seen
+                  {progressItem?.exhausted ? " · cleared" : ""}
                 </div>
               </Link>
             </motion.div>
@@ -127,12 +130,12 @@ export function TopicPicker() {
               if (wrongCount === 0) e.preventDefault();
             }}
             className={cn(
-              "border-line-2 flex h-full flex-col justify-center rounded-[9px] border border-dashed bg-[#141312] p-[18px] transition-colors",
+              "border-line-2 flex h-full flex-col justify-center rounded-[9px] border border-dashed bg-[#141312] p-4.5 transition-colors",
               wrongCount > 0 ? "hover:border-flame" : "cursor-not-allowed opacity-60",
             )}
           >
             <div className="text-ash mb-1.5 text-[15px] font-semibold">Mixed review</div>
-            <div className="text-shadow font-mono text-[12px]/[1.5]">
+            <div className="text-shadow font-mono text-xs/[1.5]">
               {wrongCount > 0
                 ? `${wrongCount} question${wrongCount === 1 ? "" : "s"} you got wrong`
                 : "nothing wrong yet"}
@@ -144,21 +147,23 @@ export function TopicPicker() {
   );
 }
 
+interface FilterPillProps {
+  active: boolean;
+  onClick: () => void;
+  children: React.ReactNode;
+}
+
 function FilterPill({
   active,
   onClick,
   children,
-}: {
-  active: boolean;
-  onClick: () => void;
-  children: React.ReactNode;
-}) {
+}: Readonly<FilterPillProps>) {
   return (
     <button
       type="button"
       onClick={onClick}
       className={cn(
-        "rounded-full px-3 py-[7px] font-mono text-[12px] font-medium transition-colors",
+        "rounded-full px-3 py-1.75 font-mono text-xs font-medium transition-colors",
         active
           ? "bg-flame text-ink"
           : "border-line-2 text-stone hover:text-bone border",

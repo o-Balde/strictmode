@@ -5,16 +5,18 @@
  * built, and this switches between them.
  */
 import { useRouter } from "next/navigation";
-import { cn } from "@/lib/utils";
-import { useProgress } from "@/components/progress-provider";
+import { cn } from "@lib";
+import { useProgress } from "@components";
+
+export interface HomeVariantToggleProps {
+  current: "dashboard" | "path";
+  className?: string;
+}
 
 export function HomeVariantToggle({
   current,
   className,
-}: {
-  current: "dashboard" | "path";
-  className?: string;
-}) {
+}: Readonly<HomeVariantToggleProps>) {
   const { setHomeVariant } = useProgress();
   const router = useRouter();
 

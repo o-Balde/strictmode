@@ -23,6 +23,8 @@ import { PUZZLE_QUESTIONS } from './questions/puzzles';
 import { ALGORITHMS_DSA_QUESTIONS } from './questions/algorithms-dsa';
 
 export * from './types';
+export * from './binary-types';
+export * from './binary-cards';
 export { REACT_HOOKS_QUESTIONS } from './questions/react-hooks';
 export { REACT_RENDERING_QUESTIONS } from './questions/react-rendering';
 export { TYPESCRIPT_QUESTIONS } from './questions/typescript';

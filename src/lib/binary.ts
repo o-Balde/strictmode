@@ -1,14 +1,14 @@
 import rawIndex from "@/generated/binary-card-index.json";
-import type { QuestionLevel } from "@/data/types";
 import type {
   ActiveBinarySession,
   BinaryCardIndexRow,
   BinaryCardPayload,
   BinarySessionResult,
-} from "@/data/binary-types";
-import type { BinaryProgress } from "@/lib/progress";
-import { compareDue, isDue } from "@/lib/scheduler";
-import { dayKey } from "@/lib/dates";
+  QuestionLevel,
+} from "@data";
+import type { BinaryProgress } from "./progress";
+import { compareDue, isDue } from "./scheduler";
+import { dayKey } from "./dates";
 
 export const BINARY_DECK_SIZE = 10;
 export const BINARY_BANK_SIZE = 180;

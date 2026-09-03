@@ -6,18 +6,20 @@
  * Deliberately dependency-free — this is a checked-in record of what was
  * verified, not a test framework.
  */
-import { emptyProgress, streakHealth, nextStreak, dayNumber, migrate, importProgress, exportProgress,
+import {
+  emptyProgress, streakHealth, nextStreak, dayNumber, migrate, importProgress, exportProgress,
   applyAnswer, completeDailyDrill, addPracticeTime, toggleSavedQuestion, forgetQuestions,
   commitBinarySession, emptyBinaryProgress,
-  type StoredProgress } from "@/lib/progress";
-import { grade, isDue, initialRecord } from "@/lib/scheduler";
-import { dayKey, addDays, daysBetween, formatCountdown, formatClock, formatDuration } from "@/lib/dates";
-import { composeDrill } from "@/lib/drill";
-import { QUESTION_INDEX, INDEX_BY_ID, SUBJECTS, BANK_TOTAL, isQuick, isCode } from "@/lib/question-index";
-import { isTerminalOption, optionsAreTerminal } from "@/lib/terminal";
-import { BINARY_CARDS } from "@/data/binary-cards";
-import { BINARY_CARD_INDEX, composeBinaryDeck } from "@/lib/binary";
-import { emphasisedPhrases, stripMarkers } from "@/lib/statement-tokens";
+  grade, isDue, initialRecord,
+  dayKey, addDays, daysBetween, formatCountdown, formatClock, formatDuration,
+  composeDrill,
+  QUESTION_INDEX, INDEX_BY_ID, SUBJECTS, BANK_TOTAL, isQuick, isCode,
+  isTerminalOption, optionsAreTerminal,
+  BINARY_CARD_INDEX, composeBinaryDeck,
+  emphasisedPhrases, stripMarkers,
+  type StoredProgress,
+} from "@lib";
+import { BINARY_CARDS } from "@data";
 
 let pass = 0, fail = 0;
 const eq = (label: string, got: unknown, want: unknown) => {

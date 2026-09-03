@@ -20,35 +20,39 @@ import {
   exportProgress,
   forgetQuestions,
   importProgress,
+  progressStore as store,
   toggleSavedQuestion,
   type AnswerEvent,
   type BinarySessionCommit,
   type StoredProgress,
-} from "@/lib/progress";
-import * as store from "@/lib/progress-store";
-import { useHydrated } from "@/hooks/use-hydrated";
+} from "@lib";
+import { useHydrated } from "@hooks";
 
 export type { AnswerEvent };
 
-interface ProgressContextValue {
-  progress: StoredProgress;
-  hydrated: boolean;
-  recordAnswer: (a: AnswerEvent) => void;
-  completeDaily: (totalMs: number) => void;
-  recordFreePlay: (totalMs: number) => void;
-  commitBinary: (session: BinarySessionCommit) => void;
-  setBinaryDifficulty: (level: StoredProgress["binary"]["lastDifficulty"]) => void;
-  toggleSaved: (id: string) => void;
-  setHomeVariant: (v: StoredProgress["homeVariant"]) => void;
-  resetSubject: (ids: string[]) => void;
-  resetAll: () => void;
-  exportJson: () => string;
-  importJson: (json: string) => void;
+export interface ProgressContextValue {
+  readonly progress: StoredProgress;
+  readonly hydrated: boolean;
+  readonly recordAnswer: (event: AnswerEvent) => void;
+  readonly completeDaily: (totalMs: number) => void;
+  readonly recordFreePlay: (totalMs: number) => void;
+  readonly commitBinary: (session: BinarySessionCommit) => void;
+  readonly setBinaryDifficulty: (level: StoredProgress["binary"]["lastDifficulty"]) => void;
+  readonly toggleSaved: (id: string) => void;
+  readonly setHomeVariant: (variant: StoredProgress["homeVariant"]) => void;
+  readonly resetSubject: (ids: string[]) => void;
+  readonly resetAll: () => void;
+  readonly exportJson: () => string;
+  readonly importJson: (json: string) => void;
 }
 
 const ProgressContext = createContext<ProgressContextValue | null>(null);
 
-export function ProgressProvider({ children }: { children: React.ReactNode }) {
+export interface ProgressProviderProps {
+  children: React.ReactNode;
+}
+
+export function ProgressProvider({ children }: Readonly<ProgressProviderProps>) {
   const progress = useSyncExternalStore(
     store.subscribe,
     store.getSnapshot,
@@ -57,36 +61,36 @@ export function ProgressProvider({ children }: { children: React.ReactNode }) {
   const hydrated = useHydrated();
 
   const recordAnswer = useCallback(
-    (event: AnswerEvent) => store.update((p) => applyAnswer(p, event)),
+    (event: AnswerEvent) => store.update((currentProgress) => applyAnswer(currentProgress, event)),
     [],
   );
   const completeDaily = useCallback(
-    (totalMs: number) => store.update((p) => completeDailyDrill(p, totalMs)),
+    (totalMs: number) => store.update((currentProgress) => completeDailyDrill(currentProgress, totalMs)),
     [],
   );
   const recordFreePlay = useCallback(
-    (totalMs: number) => store.update((p) => addPracticeTime(p, totalMs)),
+    (totalMs: number) => store.update((currentProgress) => addPracticeTime(currentProgress, totalMs)),
     [],
   );
   const commitBinary = useCallback(
-    (session: BinarySessionCommit) => store.update((p) => commitBinarySession(p, session)),
+    (session: BinarySessionCommit) => store.update((currentProgress) => commitBinarySession(currentProgress, session)),
     [],
   );
   const setBinaryDifficulty = useCallback(
     (level: StoredProgress["binary"]["lastDifficulty"]) =>
-      store.update((p) => chooseBinaryDifficulty(p, level)),
+      store.update((currentProgress) => chooseBinaryDifficulty(currentProgress, level)),
     [],
   );
   const toggleSaved = useCallback(
-    (id: string) => store.update((p) => toggleSavedQuestion(p, id)),
+    (id: string) => store.update((currentProgress) => toggleSavedQuestion(currentProgress, id)),
     [],
   );
   const setHomeVariant = useCallback(
-    (v: StoredProgress["homeVariant"]) => store.update((p) => chooseHomeVariant(p, v)),
+    (variant: StoredProgress["homeVariant"]) => store.update((currentProgress) => chooseHomeVariant(currentProgress, variant)),
     [],
   );
   const resetSubject = useCallback(
-    (ids: string[]) => store.update((p) => forgetQuestions(p, ids)),
+    (ids: string[]) => store.update((currentProgress) => forgetQuestions(currentProgress, ids)),
     [],
   );
   const resetAll = useCallback(() => store.replace(emptyProgress()), []);

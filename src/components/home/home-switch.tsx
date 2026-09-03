@@ -6,12 +6,14 @@
  * lives in the progress record so it survives reloads.
  */
 import { AnimatePresence, motion } from "motion/react";
-import type { HudCookie } from "@/lib/progress";
-import { useProgress } from "@/components/progress-provider";
-import { Dashboard } from "@/components/home/dashboard";
-import { PathHome } from "@/components/home/path-home";
+import type { HudCookie } from "@lib";
+import { Dashboard, PathHome, useProgress } from "@components";
 
-export function HomeSwitch({ initialHud }: { initialHud: HudCookie | null }) {
+export interface HomeSwitchProps {
+  initialHud: HudCookie | null;
+}
+
+export function HomeSwitch({ initialHud }: Readonly<HomeSwitchProps>) {
   const { progress, hydrated } = useProgress();
   // Before hydration the cookie is all we have; it is enough to pick a layout.
   const variant = hydrated ? progress.homeVariant : "dashboard";

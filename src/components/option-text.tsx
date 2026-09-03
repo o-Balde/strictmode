@@ -1,7 +1,6 @@
 "use client";
 
-import { cn } from "@/lib/utils";
-import { tokeniseOutput, tokeniseProse, type OptionToken } from "@/lib/option-tokens";
+import { cn, tokeniseOutput, tokeniseProse, type OptionToken } from "@lib";
 
 /**
  * Renders an option's text, setting console values and inline code in mono and
@@ -12,32 +11,37 @@ import { tokeniseOutput, tokeniseProse, type OptionToken } from "@/lib/option-to
  * are always rendered as styled inline code, with proper wrapping so they never
  * get clipped or truncated.
  */
-export function OptionText({ text, terminal }: { text: string; terminal: boolean }) {
+export interface OptionTextProps {
+  text: string;
+  terminal: boolean;
+}
+
+export function OptionText({ text, terminal }: Readonly<OptionTextProps>) {
   const tokens: OptionToken[] = terminal ? tokeniseOutput(text) : tokeniseProse(text);
   return (
-    <span className="inline break-words">
-      {tokens.map((t, i) => {
-        if (t.kind === "prose") {
+    <span className="inline wrap-break-word">
+      {tokens.map((token, tokenIndex) => {
+        if (token.kind === "prose") {
           return (
-            <span key={i} className={cn(terminal && "font-sans text-bone")}>
-              {t.text}
+            <span key={tokenIndex} className={cn(terminal && "font-sans text-bone")}>
+              {token.text}
             </span>
           );
         }
-        if (t.kind === "value") {
+        if (token.kind === "value") {
           return (
-            <span key={i} className="term-glow font-mono text-[var(--term-fg)]">
-              {t.text}
+            <span key={tokenIndex} className="term-glow font-mono text-[var(--term-fg)]">
+              {token.text}
             </span>
           );
         }
         return (
           <code
-            key={i}
-            className="inline rounded-[3px] px-[4px] py-[1px] font-mono text-[0.92em] break-all"
+            key={tokenIndex}
+            className="inline rounded-[3px] px-1 py-px font-mono text-[0.92em] break-all"
             style={{ background: "var(--well)", color: "var(--code-function)" }}
           >
-            {t.text}
+            {token.text}
           </code>
         );
       })}

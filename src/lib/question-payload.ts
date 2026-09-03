@@ -16,7 +16,7 @@ import type {
   QuestionLevel,
   QuestionSubject,
   QuestionType,
-} from "@/data/types";
+} from "@data";
 
 export interface PayloadOption {
   id: string;

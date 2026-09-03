@@ -10,18 +10,26 @@ import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
 import { ArrowLeft } from "lucide-react";
 import { toast } from "sonner";
-import type { QuestionSubject } from "@/data/types";
-import { useProgress } from "@/components/progress-provider";
-import { CoverageRing, MasteryBar } from "@/components/meters";
-import { rowsForSubject, subjectMeta, SUBJECTS } from "@/lib/question-index";
-import { subjectProgress } from "@/lib/drill";
-import { weakSubjects } from "@/lib/progress";
-import { INDEX_BY_ID } from "@/lib/question-index";
-import { stagger, staggerChild } from "@/lib/motion";
+import type { QuestionSubject } from "@data";
+import { CoverageRing, MasteryBar, useProgress } from "@components";
+import {
+  INDEX_BY_ID,
+  SUBJECTS,
+  rowsForSubject,
+  stagger,
+  staggerChild,
+  subjectMeta,
+  subjectProgress,
+  weakSubjects,
+} from "@lib";
 
 const subjectOf = (id: string) => INDEX_BY_ID.get(id)?.subject;
 
-export function SubjectView({ subject }: { subject: QuestionSubject }) {
+export interface SubjectViewProps {
+  subject: QuestionSubject;
+}
+
+export function SubjectView({ subject }: Readonly<SubjectViewProps>) {
   const router = useRouter();
   const { progress, resetSubject } = useProgress();
   const meta = subjectMeta(subject);
@@ -40,12 +48,12 @@ export function SubjectView({ subject }: { subject: QuestionSubject }) {
         <h1 className="text-parchment m-0 mb-2.5 text-xl font-semibold">
           No questions in {meta?.title ?? subject} yet.
         </h1>
-        <p className="text-stone mb-6 text-[14px]/[1.65]">
+        <p className="text-stone mb-6 text-sm/[1.65]">
           This topic is defined in the taxonomy but the bank has nothing for it.
         </p>
         <Link
           href="/topics"
-          className="bg-flame text-ink inline-block rounded-lg px-[22px] py-[13px] text-[14px] font-semibold"
+          className="bg-flame text-ink inline-block rounded-lg px-5.5 py-3.25 text-sm font-semibold"
         >
           Back to topics
         </Link>
@@ -53,9 +61,9 @@ export function SubjectView({ subject }: { subject: QuestionSubject }) {
     );
   }
 
-  const weakest = weakSubjects(progress, subjectOf).find((s) => s !== subject);
+  const weakest = weakSubjects(progress, subjectOf).find((weakSubject) => weakSubject !== subject);
   const weakestMeta = weakest ? subjectMeta(weakest) : undefined;
-  const fallback = weakestMeta ?? SUBJECTS.find((s) => s.subject !== subject);
+  const fallback = weakestMeta ?? SUBJECTS.find((subjectEntry) => subjectEntry.subject !== subject);
 
   if (coverage.exhausted) {
     return (
@@ -65,13 +73,13 @@ export function SubjectView({ subject }: { subject: QuestionSubject }) {
           animate={{ opacity: 1, y: 0 }}
           className="text-center"
         >
-          <div className="border-line-3 text-clay mx-auto mb-5 grid size-[46px] place-items-center rounded-full border font-mono text-xl">
+          <div className="border-line-3 text-clay mx-auto mb-5 grid size-11.5 place-items-center rounded-full border font-mono text-xl">
             ✓
           </div>
           <h1 className="text-parchment m-0 mb-2.5 text-xl font-semibold text-balance">
             You&apos;ve cleared every {meta?.title ?? subject} question.
           </h1>
-          <p className="text-stone mx-auto mb-6 max-w-[36ch] text-[14px]/[1.65] text-pretty">
+          <p className="text-stone mx-auto mb-6 max-w-[36ch] text-sm/[1.65] text-pretty">
             All {rows.length} answered at least once. Reset the &ldquo;seen&rdquo; list to cycle
             them again, or move to your weakest topic.
           </p>
@@ -79,7 +87,7 @@ export function SubjectView({ subject }: { subject: QuestionSubject }) {
             {fallback ? (
               <Link
                 href={`/topics/${fallback.subject}`}
-                className="bg-flame text-ink rounded-lg px-[22px] py-[13px] text-[14px] font-semibold"
+                className="bg-flame text-ink rounded-lg px-5.5 py-3.25 text-sm font-semibold"
               >
                 Drill {fallback.title} instead
               </Link>
@@ -87,10 +95,10 @@ export function SubjectView({ subject }: { subject: QuestionSubject }) {
             <button
               type="button"
               onClick={() => {
-                resetSubject(rows.map((r) => r.id));
+                resetSubject(rows.map((row) => row.id));
                 toast.success(`${meta?.title ?? subject} reset — all ${rows.length} are new again.`);
               }}
-              className="border-line-3 text-bone hover:border-line-2 rounded-lg border px-[18px] py-[13px] text-[13.5px] font-medium transition-colors"
+              className="border-line-3 text-bone hover:border-line-2 rounded-lg border px-4.5 py-3.25 text-[13.5px] font-medium transition-colors"
             >
               Reset {meta?.title ?? subject}
             </button>
@@ -108,7 +116,7 @@ export function SubjectView({ subject }: { subject: QuestionSubject }) {
             <h1 className="text-parchment m-0 mb-1.5 text-2xl font-semibold tracking-[-0.02em]">
               {meta?.title ?? subject}
             </h1>
-            <p className="text-stone m-0 max-w-[52ch] text-[14px]/[1.65] text-pretty">
+            <p className="text-stone m-0 max-w-[52ch] text-sm/[1.65] text-pretty">
               {meta?.description}
             </p>
           </div>
@@ -134,7 +142,7 @@ export function SubjectView({ subject }: { subject: QuestionSubject }) {
             whileHover={{ y: -2 }}
             whileTap={{ scale: 0.98 }}
             onClick={() => router.push(`/drill?mode=free&subject=${subject}`)}
-            className="bg-flame text-ink rounded-lg px-7 py-[15px] text-[15px] font-semibold"
+            className="bg-flame text-ink rounded-lg px-7 py-3.75 text-[15px] font-semibold"
           >
             Start free play →
           </motion.button>
@@ -147,9 +155,13 @@ export function SubjectView({ subject }: { subject: QuestionSubject }) {
   );
 }
 
-function Shell({ children }: { children: React.ReactNode }) {
+interface ShellProps {
+  children: React.ReactNode;
+}
+
+function Shell({ children }: Readonly<ShellProps>) {
   return (
-    <div className="mx-auto min-h-dvh w-full max-w-[620px] px-6 py-8 sm:py-14">
+    <div className="mx-auto min-h-dvh w-full max-w-155 px-6 py-8 sm:py-14">
       <Link
         href="/topics"
         className="text-ash hover:text-bone mb-8 inline-flex items-center gap-2 text-[13px] transition-colors"

@@ -7,9 +7,8 @@
  * highlighting — that happens at build — so it stays a lookup and a serialise.
  */
 import { NextResponse } from "next/server";
-import { QUESTIONS_BY_ID, TOPIC_METADATA } from "@/data";
-import type { QuizQuestion } from "@/data/types";
-import type { QuestionPayload } from "@/lib/question-payload";
+import { QUESTIONS_BY_ID, TOPIC_METADATA, type QuizQuestion } from "@data";
+import type { QuestionPayload } from "@lib";
 
 /** A drill is 5; review lists ask for a few more. */
 const MAX_IDS = 40;

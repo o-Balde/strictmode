@@ -16,12 +16,26 @@ import { useCallback, useState } from "react";
 import { motion } from "motion/react";
 import { Check, Copy, Star } from "lucide-react";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
-import type { QuestionPayload } from "@/lib/question-payload";
-import { CodeWell } from "@/components/code-well";
-import { OptionText } from "@/components/option-text";
-import { stagger, staggerChild } from "@/lib/motion";
-import { copyToClipboard, formatQuestionPrompt } from "@/lib/ai-prompt";
+import { CodeWell, OptionText } from "@components";
+import {
+  cn,
+  copyToClipboard,
+  formatQuestionPrompt,
+  stagger,
+  staggerChild,
+  type QuestionPayload,
+} from "@lib";
+
+export interface FeedbackProps {
+  question: QuestionPayload;
+  selected: string | null;
+  correct: boolean;
+  streak: number;
+  saved: boolean;
+  onToggleSave: () => void;
+  onNext: () => void;
+  isLast: boolean;
+}
 
 export function Feedback({
   question,
@@ -32,18 +46,9 @@ export function Feedback({
   onToggleSave,
   onNext,
   isLast,
-}: {
-  question: QuestionPayload;
-  selected: string | null;
-  correct: boolean;
-  streak: number;
-  saved: boolean;
-  onToggleSave: () => void;
-  onNext: () => void;
-  isLast: boolean;
-}) {
-  const chosen = question.options.find((o) => o.id === selected);
-  const answer = question.options.find((o) => o.id === question.correctAnswer);
+}: Readonly<FeedbackProps>) {
+  const chosen = question.options.find((option) => option.id === selected);
+  const answer = question.options.find((option) => option.id === question.correctAnswer);
   const [copied, setCopied] = useState(false);
 
   const handleCopyForAI = useCallback(async () => {
@@ -79,7 +84,7 @@ export function Feedback({
             animate={{ scale: 1, rotate: 0 }}
             transition={{ type: "spring", stiffness: 420, damping: 18 }}
             className={cn(
-              "grid size-[26px] shrink-0 place-items-center rounded-full font-mono text-[13px] font-bold",
+              "grid size-6.5 shrink-0 place-items-center rounded-full font-mono text-[13px] font-bold",
               correct ? "bg-mint text-[#0f1a13]" : "bg-flame text-ink",
             )}
           >
@@ -106,7 +111,7 @@ export function Feedback({
               <div className="text-rust mb-2 font-mono text-[10.5px] font-medium tracking-[0.08em]">
                 YOU PICKED
               </div>
-              <div className="text-paper text-[13.5px]/[1.6] break-words" style={{ overflowWrap: "anywhere" }}>
+              <div className="text-paper text-[13.5px]/[1.6] wrap-break-word" style={{ overflowWrap: "anywhere" }}>
                 {chosen ? <><span className="font-mono">{chosen.id} · </span><OptionText text={chosen.text} terminal={false} /></> : "Skipped"}
               </div>
             </div>
@@ -114,7 +119,7 @@ export function Feedback({
               <div className="text-mint-text mb-2 font-mono text-[10.5px] font-medium tracking-[0.08em]">
                 ANSWER
               </div>
-              <div className="text-paper text-[13.5px]/[1.6] break-words" style={{ overflowWrap: "anywhere" }}>
+              <div className="text-paper text-[13.5px]/[1.6] wrap-break-word" style={{ overflowWrap: "anywhere" }}>
                 {answer ? <><span className="font-mono">{answer.id} · </span><OptionText text={answer.text} terminal={false} /></> : "—"}
               </div>
             </div>
@@ -133,7 +138,7 @@ export function Feedback({
         {!correct && chosen?.explanation ? (
           <motion.p
             variants={staggerChild}
-            className="text-ash mb-5 text-[14px]/[1.7] text-pretty"
+            className="text-ash mb-5 text-sm/[1.7] text-pretty"
           >
             <span className="text-rust font-medium">Why {chosen.id} is wrong: </span>
             {chosen.explanation}
@@ -151,7 +156,7 @@ export function Feedback({
             variants={staggerChild}
             className="bg-surface-3 border-flame mb-5 rounded-r-lg border-l-2 p-4"
           >
-            <p className="text-bone text-[14px]/[1.7] text-pretty">
+            <p className="text-bone text-sm/[1.7] text-pretty">
               <strong className="text-peach font-semibold">The trap: </strong>
               {question.misconception}
             </p>
@@ -163,7 +168,7 @@ export function Feedback({
             variants={staggerChild}
             className="bg-surface-3 border-flame mb-6 rounded-r-lg border-l-2 p-4"
           >
-            <p className="text-bone text-[14px]/[1.7] text-pretty">
+            <p className="text-bone text-sm/[1.7] text-pretty">
               <strong className="text-peach font-semibold">Interview line: </strong>
               {question.interviewLine}
             </p>
@@ -177,7 +182,7 @@ export function Feedback({
             autoFocus
             whileHover={{ y: -1 }}
             whileTap={{ scale: 0.98 }}
-            className="bg-flame text-ink focus-visible:ring-flame rounded-lg px-[30px] py-[13px] text-[14.5px] font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--ink)] focus-visible:outline-none"
+            className="bg-flame text-ink focus-visible:ring-flame rounded-lg px-7.5 py-3.25 text-[14.5px] font-semibold focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-[var(--ink)] focus-visible:outline-none"
           >
             {isLast ? "Finish ↵" : "Next ↵"}
           </motion.button>
@@ -185,7 +190,7 @@ export function Feedback({
             type="button"
             onClick={onToggleSave}
             className={cn(
-              "border-line-3 flex items-center gap-2 rounded-lg border px-[18px] py-[13px] text-[13.5px] font-medium transition-colors",
+              "border-line-3 flex items-center gap-2 rounded-lg border px-4.5 py-3.25 text-[13.5px] font-medium transition-colors",
               saved ? "text-clay border-clay" : "text-bone hover:border-line-2",
             )}
           >
@@ -197,7 +202,7 @@ export function Feedback({
             data-copy-prompt
             onClick={handleCopyForAI}
             className={cn(
-              "border-line-3 flex items-center gap-2 rounded-lg border px-[18px] py-[13px] text-[13.5px] font-medium transition-all",
+              "border-line-3 flex items-center gap-2 rounded-lg border px-4.5 py-3.25 text-[13.5px] font-medium transition-all",
               copied
                 ? "border-mint-line bg-mint-deep text-mint-soft"
                 : "text-bone hover:border-line-2 active:scale-95",

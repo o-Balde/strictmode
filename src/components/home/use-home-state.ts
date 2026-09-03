@@ -9,20 +9,21 @@
  * than a generic "5 items".
  */
 import { useEffect, useMemo, useState } from "react";
-import { useProgress } from "@/components/progress-provider";
-import { composeDrill } from "@/lib/drill";
-import { INDEX_BY_ID, SUBJECTS, subjectMeta } from "@/lib/question-index";
-import { subjectProgress } from "@/lib/drill";
+import { typeLabel, useProgress } from "@components";
+import type { QuestionSubject } from "@data";
 import {
+  INDEX_BY_ID,
+  SUBJECTS,
+  composeDrill,
   dayNumber,
   hasCompletedToday,
+  msUntilNextLocalMidnight,
   streakHealth,
+  subjectMeta,
+  subjectProgress,
   weakSubjects,
   type HudCookie,
-} from "@/lib/progress";
-import { msUntilNextLocalMidnight } from "@/lib/dates";
-import { typeLabel } from "@/components/chrome";
-import type { QuestionSubject } from "@/data/types";
+} from "@lib";
 
 export interface QueueItem {
   id: string;
@@ -67,8 +68,8 @@ export function useHomeState(initialHud: HudCookie | null) {
 
   // Countdown to local midnight, for the nothing-due card.
   useEffect(() => {
-    const id = window.setInterval(() => setMsLeft(msUntilNextLocalMidnight()), 1000);
-    return () => window.clearInterval(id);
+    const intervalId = window.setInterval(() => setMsLeft(msUntilNextLocalMidnight()), 1000);
+    return () => window.clearInterval(intervalId);
   }, []);
 
   const coverage = useMemo(
@@ -76,7 +77,7 @@ export function useHomeState(initialHud: HudCookie | null) {
       subjectProgress(
         progress.seenQuestionIds,
         progress.correctQuestionIds,
-        SUBJECTS.map((s) => ({ subject: s.subject, total: s.total })),
+        SUBJECTS.map((subjectItem) => ({ subject: subjectItem.subject, total: subjectItem.total })),
       ),
     [progress.seenQuestionIds, progress.correctQuestionIds],
   );
@@ -88,16 +89,16 @@ export function useHomeState(initialHud: HudCookie | null) {
   const weakest = useMemo(
     () =>
       coverage
-        .filter((c) => c.seen >= 2 && c.mastery < 100)
-        .sort((a, b) => a.mastery - b.mastery)
+        .filter((item) => item.seen >= 2 && item.mastery < 100)
+        .sort((first, second) => first.mastery - second.mastery)
         .slice(0, 3)
-        .map((c) => ({ ...c, title: subjectMeta(c.subject)?.title ?? c.subject })),
+        .map((item) => ({ ...item, title: subjectMeta(item.subject)?.title ?? item.subject })),
     [coverage],
   );
 
   const focusTitles = useMemo(() => {
-    const subjects: QuestionSubject[] = drill?.focusSubjects ?? [];
-    return subjects.map((s) => subjectMeta(s)?.title ?? s);
+    const subjects: readonly QuestionSubject[] = drill?.focusSubjects ?? [];
+    return subjects.map((subject) => subjectMeta(subject)?.title ?? subject);
   }, [drill]);
 
   return {

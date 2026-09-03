@@ -5,15 +5,19 @@ import Link from "next/link";
 import { motion } from "motion/react";
 import { Check, Copy, Layers3, RotateCcw, X } from "lucide-react";
 import { toast } from "sonner";
-import { CountUp } from "@/components/meters";
-import { StatementText } from "@/components/binary/statement-text";
-import { useHydrated } from "@/hooks/use-hydrated";
-import { copyToClipboard, formatBinaryCardPrompt, formatBinaryCardsListPrompt } from "@/lib/ai-prompt";
-import type { BinaryAnswer, BinaryCardPayload } from "@/data/binary-types";
-import { readBinaryResult } from "@/lib/binary";
-import { formatDuration } from "@/lib/dates";
-import { stagger, staggerChild } from "@/lib/motion";
-import { cn } from "@/lib/utils";
+import { CountUp, StatementText } from "@components";
+import { useHydrated } from "@hooks";
+import type { BinaryAnswer, BinaryCardPayload } from "@data";
+import {
+  cn,
+  copyToClipboard,
+  formatBinaryCardPrompt,
+  formatBinaryCardsListPrompt,
+  formatDuration,
+  readBinaryResult,
+  stagger,
+  staggerChild,
+} from "@lib";
 
 export function BinarySummary() {
   const hydrated = useHydrated();
@@ -44,8 +48,8 @@ export function BinarySummary() {
 
   const handleCopyAllMissed = useCallback(async () => {
     const missedCards = missed
-      .map((a) => cards.get(a.cardId))
-      .filter((c): c is BinaryCardPayload => Boolean(c));
+      .map((answer) => cards.get(answer.cardId))
+      .filter((cardCandidate): cardCandidate is BinaryCardPayload => Boolean(cardCandidate));
     if (missedCards.length === 0) return;
     const prompt = formatBinaryCardsListPrompt(missedCards);
     const ok = await copyToClipboard(prompt);
@@ -81,7 +85,7 @@ export function BinarySummary() {
         variants={stagger(0.055, 0.04)}
         initial="hidden"
         animate="show"
-        className="border-binary-line bg-ink w-full max-w-[680px] rounded-2xl border p-6 sm:p-9"
+        className="border-binary-line bg-ink w-full max-w-170 rounded-2xl border p-6 sm:p-9"
       >
         <motion.div variants={staggerChild} className="mb-5 flex items-center justify-between gap-3">
           <span className="text-binary-soft flex items-center gap-2 font-mono text-[11px] tracking-[0.09em] uppercase">
@@ -97,7 +101,7 @@ export function BinarySummary() {
         <motion.h1 variants={staggerChild} className="text-parchment mt-4 mb-2 text-[25px]/[1.2] font-semibold tracking-[-0.025em]">
           {correct === 10 ? "Clean sweep." : correct >= 7 ? "Strong read." : "Good catches for next time."}
         </motion.h1>
-        <motion.p variants={staggerChild} className="text-stone m-0 text-[14px]/[1.6]">
+        <motion.p variants={staggerChild} className="text-stone m-0 text-sm/[1.6]">
           {formatDuration(result.totalMs)} · {result.countsForDaily ? "daily challenge complete" : "extra practice saved"}
         </motion.p>
 
@@ -186,13 +190,13 @@ export function BinarySummary() {
         <motion.div variants={staggerChild} className="mt-6 grid gap-2.5 sm:grid-cols-2">
           <Link
             href="/binary"
-            className="bg-binary text-ink flex min-h-12 items-center justify-center gap-2 rounded-xl px-5 text-[14px] font-semibold transition-transform hover:-translate-y-0.5"
+            className="bg-binary text-ink flex min-h-12 items-center justify-center gap-2 rounded-xl px-5 text-sm font-semibold transition-transform hover:-translate-y-0.5"
           >
             <RotateCcw className="size-4" /> Play another deck
           </Link>
           <Link
             href="/"
-            className="border-line-3 text-bone hover:border-line-2 flex min-h-12 items-center justify-center rounded-xl border px-5 text-[14px] font-medium transition-colors"
+            className="border-line-3 text-bone hover:border-line-2 flex min-h-12 items-center justify-center rounded-xl border px-5 text-sm font-medium transition-colors"
           >
             Back to today
           </Link>

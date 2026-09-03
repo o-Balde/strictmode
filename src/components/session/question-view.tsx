@@ -11,25 +11,30 @@ import { useState } from "react";
 import { motion } from "motion/react";
 import { Copy, Check } from "lucide-react";
 import { toast } from "sonner";
-import { cn } from "@/lib/utils";
-import type { QuestionPayload } from "@/lib/question-payload";
-import { CodeWell } from "@/components/code-well";
-import { TypeBadge, typeLabel } from "@/components/chrome";
-import { stagger, staggerChild } from "@/lib/motion";
-import { isTerminalOption, optionsAreTerminal } from "@/lib/terminal";
-import { OptionText } from "@/components/option-text";
-import { copyToClipboard, formatQuestionPrompt } from "@/lib/ai-prompt";
+import { CodeWell, OptionText, TypeBadge, typeLabel } from "@components";
+import {
+  cn,
+  copyToClipboard,
+  formatQuestionPrompt,
+  isTerminalOption,
+  optionsAreTerminal,
+  stagger,
+  staggerChild,
+  type QuestionPayload,
+} from "@lib";
 
 const LETTERS = ["A", "B", "C", "D"] as const;
+
+interface SurfaceLabelProps {
+  tone: "code" | "stdout";
+  children: React.ReactNode;
+}
 
 /** Names a surface so "source code" and "console output" are never confused. */
 function SurfaceLabel({
   tone,
   children,
-}: {
-  tone: "code" | "stdout";
-  children: React.ReactNode;
-}) {
+}: Readonly<SurfaceLabelProps>) {
   return (
     <div
       className={cn(
@@ -46,17 +51,19 @@ function SurfaceLabel({
   );
 }
 
+export interface QuestionViewProps {
+  question: QuestionPayload;
+  selected: string | null;
+  answered: boolean;
+  onSelect: (id: string) => void;
+}
+
 export function QuestionView({
   question,
   selected,
   answered,
   onSelect,
-}: {
-  question: QuestionPayload;
-  selected: string | null;
-  answered: boolean;
-  onSelect: (id: string) => void;
-}) {
+}: Readonly<QuestionViewProps>) {
   const [copied, setCopied] = useState(false);
   const codeIsHero = question.type === "live_code" || question.type === "fix";
 
@@ -78,17 +85,17 @@ export function QuestionView({
 
   // Presentation policy is decided here, not baked into the payload — a change
   // to the skin rule is a client change, not a cache invalidation.
-  const optionTexts = question.options.map((o) => o.text);
+  const optionTexts = question.options.map((option) => option.text);
   const terminalOptions = optionsAreTerminal(optionTexts, question.type);
 
   // Short console transcripts read best as a 2x2 grid, the way the mockup lays
   // out its output-prediction answers.
-  const gridOptions = terminalOptions && optionTexts.every((t) => t.length <= 40);
+  const gridOptions = terminalOptions && optionTexts.every((text) => text.length <= 40);
 
   return (
     <div className={cn("px-6 py-8 sm:px-10 sm:py-9")}>
       <motion.div variants={stagger(0.05)} initial="hidden" animate="show">
-        <motion.div variants={staggerChild} className="mb-[18px] flex flex-wrap items-center justify-between gap-3">
+        <motion.div variants={staggerChild} className="mb-4.5 flex flex-wrap items-center justify-between gap-3">
           <div className="flex flex-wrap items-center gap-2">
             <TypeBadge tone="accent">{typeLabel(question.type)}</TypeBadge>
             <TypeBadge>{question.category.replace("_", " ")}</TypeBadge>
@@ -122,14 +129,14 @@ export function QuestionView({
         {question.prompt && question.prompt !== question.title ? (
           <motion.p
             variants={staggerChild}
-            className="text-stone mb-5 max-w-[70ch] text-[14px]/[1.6] text-pretty"
+            className="text-stone mb-5 max-w-[70ch] text-sm/[1.6] text-pretty"
           >
             {question.prompt}
           </motion.p>
         ) : null}
 
         {question.codeSnippet ? (
-          <motion.div variants={staggerChild} className="mb-[22px]">
+          <motion.div variants={staggerChild} className="mb-5.5">
             <SurfaceLabel tone="code">source</SurfaceLabel>
             <CodeWell
               html={question.codeHtml}
@@ -151,7 +158,7 @@ export function QuestionView({
             gridOptions ? "grid gap-2.5 sm:grid-cols-2" : "flex flex-col gap-2.5",
           )}
         >
-          {question.options.map((option, i) => {
+          {question.options.map((option, optionIndex) => {
             const optionTerminal = terminalOptions || isTerminalOption(option.text);
             return (
             <motion.button
@@ -186,11 +193,11 @@ export function QuestionView({
                       : "border-line-3 text-ash border",
                 )}
               >
-                {LETTERS[i] ?? option.id}
+                {LETTERS[optionIndex] ?? option.id}
               </span>
               <span
                 className={cn(
-                  "min-w-0 flex-1 break-words",
+                  "min-w-0 flex-1 wrap-break-word",
                   optionTerminal
                     ? "text-bone text-[13.5px]/[1.7] whitespace-pre-wrap"
                     : "text-bone text-[13.5px]/[1.6]",

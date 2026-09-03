@@ -9,8 +9,12 @@
  * hydration. The cookie is written from the client and read by the server only
  * for that first paint — it is never authoritative and never used for tracking.
  */
-import type { UserDrillProgress, QuestionLevel, QuestionSubject } from "@/data/types";
-import type { BinaryAnswer } from "@/data/binary-types";
+import type {
+  BinaryAnswer,
+  QuestionLevel,
+  QuestionSubject,
+  UserDrillProgress,
+} from "@data";
 import { dayKey, daysBetween } from "./dates";
 import { grade, type ReviewRecord } from "./scheduler";
 

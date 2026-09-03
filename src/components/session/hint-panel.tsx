@@ -10,9 +10,14 @@
 import { useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { Lightbulb, ArrowUpRight } from "lucide-react";
-import { unfold } from "@/lib/motion";
+import { unfold } from "@lib";
 
-export function HintPanel({ hint, docsUrl }: { hint?: string; docsUrl?: string }) {
+export interface HintPanelProps {
+  hint?: string;
+  docsUrl?: string;
+}
+
+export function HintPanel({ hint, docsUrl }: Readonly<HintPanelProps>) {
   const [open, setOpen] = useState(false);
   if (!hint && !docsUrl) return null;
 
@@ -20,7 +25,7 @@ export function HintPanel({ hint, docsUrl }: { hint?: string; docsUrl?: string }
     <div>
       <button
         type="button"
-        onClick={() => setOpen((v) => !v)}
+        onClick={() => setOpen((isOpen) => !isOpen)}
         aria-expanded={open}
         data-hint-toggle=""
         className="text-slate hover:text-clay flex items-center gap-2 text-[13px] transition-colors"
@@ -35,7 +40,7 @@ export function HintPanel({ hint, docsUrl }: { hint?: string; docsUrl?: string }
           <motion.div variants={unfold} initial="hidden" animate="show" exit="exit" className="overflow-hidden">
             <div className="border-line-3 mt-3 rounded-lg border border-dashed p-4">
               {hint ? (
-                <p className="text-bone m-0 text-[14px]/[1.7] text-pretty">{hint}</p>
+                <p className="text-bone m-0 text-sm/[1.7] text-pretty">{hint}</p>
               ) : null}
               {docsUrl ? (
                 <a

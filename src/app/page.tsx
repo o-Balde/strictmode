@@ -1,7 +1,6 @@
 import { cookies } from "next/headers";
-import { HUD_COOKIE, parseHudCookie } from "@/lib/progress";
-import { Landing } from "@/components/home/landing";
-import { HomeSwitch } from "@/components/home/home-switch";
+import { HUD_COOKIE, parseHudCookie } from "@lib";
+import { HomeSwitch, Landing } from "@components";
 
 /**
  * The landing is for a first visit only. A returning user with a streak should

@@ -5,8 +5,7 @@
  * progress page shows the same data across twenty-eight.
  */
 import { motion, useReducedMotion } from "motion/react";
-import { dayKey } from "@/lib/dates";
-import { cn } from "@/lib/utils";
+import { cn, dayKey } from "@lib";
 
 const RAMP = [
   "var(--heat-0)",
@@ -17,11 +16,46 @@ const RAMP = [
 ];
 
 export interface HeatCell {
-  day: string;
-  count: number;
-  level: number;
-  drills?: number;
-  binary?: number;
+  readonly day: string;
+  readonly count: number;
+  readonly level: number;
+  readonly drills?: number;
+  readonly binary?: number;
+}
+
+export interface HeatLevelOptions {
+  readonly count?: number;
+  readonly drills?: number;
+  readonly binary?: number;
+  readonly completed?: boolean;
+}
+
+function calculateRatioLevel(ratio: number): number {
+  if (ratio >= 1) return 4;
+  if (ratio >= 0.65) return 3;
+  if (ratio >= 0.35) return 2;
+  if (ratio > 0) return 1;
+  return 0;
+}
+
+function calculateBreakdownLevel(drillsDone: number, binariesDone: number): number {
+  // Answered the 10 binary cards OR 5 drill questions (or over-study in either)
+  if (drillsDone >= 5 || binariesDone >= 10) {
+    return 4;
+  }
+
+  // Proportional progress (5 drills = 100%, 10 binary cards = 100%)
+  const studyRatio: number = drillsDone / 5 + binariesDone / 10;
+  return calculateRatioLevel(studyRatio);
+}
+
+function calculateLegacyCountLevel(count: number): number {
+  // Fallback for legacy counts:
+  // 5 questions was a full daily drill; 10 was a full binary deck.
+  if (count >= 5) return 4;
+  if (count >= 3) return 2;
+  if (count >= 1) return 1;
+  return 0;
 }
 
 /**
@@ -39,13 +73,11 @@ export function heatLevel({
   drills,
   binary,
   completed = false,
-}: {
-  count?: number;
-  drills?: number;
-  binary?: number;
-  completed?: boolean;
-}): number {
-  if (count <= 0 && (drills ?? 0) <= 0 && (binary ?? 0) <= 0) {
+}: HeatLevelOptions): number {
+  const drillsDone: number = drills ?? 0;
+  const binariesDone: number = binary ?? 0;
+
+  if (count <= 0 && drillsDone <= 0 && binariesDone <= 0) {
     return 0;
   }
 
@@ -56,29 +88,10 @@ export function heatLevel({
 
   // If specific breakdown is available:
   if (drills !== undefined || binary !== undefined) {
-    const d = drills ?? 0;
-    const b = binary ?? 0;
-
-    // Answered the 10 binary cards OR 5 drill questions (or over-study in either)
-    if (d >= 5 || b >= 10) {
-      return 4;
-    }
-
-    // Proportional progress (5 drills = 100%, 10 binary cards = 100%)
-    const ratio = d / 5 + b / 10;
-    if (ratio >= 1) return 4;
-    if (ratio >= 0.65) return 3;
-    if (ratio >= 0.35) return 2;
-    if (ratio > 0) return 1;
-    return 0;
+    return calculateBreakdownLevel(drillsDone, binariesDone);
   }
 
-  // Fallback for legacy counts:
-  // 5 questions was a full daily drill; 10 was a full binary deck.
-  if (count >= 5) return 4;
-  if (count >= 3) return 2;
-  if (count >= 1) return 1;
-  return 0;
+  return calculateLegacyCountLevel(count);
 }
 
 /** Answers-per-day → ramp index (legacy fallback wrapper). */
@@ -86,24 +99,26 @@ export function level(count: number): number {
   return heatLevel({ count });
 }
 
+export interface BuildCellsOptions {
+  readonly dailyBreakdown?: Record<string, { readonly drills: number; readonly binary: number }>;
+  readonly completedDays?: readonly string[];
+}
+
 /** The `days` most recent local days, oldest first. */
 export function buildCells(
   heatmap: Record<string, number>,
   days: number,
-  options?: {
-    dailyBreakdown?: Record<string, { drills: number; binary: number }>;
-    completedDays?: string[];
-  },
+  options?: BuildCellsOptions,
 ): HeatCell[] {
   const out: HeatCell[] = [];
   const today = new Date();
   const completedSet = new Set(options?.completedDays ?? []);
   const breakdown = options?.dailyBreakdown;
 
-  for (let i = days - 1; i >= 0; i--) {
-    const d = new Date(today);
-    d.setDate(d.getDate() - i);
-    const key = dayKey(d);
+  for (let offset = days - 1; offset >= 0; offset--) {
+    const dayDate = new Date(today);
+    dayDate.setDate(dayDate.getDate() - offset);
+    const key = dayKey(dayDate);
     const count = heatmap[key] ?? 0;
     const dayBreakdown = breakdown?.[key];
     const isCompleted = completedSet.has(key);
@@ -126,17 +141,19 @@ export function buildCells(
   return out;
 }
 
+export interface HeatmapProps {
+  cells: readonly HeatCell[];
+  columns: number;
+  className?: string;
+  animate?: boolean;
+}
+
 export function Heatmap({
   cells,
   columns,
   className,
   animate = true,
-}: {
-  cells: HeatCell[];
-  columns: number;
-  className?: string;
-  animate?: boolean;
-}) {
+}: Readonly<HeatmapProps>) {
   const reduced = useReducedMotion();
   const still = reduced || !animate;
 
@@ -145,7 +162,7 @@ export function Heatmap({
       className={cn("grid gap-1", className)}
       style={{ gridTemplateColumns: `repeat(${columns}, minmax(0, 1fr))` }}
     >
-      {cells.map((cell, i) => {
+      {cells.map((cell, cellIndex) => {
         const detailParts: string[] = [];
         if (cell.drills) detailParts.push(`${cell.drills} drill${cell.drills === 1 ? "" : "s"}`);
         if (cell.binary) detailParts.push(`${cell.binary} card${cell.binary === 1 ? "" : "s"}`);
@@ -158,13 +175,13 @@ export function Heatmap({
           <motion.div
             key={cell.day}
             title={tooltip}
-            className="aspect-square rounded-[2px]"
+            className="aspect-square rounded-xs"
             style={{ background: RAMP[cell.level] }}
             initial={still ? false : { opacity: 0, scale: 0.4 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{
               // Cascade across the grid rather than left-to-right in one row.
-              delay: still ? 0 : Math.min(0.8, i * 0.006),
+              delay: still ? 0 : Math.min(0.8, cellIndex * 0.006),
               duration: 0.32,
               ease: [0.16, 1, 0.3, 1],
             }}
@@ -175,11 +192,20 @@ export function Heatmap({
   );
 }
 
+export interface HeatmapAxisProps {
+  cells: readonly HeatCell[];
+  className?: string;
+}
+
 /** Month labels beneath the strip, taken from the real range. */
-export function HeatmapAxis({ cells, className }: { cells: HeatCell[]; className?: string }) {
-  if (cells.length === 0) return null;
-  const fmt = (key: string) =>
+export function HeatmapAxis({ cells, className }: Readonly<HeatmapAxisProps>) {
+  const firstCell = cells.at(0);
+  const lastCell = cells.at(-1);
+  if (!firstCell || !lastCell) return null;
+
+  const formatMonth = (key: string) =>
     new Date(key).toLocaleDateString(undefined, { month: "short" });
+
   return (
     <div
       className={cn(
@@ -187,8 +213,8 @@ export function HeatmapAxis({ cells, className }: { cells: HeatCell[]; className
         className,
       )}
     >
-      <span>{fmt(cells[0].day)}</span>
-      <span>{fmt(cells[cells.length - 1].day)}</span>
+      <span>{formatMonth(firstCell.day)}</span>
+      <span>{formatMonth(lastCell.day)}</span>
     </div>
   );
 }

@@ -9,7 +9,7 @@
  *
  */
 import { createHighlighter, type Highlighter, type ThemeRegistration } from "shiki";
-import type { CodeLanguage } from "@/data/types";
+import type { CodeLanguage } from "@data";
 
 /**
  * Dracula's syntax hues on this app's own ground.

@@ -8,38 +8,49 @@
 import Link from "next/link";
 import { motion } from "motion/react";
 import { Flame, Layers3, ListChecks, Shuffle } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { Brand } from "@/components/brand";
-import { Heatmap, HeatmapAxis, buildCells } from "@/components/heatmap";
-import { MasteryBar } from "@/components/meters";
-import { ProgressTransfer } from "@/components/home/progress-transfer";
-import { HomeVariantToggle } from "@/components/home/home-variant-toggle";
-import { useHomeState } from "@/components/home/use-home-state";
-import type { HudCookie } from "@/lib/progress";
-import { formatCountdown } from "@/lib/dates";
-import { stagger, staggerChild } from "@/lib/motion";
+import {
+  Brand,
+  Heatmap,
+  HeatmapAxis,
+  HomeVariantToggle,
+  MasteryBar,
+  ProgressTransfer,
+  buildCells,
+  useHomeState,
+} from "@components";
+import {
+  cn,
+  formatCountdown,
+  stagger,
+  staggerChild,
+  type HudCookie,
+} from "@lib";
 
-export function Dashboard({ initialHud }: { initialHud: HudCookie | null }) {
-  const s = useHomeState(initialHud);
-  const cells = buildCells(s.progress.activityHeatmap ?? {}, 84, {
-    dailyBreakdown: s.progress.dailyBreakdown,
-    completedDays: s.progress.completedDays,
+export interface DashboardProps {
+  initialHud: HudCookie | null;
+}
+
+export function Dashboard({ initialHud }: Readonly<DashboardProps>) {
+  const homeState = useHomeState(initialHud);
+  const cells = buildCells(homeState.progress.activityHeatmap ?? {}, 84, {
+    dailyBreakdown: homeState.progress.dailyBreakdown,
+    completedDays: homeState.progress.completedDays,
   });
 
   return (
     <div className="min-h-dvh">
       <header className="border-line flex items-center justify-between border-b px-5 py-3.5 sm:px-6">
         <Brand href={null} size="sm" />
-        <nav className="flex items-center gap-4 sm:gap-[18px]">
+        <nav className="flex items-center gap-4 sm:gap-4.5">
           <span
             className={cn(
               "flex items-center gap-1.5 font-mono text-xs font-medium",
-              s.health === "at-risk" ? "text-flame" : "text-clay",
+              homeState.health === "at-risk" ? "text-flame" : "text-clay",
             )}
-            title={s.health === "at-risk" ? "Drill today to keep the streak" : undefined}
+            title={homeState.health === "at-risk" ? "Drill today to keep the streak" : undefined}
           >
             <Flame className="size-3.5" />
-            {s.streak} day streak
+            {homeState.streak} day streak
           </span>
           <Link href="/topics" className="text-ash hover:text-bone text-[12.5px] transition-colors">
             Topics
@@ -50,7 +61,7 @@ export function Dashboard({ initialHud }: { initialHud: HudCookie | null }) {
         </nav>
       </header>
 
-      <div className="mx-auto grid max-w-[1180px] grid-cols-1 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,0.65fr)]">
+      <div className="mx-auto grid max-w-295 grid-cols-1 lg:grid-cols-[minmax(0,1.35fr)_minmax(0,0.65fr)]">
         <motion.section
           variants={stagger(0.06, 0.05)}
           initial="hidden"
@@ -61,15 +72,15 @@ export function Dashboard({ initialHud }: { initialHud: HudCookie | null }) {
             <span className="text-flame">$</span> drill --today
           </motion.div>
 
-          {s.doneToday ? (
-            <NothingDue msLeft={s.msLeft} />
+          {homeState.doneToday ? (
+            <NothingDue msLeft={homeState.msLeft} />
           ) : (
             <>
               <motion.h1
                 variants={staggerChild}
                 className="text-parchment m-0 mb-1.5 text-[28px]/[1.15] font-semibold tracking-[-0.025em] text-balance sm:text-[34px]/[1.15]"
               >
-                Day {s.day} · choose today&apos;s format
+                Day {homeState.day} · choose today&apos;s format
               </motion.h1>
               <motion.p variants={staggerChild} className="text-stone m-0 mb-7 text-[14.5px]/[1.6]">
                 Take the five-question Classic drill or a ten-card Binary deck. Finishing either one holds today&apos;s streak; the other stays open for extra practice.
@@ -79,7 +90,7 @@ export function Dashboard({ initialHud }: { initialHud: HudCookie | null }) {
 
           <motion.div variants={staggerChild} className="mb-7 grid gap-3 sm:grid-cols-2">
             <Link
-              href={s.doneToday ? "/drill?mode=extra" : "/drill"}
+              href={homeState.doneToday ? "/drill?mode=extra" : "/drill"}
               className="border-line-3 bg-surface hover:border-flame group rounded-xl border p-5 transition-colors focus-visible:ring-2 focus-visible:ring-flame focus-visible:outline-none"
             >
               <div className="mb-5 flex items-start justify-between gap-4">
@@ -91,7 +102,7 @@ export function Dashboard({ initialHud }: { initialHud: HudCookie | null }) {
               <div className="text-parchment text-[17px] font-semibold">Classic Drill</div>
               <p className="text-ash mt-1.5 mb-4 text-[12.5px]/[1.55]">Multiple choice, code output, and fixes.</p>
               <span className="text-flame text-[13px] font-semibold group-hover:underline group-hover:underline-offset-4">
-                {s.doneToday ? "Extra classic round →" : "Choose Classic →"}
+                {homeState.doneToday ? "Extra classic round →" : "Choose Classic →"}
               </span>
             </Link>
             <Link
@@ -99,15 +110,15 @@ export function Dashboard({ initialHud }: { initialHud: HudCookie | null }) {
               className="border-line-3 bg-surface group rounded-xl border p-5 transition-colors hover:border-binary focus-visible:ring-2 focus-visible:ring-binary focus-visible:outline-none"
             >
               <div className="mb-5 flex items-start justify-between gap-4">
-                <span className="bg-binary-deep text-binary-soft grid size-9 place-items-center rounded-lg">
+                <span className="border-binary-line bg-binary-deep text-binary-soft grid size-9 place-items-center rounded-lg border">
                   <Layers3 className="size-4" />
                 </span>
                 <span className="text-slate font-mono text-[10px] tracking-[0.08em] uppercase">10 cards · ~3 min</span>
               </div>
               <div className="text-parchment text-[17px] font-semibold">Binary Cards</div>
-              <p className="text-ash mt-1.5 mb-4 text-[12.5px]/[1.55]">Swipe true or false. Misses return later.</p>
+              <p className="text-ash mt-1.5 mb-4 text-[12.5px]/[1.55]">True or false calls on runtime and type edges.</p>
               <span className="text-binary text-[13px] font-semibold group-hover:underline group-hover:underline-offset-4">
-                {s.doneToday ? "Extra Binary deck →" : "Choose Binary →"}
+                {homeState.doneToday ? "Extra Binary deck →" : "Choose Binary →"}
               </span>
             </Link>
           </motion.div>
@@ -119,33 +130,33 @@ export function Dashboard({ initialHud }: { initialHud: HudCookie | null }) {
             variants={stagger(0.05, 0.15)}
             className="bg-line border-line mb-7 grid gap-px overflow-hidden rounded-[9px] border"
           >
-            {s.queueLoading
-              ? Array.from({ length: 5 }, (_, i) => (
-                  <li key={i} className="bg-surface h-[54px] animate-pulse" />
+            {homeState.queueLoading
+              ? Array.from({ length: 5 }, (_, skeletonIndex) => (
+                  <li key={skeletonIndex} className="bg-surface h-13.5 animate-pulse" />
                 ))
-              : s.queue.map((item, i) => (
+              : homeState.queue.map((item, itemIndex) => (
                   <motion.li
                     key={item.id}
                     variants={staggerChild}
                     className={cn(
                       "flex items-center gap-4 px-4 py-4",
-                      i === 0 ? "bg-surface-3" : "bg-surface",
+                      itemIndex === 0 ? "bg-surface-3" : "bg-surface",
                     )}
                   >
                     <span
                       className={cn(
-                        "grid size-[22px] shrink-0 place-items-center rounded-full font-mono text-[11px] font-semibold",
-                        i === 0
+                        "grid size-5.5 shrink-0 place-items-center rounded-full font-mono text-[11px] font-semibold",
+                        itemIndex === 0
                           ? "bg-flame text-ink"
                           : "border-line-3 text-ash border",
                       )}
                     >
-                      {i + 1}
+                      {itemIndex + 1}
                     </span>
                     <span
                       className={cn(
                         "min-w-0 flex-1 truncate text-[14.5px] font-medium",
-                        i === 0 ? "text-paper" : "text-bone",
+                        itemIndex === 0 ? "text-paper" : "text-bone",
                       )}
                       title={item.title}
                     >
@@ -161,7 +172,7 @@ export function Dashboard({ initialHud }: { initialHud: HudCookie | null }) {
           <motion.div variants={staggerChild} className="flex flex-wrap items-center gap-3.5">
             <Link
               href="/topics"
-              className="border-line-3 text-bone hover:border-line-2 flex items-center gap-2 rounded-lg border px-5 py-[15px] text-[14px] font-medium transition-colors"
+              className="border-line-3 text-bone hover:border-line-2 flex items-center gap-2 rounded-lg border px-5 py-3.75 text-sm font-medium transition-colors"
             >
               <Shuffle className="size-3.5" />
               Pick a topic
@@ -187,16 +198,16 @@ export function Dashboard({ initialHud }: { initialHud: HudCookie | null }) {
           <div className="text-slate mb-3.5 font-mono text-[11px] font-medium tracking-[0.09em]">
             WEAKEST TOPICS
           </div>
-          {s.weakest.length > 0 ? (
+          {homeState.weakest.length > 0 ? (
             <div className="mb-8 flex flex-col gap-4">
-              {s.weakest.map((w, i) => (
+              {homeState.weakest.map((weakSubject, weakIndex) => (
                 <MasteryBar
-                  key={w.subject}
-                  label={w.title}
-                  percent={w.mastery}
-                  detail={`${w.mastery}%`}
+                  key={weakSubject.subject}
+                  label={weakSubject.title}
+                  percent={weakSubject.mastery}
+                  detail={`${weakSubject.mastery}%`}
                   thickness={4}
-                  delay={0.3 + i * 0.08}
+                  delay={0.3 + weakIndex * 0.08}
                 />
               ))}
             </div>
@@ -214,8 +225,12 @@ export function Dashboard({ initialHud }: { initialHud: HudCookie | null }) {
   );
 }
 
+interface NothingDueProps {
+  msLeft: number;
+}
+
 /** Mockup 1l, second card — the daily drill is done for today. */
-function NothingDue({ msLeft }: { msLeft: number }) {
+function NothingDue({ msLeft }: Readonly<NothingDueProps>) {
   return (
     <motion.div variants={staggerChild} className="mb-7">
       <div className="text-mint mb-3 font-mono text-[11px] font-medium tracking-[0.1em]">

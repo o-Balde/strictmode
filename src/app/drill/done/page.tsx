@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { SessionSummary } from "@/components/session/session-summary";
+import { SessionSummary } from "@components";
 
 export const metadata: Metadata = {
   title: "Drill Completed",

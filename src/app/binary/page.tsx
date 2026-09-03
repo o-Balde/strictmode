@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { BinaryGame } from "@/components/binary/binary-game";
+import { BinaryGame } from "@components";
 
 export const metadata: Metadata = {
   title: "Binary Cards",

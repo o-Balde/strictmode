@@ -5,30 +5,34 @@ import { useCallback, useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { motion } from "motion/react";
 import { Brain, Flame, Layers3, RotateCcw, X } from "lucide-react";
-import type { QuestionLevel } from "@/data/types";
 import type {
   ActiveBinarySession,
   BinaryAnswer,
   BinaryCardPayload,
   BinaryChoice,
   BinarySessionResult,
-} from "@/data/binary-types";
-import { Brand } from "@/components/brand";
-import { SegmentStrip, type SegmentState } from "@/components/chrome";
-import { useProgress } from "@/components/progress-provider";
-import { BinaryCardStack } from "@/components/binary/binary-card-stack";
+  QuestionLevel,
+} from "@data";
+import {
+  BinaryCardStack,
+  Brand,
+  SegmentStrip,
+  type SegmentState,
+  useProgress,
+} from "@components";
 import {
   BINARY_DECK_SIZE,
   clearActiveBinarySession,
+  cn,
   composeBinaryDeck,
+  dayKey,
   getBinaryCards,
+  hasCompletedToday,
   loadActiveBinarySession,
+  msUntilNextLocalMidnight,
   saveActiveBinarySession,
   storeBinaryResult,
-} from "@/lib/binary";
-import { dayKey, msUntilNextLocalMidnight } from "@/lib/dates";
-import { hasCompletedToday } from "@/lib/progress";
-import { cn } from "@/lib/utils";
+} from "@lib";
 
 const DIFFICULTIES: Array<{
   level: QuestionLevel;
@@ -266,7 +270,7 @@ export function BinaryGame() {
   });
 
   return (
-    <div className="mx-auto flex min-h-dvh w-full max-w-[900px] flex-col overflow-x-hidden px-4 pb-5 sm:px-7">
+    <div className="mx-auto flex min-h-dvh w-full max-w-225 flex-col overflow-x-hidden px-4 pb-5 sm:px-7">
       <header className="flex items-center gap-3 py-4 sm:py-5">
         <Link
           href="/"
@@ -276,7 +280,7 @@ export function BinaryGame() {
         >
           <X className="size-4" />
         </Link>
-        <SegmentStrip states={segments} className="max-w-[540px]" thickness={4} />
+        <SegmentStrip states={segments} className="max-w-135" thickness={4} />
         <span className="text-binary-soft ml-auto font-mono text-[11px] tabular-nums">
           {session.index + 1}/{BINARY_DECK_SIZE}
         </span>
@@ -302,15 +306,15 @@ export function BinaryGame() {
           cards={cards}
           index={session.index}
           showingExplanation={session.showingExplanation}
-          lastAnswer={session.answers[session.answers.length - 1] ?? null}
+          lastAnswer={session.answers.at(-1) ?? null}
           onAnswer={answer}
           onContinue={continueAfterExplanation}
         />
         <div className="sr-only" aria-live="polite">
           {session.showingExplanation
-            ? session.answers[session.answers.length - 1]?.correct
+            ? session.answers.at(-1)?.correct
               ? "Correct! The card has flipped to show the explanation."
-              : session.answers[session.answers.length - 1]?.choice === null
+              : session.answers.at(-1)?.choice === null
                 ? "Skipped. The card has flipped to show the explanation."
                 : "Incorrect. The card has flipped to show the explanation."
             : ""}
@@ -320,21 +324,23 @@ export function BinaryGame() {
   );
 }
 
+interface DifficultyPickerProps {
+  difficulty: QuestionLevel;
+  setDifficulty: (level: QuestionLevel) => void;
+  countsForDaily: boolean;
+  notice: string | null;
+  onStart: () => void;
+}
+
 function DifficultyPicker({
   difficulty,
   setDifficulty,
   countsForDaily,
   notice,
   onStart,
-}: {
-  difficulty: QuestionLevel;
-  setDifficulty: (level: QuestionLevel) => void;
-  countsForDaily: boolean;
-  notice: string | null;
-  onStart: () => void;
-}) {
+}: Readonly<DifficultyPickerProps>) {
   return (
-    <div className="mx-auto min-h-dvh w-full max-w-[900px] px-5 py-5 sm:px-8 sm:py-7">
+    <div className="mx-auto min-h-dvh w-full max-w-225 px-5 py-5 sm:px-8 sm:py-7">
       <header className="mb-12 flex items-center justify-between">
         <Brand href="/" size="sm" />
         <Link href="/progress" className="text-ash hover:text-bone text-[12.5px] transition-colors">
@@ -342,14 +348,14 @@ function DifficultyPicker({
         </Link>
       </header>
 
-      <main className="mx-auto max-w-[720px]">
-        <div className="text-binary-soft mb-3 flex items-center gap-2 font-mono text-[11px] tracking-[0.1em] uppercase">
+      <main className="mx-auto max-w-180">
+        <div className="text-binary-soft mb-3 flex items-center gap-2 font-mono text-[11px] tracking-widest uppercase">
           <Layers3 className="size-3.5" /> Binary Cards
         </div>
-        <h1 className="text-parchment m-0 max-w-[620px] text-[32px]/[1.12] font-semibold tracking-[-0.035em] text-balance sm:text-[44px]/[1.1]">
+        <h1 className="text-parchment m-0 max-w-155 text-[32px]/[1.12] font-semibold tracking-[-0.035em] text-balance sm:text-[44px]/[1.1]">
           Ten calls. True or false.
         </h1>
-        <p className="text-stone mt-4 mb-9 max-w-[590px] text-[15px]/[1.7] text-pretty">
+        <p className="text-stone mt-4 mb-9 max-w-147.5 text-[15px]/[1.7] text-pretty">
           Swipe through React, TypeScript, and JavaScript statements. Each card flips into the mental model you need, and misses return on a spaced schedule.
         </p>
 
@@ -373,7 +379,7 @@ function DifficultyPicker({
                   aria-pressed={selected}
                   onClick={() => setDifficulty(item.level)}
                   className={cn(
-                    "min-h-[104px] rounded-xl border p-4 text-left transition-colors focus-visible:ring-2 focus-visible:ring-binary focus-visible:outline-none",
+                    "min-h-26 rounded-xl border p-4 text-left transition-colors focus-visible:ring-2 focus-visible:ring-binary focus-visible:outline-none",
                     selected
                       ? "border-binary bg-binary-deep"
                       : "border-line-2 bg-surface hover:border-line-3",
@@ -382,7 +388,7 @@ function DifficultyPicker({
                   <span className={cn("block text-[14.5px] font-semibold", selected ? "text-binary-soft" : "text-bone")}>
                     {item.label}
                   </span>
-                  <span className="text-ash mt-1.5 block text-[12px]/[1.5]">{item.detail}</span>
+                  <span className="text-ash mt-1.5 block text-xs/normal">{item.detail}</span>
                 </button>
               );
             })}
@@ -394,7 +400,7 @@ function DifficultyPicker({
           onClick={onStart}
           whileHover={{ y: -2 }}
           whileTap={{ scale: 0.985 }}
-          className="bg-binary text-ink mt-5 flex min-h-[54px] w-full items-center justify-center gap-2 rounded-xl px-7 text-[15px] font-semibold focus-visible:ring-2 focus-visible:ring-binary focus-visible:ring-offset-2 focus-visible:ring-offset-ink focus-visible:outline-none"
+          className="bg-binary text-ink mt-5 flex min-h-13.5 w-full items-center justify-center gap-2 rounded-xl px-7 text-[15px] font-semibold focus-visible:ring-2 focus-visible:ring-binary focus-visible:ring-offset-2 focus-visible:ring-offset-ink focus-visible:outline-none"
         >
           {countsForDaily ? <Flame className="size-4" /> : <RotateCcw className="size-4" />}
           {countsForDaily ? "Start today's Binary deck" : "Start an extra deck"}
@@ -412,11 +418,18 @@ function DifficultyPicker({
 
 function BinarySkeleton() {
   return (
-    <div className="mx-auto min-h-dvh w-full max-w-[760px] px-5 py-6">
+    <div className="mx-auto min-h-dvh w-full max-w-190 px-5 py-6">
       <div className="bg-line mb-8 h-1 animate-pulse rounded-full" />
-      <div className="border-line bg-surface-2 mx-auto h-[min(65dvh,570px)] min-h-[480px] animate-pulse rounded-[18px] border" />
+      <div className="border-line bg-surface-2 mx-auto h-[min(65dvh,570px)] min-h-120 animate-pulse rounded-[18px] border" />
     </div>
   );
+}
+
+interface BinaryMessageProps {
+  title: string;
+  body: string;
+  action: string;
+  onAction: () => void;
 }
 
 function BinaryMessage({
@@ -424,18 +437,13 @@ function BinaryMessage({
   body,
   action,
   onAction,
-}: {
-  title: string;
-  body: string;
-  action: string;
-  onAction: () => void;
-}) {
+}: Readonly<BinaryMessageProps>) {
   return (
-    <div className="mx-auto grid min-h-dvh max-w-[620px] place-items-center px-6 text-center">
+    <div className="mx-auto grid min-h-dvh max-w-155 place-items-center px-6 text-center">
       <div>
         <Layers3 className="text-binary mx-auto mb-5 size-7" />
         <h1 className="text-parchment text-2xl font-semibold">{title}</h1>
-        <p className="text-ash mx-auto mt-3 max-w-[48ch] text-[14px]/[1.7]">{body}</p>
+        <p className="text-ash mx-auto mt-3 max-w-[48ch] text-sm/[1.7]">{body}</p>
         <button type="button" onClick={onAction} className="bg-binary text-ink mt-6 rounded-lg px-6 py-3 text-sm font-semibold">
           {action}
         </button>

@@ -1,8 +1,7 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
-import { TOPIC_METADATA } from "@/data";
-import type { QuestionSubject } from "@/data/types";
-import { SubjectView } from "@/components/topics/subject-view";
+import { TOPIC_METADATA, type QuestionSubject } from "@data";
+import { SubjectView } from "@components";
 
 /**
  * The subject list is fixed at build time, so every one of these pages is
@@ -13,11 +12,13 @@ export function generateStaticParams() {
   return Object.keys(TOPIC_METADATA).map((subject) => ({ subject }));
 }
 
+interface SubjectPageProps {
+  params: Promise<{ subject: string }>;
+}
+
 export async function generateMetadata({
   params,
-}: {
-  params: Promise<{ subject: string }>;
-}): Promise<Metadata> {
+}: Readonly<SubjectPageProps>): Promise<Metadata> {
   const { subject } = await params;
   const meta = TOPIC_METADATA[subject as QuestionSubject];
   if (!meta) return {};
@@ -38,9 +39,7 @@ export async function generateMetadata({
 
 export default async function SubjectPage({
   params,
-}: {
-  params: Promise<{ subject: string }>;
-}) {
+}: Readonly<SubjectPageProps>) {
   const { subject } = await params;
   if (!(subject in TOPIC_METADATA)) notFound();
   return <SubjectView subject={subject as QuestionSubject} />;

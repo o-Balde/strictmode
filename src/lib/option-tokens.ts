@@ -110,7 +110,7 @@ export function tokeniseProse(text: string): OptionToken[] {
 }
 
 function appendProse(out: OptionToken[], text: string) {
-  const last = out[out.length - 1];
+  const last = out.at(-1);
   if (last && last.kind === "prose") last.text += text;
   else out.push({ kind: "prose", text });
 }
@@ -118,17 +118,17 @@ function appendProse(out: OptionToken[], text: string) {
 /** Collapse runs of the same kind so the DOM stays small. */
 function merge(tokens: OptionToken[]): OptionToken[] {
   const out: OptionToken[] = [];
-  for (const t of tokens) {
-    const last = out[out.length - 1];
-    if (last && last.kind === t.kind && t.kind !== "prose") {
-      last.text += t.text;
+  for (const token of tokens) {
+    const last = out.at(-1);
+    if (last && last.kind === token.kind && token.kind !== "prose") {
+      last.text += token.text;
       continue;
     }
-    if (last && last.kind === "prose" && t.kind === "prose") {
-      last.text += t.text;
+    if (last && last.kind === "prose" && token.kind === "prose") {
+      last.text += token.text;
       continue;
     }
-    out.push({ ...t });
+    out.push({ ...token });
   }
-  return out.filter((t) => t.text.length > 0);
+  return out.filter((token) => token.text.length > 0);
 }

@@ -14,7 +14,7 @@
  *   3. unseen questions, anything
  *   4. recycle least-recently-seen (only once the bank is exhausted)
  */
-import type { QuestionSubject } from "@/data/types";
+import type { QuestionSubject } from "@data";
 import {
   QUESTION_INDEX,
   INDEX_BY_ID,
@@ -31,24 +31,24 @@ export const CODE_TARGET = 2;
 export const MAX_DUE_REVIEWS = 2;
 
 export interface DrillOptions {
-  seenIds: string[];
-  reviewState: Record<string, ReviewRecord>;
-  weakSubjects?: QuestionSubject[];
+  readonly seenIds: readonly string[];
+  readonly reviewState: Readonly<Record<string, ReviewRecord>>;
+  readonly weakSubjects?: readonly QuestionSubject[];
   /** Restrict to one subject — the free-play path. */
-  subject?: QuestionSubject;
+  readonly subject?: QuestionSubject;
   /** Only questions previously answered wrong — "Mixed review". */
-  wrongOnly?: string[];
-  today?: string;
+  readonly wrongOnly?: readonly string[];
+  readonly today?: string;
   /** Deterministic shuffling, so "Shuffle the set" is reproducible per seed. */
-  seed?: number;
+  readonly seed?: number;
 }
 
 export interface Drill {
-  rows: IndexRow[];
-  estimatedMinutes: number;
-  focusSubjects: QuestionSubject[];
+  readonly rows: readonly IndexRow[];
+  readonly estimatedMinutes: number;
+  readonly focusSubjects: readonly QuestionSubject[];
   /** True when every candidate was already seen and we had to recycle. */
-  recycled: boolean;
+  readonly recycled: boolean;
 }
 
 /** Mulberry32 — small, fast, and stable across reloads for a given seed. */
@@ -71,17 +71,17 @@ function shuffle<T>(items: T[], rand: () => number): T[] {
   return out;
 }
 
-export function composeDrill(opts: DrillOptions): Drill {
-  const today = opts.today ?? dayKey();
-  const rand = rng(opts.seed ?? hashSeed(today));
-  const seen = new Set(opts.seenIds);
-  const weak = opts.weakSubjects ?? [];
+export function composeDrill(options: DrillOptions): Drill {
+  const today = options.today ?? dayKey();
+  const rand = rng(options.seed ?? hashSeed(today));
+  const seen = new Set(options.seenIds);
+  const weak = options.weakSubjects ?? [];
 
   let pool = QUESTION_INDEX;
-  if (opts.subject) pool = pool.filter((r) => r.subject === opts.subject);
-  if (opts.wrongOnly) {
-    const wrong = new Set(opts.wrongOnly);
-    pool = pool.filter((r) => wrong.has(r.id));
+  if (options.subject) pool = pool.filter((row) => row.subject === options.subject);
+  if (options.wrongOnly) {
+    const wrong = new Set(options.wrongOnly);
+    pool = pool.filter((row) => wrong.has(row.id));
   }
 
   const picked: IndexRow[] = [];
@@ -95,15 +95,15 @@ export function composeDrill(opts: DrillOptions): Drill {
 
   // 1 — reviews that have come due. These jump the queue regardless of type.
   const due = pool
-    .filter((r) => isDue(opts.reviewState[r.id], today))
-    .sort((a, b) => compareDue(opts.reviewState[a.id], opts.reviewState[b.id]));
+    .filter((row) => isDue(options.reviewState[row.id], today))
+    .sort((firstRow, secondRow) => compareDue(options.reviewState[firstRow.id], options.reviewState[secondRow.id]));
   for (const row of due.slice(0, MAX_DUE_REVIEWS)) take(row);
 
   // 2/3 — fill the quick and code slots from unseen material, weak subjects first.
   const unseen = shuffle(
-    pool.filter((r) => !seen.has(r.id) && !taken.has(r.id)),
+    pool.filter((row) => !seen.has(row.id) && !taken.has(row.id)),
     rand,
-  ).sort((a, b) => weight(b, weak) - weight(a, weak));
+  ).sort((firstRow, secondRow) => weight(secondRow, weak) - weight(firstRow, weak));
 
   const quickNeeded = () => QUICK_TARGET - picked.filter(isQuick).length;
   const codeNeeded = () => CODE_TARGET - picked.filter(isCode).length;
@@ -118,9 +118,9 @@ export function composeDrill(opts: DrillOptions): Drill {
   let recycled = false;
   if (picked.length < DRILL_SIZE) {
     const rest = shuffle(
-      pool.filter((r) => !taken.has(r.id)),
+      pool.filter((row) => !taken.has(row.id)),
       rand,
-    ).sort((a, b) => dueSort(opts.reviewState[a.id], opts.reviewState[b.id]));
+    ).sort((firstRow, secondRow) => dueSort(options.reviewState[firstRow.id], options.reviewState[secondRow.id]));
     for (const row of rest) {
       if (picked.length >= DRILL_SIZE) break;
       if (take(row)) recycled = true;
@@ -128,52 +128,52 @@ export function composeDrill(opts: DrillOptions): Drill {
   }
 
   // Quick items lead, code items close — the mockup's queue order.
-  picked.sort((a, b) => Number(isCode(a)) - Number(isCode(b)));
+  picked.sort((firstRow, secondRow) => Number(isCode(firstRow)) - Number(isCode(secondRow)));
 
   return {
     rows: picked,
-    estimatedMinutes: picked.reduce((n, r) => n + r.minutes, 0),
-    focusSubjects: [...new Set(picked.map((r) => r.subject))],
+    estimatedMinutes: picked.reduce((totalMinutes, row) => totalMinutes + row.minutes, 0),
+    focusSubjects: [...new Set(picked.map((row) => row.subject))],
     recycled,
   };
 }
 
 /** Weak subjects float to the top; unrated subjects sit in the middle. */
-function weight(row: IndexRow, weak: QuestionSubject[]): number {
-  const i = weak.indexOf(row.subject);
-  return i === -1 ? 0 : weak.length - i;
+function weight(row: IndexRow, weak: readonly QuestionSubject[]): number {
+  const index = weak.indexOf(row.subject);
+  return index === -1 ? 0 : weak.length - index;
 }
 
-function dueSort(a: ReviewRecord | undefined, b: ReviewRecord | undefined): number {
-  if (!a && !b) return 0;
-  if (!a) return -1;
-  if (!b) return 1;
-  return a.due < b.due ? -1 : a.due > b.due ? 1 : 0;
+function dueSort(firstRecord: ReviewRecord | undefined, secondRecord: ReviewRecord | undefined): number {
+  if (!firstRecord && !secondRecord) return 0;
+  if (!firstRecord) return -1;
+  if (!secondRecord) return 1;
+  return firstRecord.due < secondRecord.due ? -1 : firstRecord.due > secondRecord.due ? 1 : 0;
 }
 
-function hashSeed(s: string): number {
-  let h = 2166136261;
-  for (let i = 0; i < s.length; i++) {
-    h ^= s.charCodeAt(i);
-    h = Math.imul(h, 16777619);
+function hashSeed(seedString: string): number {
+  let hash = 2166136261;
+  for (let i = 0; i < seedString.length; i++) {
+    hash ^= seedString.charCodeAt(i);
+    hash = Math.imul(hash, 16777619);
   }
-  return h >>> 0;
+  return hash >>> 0;
 }
 
 /** Coverage per subject, for the rings on /topics and the bars on /progress. */
 export interface SubjectProgress {
-  subject: QuestionSubject;
-  total: number;
-  seen: number;
-  correct: number;
-  mastery: number;
-  exhausted: boolean;
+  readonly subject: QuestionSubject;
+  readonly total: number;
+  readonly seen: number;
+  readonly correct: number;
+  readonly mastery: number;
+  readonly exhausted: boolean;
 }
 
 export function subjectProgress(
-  seenIds: string[],
-  correctIds: string[],
-  subjects: { subject: QuestionSubject; total: number }[],
+  seenIds: readonly string[],
+  correctIds: readonly string[],
+  subjects: readonly { readonly subject: QuestionSubject; readonly total: number }[],
 ): SubjectProgress[] {
   const seen = new Set(seenIds);
   const correct = new Set(correctIds);
@@ -182,21 +182,21 @@ export function subjectProgress(
   for (const id of seen) {
     const row = INDEX_BY_ID.get(id);
     if (!row) continue;
-    const c = counts.get(row.subject) ?? { seen: 0, correct: 0 };
-    c.seen += 1;
-    if (correct.has(id)) c.correct += 1;
-    counts.set(row.subject, c);
+    const stats = counts.get(row.subject) ?? { seen: 0, correct: 0 };
+    stats.seen += 1;
+    if (correct.has(id)) stats.correct += 1;
+    counts.set(row.subject, stats);
   }
 
   return subjects.map(({ subject, total }) => {
-    const c = counts.get(subject) ?? { seen: 0, correct: 0 };
+    const stats = counts.get(subject) ?? { seen: 0, correct: 0 };
     return {
       subject,
       total,
-      seen: c.seen,
-      correct: c.correct,
-      mastery: c.seen > 0 ? Math.round((c.correct / c.seen) * 100) : 0,
-      exhausted: total > 0 && c.seen >= total,
+      seen: stats.seen,
+      correct: stats.correct,
+      mastery: stats.seen > 0 ? Math.round((stats.correct / stats.seen) * 100) : 0,
+      exhausted: total > 0 && stats.seen >= total,
     };
   });
 }

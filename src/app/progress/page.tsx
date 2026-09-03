@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { ProgressView } from "@/components/progress-view";
+import { ProgressView } from "@components";
 
 export const metadata: Metadata = {
   title: "Your Practice Progress & Retention",

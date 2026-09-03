@@ -2,7 +2,7 @@ import type {
   CodeLanguage,
   QuestionLevel,
   QuestionSubject,
-} from "@/data/types";
+} from "./types";
 
 export type BinaryCategory = "react" | "typescript" | "javascript";
 export type BinaryChoice = boolean | null;

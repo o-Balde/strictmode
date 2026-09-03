@@ -6,10 +6,19 @@
  */
 import { useEffect, useState } from "react";
 import { motion, useReducedMotion } from "motion/react";
-import { cn } from "@/lib/utils";
+import { cn } from "@lib";
 
 /** Below this, a topic reads as shaky and the bar turns flame. */
 const SHAKY = 70;
+
+export interface MasteryBarProps {
+  label: React.ReactNode;
+  percent: number;
+  detail?: React.ReactNode;
+  thickness?: number;
+  className?: string;
+  delay?: number;
+}
 
 export function MasteryBar({
   label,
@@ -18,19 +27,12 @@ export function MasteryBar({
   thickness = 6,
   className,
   delay = 0,
-}: {
-  label: React.ReactNode;
-  percent: number;
-  detail?: React.ReactNode;
-  thickness?: number;
-  className?: string;
-  delay?: number;
-}) {
+}: Readonly<MasteryBarProps>) {
   const reduced = useReducedMotion();
   const strong = percent >= SHAKY;
   return (
     <div className={className}>
-      <div className="text-bone mb-[7px] flex justify-between text-[13.5px] font-medium">
+      <div className="text-bone mb-1.75 flex justify-between text-[13.5px] font-medium">
         <span>{label}</span>
         {detail ? <span className="text-ash font-mono">{detail}</span> : null}
       </div>
@@ -49,6 +51,14 @@ export function MasteryBar({
   );
 }
 
+export interface CoverageRingProps {
+  percent: number;
+  size?: number;
+  stroke?: number;
+  className?: string;
+  delay?: number;
+}
+
 /**
  * Coverage ring. Drawn as an SVG arc rather than the mockup's conic-gradient so
  * the stroke can animate on.
@@ -59,18 +69,12 @@ export function CoverageRing({
   stroke = 4,
   className,
   delay = 0,
-}: {
-  percent: number;
-  size?: number;
-  stroke?: number;
-  className?: string;
-  delay?: number;
-}) {
+}: Readonly<CoverageRingProps>) {
   const reduced = useReducedMotion();
-  const r = (size - stroke) / 2;
-  const circumference = 2 * Math.PI * r;
-  const pct = Math.min(100, Math.max(0, percent));
-  const strong = pct >= SHAKY;
+  const radius = (size - stroke) / 2;
+  const circumference = 2 * Math.PI * radius;
+  const clampedPercent = Math.min(100, Math.max(0, percent));
+  const strong = clampedPercent >= SHAKY;
 
   return (
     <svg
@@ -79,12 +83,12 @@ export function CoverageRing({
       viewBox={`0 0 ${size} ${size}`}
       className={cn("-rotate-90", className)}
       role="img"
-      aria-label={`${Math.round(pct)}% covered`}
+      aria-label={`${Math.round(clampedPercent)}% covered`}
     >
       <circle
         cx={size / 2}
         cy={size / 2}
-        r={r}
+        r={radius}
         fill="none"
         stroke="var(--line)"
         strokeWidth={stroke}
@@ -92,18 +96,24 @@ export function CoverageRing({
       <motion.circle
         cx={size / 2}
         cy={size / 2}
-        r={r}
+        r={radius}
         fill="none"
         stroke={strong ? "var(--mint)" : "var(--flame)"}
         strokeWidth={stroke}
         strokeLinecap="round"
         strokeDasharray={circumference}
         initial={reduced ? false : { strokeDashoffset: circumference }}
-        animate={{ strokeDashoffset: circumference * (1 - pct / 100) }}
+        animate={{ strokeDashoffset: circumference * (1 - clampedPercent / 100) }}
         transition={{ duration: 0.9, delay, ease: [0.16, 1, 0.3, 1] }}
       />
     </svg>
   );
+}
+
+export interface CountUpProps {
+  value: number;
+  className?: string;
+  duration?: number;
 }
 
 /** A number that counts up to its value — used for scores and streaks. */
@@ -111,11 +121,7 @@ export function CountUp({
   value,
   className,
   duration = 0.9,
-}: {
-  value: number;
-  className?: string;
-  duration?: number;
-}) {
+}: Readonly<CountUpProps>) {
   const reduced = useReducedMotion() ?? false;
   const display = useCounter(value, duration, reduced);
 
@@ -135,20 +141,20 @@ export function CountUp({
 
 /** Eases a number from 0 to `target` so it decelerates into place. */
 function useCounter(target: number, duration: number, reduced: boolean): number {
-  const [n, setN] = useState(reduced ? target : 0);
+  const [currentValue, setCurrentValue] = useState(reduced ? target : 0);
 
   useEffect(() => {
     if (reduced) return;
     let raf = 0;
     const start = performance.now();
     const tick = (now: number) => {
-      const t = Math.min(1, (now - start) / (duration * 1000));
-      setN(Math.round(target * (1 - Math.pow(1 - t, 3))));
-      if (t < 1) raf = requestAnimationFrame(tick);
+      const progressFraction = Math.min(1, (now - start) / (duration * 1000));
+      setCurrentValue(Math.round(target * (1 - Math.pow(1 - progressFraction, 3))));
+      if (progressFraction < 1) raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
   }, [target, duration, reduced]);
 
-  return n;
+  return currentValue;
 }

@@ -1,5 +1,5 @@
-import type { BinaryAnswer, BinaryCardPayload } from "@/data/binary-types";
-import type { QuestionPayload } from "@/lib/question-payload";
+import type { BinaryAnswer, BinaryCardPayload } from "@data";
+import type { QuestionPayload } from "./question-payload";
 
 /**
  * Copies text to the user's clipboard using the modern Clipboard API

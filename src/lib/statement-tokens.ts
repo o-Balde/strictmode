@@ -61,7 +61,7 @@ export function emphasisedPhrases(text: string): string[] {
 
 function push(out: StatementToken[], token: StatementToken) {
   if (!token.text) return;
-  const last = out[out.length - 1];
+  const last = out.at(-1);
   if (last && last.kind === token.kind) {
     last.text += token.text;
     return;

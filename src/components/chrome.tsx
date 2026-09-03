@@ -6,9 +6,8 @@
  * primary action per screen.
  */
 import { motion, useReducedMotion } from "motion/react";
-import { cn } from "@/lib/utils";
-import type { QuestionType } from "@/data/types";
-import { formatClock } from "@/lib/dates";
+import { cn, formatClock } from "@lib";
+import type { QuestionType } from "@data";
 
 const TYPE_LABEL: Record<QuestionType, string> = {
   concept: "CONCEPT",
@@ -22,15 +21,17 @@ export function typeLabel(type: QuestionType) {
   return TYPE_LABEL[type];
 }
 
+export interface TypeBadgeProps {
+  children: React.ReactNode;
+  tone?: "accent" | "muted";
+  className?: string;
+}
+
 export function TypeBadge({
   children,
   tone = "muted",
   className,
-}: {
-  children: React.ReactNode;
-  tone?: "accent" | "muted";
-  className?: string;
-}) {
+}: Readonly<TypeBadgeProps>) {
   return (
     <span
       className={cn(
@@ -49,22 +50,24 @@ export function TypeBadge({
 
 export type SegmentState = "correct" | "wrong" | "current" | "pending";
 
+export interface SegmentStripProps {
+  states: readonly SegmentState[];
+  className?: string;
+  thickness?: number;
+}
+
 /** The five-segment strip that tracks a session. */
 export function SegmentStrip({
   states,
   className,
   thickness = 5,
-}: {
-  states: SegmentState[];
-  className?: string;
-  thickness?: number;
-}) {
+}: Readonly<SegmentStripProps>) {
   const reduced = useReducedMotion();
   return (
-    <div className={cn("flex flex-1 gap-[5px]", className)}>
-      {states.map((state, i) => (
+    <div className={cn("flex flex-1 gap-1.25", className)}>
+      {states.map((state, segmentIndex) => (
         <div
-          key={i}
+          key={segmentIndex}
           className="bg-line flex-1 overflow-hidden rounded-[3px]"
           style={{ height: thickness }}
         >
@@ -87,16 +90,18 @@ export function SegmentStrip({
   );
 }
 
+export interface ElapsedClockProps {
+  ms: number;
+  className?: string;
+  tone?: "muted" | "accent";
+}
+
 /** Counts up. Never expires, never auto-advances. */
 export function ElapsedClock({
   ms,
   className,
   tone = "muted",
-}: {
-  ms: number;
-  className?: string;
-  tone?: "muted" | "accent";
-}) {
+}: Readonly<ElapsedClockProps>) {
   return (
     <span
       className={cn(

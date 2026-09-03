@@ -25,6 +25,21 @@
     "paths": {
       "@/*": [
         "./src/*"
+      ],
+      "@lib": [
+        "./src/lib/index"
+      ],
+      "@components": [
+        "./src/components/index"
+      ],
+      "@data": [
+        "./src/data/index"
+      ],
+      "@hooks": [
+        "./src/hooks/index"
+      ],
+      "@ui": [
+        "./src/components/ui/index"
       ]
     }
   },

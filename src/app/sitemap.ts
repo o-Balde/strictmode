@@ -1,5 +1,5 @@
 import type { MetadataRoute } from "next";
-import { TOPIC_METADATA } from "@/data";
+import { TOPIC_METADATA } from "@data";
 
 const BASE_URL = "https://strictmode.bermeo.dev";
 

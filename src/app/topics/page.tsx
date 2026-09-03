@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { TopicPicker } from "@/components/topics/topic-picker";
+import { TopicPicker } from "@components";
 
 export const metadata: Metadata = {
   title: "Topic Practice & Subject Directory",

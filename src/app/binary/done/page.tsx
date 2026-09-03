@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { BinarySummary } from "@/components/binary/binary-summary";
+import { BinarySummary } from "@components";
 
 export const metadata: Metadata = {
   title: "Binary Deck Completed",

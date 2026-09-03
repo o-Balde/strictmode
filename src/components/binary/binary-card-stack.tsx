@@ -9,13 +9,20 @@ import {
 } from "motion/react";
 import { Check, Copy, X } from "lucide-react";
 import { toast } from "sonner";
-import type { BinaryAnswer, BinaryCardPayload, BinaryChoice } from "@/data/binary-types";
-import { CodeWell } from "@/components/code-well";
-import { StatementText } from "@/components/binary/statement-text";
-import { copyToClipboard, formatBinaryCardPrompt } from "@/lib/ai-prompt";
-import { cn } from "@/lib/utils";
+import type { BinaryAnswer, BinaryCardPayload, BinaryChoice } from "@data";
+import { CodeWell, StatementText } from "@components";
+import { cn, copyToClipboard, formatBinaryCardPrompt } from "@lib";
 
 const SWIPE_THRESHOLD = 92;
+
+export interface BinaryCardStackProps {
+  cards: readonly BinaryCardPayload[];
+  index: number;
+  showingExplanation: boolean;
+  lastAnswer?: BinaryAnswer | null;
+  onAnswer: (choice: BinaryChoice) => void;
+  onContinue: () => void;
+}
 
 export function BinaryCardStack({
   cards,
@@ -24,20 +31,13 @@ export function BinaryCardStack({
   lastAnswer,
   onAnswer,
   onContinue,
-}: {
-  cards: BinaryCardPayload[];
-  index: number;
-  showingExplanation: boolean;
-  lastAnswer?: BinaryAnswer | null;
-  onAnswer: (choice: BinaryChoice) => void;
-  onContinue: () => void;
-}) {
+}: Readonly<BinaryCardStackProps>) {
   const current = cards[index];
   if (!current) return null;
 
   return (
     <div className="flex w-full flex-col items-center">
-      <div className="relative h-[min(61dvh,570px)] min-h-[480px] w-full max-w-[660px] [perspective:1400px] sm:min-h-[520px]">
+      <div className="relative h-[min(61dvh,570px)] min-h-120 w-full max-w-165 perspective-[1400px] sm:min-h-130">
         {[2, 1].map((depth) => {
           const card = cards[index + depth];
           if (!card) return null;
@@ -63,12 +63,12 @@ export function BinaryCardStack({
         />
       </div>
 
-      <div className="mt-7 grid w-full max-w-[660px] grid-cols-[1fr_auto_1fr] items-center gap-2.5 sm:gap-4">
+      <div className="mt-7 grid w-full max-w-165 grid-cols-[1fr_auto_1fr] items-center gap-2.5 sm:gap-4">
         {showingExplanation ? (
           <button
             type="button"
             onClick={onContinue}
-            className="bg-binary text-ink col-span-3 inline-flex min-h-12 items-center justify-center gap-2.5 rounded-xl px-6 text-[14px] font-semibold transition-transform hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-binary focus-visible:ring-offset-2 focus-visible:ring-offset-ink focus-visible:outline-none"
+            className="bg-binary text-ink col-span-3 inline-flex min-h-12 items-center justify-center gap-2.5 rounded-xl px-6 text-sm font-semibold transition-transform hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-binary focus-visible:ring-offset-2 focus-visible:ring-offset-ink focus-visible:outline-none"
           >
             <span>Continue</span>
             <kbd className="inline-flex items-center justify-center rounded border border-ink/25 px-1.5 py-0.5 font-mono text-[10px] font-semibold leading-none">
@@ -111,19 +111,21 @@ export function BinaryCardStack({
   );
 }
 
+interface SwipeCardProps {
+  card: BinaryCardPayload;
+  showingExplanation: boolean;
+  lastAnswer?: BinaryAnswer | null;
+  onAnswer: (choice: BinaryChoice) => void;
+  onContinue: () => void;
+}
+
 function SwipeCard({
   card,
   showingExplanation,
   lastAnswer,
   onAnswer,
   onContinue,
-}: {
-  card: BinaryCardPayload;
-  showingExplanation: boolean;
-  lastAnswer?: BinaryAnswer | null;
-  onAnswer: (choice: BinaryChoice) => void;
-  onContinue: () => void;
-}) {
+}: Readonly<SwipeCardProps>) {
   const x = useMotionValue(0);
   const rotate = useTransform(x, [-180, 0, 180], [-8, 0, 8]);
   const falseOpacity = useTransform(x, [-110, -25, 0], [1, 0.25, 0]);
@@ -159,15 +161,17 @@ function SwipeCard({
   );
 }
 
+interface CardFaceProps {
+  card: BinaryCardPayload;
+  falseOpacity: ReturnType<typeof useTransform<number, number>>;
+  trueOpacity: ReturnType<typeof useTransform<number, number>>;
+}
+
 function CardFace({
   card,
   falseOpacity,
   trueOpacity,
-}: {
-  card: BinaryCardPayload;
-  falseOpacity: ReturnType<typeof useTransform<number, number>>;
-  trueOpacity: ReturnType<typeof useTransform<number, number>>;
-}) {
+}: Readonly<CardFaceProps>) {
   const [copied, setCopied] = useState(false);
 
   const handleCopy = useCallback(async () => {
@@ -277,14 +281,16 @@ function CardFace({
   );
 }
 
-function CardBack({
-  card,
-  lastAnswer,
-}: {
+interface CardBackProps {
   card: BinaryCardPayload;
   lastAnswer?: BinaryAnswer | null;
   onContinue?: () => void;
-}) {
+}
+
+function CardBack({
+  card,
+  lastAnswer,
+}: Readonly<CardBackProps>) {
   const isCorrect = lastAnswer?.correct;
   const isSkipped = lastAnswer?.choice === null;
   const [copied, setCopied] = useState(false);
@@ -367,7 +373,7 @@ function CardBack({
       </div>
 
       <div className="scrollbar-hairline min-h-0 flex-1 overflow-y-auto select-text">
-        <p className="text-bone m-0 mb-4 text-[16px]/[1.6] font-medium text-pretty sm:text-[18px]/[1.6]">
+        <p className="text-bone m-0 mb-4 text-base/[1.6] font-medium text-pretty sm:text-lg/[1.6]">
           <StatementText text={card.statement} />
         </p>
         {card.codeSnippet ? (
@@ -398,26 +404,28 @@ function CardBack({
   );
 }
 
+interface AnswerButtonProps {
+  label: string;
+  keySymbol: string;
+  tone: "false" | "true";
+  disabled?: boolean;
+  onClick: () => void;
+}
+
 function AnswerButton({
   label,
   keySymbol,
   tone,
   disabled = false,
   onClick,
-}: {
-  label: string;
-  keySymbol: string;
-  tone: "false" | "true";
-  disabled?: boolean;
-  onClick: () => void;
-}) {
+}: Readonly<AnswerButtonProps>) {
   return (
     <button
       type="button"
       onClick={onClick}
       disabled={disabled}
       className={cn(
-        "flex min-h-12 items-center justify-center gap-2 rounded-xl border px-4 text-[14px] font-semibold transition-transform hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-ink focus-visible:outline-none disabled:translate-y-0 disabled:opacity-40",
+        "flex min-h-12 items-center justify-center gap-2 rounded-xl border px-4 text-sm font-semibold transition-transform hover:-translate-y-0.5 focus-visible:ring-2 focus-visible:ring-offset-2 focus-visible:ring-offset-ink focus-visible:outline-none disabled:translate-y-0 disabled:opacity-40",
         tone === "false"
           ? "border-rust-line bg-rust-bg text-salmon focus-visible:ring-rust"
           : "border-mint-line bg-mint-deep text-mint-soft focus-visible:ring-mint",

@@ -1,7 +1,7 @@
 import type { Metadata } from "next";
 import { cookies } from "next/headers";
-import { HUD_COOKIE, parseHudCookie } from "@/lib/progress";
-import { PathHome } from "@/components/home/path-home";
+import { HUD_COOKIE, parseHudCookie } from "@lib";
+import { PathHome } from "@components";
 
 export const metadata: Metadata = {
   title: "Single-Focus Path Mode",

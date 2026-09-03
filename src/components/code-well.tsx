@@ -12,9 +12,9 @@
  */
 import { useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "motion/react";
-import { cn } from "@/lib/utils";
+import { cn } from "@lib";
 
-interface CodeWellProps {
+export interface CodeWellProps {
   /** Pre-highlighted markup from the server. */
   html: string | null;
   /** Raw text, used for the typewriter measure and as a fallback. */
@@ -40,7 +40,7 @@ export function CodeWell({
   terminal = false,
   fontSize = 14,
   lineNumbers = false,
-}: CodeWellProps) {
+}: Readonly<CodeWellProps>) {
   const reduced = useReducedMotion() ?? false;
   const animating = typewriter && !reduced && Boolean(code);
   const [revealed, setRevealed] = useState(!animating);
@@ -135,7 +135,7 @@ export function CodeWell({
           {!revealed && (
             <span
               className={cn(
-                "ml-0.5 inline-block h-[1em] w-[7px] translate-y-[2px]",
+                "ml-0.5 inline-block h-[1em] w-1.75 translate-y-0.5",
                 terminal ? "bg-[var(--term-fg)]" : "bg-flame",
               )}
             />
@@ -150,22 +150,33 @@ export function CodeWell({
  * While typing we render sliced plain text (highlighting a partial token
  * produces flicker); once complete we swap in the server's highlighted markup.
  */
+interface RevealedCodeProps {
+  html: string | null;
+  code: string;
+  progress: number;
+  revealed: boolean;
+}
+
 function RevealedCode({
   html,
   code,
   progress,
   revealed,
-}: {
-  html: string | null;
-  code: string;
-  progress: number;
-  revealed: boolean;
-}) {
+}: Readonly<RevealedCodeProps>) {
   if (revealed && html) {
     return <code dangerouslySetInnerHTML={{ __html: html }} />;
   }
   const cut = Math.floor(code.length * progress);
   return <code style={{ color: "var(--code-plain)" }}>{code.slice(0, cut)}</code>;
+}
+
+interface LineContentProps {
+  code: string;
+  line: string;
+  index: number;
+  lines: readonly string[];
+  progress: number;
+  revealed: boolean;
 }
 
 function LineContent({
@@ -175,20 +186,15 @@ function LineContent({
   lines,
   progress,
   revealed,
-}: {
-  code: string;
-  line: string;
-  index: number;
-  lines: string[];
-  progress: number;
-  revealed: boolean;
-}) {
+}: Readonly<LineContentProps>) {
   if (revealed) {
     // Line numbers and per-token markup can't be interleaved from a single
     // HTML string, so numbered wells render plain-coloured text.
     return <span style={{ color: "var(--code-plain)" }}>{line || " "}</span>;
   }
-  const before = lines.slice(0, index).reduce((n, l) => n + l.length + 1, 0);
-  const cut = Math.max(0, Math.floor(code.length * progress) - before);
+  const charactersBeforeLine = lines
+    .slice(0, index)
+    .reduce((totalChars, currentLine) => totalChars + currentLine.length + 1, 0);
+  const cut = Math.max(0, Math.floor(code.length * progress) - charactersBeforeLine);
   return <span style={{ color: "var(--code-plain)" }}>{line.slice(0, cut) || " "}</span>;
 }

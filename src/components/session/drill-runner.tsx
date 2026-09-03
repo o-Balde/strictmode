@@ -11,29 +11,39 @@ import { useCallback, useEffect, useMemo, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
 import { X } from "lucide-react";
-import type { QuestionSubject } from "@/data/types";
-import { useDrillSession, type SessionMode } from "@/hooks/use-drill-session";
-import { useProgress } from "@/components/progress-provider";
-import { QuestionView } from "@/components/session/question-view";
-import { Feedback } from "@/components/session/feedback";
-import { HintPanel } from "@/components/session/hint-panel";
-import { ElapsedClock, SegmentStrip, type SegmentState } from "@/components/chrome";
-import { questionSwap, unfold } from "@/lib/motion";
-import { dayNumber, nextStreak } from "@/lib/progress";
-import { storeSessionResult } from "@/lib/session-result";
-import { subjectMeta } from "@/lib/question-index";
+import type { QuestionSubject } from "@data";
+import { useDrillSession, type SessionMode } from "@hooks";
+import {
+  ElapsedClock,
+  Feedback,
+  HintPanel,
+  QuestionView,
+  SegmentStrip,
+  type SegmentState,
+  useProgress,
+} from "@components";
+import {
+  dayNumber,
+  nextStreak,
+  questionSwap,
+  storeSessionResult,
+  subjectMeta,
+  unfold,
+} from "@lib";
 
 const LETTER_KEYS = ["a", "b", "c", "d"] as const;
+
+export interface DrillRunnerProps {
+  mode: SessionMode;
+  subject?: QuestionSubject;
+  reviewOnly?: boolean;
+}
 
 export function DrillRunner({
   mode,
   subject,
   reviewOnly,
-}: {
-  mode: SessionMode;
-  subject?: QuestionSubject;
-  reviewOnly?: boolean;
-}) {
+}: Readonly<DrillRunnerProps>) {
   const router = useRouter();
   const { progress, completeDaily, recordFreePlay, toggleSaved } = useProgress();
   const session = useDrillSession({ mode, subject, reviewOnly });
@@ -219,11 +229,11 @@ export function DrillRunner({
 
   if (!current) return <SessionSkeleton />;
 
-  const lastResult = results[results.length - 1];
+  const lastResult = results.at(-1);
   const correctRun = countTrailingCorrect(results);
 
   return (
-    <div className="mx-auto flex min-h-dvh w-full max-w-[860px] flex-col">
+    <div className="mx-auto flex min-h-dvh w-full max-w-215 flex-col">
       <div ref={topRef} aria-hidden className="scroll-mt-0" />
       <header className="border-line bg-ink sticky top-0 z-20 flex items-center gap-4 border-b px-5 py-3.5 sm:px-6">
         <button
@@ -277,7 +287,7 @@ export function DrillRunner({
               disabled={!selected}
               whileHover={selected ? { y: -1 } : undefined}
               whileTap={selected ? { scale: 0.98 } : undefined}
-              className="bg-flame text-ink rounded-lg px-[30px] py-[13px] text-[14.5px] font-semibold transition-opacity disabled:cursor-not-allowed disabled:opacity-35"
+              className="bg-flame text-ink rounded-lg px-7.5 py-3.25 text-[14.5px] font-semibold transition-opacity disabled:cursor-not-allowed disabled:opacity-35"
             >
               Check
             </motion.button>
@@ -296,7 +306,7 @@ export function DrillRunner({
               onAnimationComplete={(definition) => {
                 if (definition === "show") revealVerdict();
               }}
-              className="overflow-hidden scroll-mt-[60px]"
+              className="overflow-hidden scroll-mt-15"
             >
               <Feedback
                 question={current}
@@ -316,27 +326,27 @@ export function DrillRunner({
   );
 }
 
-function countTrailingCorrect(results: { correct: boolean }[]): number {
-  let n = 0;
-  for (let i = results.length - 1; i >= 0; i--) {
-    if (!results[i].correct) break;
-    n++;
+function countTrailingCorrect(results: readonly { readonly correct: boolean }[]): number {
+  let consecutiveCount = 0;
+  for (let index = results.length - 1; index >= 0; index--) {
+    if (!results[index].correct) break;
+    consecutiveCount++;
   }
-  return n;
+  return consecutiveCount;
 }
 
 function SessionSkeleton() {
   return (
-    <div className="mx-auto w-full max-w-[860px] px-6 py-10 sm:px-10">
-      <div className="bg-line mb-8 h-[5px] animate-pulse rounded-full" />
+    <div className="mx-auto w-full max-w-215 px-6 py-10 sm:px-10">
+      <div className="bg-line mb-8 h-1.25 animate-pulse rounded-full" />
       <div className="bg-surface mb-4 h-7 w-2/3 animate-pulse rounded" />
       <div className="bg-well mb-6 h-32 animate-pulse rounded-lg" />
       <div className="flex flex-col gap-2.5">
-        {[0, 1, 2, 3].map((i) => (
+        {[0, 1, 2, 3].map((skeletonIndex) => (
           <div
-            key={i}
+            key={skeletonIndex}
             className="bg-surface h-14 animate-pulse rounded-lg"
-            style={{ animationDelay: `${i * 90}ms` }}
+            style={{ animationDelay: `${skeletonIndex * 90}ms` }}
           />
         ))}
       </div>
@@ -344,35 +354,37 @@ function SessionSkeleton() {
   );
 }
 
+interface SessionMessageProps {
+  title: string;
+  body: string;
+  actionLabel: string;
+  onAction: () => void;
+}
+
 function SessionMessage({
   title,
   body,
   actionLabel,
   onAction,
-}: {
-  title: string;
-  body: string;
-  actionLabel: string;
-  onAction: () => void;
-}) {
+}: Readonly<SessionMessageProps>) {
   return (
     <div className="grid min-h-dvh place-items-center px-6">
       <motion.div
         initial={{ opacity: 0, y: 12 }}
         animate={{ opacity: 1, y: 0 }}
-        className="border-line bg-surface-2 w-full max-w-[520px] rounded-xl border p-9 text-center"
+        className="border-line bg-surface-2 w-full max-w-130 rounded-xl border p-9 text-center"
       >
-        <div className="border-line-3 text-clay mx-auto mb-5 grid size-[46px] place-items-center rounded-full border font-mono text-xl">
+        <div className="border-line-3 text-clay mx-auto mb-5 grid size-11.5 place-items-center rounded-full border font-mono text-xl">
           ✓
         </div>
         <h1 className="text-parchment mb-2.5 text-xl font-semibold text-balance">{title}</h1>
-        <p className="text-stone mx-auto mb-6 max-w-[36ch] text-[14px]/[1.65] text-pretty">
+        <p className="text-stone mx-auto mb-6 max-w-[36ch] text-sm/[1.65] text-pretty">
           {body}
         </p>
         <button
           type="button"
           onClick={onAction}
-          className="bg-flame text-ink rounded-lg px-[22px] py-[13px] text-[14px] font-semibold"
+          className="bg-flame text-ink rounded-lg px-5.5 py-3.25 text-sm font-semibold"
         >
           {actionLabel}
         </button>

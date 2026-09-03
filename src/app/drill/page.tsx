@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
-import { DrillLauncher } from "@/components/session/drill-launcher";
+import { DrillLauncher } from "@components";
 
 export const metadata: Metadata = {
   title: "Active Drill",

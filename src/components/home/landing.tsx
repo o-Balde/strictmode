@@ -9,11 +9,14 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
-import { Brand } from "@/components/brand";
-import { BANK_TOTAL, QUESTION_INDEX } from "@/lib/question-index";
-import { stagger, staggerChild } from "@/lib/motion";
-import { OptionText } from "@/components/option-text";
-import { cn } from "@/lib/utils";
+import { Brand, OptionText } from "@components";
+import {
+  BANK_TOTAL,
+  QUESTION_INDEX,
+  cn,
+  stagger,
+  staggerChild,
+} from "@lib";
 
 const SAMPLE_OPTIONS = ["0 then 0", "0 then 1", "1 then 2", "2 then 2"];
 
@@ -39,14 +42,14 @@ const HEADLINE = "Ten minutes of React + TypeScript reps a day.";
 
 export function Landing() {
   const codeQuestions = QUESTION_INDEX.filter(
-    (r) => r.type === "live_code" || r.type === "fix",
+    (question) => question.type === "live_code" || question.type === "fix",
   ).length;
 
   return (
     <div className="min-h-dvh">
       <header className="border-line flex items-center justify-between border-b px-6 py-4 sm:px-8">
         <Brand href={null} />
-        <nav className="flex items-center gap-5 sm:gap-[22px]">
+        <nav className="flex items-center gap-5 sm:gap-5.5">
           <Link href="/topics" className="text-ash hover:text-bone hidden text-[12.5px] transition-colors sm:block">
             Topics
           </Link>
@@ -62,7 +65,7 @@ export function Landing() {
         </nav>
       </header>
 
-      <main className="mx-auto grid max-w-[1180px] items-start gap-12 px-6 py-12 sm:px-10 sm:py-16 lg:grid-cols-[1.02fr_.98fr] lg:gap-14">
+      <main className="mx-auto grid max-w-295 items-start gap-12 px-6 py-12 sm:px-10 sm:py-16 lg:grid-cols-[1.02fr_.98fr] lg:gap-14">
         <motion.div
           variants={stagger(0.08, 0.1)}
           initial="hidden"
@@ -95,14 +98,14 @@ export function Landing() {
             <motion.div whileHover={{ y: -2 }} whileTap={{ scale: 0.98 }}>
               <Link
                 href="/drill"
-                className="bg-flame text-ink inline-block rounded-lg px-[26px] py-[15px] text-[15px] font-semibold"
+                className="bg-flame text-ink inline-block rounded-lg px-6.5 py-3.75 text-[15px] font-semibold"
               >
                 Start today&apos;s drill →
               </Link>
             </motion.div>
             <Link
               href="/topics"
-              className="border-line-3 text-bone hover:border-line-2 rounded-lg border px-5 py-[15px] text-[14px] font-medium transition-colors"
+              className="border-line-3 text-bone hover:border-line-2 rounded-lg border px-5 py-3.75 text-sm font-medium transition-colors"
             >
               Browse topics
             </Link>
@@ -153,25 +156,25 @@ export function Landing() {
               stdout
             </div>
             <div data-skin="terminal" className="flex flex-col gap-2">
-              {SAMPLE_OPTIONS.map((text, i) => (
+              {SAMPLE_OPTIONS.map((text, optionIndex) => (
                 <motion.div
                   key={text}
                   initial={{ opacity: 0, x: 12 }}
                   animate={{ opacity: 1, x: 0 }}
-                  transition={{ delay: 0.6 + i * 0.07 }}
+                  transition={{ delay: 0.6 + optionIndex * 0.07 }}
                   className={cn(
                     "term-scanlines relative flex items-center gap-[11px] rounded-[7px] border bg-[var(--term-bg)]",
                     "px-[13px] py-[11px] text-[13.5px] text-bone",
-                    i === 2 ? "border-flame" : "border-[#123c0c]",
+                    optionIndex === 2 ? "border-flame" : "border-[#123c0c]",
                   )}
                 >
                   <span
                     className={cn(
                       "font-mono text-[11px] font-semibold",
-                      i === 2 ? "text-flame" : "text-[var(--term-dim)]",
+                      optionIndex === 2 ? "text-flame" : "text-[var(--term-dim)]",
                     )}
                   >
-                    {String.fromCharCode(65 + i)}
+                    {String.fromCharCode(65 + optionIndex)}
                   </span>
                   <OptionText text={text} terminal />
                 </motion.div>
@@ -181,24 +184,33 @@ export function Landing() {
         </motion.div>
       </main>
 
-      <footer className="border-line text-slate mx-auto max-w-[1180px] border-t px-6 py-8 text-[12.5px] sm:px-10">
+      <footer className="border-line text-slate mx-auto max-w-295 border-t px-6 py-8 text-[12.5px] sm:px-10">
         Progress is kept in this browser only. Nothing is uploaded, ever.
       </footer>
     </div>
   );
 }
 
-function Stat({ value, label }: { value: string; label: string }) {
+interface StatProps {
+  value: string;
+  label: string;
+}
+
+function Stat({ value, label }: Readonly<StatProps>) {
   return (
-    <div className="bg-surface px-4 pt-4 pb-[18px]">
+    <div className="bg-surface px-4 pt-4 pb-4.5">
       <div className="text-flame font-mono text-xl font-semibold">{value}</div>
-      <div className="text-ash mt-1 text-[12px]/[1.45]">{label}</div>
+      <div className="text-ash mt-1 text-xs/[1.45]">{label}</div>
     </div>
   );
 }
 
+interface BootLineProps {
+  text: string;
+}
+
 /** Types the headline in, then leaves it alone. A cursor blinks while typing. */
-function BootLine({ text }: { text: string }) {
+function BootLine({ text }: Readonly<BootLineProps>) {
   const reduced = useReducedMotion();
   const [shown, setShown] = useState(reduced ? text.length : 0);
 
@@ -208,9 +220,9 @@ function BootLine({ text }: { text: string }) {
     const start = performance.now();
     const duration = 900;
     const tick = (now: number) => {
-      const t = Math.min(1, (now - start) / duration);
-      setShown(Math.floor(text.length * t));
-      if (t < 1) raf = requestAnimationFrame(tick);
+      const progressFraction = Math.min(1, (now - start) / duration);
+      setShown(Math.floor(text.length * progressFraction));
+      if (progressFraction < 1) raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);

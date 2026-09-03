@@ -1,8 +1,7 @@
 "use client";
 
 import { useMemo } from "react";
-import { cn } from "@/lib/utils";
-import { tokeniseStatement } from "@/lib/statement-tokens";
+import { cn, tokeniseStatement } from "@lib";
 
 /**
  * Renders a Binary statement or explanation, lifting the load-bearing words out
@@ -12,11 +11,16 @@ import { tokeniseStatement } from "@/lib/statement-tokens";
  * display size of a card front the statement is already semibold, so extra
  * weight alone would be nearly invisible.
  */
-export function StatementText({ text, className }: { text: string; className?: string }) {
+export interface StatementTextProps {
+  text: string;
+  className?: string;
+}
+
+export function StatementText({ text, className }: Readonly<StatementTextProps>) {
   const tokens = useMemo(() => tokeniseStatement(text), [text]);
 
   return (
-    <span className={cn("inline break-words", className)}>
+    <span className={cn("inline wrap-break-word", className)}>
       {tokens.map((token, index) => {
         if (token.kind === "prose") return <span key={index}>{token.text}</span>;
 
@@ -31,7 +35,7 @@ export function StatementText({ text, className }: { text: string; className?: s
         return (
           <code
             key={index}
-            className="inline rounded-[3px] px-[4px] py-[1px] font-mono text-[0.9em] break-all"
+            className="inline rounded-[3px] px-1 py-px font-mono text-[0.9em] break-all"
             style={{ background: "var(--well)", color: "var(--code-function)" }}
           >
             {token.text}

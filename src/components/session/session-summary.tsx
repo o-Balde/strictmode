@@ -11,12 +11,16 @@ import { useMemo } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { AnimatePresence, motion, useReducedMotion } from "motion/react";
-import { cn } from "@/lib/utils";
-import { CountUp } from "@/components/meters";
-import { readSessionResult, type SessionResult } from "@/lib/session-result";
-import { useHydrated } from "@/hooks/use-hydrated";
-import { formatDuration } from "@/lib/dates";
-import { stagger, staggerChild } from "@/lib/motion";
+import { CountUp } from "@components";
+import { useHydrated } from "@hooks";
+import {
+  cn,
+  formatDuration,
+  readSessionResult,
+  stagger,
+  staggerChild,
+  type SessionResult,
+} from "@lib";
 
 export function SessionSummary() {
   const router = useRouter();
@@ -40,11 +44,11 @@ export function SessionSummary() {
     );
   }
 
-  const correct = result.items.filter((i) => i.correct).length;
+  const correct = result.items.filter((item) => item.correct).length;
   const total = result.items.length;
-  const wrong = result.items.filter((i) => !i.correct);
+  const wrong = result.items.filter((item) => !item.correct);
   // Anything that took noticeably longer than a quick question is worth a note.
-  const slow = [...result.items].sort((a, b) => b.elapsedMs - a.elapsedMs)[0];
+  const slow = [...result.items].sort((first, second) => second.elapsedMs - first.elapsedMs).at(0);
   const slowWorthShowing = slow && slow.elapsedMs > 120_000 && slow.correct;
 
   return (
@@ -53,7 +57,7 @@ export function SessionSummary() {
         variants={stagger(0.07, 0.05)}
         initial="hidden"
         animate="show"
-        className="border-line bg-ink w-full max-w-[620px] rounded-xl border p-8 text-center sm:p-10"
+        className="border-line bg-ink w-full max-w-155 rounded-xl border p-8 text-center sm:p-10"
       >
         <motion.div variants={staggerChild} className="relative">
           {result.countsForStreak ? <Sparks /> : null}
@@ -80,16 +84,16 @@ export function SessionSummary() {
             : " · this round doesn't affect your streak."}
         </motion.p>
 
-        <motion.div variants={staggerChild} className="mb-8 flex justify-center gap-[7px]">
-          {result.items.map((item, i) => (
+        <motion.div variants={staggerChild} className="mb-8 flex justify-center gap-1.75">
+          {result.items.map((item, itemIndex) => (
             <motion.span
               key={item.id}
               initial={{ opacity: 0, scale: 0.5 }}
               animate={{ opacity: 1, scale: 1 }}
-              transition={{ delay: 0.35 + i * 0.06, type: "spring", stiffness: 400, damping: 20 }}
+              transition={{ delay: 0.35 + itemIndex * 0.06, type: "spring", stiffness: 400, damping: 20 }}
               title={item.title}
               className={cn(
-                "grid size-[34px] place-items-center rounded-[7px] font-mono text-xs font-semibold",
+                "grid size-8.5 place-items-center rounded-[7px] font-mono text-xs font-semibold",
                 item.correct ? "bg-mint-deep text-mint-text" : "bg-[#2e1a14] text-flame",
               )}
             >
@@ -110,7 +114,7 @@ export function SessionSummary() {
               {wrong.map((item) => (
                 <div key={item.id} className="flex items-start gap-3">
                   <span className="text-flame mt-0.5 font-mono text-xs font-semibold">✕</span>
-                  <span className="text-bone flex-1 text-[14px]/[1.5]">{item.title}</span>
+                  <span className="text-bone flex-1 text-sm/[1.5]">{item.title}</span>
                   <span className="text-clay shrink-0 font-mono text-xs font-medium">
                     {item.subjectTitle}
                   </span>
@@ -119,7 +123,7 @@ export function SessionSummary() {
               {slowWorthShowing ? (
                 <div className="border-line flex items-start gap-3 border-t pt-3.5">
                   <span className="text-clay mt-0.5 font-mono text-xs">⏱</span>
-                  <span className="text-bone flex-1 text-[14px]/[1.5]">
+                  <span className="text-bone flex-1 text-sm/[1.5]">
                     {slow.title} took {formatDuration(slow.elapsedMs)}
                   </span>
                 </div>
@@ -134,13 +138,13 @@ export function SessionSummary() {
             whileHover={{ y: -1 }}
             whileTap={{ scale: 0.99 }}
             onClick={() => router.push("/drill?mode=extra")}
-            className="bg-flame text-ink rounded-lg px-4 py-[15px] text-[15px] font-semibold"
+            className="bg-flame text-ink rounded-lg px-4 py-3.75 text-[15px] font-semibold"
           >
             One extra round · 5 min
           </motion.button>
           <Link
             href="/"
-            className="border-line-3 text-bone hover:border-line-2 rounded-lg border px-4 py-[15px] text-[14px] font-medium transition-colors"
+            className="border-line-3 text-bone hover:border-line-2 rounded-lg border px-4 py-3.75 text-sm font-medium transition-colors"
           >
             Done for today
           </Link>
@@ -166,17 +170,17 @@ function headline(result: SessionResult, correct: number, total: number): string
 function Sparks() {
   const reduced = useReducedMotion();
   if (reduced) return null;
-  const sparks = Array.from({ length: 14 }, (_, i) => i);
+  const sparks = Array.from({ length: 14 }, (_, sparkIndex) => sparkIndex);
   return (
     <AnimatePresence>
       <div aria-hidden className="pointer-events-none absolute inset-0 grid place-items-center">
-        {sparks.map((i) => {
-          const angle = (i / sparks.length) * Math.PI * 2;
-          const distance = 70 + (i % 4) * 22;
+        {sparks.map((sparkIndex) => {
+          const angle = (sparkIndex / sparks.length) * Math.PI * 2;
+          const distance = 70 + (sparkIndex % 4) * 22;
           return (
             <motion.span
-              key={i}
-              className="bg-flame absolute size-[5px] rounded-full"
+              key={sparkIndex}
+              className="bg-flame absolute size-1.25 rounded-full"
               initial={{ opacity: 0, x: 0, y: 0, scale: 0.4 }}
               animate={{
                 opacity: [0, 1, 0],
@@ -184,7 +188,7 @@ function Sparks() {
                 y: Math.sin(angle) * distance,
                 scale: [0.4, 1, 0.2],
               }}
-              transition={{ duration: 1.1, delay: 0.25 + (i % 5) * 0.04, ease: "easeOut" }}
+              transition={{ duration: 1.1, delay: 0.25 + (sparkIndex % 5) * 0.04, ease: "easeOut" }}
             />
           );
         })}

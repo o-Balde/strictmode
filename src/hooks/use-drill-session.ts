@@ -8,14 +8,17 @@
  * mid-session would move the goalposts under someone already answering.
  */
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import type { QuestionSubject } from "@/data/types";
-import type { QuestionPayload } from "@/lib/question-payload";
-import { questionSource } from "@/lib/question-source";
-import { composeDrill, type Drill } from "@/lib/drill";
-import { INDEX_BY_ID } from "@/lib/question-index";
-import { weakSubjects } from "@/lib/progress";
-import { useProgress } from "@/components/progress-provider";
-import type { SessionItemResult } from "@/lib/session-result";
+import type { QuestionSubject } from "@data";
+import { useProgress } from "@components";
+import {
+  INDEX_BY_ID,
+  composeDrill,
+  questionSource,
+  weakSubjects,
+  type Drill,
+  type QuestionPayload,
+  type SessionItemResult,
+} from "@lib";
 
 export type SessionMode = "daily" | "extra" | "free";
 
@@ -207,7 +210,7 @@ export function useDrillSession({ subject, reviewOnly }: SessionConfig): UseDril
 
   const wasCorrect = useMemo(() => {
     if (!answered || !current) return null;
-    return results[results.length - 1]?.correct ?? null;
+    return results.at(-1)?.correct ?? null;
   }, [answered, current, results]);
 
   return {

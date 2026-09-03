@@ -5,8 +5,8 @@ import { Toggle as TogglePrimitive } from "@base-ui/react/toggle"
 import { ToggleGroup as ToggleGroupPrimitive } from "@base-ui/react/toggle-group"
 import { type VariantProps } from "class-variance-authority"
 
-import { cn } from "@/lib/utils"
-import { toggleVariants } from "@/components/ui/toggle"
+import { cn } from "@lib"
+import { toggleVariants } from "./toggle"
 
 const ToggleGroupContext = React.createContext<
   VariantProps<typeof toggleVariants> & {
@@ -20,6 +20,13 @@ const ToggleGroupContext = React.createContext<
   orientation: "horizontal",
 })
 
+export interface ToggleGroupProps
+  extends ToggleGroupPrimitive.Props,
+    VariantProps<typeof toggleVariants> {
+  spacing?: number;
+  orientation?: "horizontal" | "vertical";
+}
+
 function ToggleGroup({
   className,
   variant,
@@ -28,11 +35,7 @@ function ToggleGroup({
   orientation = "horizontal",
   children,
   ...props
-}: ToggleGroupPrimitive.Props &
-  VariantProps<typeof toggleVariants> & {
-    spacing?: number
-    orientation?: "horizontal" | "vertical"
-  }) {
+}: Readonly<ToggleGroupProps>) {
   return (
     <ToggleGroupPrimitive
       data-slot="toggle-group"
@@ -56,13 +59,17 @@ function ToggleGroup({
   )
 }
 
+export interface ToggleGroupItemProps
+  extends TogglePrimitive.Props,
+    VariantProps<typeof toggleVariants> {}
+
 function ToggleGroupItem({
   className,
   children,
   variant = "default",
   size = "default",
   ...props
-}: TogglePrimitive.Props & VariantProps<typeof toggleVariants>) {
+}: Readonly<ToggleGroupItemProps>) {
   const context = React.useContext(ToggleGroupContext)
 
   return (

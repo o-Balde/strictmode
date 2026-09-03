@@ -2,9 +2,9 @@
 
 /** Reads the drill's query parameters on the client so /drill can stay static. */
 import { useSearchParams } from "next/navigation";
-import type { QuestionSubject } from "@/data/types";
-import { DrillRunner } from "@/components/session/drill-runner";
-import type { SessionMode } from "@/hooks/use-drill-session";
+import type { QuestionSubject } from "@data";
+import { DrillRunner } from "@components";
+import type { SessionMode } from "@hooks";
 
 const MODES: SessionMode[] = ["daily", "extra", "free"];
 

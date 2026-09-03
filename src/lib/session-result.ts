@@ -5,7 +5,7 @@
  * screen must survive a refresh, but it is meaningless in a new tab and should
  * not outlive the browser session.
  */
-import type { QuestionSubject } from "@/data/types";
+import type { QuestionSubject } from "@data";
 
 export const SESSION_RESULT_KEY = "strictmode.lastSession";
 

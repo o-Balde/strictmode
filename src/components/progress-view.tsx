@@ -7,17 +7,20 @@
 import Link from "next/link";
 import { motion } from "motion/react";
 import { ArrowLeft, Flame } from "lucide-react";
-import { cn } from "@/lib/utils";
-import { useProgress } from "@/components/progress-provider";
-import { Heatmap, buildCells } from "@/components/heatmap";
-import { MasteryBar } from "@/components/meters";
-import { BANK_TOTAL, SUBJECTS, subjectMeta } from "@/lib/question-index";
-import { subjectProgress } from "@/lib/drill";
-import { formatDuration } from "@/lib/dates";
-import { streakHealth } from "@/lib/progress";
-import { stagger, staggerChild } from "@/lib/motion";
-import { BINARY_BANK_SIZE } from "@/lib/binary";
-import { isDue } from "@/lib/scheduler";
+import { Heatmap, MasteryBar, buildCells, useProgress } from "@components";
+import {
+  BANK_TOTAL,
+  BINARY_BANK_SIZE,
+  SUBJECTS,
+  cn,
+  formatDuration,
+  isDue,
+  stagger,
+  staggerChild,
+  streakHealth,
+  subjectMeta,
+  subjectProgress,
+} from "@lib";
 
 export function ProgressView() {
   const { progress, hydrated, resetAll } = useProgress();
@@ -25,7 +28,7 @@ export function ProgressView() {
   const coverage = subjectProgress(
     progress.seenQuestionIds,
     progress.correctQuestionIds,
-    SUBJECTS.map((s) => ({ subject: s.subject, total: s.total })),
+    SUBJECTS.map((subjectEntry) => ({ subject: subjectEntry.subject, total: subjectEntry.total })),
   );
 
   const seen = progress.seenQuestionIds.length;
@@ -46,7 +49,7 @@ export function ProgressView() {
   const binaryDue = Object.values(binary.reviewState).filter((record) => isDue(record)).length;
 
   return (
-    <div className="mx-auto min-h-dvh w-full max-w-[860px] px-6 py-8 sm:px-9 sm:py-10">
+    <div className="mx-auto min-h-dvh w-full max-w-215 px-6 py-8 sm:px-9 sm:py-10">
       <Link
         href="/"
         className="text-ash hover:text-bone mb-7 inline-flex items-center gap-2 text-[13px] transition-colors"
@@ -128,22 +131,22 @@ export function ProgressView() {
           ) : (
             <div className="mb-8 flex flex-col gap-4">
               {coverage
-                .filter((c) => c.seen > 0)
-                .sort((a, b) => a.mastery - b.mastery)
-                .map((c, i) => (
+                .filter((subjectItem) => subjectItem.seen > 0)
+                .sort((firstSubject, secondSubject) => firstSubject.mastery - secondSubject.mastery)
+                .map((subjectItem, subjectIndex) => (
                   <MasteryBar
-                    key={c.subject}
+                    key={subjectItem.subject}
                     label={
                       <Link
-                        href={`/topics/${c.subject}`}
+                        href={`/topics/${subjectItem.subject}`}
                         className="hover:text-parchment transition-colors"
                       >
-                        {subjectMeta(c.subject)?.title ?? c.subject}
+                        {subjectMeta(subjectItem.subject)?.title ?? subjectItem.subject}
                       </Link>
                     }
-                    percent={c.mastery}
-                    detail={`${c.mastery}% · ${c.correct}/${c.seen} of ${c.total}`}
-                    delay={0.2 + i * 0.05}
+                    percent={subjectItem.mastery}
+                    detail={`${subjectItem.mastery}% · ${subjectItem.correct}/${subjectItem.seen} of ${subjectItem.total}`}
+                    delay={0.2 + subjectIndex * 0.05}
                   />
                 ))}
             </div>
@@ -182,7 +185,12 @@ export function ProgressView() {
   );
 }
 
-function BinaryStat({ value, label }: { value: string; label: string }) {
+interface BinaryStatProps {
+  value: string;
+  label: string;
+}
+
+function BinaryStat({ value, label }: Readonly<BinaryStatProps>) {
   return (
     <div className="border-binary-line border-b p-4 last:border-b-0 sm:border-r sm:border-b-0 sm:last:border-r-0">
       <div className="text-parchment font-mono text-[21px] font-semibold tabular-nums">{value}</div>
@@ -191,9 +199,14 @@ function BinaryStat({ value, label }: { value: string; label: string }) {
   );
 }
 
-function Stat({ value, label }: { value: string; label: string }) {
+interface StatProps {
+  value: string;
+  label: string;
+}
+
+function Stat({ value, label }: Readonly<StatProps>) {
   return (
-    <div className="bg-surface-2 p-[18px]">
+    <div className="bg-surface-2 p-4.5">
       <div className="text-parchment font-mono text-[26px] font-semibold tabular-nums">{value}</div>
       <div className="text-ash mt-1.5 text-[12px]">{label}</div>
     </div>

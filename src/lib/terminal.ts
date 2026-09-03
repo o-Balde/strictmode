@@ -8,7 +8,7 @@
  * Snippets are set like an editor; only options that read as logged values get
  * the terminal.
  */
-import type { QuestionType } from "@/data/types";
+import type { QuestionType } from "@data";
 
 /** Bare values a console would print. */
 const VALUE_LIKE =

@@ -155,6 +155,13 @@ async function writePayloads(qs: QuizQuestion[]): Promise<number> {
       interviewLine: q.interviewLine,
       misconception: q.misconception,
       hints: q.hints ?? [],
+      example: q.example
+        ? {
+            caption: q.example.caption,
+            code: q.example.code,
+            html: await highlight(q.example.code, q.example.language),
+          }
+        : undefined,
       docsUrl: q.bestPracticeRef,
       estimatedMinutes: q.estimatedMinutes,
       options: (q.options ?? []).map((o) => ({

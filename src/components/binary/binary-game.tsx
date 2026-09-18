@@ -40,19 +40,29 @@ const DIFFICULTIES: Array<{
   detail: string;
 }> = [
   { level: "junior", label: "Junior", detail: "Core syntax and mental models" },
-  { level: "intermediate", label: "Intermediate", detail: "Everyday production behavior" },
-  { level: "senior", label: "Senior", detail: "Subtle runtime and type-system edges" },
+  {
+    level: "intermediate",
+    label: "Intermediate",
+    detail: "Everyday production behavior",
+  },
+  {
+    level: "senior",
+    label: "Senior",
+    detail: "Subtle runtime and type-system edges",
+  },
 ];
 
 type ScreenStatus = "loading" | "choose" | "playing" | "error";
 
 export function BinaryGame() {
   const router = useRouter();
-  const { progress, hydrated, commitBinary, setBinaryDifficulty } = useProgress();
+  const { progress, hydrated, commitBinary, setBinaryDifficulty } =
+    useProgress();
   const [status, setStatus] = useState<ScreenStatus>("loading");
   const [session, setSession] = useState<ActiveBinarySession | null>(null);
   const [cards, setCards] = useState<BinaryCardPayload[]>([]);
-  const [selectedDifficulty, setSelectedDifficulty] = useState<QuestionLevel | null>(null);
+  const [selectedDifficulty, setSelectedDifficulty] =
+    useState<QuestionLevel | null>(null);
   const difficulty = selectedDifficulty ?? progress.binary.lastDifficulty;
   const [abandonArmed, setAbandonArmed] = useState(false);
   const [notice, setNotice] = useState<string | null>(null);
@@ -62,7 +72,8 @@ export function BinaryGame() {
   const loadSession = useCallback(async (active: ActiveBinarySession) => {
     try {
       const payloads = await getBinaryCards(active.cardIds);
-      if (payloads.length !== BINARY_DECK_SIZE) throw new Error("Incomplete Binary deck");
+      if (payloads.length !== BINARY_DECK_SIZE)
+        throw new Error("Incomplete Binary deck");
       setSession(active);
       setCards(payloads);
       questionStartedAt.current = performance.now();
@@ -89,7 +100,9 @@ export function BinaryGame() {
       setSession(null);
       setCards([]);
       setStatus("choose");
-      setNotice("The unfinished deck expired at midnight. Its staged answers were discarded.");
+      setNotice(
+        "The unfinished deck expired at midnight. Its staged answers were discarded.",
+      );
     }, msUntilNextLocalMidnight() + 100);
     return () => window.clearTimeout(timeout);
   }, [sessionDay]);
@@ -125,8 +138,15 @@ export function BinaryGame() {
     (answers: BinaryAnswer[]) => {
       if (!session || finishing.current) return;
       finishing.current = true;
-      const totalMs = answers.reduce((sum, answer) => sum + answer.elapsedMs, 0);
-      commitBinary({ answers, totalMs, countsForDaily: session.countsForDaily });
+      const totalMs = answers.reduce(
+        (sum, answer) => sum + answer.elapsedMs,
+        0,
+      );
+      commitBinary({
+        answers,
+        totalMs,
+        countsForDaily: session.countsForDaily,
+      });
       const result: BinarySessionResult = {
         version: 1,
         day: session.day,
@@ -177,7 +197,11 @@ export function BinaryGame() {
         elapsedMs: Math.max(1, performance.now() - questionStartedAt.current),
       };
       const answers = [...session.answers, answerEvent];
-      const next: ActiveBinarySession = { ...session, answers, showingExplanation: true };
+      const next: ActiveBinarySession = {
+        ...session,
+        answers,
+        showingExplanation: true,
+      };
       saveActiveBinarySession(next);
       setSession(next);
     },
@@ -192,7 +216,8 @@ export function BinaryGame() {
   useEffect(() => {
     if (status !== "playing") return;
     const onKeyDown = (event: KeyboardEvent) => {
-      if (event.repeat || event.metaKey || event.ctrlKey || event.altKey) return;
+      if (event.repeat || event.metaKey || event.ctrlKey || event.altKey)
+        return;
       const target = event.target as HTMLElement | null;
       if (target && /^(INPUT|TEXTAREA|SELECT)$/.test(target.tagName)) return;
 
@@ -262,12 +287,15 @@ export function BinaryGame() {
   }
   if (!session || cards.length === 0) return <BinarySkeleton />;
 
-  const segments: SegmentState[] = Array.from({ length: BINARY_DECK_SIZE }, (_, index) => {
-    const result = session.answers[index];
-    if (result) return result.correct ? "correct" : "wrong";
-    if (index === session.index) return "current";
-    return "pending";
-  });
+  const segments: SegmentState[] = Array.from(
+    { length: BINARY_DECK_SIZE },
+    (_, index) => {
+      const result = session.answers[index];
+      if (result) return result.correct ? "correct" : "wrong";
+      if (index === session.index) return "current";
+      return "pending";
+    },
+  );
 
   return (
     <div className="mx-auto flex min-h-dvh w-full max-w-225 flex-col overflow-x-hidden px-4 pb-5 sm:px-7">
@@ -289,7 +317,9 @@ export function BinaryGame() {
           onClick={abandon}
           className={cn(
             "rounded-md px-2.5 py-1.5 text-[11.5px] transition-colors focus-visible:ring-2 focus-visible:ring-binary focus-visible:outline-none",
-            abandonArmed ? "bg-rust-bg text-salmon" : "text-slate hover:text-ash",
+            abandonArmed
+              ? "bg-rust-bg text-salmon"
+              : "text-slate hover:text-ash",
           )}
         >
           {abandonArmed ? "Discard answers?" : "Abandon"}
@@ -298,7 +328,9 @@ export function BinaryGame() {
 
       <main className="flex flex-1 flex-col items-center justify-center py-2 sm:py-4">
         <div className="mb-4 flex items-center gap-2 font-mono text-[10.5px] tracking-[0.08em] uppercase">
-          <span className="text-binary-soft">{session.countsForDaily ? "Daily deck" : "Extra deck"}</span>
+          <span className="text-binary-soft">
+            {session.countsForDaily ? "Daily deck" : "Extra deck"}
+          </span>
           <span className="text-line-3">/</span>
           <span className="text-slate">{session.difficulty}</span>
         </div>
@@ -343,7 +375,10 @@ function DifficultyPicker({
     <div className="mx-auto min-h-dvh w-full max-w-225 px-5 py-5 sm:px-8 sm:py-7">
       <header className="mb-12 flex items-center justify-between">
         <Brand href="/" size="sm" />
-        <Link href="/progress" className="text-ash hover:text-bone text-[12.5px] transition-colors">
+        <Link
+          href="/progress"
+          className="text-ash hover:text-bone text-[12.5px] transition-colors"
+        >
           Progress
         </Link>
       </header>
@@ -356,11 +391,16 @@ function DifficultyPicker({
           Ten calls. True or false.
         </h1>
         <p className="text-stone mt-4 mb-9 max-w-147.5 text-[15px]/[1.7] text-pretty">
-          Swipe through React, TypeScript, and JavaScript statements. Each card flips into the mental model you need, and misses return on a spaced schedule.
+          Swipe through React, TypeScript, and JavaScript statements. Each card
+          flips into the mental model you need, and misses return on a spaced
+          schedule.
         </p>
 
         {notice ? (
-          <div className="border-line-3 bg-surface text-ash mb-6 rounded-lg border px-4 py-3 text-[13px]/[1.6]" role="status">
+          <div
+            className="border-line-3 bg-surface text-ash mb-6 rounded-lg border px-4 py-3 text-[13px]/[1.6]"
+            role="status"
+          >
             {notice}
           </div>
         ) : null}
@@ -385,10 +425,17 @@ function DifficultyPicker({
                       : "border-line-2 bg-surface hover:border-line-3",
                   )}
                 >
-                  <span className={cn("block text-[14.5px] font-semibold", selected ? "text-binary-soft" : "text-bone")}>
+                  <span
+                    className={cn(
+                      "block text-[14.5px] font-semibold",
+                      selected ? "text-binary-soft" : "text-bone",
+                    )}
+                  >
                     {item.label}
                   </span>
-                  <span className="text-ash mt-1.5 block text-xs/normal">{item.detail}</span>
+                  <span className="text-ash mt-1.5 block text-xs/normal">
+                    {item.detail}
+                  </span>
                 </button>
               );
             })}
@@ -402,12 +449,18 @@ function DifficultyPicker({
           whileTap={{ scale: 0.985 }}
           className="bg-binary text-ink mt-5 flex min-h-13.5 w-full items-center justify-center gap-2 rounded-xl px-7 text-[15px] font-semibold focus-visible:ring-2 focus-visible:ring-binary focus-visible:ring-offset-2 focus-visible:ring-offset-ink focus-visible:outline-none"
         >
-          {countsForDaily ? <Flame className="size-4" /> : <RotateCcw className="size-4" />}
+          {countsForDaily ? (
+            <Flame className="size-4" />
+          ) : (
+            <RotateCcw className="size-4" />
+          )}
           {countsForDaily ? "Start today's Binary deck" : "Start an extra deck"}
         </motion.button>
 
         <div className="text-slate mt-5 flex flex-wrap items-center justify-center gap-x-5 gap-y-2 text-[11.5px]">
-          <span className="inline-flex items-center gap-1.5"><Brain className="size-3.5" /> 10 mixed cards</span>
+          <span className="inline-flex items-center gap-1.5">
+            <Brain className="size-3.5" /> 10 mixed cards
+          </span>
           <span>No countdown</span>
           <span>Progress saves after card 10</span>
         </div>
@@ -426,25 +479,28 @@ function BinarySkeleton() {
 }
 
 interface BinaryMessageProps {
-  title: string;
-  body: string;
-  action: string;
-  onAction: () => void;
+  readonly title: string;
+  readonly body: string;
+  readonly action: string;
+  readonly onAction: () => void;
 }
 
-function BinaryMessage({
-  title,
-  body,
-  action,
-  onAction,
-}: Readonly<BinaryMessageProps>) {
+function BinaryMessage({ title, body, action, onAction }: BinaryMessageProps) {
+  title = "mamaco prego";
+
   return (
     <div className="mx-auto grid min-h-dvh max-w-155 place-items-center px-6 text-center">
       <div>
         <Layers3 className="text-binary mx-auto mb-5 size-7" />
         <h1 className="text-parchment text-2xl font-semibold">{title}</h1>
-        <p className="text-ash mx-auto mt-3 max-w-[48ch] text-sm/[1.7]">{body}</p>
-        <button type="button" onClick={onAction} className="bg-binary text-ink mt-6 rounded-lg px-6 py-3 text-sm font-semibold">
+        <p className="text-ash mx-auto mt-3 max-w-[48ch] text-sm/[1.7]">
+          {body}
+        </p>
+        <button
+          type="button"
+          onClick={onAction}
+          className="bg-binary text-ink mt-6 rounded-lg px-6 py-3 text-sm font-semibold"
+        >
           {action}
         </button>
       </div>

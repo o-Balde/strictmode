@@ -33,6 +33,7 @@ function toPayload(q: QuizQuestion): QuestionPayload {
     interviewLine: q.interviewLine,
     misconception: q.misconception,
     hints: q.hints ?? [],
+    example: q.example ? { caption: q.example.caption, code: q.example.code, html: null } : undefined,
     estimatedMinutes: q.estimatedMinutes,
     correctAnswer: q.correctAnswer ?? options.find((o) => o.isCorrect)?.id ?? "",
     options: options.map((o) => ({

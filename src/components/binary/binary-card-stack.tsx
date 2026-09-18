@@ -218,23 +218,30 @@ function CardFace({
         </button>
       </div>
 
-      <div className="scrollbar-hairline flex min-h-0 flex-1 flex-col justify-center overflow-y-auto py-2">
-        <p
-          className={cn(
-            "text-parchment m-0 text-balance font-semibold tracking-[-0.025em]",
-            card.codeSnippet ? "text-[21px]/[1.35] sm:text-[25px]/[1.35]" : "text-[26px]/[1.3] sm:text-[32px]/[1.28]",
-          )}
-        >
-          <StatementText text={card.statement} />
-        </p>
-        {card.codeSnippet ? (
-          <CodeWell
-            html={card.codeHtml}
-            code={card.codeSnippet}
-            className="mt-6 shrink-0"
-            fontSize={12.5}
-          />
-        ) : null}
+      <div className="scrollbar-hairline flex min-h-0 flex-1 flex-col overflow-y-auto py-2">
+        <div className="my-auto flex flex-col">
+          <p
+            className={cn(
+              "text-parchment m-0 text-balance font-semibold tracking-[-0.025em]",
+              card.codeSnippet ? "text-[21px]/[1.35] sm:text-[25px]/[1.35]" : "text-[26px]/[1.3] sm:text-[32px]/[1.28]",
+            )}
+          >
+            <StatementText text={card.statement} />
+          </p>
+          {card.codeSnippet ? (
+            <div
+              onPointerDown={(e) => e.stopPropagation()}
+              onTouchStart={(e) => e.stopPropagation()}
+              className="mt-6 shrink-0 [touch-action:pan-x_pan-y]"
+            >
+              <CodeWell
+                html={card.codeHtml}
+                code={card.codeSnippet}
+                fontSize={12.5}
+              />
+            </div>
+          ) : null}
+        </div>
       </div>
 
       <div className="text-slate mt-5 flex items-center justify-between font-mono text-[10.5px] tracking-[0.07em] uppercase">
@@ -377,12 +384,17 @@ function CardBack({
           <StatementText text={card.statement} />
         </p>
         {card.codeSnippet ? (
-          <CodeWell
-            html={card.codeHtml}
-            code={card.codeSnippet}
-            className="mb-5 shrink-0"
-            fontSize={12}
-          />
+          <div
+            onPointerDown={(e) => e.stopPropagation()}
+            onTouchStart={(e) => e.stopPropagation()}
+            className="mb-5 shrink-0 [touch-action:pan-x_pan-y]"
+          >
+            <CodeWell
+              html={card.codeHtml}
+              code={card.codeSnippet}
+              fontSize={12}
+            />
+          </div>
         ) : null}
         <div className="bg-binary-deep border-binary-line rounded-xl border p-5 sm:p-6">
           <div className="text-binary-soft mb-2.5 font-mono text-[10.5px] tracking-[0.09em] uppercase">

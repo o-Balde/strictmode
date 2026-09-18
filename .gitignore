@@ -54,3 +54,6 @@ src/generated/
 
 # generated question payloads
 public/q/
+
+# graft's local graph cache — regenerable, not committed (run `graft build`).
+/graft/

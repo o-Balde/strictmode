@@ -130,9 +130,13 @@ export function Feedback({
           <div className="text-slate mb-2.5 font-mono text-[11px] font-medium tracking-[0.09em]">
             WHY
           </div>
-          <p className="text-bone mb-5 text-[15px]/[1.75] text-pretty">
-            {question.explanation}
-          </p>
+          <div className="text-bone mb-5 space-y-3 text-[15px]/[1.75] text-pretty">
+            {question.explanation.split(/\n{2,}/).map((paragraph, index) => (
+              <p key={index}>
+                <OptionText text={paragraph} terminal={false} />
+              </p>
+            ))}
+          </div>
         </motion.div>
 
         {!correct && chosen?.explanation ? (
@@ -141,13 +145,25 @@ export function Feedback({
             className="text-ash mb-5 text-sm/[1.7] text-pretty"
           >
             <span className="text-rust font-medium">Why {chosen.id} is wrong: </span>
-            {chosen.explanation}
+            <OptionText text={chosen.explanation} terminal={false} />
           </motion.p>
         ) : null}
 
         {question.codeSnippet ? (
           <motion.div variants={staggerChild} className="mb-5">
             <CodeWell html={question.codeHtml} code={question.codeSnippet} fontSize={14} />
+          </motion.div>
+        ) : null}
+
+        {question.example ? (
+          <motion.div variants={staggerChild} className="mb-5">
+            <div className="text-slate mb-2.5 font-mono text-[11px] font-medium tracking-[0.09em]">
+              EXAMPLE
+            </div>
+            <p className="text-ash mb-2.5 text-sm/[1.7] text-pretty">
+              <OptionText text={question.example.caption} terminal={false} />
+            </p>
+            <CodeWell html={question.example.html} code={question.example.code} fontSize={13} />
           </motion.div>
         ) : null}
 
@@ -158,7 +174,7 @@ export function Feedback({
           >
             <p className="text-bone text-sm/[1.7] text-pretty">
               <strong className="text-peach font-semibold">The trap: </strong>
-              {question.misconception}
+              <OptionText text={question.misconception} terminal={false} />
             </p>
           </motion.div>
         ) : null}
@@ -170,7 +186,7 @@ export function Feedback({
           >
             <p className="text-bone text-sm/[1.7] text-pretty">
               <strong className="text-peach font-semibold">Interview line: </strong>
-              {question.interviewLine}
+              <OptionText text={question.interviewLine} terminal={false} />
             </p>
           </motion.div>
         ) : null}

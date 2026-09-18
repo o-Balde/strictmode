@@ -73,10 +73,10 @@ export function SegmentStrip({
         >
           <motion.div
             className={cn(
-              "h-full rounded-[3px]",
+              "h-full rounded-[3px] transition-colors duration-300",
               state === "correct" && "bg-mint",
               state === "wrong" && "bg-flame",
-              state === "current" && "bg-flame",
+              state === "current" && "bg-white",
               state === "pending" && "bg-transparent",
             )}
             initial={reduced ? false : { scaleX: 0 }}

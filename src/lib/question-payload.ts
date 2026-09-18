@@ -43,6 +43,8 @@ export interface QuestionPayload {
   interviewLine: string;
   misconception?: string;
   hints: string[];
+  /** Illustrative snippet shown after the explanation; html is pre-highlighted. */
+  example?: { caption: string; code: string; html: string | null };
   /** Canonical documentation for the question's subject, shown with the hint. */
   docsUrl?: string;
   estimatedMinutes: number;

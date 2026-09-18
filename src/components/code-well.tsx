@@ -10,7 +10,7 @@
  * verbatim and scroll horizontally at every breakpoint rather than being
  * reflowed or wrapped.
  */
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { useReducedMotion } from "motion/react";
 import { cn } from "@lib";
 
@@ -46,6 +46,30 @@ export function CodeWell({
   const [revealed, setRevealed] = useState(!animating);
   const [progress, setProgress] = useState(animating ? 0 : 1);
   const frame = useRef<number>(0);
+
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(false);
+
+  const checkScroll = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const { scrollLeft, scrollWidth, clientWidth } = el;
+    setCanScrollLeft(scrollLeft > 4);
+    setCanScrollRight(scrollLeft + clientWidth < scrollWidth - 4);
+  }, []);
+
+  useEffect(() => {
+    checkScroll();
+    const el = scrollRef.current;
+    if (!el) return;
+    el.addEventListener("scroll", checkScroll, { passive: true });
+    window.addEventListener("resize", checkScroll);
+    return () => {
+      el.removeEventListener("scroll", checkScroll);
+      window.removeEventListener("resize", checkScroll);
+    };
+  }, [checkScroll, code, revealed]);
 
   useEffect(() => {
     if (!animating || !code) return;
@@ -92,9 +116,39 @@ export function CodeWell({
         className,
       )}
     >
+      {/* Visual edge fades indicating horizontal overflow on scrollable viewports */}
+      {canScrollLeft && (
+        <div
+          aria-hidden
+          className={cn(
+            "pointer-events-none absolute inset-y-0 left-0 z-10 w-6 bg-gradient-to-r to-transparent",
+            terminal ? "from-[var(--term-bg)]" : "from-[var(--well)]",
+          )}
+        />
+      )}
+      {canScrollRight && (
+        <div
+          aria-hidden
+          className={cn(
+            "pointer-events-none absolute inset-y-0 right-0 z-10 w-6 bg-gradient-to-l to-transparent",
+            terminal ? "from-[var(--term-bg)]" : "from-[var(--well)]",
+          )}
+        />
+      )}
+      {canScrollRight && (
+        <span className="text-slate/60 pointer-events-none absolute bottom-1.5 right-2 z-10 font-mono text-[9px] tracking-wider uppercase select-none sm:hidden">
+          scroll →
+        </span>
+      )}
+
       {/* The wrapper scrolls; the <pre> grows to its content (w-max) so the
           right-hand padding survives a scroll to the end of a long line. */}
-      <div className="scrollbar-hairline overflow-x-auto">
+      <div
+        ref={scrollRef}
+        onPointerDown={(e) => e.stopPropagation()}
+        onTouchStart={(e) => e.stopPropagation()}
+        className="scrollbar-hairline overflow-x-auto [touch-action:pan-x_pan-y] overscroll-x-contain"
+      >
         <pre
           className={cn(
             "m-0 w-max min-w-full overflow-visible px-[22px] py-5 font-mono",

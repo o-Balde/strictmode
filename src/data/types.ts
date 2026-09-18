@@ -44,6 +44,13 @@ export interface QuestionOption {
   explanation?: string;
 }
 
+/** A short illustrative snippet shown after the explanation. */
+export interface QuestionExample {
+  caption: string;
+  language: CodeLanguage;
+  code: string;
+}
+
 export interface AssertionTest {
   id: string;
   description: string;
@@ -93,6 +100,7 @@ export interface BaseQuestion {
   misconception?: string; // The common trap or mental model flaw
   bestPracticeRef?: string; // Reference to Vercel React Best Practices or Official RFC rule
   hints?: string[];
+  example?: QuestionExample;
   source?: string;
   estimatedMinutes: number;
   options?: QuestionOption[];

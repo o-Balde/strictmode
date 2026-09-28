@@ -21,37 +21,44 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
         id: "A",
         text: "Class components can only render on the server, while functional components can only render in the browser.",
         isCorrect: false,
-        explanation: "Both class and functional components can be rendered in SSR and in client environments."
+        explanation: "Tempting if you conflate SSR with component type, but both class and functional components render identically on the server (via renderToString or Next.js) and in the browser. The rendering environment is determined by where the app runs, not by the component's definition style."
       },
       {
         id: "B",
         text: "Class components render faster than functional components because classes are compiled to C++ by V8.",
         isCorrect: false,
-        explanation: "Both execute in JavaScript; functional components with Hooks often have lower allocation overhead than class instances."
+        explanation: "V8 compiles JavaScript to machine code through TurboFan, not to C++, and it does so for every JavaScript construct\u2014classes, functions, arrows\u2014without distinguishing React component types. Both forms execute as ordinary JavaScript objects or functions with no measurable rendering-speed difference."
       },
       {
         id: "C",
         text: "Functional components cannot hold state or run side effects in any version of React.",
         isCorrect: false,
-        explanation: "React 16.8 introduced Hooks (useState, useEffect), giving functional components full state and effect capabilities."
+        explanation: "This was true before React 16.8, but useState, useEffect, useReducer, and the other Hooks introduced in that release give functional components the same state and side-effect capabilities that classes had through this.setState and lifecycle methods. The code's functional App uses useState and behaves identically to the class version."
       },
       {
         id: "D",
         text: "Class components extend React.Component and manage state/lifecycle with this and methods; functional components are plain functions using Hooks.",
         isCorrect: true,
-        explanation: "Correct. Functional components use Hooks for state and side effects, avoiding this binding issues and complex class lifecycle methods."
+        explanation: "Correct. The structural difference is exactly this: a class that extends React.Component and uses this.state, this.setState, and lifecycle methods, versus a plain function that receives props and uses Hooks for state and side effects. Everything else\u2014rendering, reconciliation, prop flow\u2014works the same way."
       }
     ],
     correctAnswer: "D",
-    explanation: "The main difference between class-based and functional components is how they are defined and the syntax they use. Class-based components are defined as ES6 classes and extend the React.Component class. They use the render method to return the JSX (JavaScript XML) that defines the component's output. Class components have access to component lifecycle methods and state management through this.state and this.setState(). Functional components, on the other hand, are defined as simple JavaScript functions. They take in props as arguments and return JSX directly. Functional components do not have access to lifecycle methods or state. However, with the introduction of React Hooks in React 16.8, functional components can now manage state and use other features such as context and effects. In general, functional components are considered simpler and easier to read and test. It is recommended to use functional components whenever possible, unless there is a specific need for class-based components.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the difference between class-based and functional React components?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the difference between class-based and functional React components?.",
+    explanation: "Class components are ES6 classes that extend React.Component. They store local data in this.state, update it with this.setState(), and tie logic to the component through lifecycle methods like componentDidMount and componentDidUpdate. Functional components are plain JavaScript functions: they receive props as an argument and return JSX. They manage state with useState and run side effects with useEffect, both imported from react.\n\nIn the code above, both components do the same job. The class version reads this.state.value and calls this.setState({ value: this.state.value + 1 }). The functional version reads value from the useState tuple and calls setValue(value + 1). The class component also needs an arrow-function class property (handleAgeChange = () => {...}) to bind this inside the handler; the functional component's handler is a plain closure that captures value from the render scope.\n\nThere is no performance difference in the rendered output, and class components still work in React 19. The practical shift is that Hooks let you extract and reuse logic across components without a shared base class, and the Rules of Hooks (top-level only, no conditionals) replace the implicit ordering guarantees of lifecycle methods.",
+    interviewLine: "A class component is an ES6 class extending React.Component that manages state through this.state and this.setState and attaches logic to lifecycle methods, while a functional component is a plain function that uses Hooks like useState and useEffect for the same responsibilities, which also removes the need to bind this in event handlers.",
+    misconception: "Treating functional components as a reduced or 'lighter' version of classes that simply cannot do everything a class can, when in fact Hooks give them equivalent state and effect power and the only real difference is structural (class with this vs plain function with closures and Hooks).",
     hints: [
-      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
+      "Look at how each component stores and updates its value: one uses this.state and this.setState, the other destructures a useState tuple.",
+      "Ask what the handler in each version captures: the class version relies on this, the functional version relies on a closure over the render-scope variable.",
+      "The difference is structural and syntactic, not about rendering environment, compiler output, or capability limits."
     ],
     source: "44-react",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component",
+    example: {
+      caption: "Notice how a single useEffect with a cleanup return replaces both componentDidMount and componentWillUnmount from the class equivalent.",
+      language: "tsx",
+      code: "import { useState, useEffect } from 'react';\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n\n  useEffect(() => {\n    const id = setInterval(() => setCount((c) => c + 1), 1000);\n    return () => clearInterval(id);\n  }, []);\n\n  return (\n    <>\n      <p>{count}</p>\n      <button onClick={() => setCount((c) => c + 1)}>+1</button>\n    </>\n  );\n}"
+    }
   },
   {
     id: "react-what-are-the-lifecycle-methods-of-a-component",
@@ -72,37 +79,44 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
         id: "A",
         text: "Methods that only execute when the user reloads the entire browser window tab.",
         isCorrect: false,
-        explanation: "Lifecycle phases occur continuously throughout the SPA lifecycle as components mount, update, and unmount."
+        explanation: "Tempting if you equate a component's life with the page's life, but in a single-page app components mount, update, and unmount independently of a full page reload; navigating between routes triggers lifecycle methods without any tab refresh."
       },
       {
         id: "B",
-        text: "Methods in class components (componentDidMount, componentDidUpdate, componentWillUnmount) that run at specific phases (mounting, updating, unmounting).",
+        text: "Methods in class components that run at specific phases (mounting, updating, unmounting).",
         isCorrect: true,
-        explanation: "Correct. Lifecycle methods allow executing setup, update reactions, and cleanup logic at defined stages of a component's lifecycle."
+        explanation: "Correct. These three instance methods are invoked by React at the commit phase of rendering, giving you a deterministic place to run setup, react to updates, and clean up resources."
       },
       {
         id: "C",
         text: "Deprecated functions that were permanently removed from JavaScript ES2015 specification.",
         isCorrect: false,
-        explanation: "React class lifecycle methods are part of React's Component API, not ECMAScript language specifications."
+        explanation: "Tempting if you hear \"lifecycle\" and think of language-level features, but componentDidMount and its siblings are methods React defines on its Component base class; no ECMAScript version ever included them."
       },
       {
         id: "D",
         text: "Special HTTP middleware functions that intercept incoming REST API network packets.",
         isCorrect: false,
-        explanation: "Lifecycle methods are client-side component execution hooks, not backend HTTP networking middleware."
+        explanation: "Tempting if you associate \"lifecycle\" with a request/response cycle, but these methods execute on the client inside a React component instance and have no involvement in the HTTP protocol or server-side routing."
       }
     ],
     correctAnswer: "B",
-    explanation: "Lifecycle methods are a way to hook into the different stages of a component's life cycle, allowing you to execute specific code at specific times. Here is the list of the major lifecycle methods: constructor: This is the first method called when a component is created. It is used for initializing state and binding event handlers. In functional components, you would use the useState hook for similar purposes. render: This method is responsible for rendering JSX markup and returns the content to be displayed on the screen. componentDidMount: This method is called immediately after the component is rendered in the DOM. It is commonly used for initialization tasks, such as API calls or setting up event listeners. componentDidUpdate: This method is invoked when the component's props or state change. It allows you to perform side effects, update the component based on the changes, or trigger additional API calls. componentWillUnmount: This method is called right before the component is removed from the DOM. It is used to clean up any resources that were set up in componentDidMount, such as removing event listeners or canceling timers. Some lifecycle methods, like componentWillMount, componentWillReceiveProps, and componentWillUpdate, have been deprecated or replaced with alternative methods or hooks. As for \"this,\" it refers to the current instance of a class component. It allows you to access properties and methods within the component. In functional components, \"this\" is not used as functions are not bound to a specific instance.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the lifecycle methods of a component?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the lifecycle methods of a component?.",
+    explanation: "Lifecycle methods are instance methods on a React class component that React calls at three fixed points: componentDidMount runs after the first render commits to the DOM, componentDidUpdate runs after any subsequent render caused by a prop or state change, and componentWillUnmount runs just before React removes the component from the tree. They are part of React's component API, not the ECMAScript language or the browser's page events.\n\nIn practice this means you set up subscriptions, timers, or fetches in componentDidMount and tear them down in componentWillUnmount, so the browser does not leak listeners or intervals after the component is gone. componentDidUpdate lets you react to a specific prop change without re-running setup logic that only belongs to the first mount. In a function component the same three phases collapse into one useEffect: an empty dependency array mirrors componentDidMount, a non-empty array mirrors componentDidUpdate, and the cleanup function you return mirrors componentWillUnmount.\n\nWhile class components are still supported, modern React development prefers function components with hooks. The older 'will' methods (componentWillMount, componentWillReceiveProps, componentWillUpdate) are deprecated and should not be used in new code; useEffect and other hooks provide the standard, safer way to manage side effects across all component types.",
+    interviewLine: "In a class component React calls componentDidMount after the first render commits, componentDidUpdate after every subsequent render, and componentWillUnmount before removal; in a function component all three collapse into a single useEffect whose dependency array and returned cleanup function cover the same three phases.",
+    misconception: "Treating lifecycle methods as browser page events (load, unload) rather than React-internal callbacks tied to a component's position in the virtual-DOM tree, which means they fire on every route change in a SPA without any full page reload.",
     hints: [
-      "A class component's constructor must call super(props) before touching this.props, and its lifecycle methods map onto effects in a function component."
+      "These methods live on a class that extends React.Component; they are not browser events, language keywords, or server middleware.",
+      "Ask which three phases a component passes through from first render to removal from the tree.",
+      "They are part of React's component API, not the ECMAScript spec or the HTTP protocol."
     ],
     source: "44-react",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/reference/react/Component"
+    bestPracticeRef: "https://react.dev/reference/react/Component",
+    example: {
+      caption: "Notice how componentDidMount sets up the interval and componentWillUnmount tears it down\u2014the same pair you would express as a useEffect with an empty dependency array and a cleanup return in a function component.",
+      language: "tsx",
+      code: "import { Component } from \"react\";\n\nclass Timer extends Component {\n  state = { seconds: 0 };\n  id: number | undefined;\n\n  componentDidMount() {\n    this.id = window.setInterval(\n      () => this.setState({ seconds: this.state.seconds + 1 }),\n      1000,\n    );\n  }\n\n  componentWillUnmount() {\n    if (this.id !== undefined) window.clearInterval(this.id);\n  }\n\n  render() {\n    return <span>{this.state.seconds}s</span>;\n  }\n}"
+    }
   },
   {
     id: "react-what-are-the-peculiarities-of-using-useeffect",
@@ -122,39 +136,46 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "It blocks browser painting synchronously until all internal async promises settle.",
+        text: "It blocks browser painting synchronously and waits for all internal async promises to settle before the next frame is displayed.",
         isCorrect: false,
-        explanation: "useEffect is intentionally deferred after paint to keep UI responsive; useLayoutEffect runs synchronously before paint."
+        explanation: "Tempting if you treat the effect callback like a synchronous render-phase step, but React schedules it after the browser has already painted the frame; it never blocks the paint pipeline. useLayoutEffect is the hook that runs synchronously before paint, and even it does not wait on promises."
       },
       {
         id: "B",
         text: "It runs after render is committed to screen, cleans up previous effect before re-running, and skips execution if dependencies have not changed.",
         isCorrect: true,
-        explanation: "Correct. useEffect runs asynchronously after browser paint, handles cleanup functions, and triggers only when dependency values change referentially."
+        explanation: "Correct. React commits the DOM, the browser paints, then the effect callback fires; the prior cleanup runs first, and Object.is comparison on the dependency array gates whether the effect re-runs at all."
       },
       {
         id: "C",
-        text: "Returning a promise directly from the useEffect callback useEffect(async () => ...) is standard best practice.",
+        text: "Returning a promise directly from the effect callback, as in useEffect(async () => { ... }), is the standard best practice for async side effects.",
         isCorrect: false,
-        explanation: "Effect callbacks must return a cleanup function or undefined; returning a Promise causes React warnings."
+        explanation: "Tempting because many side effects are inherently async, but the effect callback must return a cleanup function or undefined; a returned Promise is truthy but not a function, so React logs a warning and the cleanup contract is broken. Wrap the async body in an IIFE or a local async helper instead."
       },
       {
         id: "D",
-        text: "The dependency array compares objects and arrays using deep value equality checks.",
+        text: "The dependency array compares objects and arrays using deep structural value equality, so semantically identical values skip the effect.",
         isCorrect: false,
-        explanation: "React compares dependency array values using shallow referential equality (Object.is)."
+        explanation: "Tempting because a deep comparison would make the hook feel more intuitive for object props, but React uses Object.is on each dependency, which for objects and arrays is a reference check; a new object literal created on every render will always trigger the effect."
       }
     ],
     correctAnswer: "B",
-    explanation: "The useEffect hook allows you to perform side effects in a functional component. Mutations, subscriptions, timers, logging, and other side effects are not allowed inside the main body of a functional component known as the React rendering phase. This can lead to confusing errors and inconsistencies in the user interface. Instead, it is recommended to use useEffect. The function passed to useEffect will be executed after the render is committed to the screen, or if you pass an array of dependencies as the second parameter, the function will be called every time one of the dependencies changes. Learn more",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the peculiarities of using useEffect?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the peculiarities of using useEffect?.",
+    explanation: "useEffect schedules its callback to run after React has committed the render to the DOM and the browser has painted. Before running a new effect, React calls the cleanup function returned by the previous run of that same effect, so subscriptions, timers, and listeners are torn down before being re-established. On every subsequent render, React compares each dependency with Object.is; if none changed, the effect is skipped entirely.\n\nIn practice this means an effect with an empty dependency array like the one in the snippet fires once, after the first paint. If you subscribe to an event inside the effect but forget to return a cleanup, the second mount (or a StrictMode double-invocation) leaves two live listeners. The cleanup is not optional ceremony; it is the mechanism that keeps the effect idempotent across re-renders.\n\nThe boundary that trips candidates up: useEffect is asynchronous with respect to paint, so reading document dimensions inside it sees the new layout, but the callback is not guaranteed to run before the user interacts. If you need the DOM mutation to land before the next frame, useLayoutEffect is the synchronous counterpart. Neither hook is a place to put logic that belongs in the render body or in an event handler.",
+    interviewLine: "useEffect is post-paint: React commits the DOM, the browser paints, then the callback fires. Before a re-run the previous cleanup executes, and the dependency array is compared with Object.is, so a new object reference on every render will re-trigger the effect even if its fields are identical.",
+    misconception: "useEffect is often treated as a synchronous did-mount / did-update callback that runs during render, when in fact it is scheduled after paint, its cleanup is a first-class contract called before every re-run and on unmount, and its dependency check is a shallow Object.is comparison rather than a deep one.",
     hints: [
-      "An effect synchronises with something outside React. Ask what it subscribes to, and what its cleanup has to undo when the dependencies change."
+      "Think about when the callback actually fires relative to the browser painting the frame.",
+      "What happens to the previous effect's cleanup before the next one runs, and how does React decide whether to run it at all?",
+      "The dependency array is not a deep-equal check; ask yourself what Object.is does with two separate object literals."
     ],
     source: "44-react",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/reference/react/useEffect"
+    bestPracticeRef: "https://react.dev/reference/react/useEffect",
+    example: {
+      caption: "The cleanup function is what prevents a second interval from stacking when StrictMode mounts the component twice in development.",
+      language: "typescript",
+      code: "import { useEffect, useState } from \"react\";\n\nfunction useClock() {\n  const [time, setTime] = useState(() =>\n    new Date().toLocaleTimeString()\n  );\n\n  useEffect(() => {\n    const id = setInterval(() => {\n      setTime(new Date().toLocaleTimeString());\n    }, 1000);\n    return () => clearInterval(id);\n  }, []);\n\n  return time;\n}"
+    }
   },
   {
     id: "react-which-pattern-does-mobx-implement",
@@ -173,39 +194,46 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "The Abstract Syntax Tree compiler pattern for AST transformations.",
+        text: "The Abstract Syntax Tree compiler pattern for build-time code transformations.",
         isCorrect: false,
-        explanation: "MobX is a runtime reactivity library, not an AST compiler."
+        explanation: "Tempting if you associate MobX with tooling like Babel or SWC, but MobX ships as a runtime library that instruments property access at execution time; it never rewrites your source code into a new AST."
       },
       {
         id: "B",
-        text: "The Database Connection Pooling pattern for TCP sockets.",
+        text: "The Database Connection Pooling pattern for managing TCP sockets.",
         isCorrect: false,
-        explanation: "MobX manages client reactive state, not database connection sockets."
+        explanation: "This conflates client-side state management with server-side resource management. MobX runs entirely in the browser or Node process and has no socket or connection lifecycle to pool."
       },
       {
         id: "C",
         text: "The Strict Redux Reducer pattern requiring immutable state trees and action creators.",
         isCorrect: false,
-        explanation: "MobX uses mutable observable state and automatic dependency tracking, unlike Redux's immutable reducers."
+        explanation: "The most tempting trap because both libraries manage application state, but Redux enforces immutability and explicit dispatch while MobX mutates observable properties directly and infers dependencies from reads, so no action creators or pure reducers are involved."
       },
       {
         id: "D",
         text: "The Observer / Observable pattern with transparent functional reactive programming (TFRP).",
         isCorrect: true,
-        explanation: "Correct. MobX automatically tracks observable property access during component rendering and triggers re-renders when observed properties mutate."
+        explanation: "Correct. MobX wraps state in observables, records which properties a component reads during render, and re-runs that component when a tracked property mutates \u2014 the classic Observer contract, delivered without manual subscribe or notify calls."
       }
     ],
     correctAnswer: "D",
-    explanation: "Mobx implements the Observer pattern, also known as the Publish-Subscribe pattern. Learn more",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Which pattern does Mobx implement?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Which pattern does Mobx implement?.",
+    explanation: "MobX implements the Observer pattern, also called Publish-Subscribe. An observable object holds state; any code that reads that state becomes an observer. When the state mutates, the observable notifies its observers so they re-execute. MobX's creator calls this model transparent functional reactive programming: you write ordinary imperative reads and writes, and the library wires up the subscriptions behind the scenes.\n\nIn a React component, reading `store.name` inside a `useObserver`-wrapped render is the subscription. If `store.name` later mutates, MobX re-runs that render. You never call `subscribe` or `notify` by hand, and you never need to produce a new object reference to signal a change.\n\nThe nuance an interviewer will probe: MobX tracks property-level access, so a component that reads only `store.name` re-renders when `name` changes even if the rest of the store is untouched. Redux, by contrast, relies on reference identity from `mapStateToProps` to decide what re-renders. That difference is the practical fingerprint of the Observer pattern versus the unidirectional-dispatch pattern.",
+    interviewLine: "MobX is built on the Observer pattern: I subscribe to state simply by reading it inside a reactive context, and MobX re-runs that context the moment a tracked property mutates, so I never manage subscriptions or produce new references by hand.",
+    misconception: "Because MobX and Redux both solve \"application state,\" it is easy to assume they share the same architectural pattern; in fact MobX is mutable and observer-driven while Redux is immutable and dispatch-driven, which places them on opposite sides of the Observer versus unidirectional-flow divide.",
     hints: [
-      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
+      "Think about what happens when code reads a value and that value later changes \u2014 who is told, and how?",
+      "MobX's creator describes the model as transparent functional reactive programming; what does transparent imply about how much subscription boilerplate you write?",
+      "Redux needs a new reference to trigger a re-render; MobX does not. That gap points to a fundamentally different underlying pattern."
     ],
     source: "44-react",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/reference/react/hooks"
+    bestPracticeRef: "https://react.dev/reference/react/hooks",
+    example: {
+      caption: "Notice that the component subscribes by reading cart.total inside useObserver; no useEffect, no subscribe call, no new reference is needed for the badge to update.",
+      language: "tsx",
+      code: "import { makeAutoObservable } from \"mobx\";\nimport { useObserver } from \"mobx-react-lite\";\n\nclass Cart {\n  total = 0;\n\n  constructor() {\n    makeAutoObservable(this);\n  }\n\n  add() {\n    this.total += 1;\n  }\n}\n\nconst cart = new Cart();\n\nfunction CartBadge() {\n  return useObserver(() => <span>{cart.total}</span>);\n}\n\nexport default function App() {\n  return (\n    <div>\n      <CartBadge />\n      <button onClick={() => cart.add()}>Add</button>\n    </div>\n  );\n}"
+    }
   },
   {
     id: "react-what-is-react-context",
@@ -224,39 +252,46 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "A browser API that tracks user location coordinates via GPS satellites.",
+        text: "A browser API that reports the user's physical coordinates via GPS satellites.",
         isCorrect: false,
-        explanation: "Geolocation is a browser navigator API, unrelated to React Context."
+        explanation: "Tempting if you associate the word 'context' with the browser's Geolocation API, but React Context has no relationship to location data. It is a React rendering API, not a Web platform API."
       },
       {
         id: "B",
-        text: "A compiler configuration file that sets up TypeScript compile options.",
+        text: "A configuration file that tells the TypeScript compiler which language features and output format to use.",
         isCorrect: false,
-        explanation: "Context is a runtime React API (`createContext`, `useContext`), not a compiler config."
+        explanation: "This describes `tsconfig.json`. React Context is a runtime API (`createContext`, `useContext`) that operates during rendering, not a build-time compiler setting."
       },
       {
         id: "C",
         text: "A mechanism for sharing values (like themes, user auth, or locales) across the component tree without manually passing props at every level.",
         isCorrect: true,
-        explanation: "Correct. Context provides a way to pass data through the component tree without having to pass props down manually at every level."
+        explanation: "Correct. `createContext` creates the channel, `Provider` supplies the value, and `useContext` reads it in any descendant, eliminating the need to forward the value through every intermediate component."
       },
       {
         id: "D",
-        text: "A global database running on a remote server that stores user passwords.",
+        text: "A remote database service that persists user credentials across sessions.",
         isCorrect: false,
-        explanation: "React Context is an in-memory client component tree data-passing mechanism, not a remote database."
+        explanation: "This describes a backend authentication store. React Context lives entirely in the client-side component tree; it holds no data beyond the current render and persists nothing to a server."
       }
     ],
     correctAnswer: "C",
-    explanation: "React Context is a feature that provides a way to pass data through the component tree without manually passing props at every level. It allows you to create a global state that can be accessed by any component within the tree, regardless of its position. Context is useful when you need to share data between multiple components that are not directly connected through props. The React Context API consists of three main parts: createContext: This function is used to create a new context object. Context.Provider: This component is used to provide the value to the context. It wraps the components that need access to the value. Context.Consumer or useContext hook: This component or hook is used to consume the value from the context. It can be used within any component within the context's provider. By using React Context, you can avoid prop drilling (passing props through multiple levels of components) and easily manage state at a higher level, making your code more organized and efficient. Learn more",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is React Context?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is React Context?.",
+    explanation: "React Context is a built-in mechanism for sharing values across the component tree without threading props through every intermediate level. You create a context object with `createContext`, wrap a subtree in its `Provider`, and read the current value in any descendant with `useContext`.\n\nIn practice this replaces prop drilling. Without Context, a `Navbar` three levels deep would receive `currentUser` as a prop from `App`, then `Layout`, then `Page` \u2014 each intermediate component just forwards it. With Context, `Navbar` calls `useContext(UserContext)` and gets the value directly, regardless of how many components sit between it and the `Provider`.\n\nThe trade-off an interviewer will probe: every consumer re-renders whenever the Provider's `value` reference changes. If you pass a new object literal on every render (`value={{ user, theme }}`), all consumers re-render even when the data is unchanged. Memoize the value or split contexts to keep re-renders scoped.",
+    interviewLine: "Context is a data-passing channel, not a state manager. I use `createContext` to define the channel, wrap a subtree in its Provider, and read the value with `useContext` in any descendant. I keep the value reference stable so I do not trigger unnecessary re-renders in consumers.",
+    misconception: "Learners often treat Context as a global state store or a re-render-avoidance tool, when it is specifically a data-passing channel: every consumer re-renders on value change, and it carries no subscription logic, middleware, or persistence of its own.",
     hints: [
-      "Context solves passing data down, not re-rendering. Every consumer re-renders when the value changes, so the value's identity matters."
+      "Think about the problem it solves: a deeply nested component needs a value that originates high in the tree, and every component in between would otherwise just forward it.",
+      "Ask yourself: does Context involve a server, a config file, or the browser's location API, or is it purely a React rendering mechanism?",
+      "It is not a state store \u2014 it has no `dispatch`, no middleware, and no persistence. It is a channel that connects a Provider to its consumers."
     ],
     source: "44-react",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/reference/react/useContext"
+    bestPracticeRef: "https://react.dev/reference/react/useContext",
+    example: {
+      caption: "Notice that `Avatar` reads the theme directly from Context; no intermediate component needs to forward a `theme` prop.",
+      language: "tsx",
+      code: "import { createContext, useContext, type ReactNode } from \"react\";\n\nconst ThemeContext = createContext(\"light\");\n\nfunction ThemeProvider({ children }: { children: ReactNode }) {\n  return (\n    <ThemeContext.Provider value=\"dark\">\n      {children}\n    </ThemeContext.Provider>\n  );\n}\n\nfunction Avatar() {\n  const theme = useContext(ThemeContext);\n  return <div style={{ background: theme === \"dark\" ? \"#111\" : \"#fff\" }}>A</div>;\n}"
+    }
   },
   {
     id: "react-what-is-useref-used-for-and-how-does-it-work",
@@ -276,39 +311,46 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Returns a mutable ref object `{ current: initialValue }` that persists across renders without triggering a re-render when its `.current` property changes.",
+        text: "Returns a mutable object `{ current: initialValue }` that persists across renders; mutating `.current` does not trigger a re-render.",
         isCorrect: true,
-        explanation: "Correct. `useRef` is used for accessing DOM elements directly and for holding mutable instance variables across render lifecycles."
+        explanation: "Correct. `useRef` returns a stable object whose `.current` property is a plain mutable slot; writing to it is invisible to React's reconciliation, so the component does not re-render."
       },
       {
         id: "B",
-        text: "Forces the component to re-render whenever `ref.current` is modified.",
+        text: "Forces the component to re-render whenever `ref.current` is modified, since React tracks all writes to ref objects internally.",
         isCorrect: false,
-        explanation: "Mutating `ref.current` is intentionally silent and does not schedule a re-render."
+        explanation: "Tempting if you equate any mutable value with state, but `ref.current` is just a property on a plain object. React never observes writes to it, so no render is scheduled \u2014 the opposite of what `setState` does."
       },
       {
         id: "C",
-        text: "Replaces all `useState` calls across the application to improve memory efficiency.",
+        text: "Replaces all `useState` calls across the application to reduce the memory overhead of creating new state objects on every render.",
         isCorrect: false,
-        explanation: "`useRef` does not trigger UI updates; `useState` is required whenever changes should update the rendered screen."
+        explanation: "Tempting if you think of a ref as a lighter state, but they solve different problems. `useState` tells React this value changed, re-render; `useRef` holds a value that should not trigger that update. Swapping one for the other breaks the UI."
       },
       {
         id: "D",
-        text: "Stores data in an encrypted cookie sent with every HTTP request.",
+        text: "Stores data in an encrypted cookie that is sent with every HTTP request so the value persists across page navigations.",
         isCorrect: false,
-        explanation: "`useRef` is purely an in-memory JavaScript reference object."
+        explanation: "Tempting if the word ref sounds like a persistent storage layer, but it is a plain JavaScript object living in memory. Nothing is serialized, encrypted, or attached to any network request."
       }
     ],
     correctAnswer: "A",
-    explanation: "useRef returns a modifiable ref object, a property. The current of which is initialized by the passed argument. The returned object will persist for the entire lifetime of the component and will not change from render to render. The usual use case is to access the descendant in an imperative style. I.e. using ref, we can explicitly refer to the DOM element. Learn more",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is useRef used for and how does it work?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is useRef used for and how does it work?.",
+    explanation: "`useRef(initialValue)` returns a plain object `{ current: initialValue }`. React caches that same object for the lifetime of the component, so every render receives the identical reference. Writing to `.current` is a normal property assignment \u2014 it never goes through React's state scheduler, so no re-render is triggered.\n\nIn the code above, `inputRef.current.focus()` reaches the DOM node directly because React attached the element to `.current` during mount. You can use the same pattern to hold a timer id, a previous prop value, or a flag that other logic reads but the rendered output never displays.\n\nOne edge case: the `initialValue` argument is only read on the first render. If you pass a different value on a later render, React silently ignores it and keeps the original. In TypeScript, prefer `useRef<HTMLInputElement>(null)` over `useRef(null)` so `.current` is typed and methods like `.focus()` are available without a cast.",
+    interviewLine: "`useRef` gives me a stable object whose `.current` I can mutate freely across renders without triggering a re-render, which is exactly what I need for imperative DOM access or for stashing a value like a timer id that the UI never displays.",
+    misconception: "Candidates often treat `ref.current` like a state variable, expecting React to notice the write and re-render, when in fact it is an ordinary object property that React's scheduler never inspects.",
     hints: [
-      "Both refs and state survive a render. Only state causes one, so refs are for values the UI does not display."
+      "Look at what `useRef(null)` actually returns and what happens to that object on the second render.",
+      "Ask yourself: does React's reconciliation pipeline see a write to `.current`, or is it just a property on a plain object?",
+      "If mutating `.current` did trigger a re-render, the `focus()` call in the example would behave differently \u2014 would it?"
     ],
     source: "44-react",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/reference/react/useRef"
+    bestPracticeRef: "https://react.dev/reference/react/useRef",
+    example: {
+      caption: "Notice that updating `previousWord.current` inside the effect does not re-trigger the effect, because React never sees the write.",
+      language: "tsx",
+      code: "import { useRef, useEffect } from \"react\";\n\nfunction Flashcard({ word }: { word: string }) {\n  const previousWord = useRef(word);\n\n  useEffect(() => {\n    if (previousWord.current !== word) {\n      console.log(`Changed from \"${previousWord.current}\" to \"${word}\"`);\n      previousWord.current = word;\n    }\n  }, [word]);\n\n  return <p>{word}</p>;\n}"
+    }
   },
   {
     id: "react-how-to-track-changes-in-a-field-of-an-object-in-a-funct",
@@ -328,39 +370,46 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Pass the entire mutable object into `useCallback` without declaring any dependencies.",
+        text: "Pass the entire mutable object into `useCallback` with an empty dependency array so the callback captures the latest value on every render.",
         isCorrect: false,
-        explanation: "Passing mutable objects with an empty dependency array causes stale closures and misses property updates."
+        explanation: "Tempting if you think of `useCallback` as a general-purpose change tracker, but it only memoises a function reference; it does not observe state. An empty dependency array also means the memoised function is created once and never updated, so it reads a stale closure."
       },
       {
         id: "B",
-        text: "Mutate `user.age++` directly in render and call `forceUpdate()`.",
+        text: "Increment `user.age` directly during render and call `forceUpdate()` to schedule a re-render with the new value.",
         isCorrect: false,
-        explanation: "Direct mutation violates React state immutability, and `forceUpdate` is not available in functional components."
+        explanation: "Tempting if you come from class-component habits, but `forceUpdate` is a `Component` instance method with no equivalent in function components. Mutating state in place also bypasses React's scheduling, so no re-render is triggered at all."
       },
       {
         id: "C",
-        text: "Listen to `document.onpropertychange` DOM events on the root HTML body tag.",
+        text: "Attach a `document.onpropertychange` listener on the root `<body>` tag and filter events by property name.",
         isCorrect: false,
-        explanation: "JavaScript object property mutations do not trigger DOM property change events."
+        explanation: "Tempting if you conflate JavaScript object mutation with DOM events, but `onpropertychange` was an IE-specific event for DOM nodes. Plain object property changes in modern browsers emit no events, so the listener never fires."
       },
       {
         id: "D",
-        text: "Pass the specific nested property `user.age` into the dependency array of a `useEffect` hook `useEffect(() => { ... }, [user.age])`.",
+        text: "Pass the specific nested property `user.age` into the dependency array of a `useEffect` hook: `useEffect(() => { ... }, [user.age])`.",
         isCorrect: true,
-        explanation: "Correct. Listing the specific primitive property in the dependency array ensures the effect runs only when that exact field value changes."
+        explanation: "Correct. Because `user.age` is a primitive, `Object.is` gives a stable value comparison between renders, so the effect re-runs only when that exact field changes, not when the surrounding object is recreated."
       }
     ],
     correctAnswer: "D",
-    explanation: "To do this, you need to use the useEffect hook and pass the field of the object as a dependency array.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to track changes in a field of an object in a functional component?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to track changes in a field of an object in a functional component?.",
+    explanation: "The correct approach is to pass the specific primitive property, such as `user.age`, into the dependency array of `useEffect`. Between renders React compares each dependency with `Object.is`; a number or string that has not changed is skipped, so the effect body does not re-run.\n\nIn practice this matters because the parent object is often recreated on every render. If you listed the whole object, the effect would fire on every unrelated state change. Naming the field keeps the effect scoped to the one value you care about, which also prevents side effects like API calls or DOM writes from firing needlessly.\n\nOne edge case to remember: if the property you track is itself an object or array, `Object.is` compares by reference, so a new reference triggers the effect even when the contents are identical. In that situation you need a derived primitive (a stringified key, a length, a flag) or a custom comparison stored in a `useRef` guard.",
+    interviewLine: "I put the specific primitive property in the `useEffect` dependency array so that React's `Object.is` comparison between renders fires the effect only when that field actually changes, not when the parent object gets a new reference.",
+    misconception: "Learners often think they need to observe the object itself\u2014via mutation, a DOM event, or a whole-reference comparison\u2014to detect a field change, when React's dependency array already compares individual primitive values with `Object.is` between renders.",
     hints: [
-      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
+      "Look at what you put inside the dependency array and ask what React compares there between renders.",
+      "React uses `Object.is` on each dependency; a primitive number or string is compared by value, while an object is compared by reference.",
+      "`useCallback` memoises a function and `forceUpdate` is a class-component method\u2014neither is the tool for reacting to a value change."
     ],
     source: "44-react",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component",
+    example: {
+      caption: "Notice that clicking Rename changes the object but does not re-run the effect, while Age up does, because only `user.age` is in the dependency array.",
+      language: "tsx",
+      code: "import { useState, useEffect } from 'react'\n\nfunction Profile() {\n  const [user, setUser] = useState({ name: 'Ada', age: 30 })\n\n  useEffect(() => {\n    console.log('age changed to', user.age)\n  }, [user.age])\n\n  return (\n    <div>\n      <p>{user.name}</p>\n      <button onClick={() => setUser((u) => ({ ...u, name: 'Grace' }))}>\n        Rename\n      </button>\n      <button onClick={() => setUser((u) => ({ ...u, age: u.age + 1 }))}>\n        Age up\n      </button>\n    </div>\n  )\n}"
+    }
   },
   {
     id: "react-how-to-access-a-dom-element",
@@ -382,37 +431,44 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
         id: "A",
         text: "Use the `useDOMElement` hook and pass the CSS class name as a string.",
         isCorrect: false,
-        explanation: "There is no `useDOMElement` hook in React; `useRef` is the standard DOM reference mechanism."
+        explanation: "Tempting because it sounds like a React hook, but no such hook exists in React 19. The standard mechanism for holding a DOM node reference is `useRef` combined with the `ref` prop."
       },
       {
         id: "B",
         text: "Call `document.getElementById` or `querySelector` inside the render function body on every render.",
         isCorrect: false,
-        explanation: "Querying the DOM directly inside render is fragile, breaks component encapsulation, and risks accessing unmounted nodes."
+        explanation: "Familiar from vanilla JavaScript, but during render the DOM may not yet reflect the latest commit, and the selector reaches outside the component's own subtree. `useRef` scopes the lookup to the exact element and keeps it stable across re-renders."
       },
       {
         id: "C",
         text: "DOM elements cannot be accessed in React under any circumstances.",
         isCorrect: false,
-        explanation: "React provides `useRef` and `forwardRef` specifically for accessing underlying DOM elements when needed."
+        explanation: "Overstates React's philosophy. React discourages imperative DOM manipulation in favour of state-driven rendering, but it explicitly provides `useRef` and the `ref` prop for cases like focusing an input, playing a video, or reading a scroll position."
       },
       {
         id: "D",
-        text: "Create a ref with `useRef(null)`, attach it to the JSX element via `ref={myRef}`, and access the native node through `myRef.current` in effects/handlers.",
+        text: "Use `useRef(null)`, attach it via `ref={myRef}`, and read `myRef.current` in effects or handlers.",
         isCorrect: true,
-        explanation: "Correct. React's `ref` attribute binds the underlying DOM node to `ref.current` once the component mounts."
+        explanation: "Correct. React sets `myRef.current` to the committed DOM node on mount and back to `null` on unmount, so reading it in an effect or event handler always gives you the live element."
       }
     ],
     correctAnswer: "D",
-    explanation: "Refs are created using React.createRef() or the useRef() hook and attached to React elements through the ref attribute. By accessing the created reference, we can gain access to the DOM element using ref.current.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to access a DOM element?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to access a DOM element?.",
+    explanation: "`useRef(null)` creates a stable object `{ current: null }` that persists across renders without triggering a re-render. When React commits the element to the DOM, it assigns the live node to `myRef.current`; when the element unmounts, it resets `myRef.current` back to `null`. You read the node in event handlers or `useEffect` callbacks, where the DOM is guaranteed to be in sync with the last committed render.\n\nIn practice this lets you call imperative methods the component API does not expose, such as `inputRef.current.focus()`, `videoRef.current.play()`, or reading `textareaRef.current.value` after a blur. Because mutating `.current` does not call `setState`, the component never re-renders as a side effect of touching the DOM through the ref.\n\nThe edge case interviewers probe: `myRef.current` is `null` during the render pass itself, so reading it inside the function body of a component (or a render-phase callback) is unsafe. That is why the idiomatic pattern is to read the ref inside `useEffect` or an event handler, both of which run after React has committed the DOM update.",
+    interviewLine: "I create a ref with `useRef(null)`, attach it to the element through the `ref` prop, and then read `ref.current` inside a `useEffect` or event handler to get the live DOM node. It is `null` during render and after unmount, so I only touch it in a post-commit phase.",
+    misconception: "Juniors coming from vanilla JavaScript reach for `document.querySelector` inside the component body, assuming the DOM is always in sync with the latest render. In React the DOM is only updated after the render commits, so the safe place to read a node is an effect or event handler, accessed through a ref React created for you.",
     hints: [
-      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
+      "Look at the three pieces in the code: `useRef(null)` creates the container, `ref={myRef}` wires it to the element, and `myRef.current` reads the node.",
+      "Ask when React actually assigns the DOM node to `ref.current` \u2014 during render, or after the commit phase?",
+      "The hook that gives you a mutable, render-stable value without triggering a re-render is the one you want here, not a query against `document`."
     ],
     source: "44-react",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/reference/react/hooks"
+    bestPracticeRef: "https://react.dev/reference/react/hooks",
+    example: {
+      caption: "Notice that `inputRef.current` is guarded with optional chaining because it is `null` until the effect runs after mount.",
+      language: "tsx",
+      code: "import { useRef, useEffect } from \"react\";\n\nfunction SearchBar() {\n  const inputRef = useRef<HTMLInputElement>(null);\n\n  useEffect(() => {\n    inputRef.current?.focus();\n  }, []);\n\n  return (\n    <input\n      ref={inputRef}\n      type=\"text\"\n      placeholder=\"Search\u2026\"\n    />\n  );\n}\n\nexport default SearchBar;"
+    }
   },
   {
     id: "react-what-is-a-custom-hook",
@@ -432,39 +488,46 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "A special HTML element that renders custom SVG graphics.",
+        text: "A custom HTML element that renders inline SVG graphics within the DOM.",
         isCorrect: false,
-        explanation: "Hooks are logic abstractions, not visual HTML or SVG elements."
+        explanation: "Tempting if you read the word 'custom' as implying a custom element, but a hook is a function you write in application code, not a DOM node or a rendering primitive."
       },
       {
         id: "B",
-        text: "A native C++ browser plugin that customizes the JavaScript runtime engine.",
+        text: "A browser-level extension that patches the JavaScript engine to expose new built-in functions.",
         isCorrect: false,
-        explanation: "Custom hooks are standard JavaScript functions written in application code."
+        explanation: "This treats a hook as a runtime or engine feature, but a custom hook is a plain function in your source files with no special runtime support or native binding."
       },
       {
         id: "C",
         text: "A JavaScript function whose name starts with `use` that can call other React hooks to encapsulate and share stateful logic across components.",
         isCorrect: true,
-        explanation: "Correct. Custom hooks let you extract component logic into reusable functions while maintaining independent state per component instance."
+        explanation: "Correct. The `use` prefix qualifies the function to call other hooks, and the function body is where you group stateful logic so multiple components can reuse it while each keeps its own state."
       },
       {
         id: "D",
-        text: "A global Redux middleware that intercepts all HTTP fetch requests.",
+        text: "A Redux middleware function that wraps the dispatch pipeline to intercept and transform actions before they reach reducers.",
         isCorrect: false,
-        explanation: "Custom hooks are React functional composition tools, not Redux middleware."
+        explanation: "This maps 'custom hook' onto a Redux concept, but hooks are a React API for reusing stateful logic inside components; they have no connection to the Redux dispatch cycle."
       }
     ],
     correctAnswer: "C",
-    explanation: "Custom hook is a function that allows you to reuse logic between different components. It is a way to encapsulate reusable logic so that it can be easily shared and reused across multiple components. Custom hooks are functions that typically start with the word *use * and can call other hooks if needed. Learn more",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is a custom hook?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is a custom hook?.",
+    explanation: "A custom hook is a plain JavaScript function whose name starts with `use`. That prefix is what permits it to call other hooks \u2014 `useState`, `useEffect`, `useContext`, or another custom hook \u2014 because React's Rules of Hooks only allow hook calls at the top level of a component or another `use`-prefixed function.\n\nIn practice you move a block of state and effects out of a component and into the hook, then call the hook from any component that needs that behaviour. Each call site gets its own independent copy of the state; two components using the same custom hook do not share `useState` values unless you pass a shared reference or context explicitly.\n\nA custom hook is not a component: it returns plain data \u2014 a tuple, an object, a number \u2014 rather than JSX, and it does not add a node to the React tree. The `use` prefix is a naming convention enforced by the linter and the React Compiler, not a runtime check; a function named `useFoo` that contains no hook calls is still a perfectly valid custom hook.",
+    interviewLine: "A custom hook is a plain function with the `use` prefix \u2014 that's what lets me call other hooks inside it. Each component that calls it gets its own independent copy of the state.",
+    misconception: "Thinking a custom hook is a component or a state container \u2014 it is a plain function that returns data, and the state it creates belongs to whichever component calls it, not to the hook itself.",
     hints: [
-      "Hooks are matched by call order, which is why they must run unconditionally at the top level of a component or another hook."
+      "Look at what the `use` prefix actually enables at the call site.",
+      "Ask yourself: does calling the function create a new component, or does it just return values into the calling component?",
+      "The hook itself has no state \u2014 the state lives in whichever component invoked it."
     ],
     source: "44-react",
     estimatedMinutes: 3,
-    bestPracticeRef: "https://react.dev/warnings/invalid-hook-call-warning"
+    bestPracticeRef: "https://react.dev/warnings/invalid-hook-call-warning",
+    example: {
+      caption: "Notice that `useDebounce` is a plain function returning a value, and `SearchBar` owns the state it creates \u2014 the hook adds no node to the tree.",
+      language: "tsx",
+      code: "function useDebounce<T>(value: T, delay: number): T {\n  const [debounced, setDebounced] = useState(value);\n\n  useEffect(() => {\n    const timer = setTimeout(() => setDebounced(value), delay);\n    return () => clearTimeout(timer);\n  }, [value, delay]);\n\n  return debounced;\n}\n\nfunction SearchBar() {\n  const [query, setQuery] = useState(\"\");\n  const debouncedQuery = useDebounce(query, 300);\n\n  useEffect(() => {\n    if (debouncedQuery) {\n      fetch(`/api/search?q=${debouncedQuery}`);\n    }\n  }, [debouncedQuery]);\n\n  return <input value={query} onChange={(e) => setQuery(e.target.value)} />;\n}"
+    }
   },
   {
     id: "react-what-are-the-rules-for-creating-a-custom-hook",
@@ -484,39 +547,46 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Must be declared as an ES6 class extending `React.CustomHook`.",
+        text: "Must be declared as an ES6 class extending `React.CustomHook` and registered before use.",
         isCorrect: false,
-        explanation: "Custom hooks are plain functions, not ES6 classes."
+        explanation: "Tempting if you picture hooks as a lifecycle system, but there is no `React.CustomHook` class and no registration step. A custom hook is a plain function; the `use` prefix and the Rules of Hooks are the entire contract."
       },
       {
         id: "B",
-        text: "Name must start with `use`, must call at least one built-in or custom hook, and must obey the Rules of Hooks (unconditional top-level calls).",
+        text: "Name must start with `use`, call at least one built-in or custom hook, and obey the Rules of Hooks (unconditional, top-level calls).",
         isCorrect: true,
-        explanation: "Correct. The `use` prefix enables linter checks (eslint-plugin-react-hooks) to enforce top-level unconditional hook invocation rules."
+        explanation: "Correct. The `use` prefix lets the linter identify the function as a hook, the requirement to call at least one hook distinguishes it from a plain utility, and the top-level unconditional rule keeps React's internal state list aligned across renders."
       },
       {
         id: "C",
-        text: "Must return a JSX element `<div />` as its primary return value.",
+        text: "Must return a JSX element as its primary return value so the component tree can render it.",
         isCorrect: false,
-        explanation: "Hooks return stateful data or functions (arrays, objects, primitives), not JSX visual elements."
+        explanation: "Tempting if you conflate a hook with a component, but a hook returns data or callbacks \u2014 an array, an object, a primitive \u2014 not a JSX element. The calling component decides what to render with that data."
       },
       {
         id: "D",
-        text: "Can only be called inside `for` loops and `switch` statements.",
+        text: "Can only be called inside `for` loops and `switch` statements to guarantee a stable call order.",
         isCorrect: false,
-        explanation: "Hooks must never be called inside loops, conditions, or nested functions."
+        explanation: "Tempting if you invert the rule and think loops provide stability, but a hook called inside a `for` or `switch` executes a variable number of times, shifting every subsequent hook's position in React's internal list and corrupting state."
       }
     ],
     correctAnswer: "B",
-    explanation: "Start the hook name with \"use\". Use existing hooks if needed. Don't call hooks conditionally. Extract reusable logic into the custom hook. Custom hooks must be pure functions. Custom hooks can return values or other hooks. Name the custom hook descriptively. Learn more",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the rules for creating a custom hook?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the rules for creating a custom hook?.",
+    explanation: "A custom hook is a plain function that composes one or more built-in hooks. Its name must start with `use` so the linter recognises it, it must actually call at least one hook (otherwise it is just a utility function), and every hook call inside it must be unconditional and at the top level \u2014 the same two Rules of Hooks that govern components.\n\nIn practice, if you name the function `fetchUser` instead of `useFetchUser`, `eslint-plugin-react-hooks` will not flag a conditional `useState` call buried inside an `if` block. Once the name carries the `use` prefix, the linter walks the call tree and errors on any hook invocation that sits behind a branch, loop, or nested callback.\n\nThe nuance an interviewer probes: a function that calls no hooks at all is not a custom hook by definition \u2014 it is a helper. And the `use` prefix is a contract with the linter and with the team's mental model, not a runtime requirement; React does not inspect function names, but the linter and the call-order bookkeeping do depend on the convention.",
+    interviewLine: "A custom hook is just a function that composes built-in hooks; the `use` prefix is what lets the linter enforce that every hook call inside it is unconditional and top-level, so the call order never shifts between renders.",
+    misconception: "Custom hooks are a special class or API you register with React, rather than plain functions whose only contract is the `use` prefix, at least one inner hook call, and unconditional top-level placement.",
     hints: [
-      "Hooks are matched by call order, which is why they must run unconditionally at the top level of a component or another hook."
+      "Think about what React needs to stay true across renders: a stable, predictable list of hook calls in a fixed order.",
+      "What naming convention lets `eslint-plugin-react-hooks` know which functions to audit for conditional or nested hook calls?",
+      "If a function calls no hooks at all, is it a custom hook or just a utility?"
     ],
     source: "44-react",
     estimatedMinutes: 3,
-    bestPracticeRef: "https://react.dev/warnings/invalid-hook-call-warning"
+    bestPracticeRef: "https://react.dev/warnings/invalid-hook-call-warning",
+    example: {
+      caption: "Notice the `use` prefix, the two built-in hook calls at the top level, and the plain value returned \u2014 no JSX, no class.",
+      language: "typescript",
+      code: "function useDebounce<T>(value: T, delay: number): T {\n  const [debounced, setDebounced] = useState(value);\n\n  useEffect(() => {\n    const id = setTimeout(() => setDebounced(value), delay);\n    return () => clearTimeout(id);\n  }, [value, delay]);\n\n  return debounced;\n}"
+    }
   },
   {
     id: "react-what-are-custom-hooks",
@@ -536,39 +606,46 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Built-in browser event listeners that trigger on user keyboard interactions.",
+        text: "Browser-native event subscription APIs that attach to keyboard and pointer events on DOM elements.",
         isCorrect: false,
-        explanation: "Hooks are React state/lifecycle abstractions, not browser DOM event listeners."
+        explanation: "Tempting if you conflate the word \"hook\" with \"hooking into\" a browser event stream. But hooks are React's state and effect primitives that run inside a component's render cycle; they have no relationship to `addEventListener` or DOM event objects."
       },
       {
         id: "B",
         text: "JavaScript functions whose names start with `use` that call other React hooks to extract, encapsulate, and share reusable stateful logic across components.",
         isCorrect: true,
-        explanation: "Correct. Custom hooks let you extract component logic into reusable functions while maintaining isolated state for each calling component."
+        explanation: "Correct. The `use` prefix is the naming contract that enforces the rules of hooks, and the function body composes built-in hooks into a single reusable unit that each calling component instantiates independently."
       },
       {
         id: "C",
-        text: "Special class decorators that enable multiple inheritance in ES6 classes.",
+        text: "TypeScript decorators applied to class fields to enable multiple inheritance and shared class state.",
         isCorrect: false,
-        explanation: "Custom hooks are plain functions, not class decorators."
+        explanation: "Tempting if you picture hooks as a class-composition pattern. But custom hooks are plain functions with no `@` syntax, no prototype chain, and no inheritance; they compose via ordinary function calls."
       },
       {
         id: "D",
-        text: "Compiler plugins that convert JSX directly into raw WebGL draw calls.",
+        text: "Babel or SWC plugins that transform JSX syntax into low-level WebGL buffer and draw-call instructions.",
         isCorrect: false,
-        explanation: "Custom hooks manage reactive component logic, not WebGL shaders."
+        explanation: "Tempting if you associate \"hook\" with a build-time transformation step. But custom hooks execute at runtime inside a component's render and commit phases; they are not compiler plugins and produce no GPU instructions."
       }
     ],
     correctAnswer: "B",
-    explanation: "React Interview Questions for Experienced",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are Custom Hooks?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are Custom Hooks?.",
+    explanation: "A custom hook is a plain JavaScript function whose name begins with `use` and whose body calls one or more built-in hooks such as `useState`, `useEffect`, or `useContext`. The `use` prefix is a naming contract: it tells React's tooling (the `react-hooks` ESLint plugin, the React Compiler) that the function participates in the hook system and must obey the rules of hooks \u2014 same call order, top-level only, no conditional or loop-wrapped calls.\n\nIn practice you extract a `useDebounce` or `useLocalStorage` hook and call it from five different components. Each caller gets its own independent state instance and its own effect subscriptions; the hook shares the logic, not the state. This is the key difference from a class mixin or a singleton utility.\n\nAn interviewer will probe the edge cases: a custom hook may call other custom hooks (composition), but it still cannot call hooks inside callbacks, conditionals, or loops. Also, a function named `use*` that calls zero built-in hooks is technically allowed but pointless \u2014 the prefix is a convention, not a runtime mechanism, and React never inspects the function body.",
+    interviewLine: "A custom hook is just a function that starts with `use` and composes built-in hooks; the prefix is a naming contract that lets the linter enforce call-order stability, and each component that calls it gets its own isolated state and effects.",
+    misconception: "A custom hook is imagined as a shared singleton or a class instance whose state is common to all callers, when in reality every component that calls the hook receives its own independent state and effect subscriptions.",
     hints: [
-      "Hooks are matched by call order, which is why they must run unconditionally at the top level of a component or another hook."
+      "Look at what the `use` prefix actually signals to React's tooling rather than what it does at runtime.",
+      "A custom hook must follow the same rules as built-in hooks: called unconditionally at the top level, in the same order every render.",
+      "The `use` naming convention is what lets the `react-hooks` ESLint plugin enforce the rules; the React runtime itself never inspects the function body."
     ],
     source: "interviewbit-70",
     estimatedMinutes: 3,
-    bestPracticeRef: "https://react.dev/warnings/invalid-hook-call-warning"
+    bestPracticeRef: "https://react.dev/warnings/invalid-hook-call-warning",
+    example: {
+      caption: "Each component calling `useDebounce` gets its own `debounced` state and its own timer cleanup, even though the logic is written once.",
+      language: "tsx",
+      code: "function useDebounce<T>(value: T, delay: number): T {\n  const [debounced, setDebounced] = useState(value);\n\n  useEffect(() => {\n    const timer = setTimeout(() => setDebounced(value), delay);\n    return () => clearTimeout(timer);\n  }, [value, delay]);\n\n  return debounced;\n}\n\nfunction SearchBar() {\n  const [query, setQuery] = useState(\"\");\n  const debouncedQuery = useDebounce(query, 300);\n\n  useEffect(() => {\n    if (debouncedQuery) console.log(\"fetching:\", debouncedQuery);\n  }, [debouncedQuery]);\n\n  return <input value={query} onChange={(e) => setQuery(e.target.value)} />;\n}"
+    }
   },
   {
     id: "react-what-is-the-difference-between-useeffect-and-uselayoute",
@@ -587,39 +664,46 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "`useEffect` runs asynchronously after the browser paints the screen; `useLayoutEffect` runs synchronously immediately after DOM mutations before the browser paints.",
+        text: "`useEffect` runs asynchronously after the browser paints; `useLayoutEffect` runs synchronously after DOM mutations, before the browser paints.",
         isCorrect: true,
-        explanation: "Correct. `useLayoutEffect` blocks the paint to let you measure DOM nodes or make visual updates without flicker; `useEffect` is non-blocking and fires after paint."
+        explanation: "Correct. Both hooks run after React commits DOM changes, but `useLayoutEffect` fires before the browser paints, while `useEffect` is deferred until after paint, making it non-blocking."
       },
       {
         id: "B",
-        text: "`useLayoutEffect` runs 5 seconds after `useEffect` finishes executing.",
+        text: "`useLayoutEffect` runs a fixed 5 seconds after `useEffect` finishes, giving the browser time to settle.",
         isCorrect: false,
-        explanation: "`useLayoutEffect` fires before `useEffect`, synchronously prior to the browser paint."
+        explanation: "Tempting if you picture the two hooks as a timed sequence, but no fixed delay exists between them. `useLayoutEffect` actually fires first, synchronously before paint; `useEffect` follows after the browser has already rendered the frame."
       },
       {
         id: "C",
-        text: "`useEffect` runs on the server during SSR, whereas `useLayoutEffect` runs in the browser.",
+        text: "`useEffect` runs on the server during SSR, whereas `useLayoutEffect` is skipped on the server and only runs in the browser.",
         isCorrect: false,
-        explanation: "Neither hook executes during server-side rendering; `useLayoutEffect` even outputs a console warning if rendered on the server."
+        explanation: "Neither hook executes during server-side rendering because there is no browser paint to coordinate with. `useLayoutEffect` specifically logs a console warning when it is reached on the server, since blocking a non-existent paint is meaningless."
       },
       {
         id: "D",
-        text: "`useEffect` is for functional components, while `useLayoutEffect` is used exclusively in class components.",
+        text: "`useEffect` is for functional components, while `useLayoutEffect` is used exclusively in class components for layout calculations.",
         isCorrect: false,
-        explanation: "Both are React Hooks that can only be used in functional components or custom hooks."
+        explanation: "Both are React hooks and can only be called inside function components or custom hooks. Class components have no hook API at all, so `useLayoutEffect` has no class-component form."
       }
     ],
     correctAnswer: "A",
-    explanation: "React MCQ Questions Powered by Certificate included About the Speaker What will you Learn? I wish to receive further updates and confirmation via whatsapp Register Now Introduction to React React is an efficient, flexible, and open-source JavaScript framework library that allows developers to the creation of simple, fast, and scalable web applications. Jordan Walke, a software engineer who was working for Facebook created React. It was first deployed on the news feed of Facebook in 2011 and on Instagram in 2012. Developers from the Javascript background can easily develop web applications with the help of React. React Hooks will allow you to use the state and other features of React in which requires a class to be written by you. In simple words, we can say that, React Hooks are the functions that will connect React state with the lifecycle features from the function components. React Hooks is among the features that are implemented latest in the version React 16.8. Scope of React: The selection of the right technology for application or web development is becoming more challenging. React has been considered to be the fastest-growing Javascript framework among all. The tools of Javascript are firming their roots slowly and steadily in the marketplace and the React certification demand is exponentially increasing. React is a clear win for front-end developers as it has a quick learning curve, clean abstraction, and reusable components. Currently, there is no end in sight for React as it keeps evolving. Play React Interview Questions for Freshers",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the difference between useEffect and useLayoutEffect?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the difference between useEffect and useLayoutEffect?.",
+    explanation: "The difference is timing relative to the browser paint. After React commits DOM mutations, `useLayoutEffect` callbacks run synchronously before the browser paints the new frame. `useEffect` callbacks are deferred until after the browser has painted, so they never block the user from seeing the updated screen.\n\nThis matters when your effect reads layout and then writes a visual change. If you measure `element.offsetWidth` inside `useEffect`, the browser may have already painted the old layout, so the user sees a one-frame flash before your correction lands. `useLayoutEffect` lets you read and write in the same paint cycle, eliminating that flicker.\n\nThe trade-off is that `useLayoutEffect` blocks paint. Heavy work inside it stalls the browser and causes jank. For subscriptions, data fetching, or any work that does not need to synchronise with a visible layout change, `useEffect` is the right choice. Neither hook runs during server-side rendering; `useLayoutEffect` additionally logs a console warning if it is reached on the server.",
+    interviewLine: "I reach for `useLayoutEffect` when I need to read a layout value and write a visual correction in the same frame, because it runs synchronously after DOM mutations but before paint. For subscriptions or data fetching I use `useEffect` so the work never blocks the user seeing the new screen.",
+    misconception: "Treating the two hooks as different kinds of effect (one for data, one for DOM) rather than the same mechanism placed at different points relative to the browser paint.",
     hints: [
-      "An effect synchronises with something outside React. Ask what it subscribes to, and what its cleanup has to undo when the dependencies change."
+      "Think about what the browser does between \"React commits DOM changes\" and \"the user sees new pixels.\"",
+      "One hook runs inside that gap and blocks paint; the other runs after the user already sees the frame.",
+      "The difference is not what the effect does (DOM reads, subscriptions) but when it runs relative to paint."
     ],
     source: "interviewbit-70",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/reference/react/useEffect"
+    bestPracticeRef: "https://react.dev/reference/react/useEffect",
+    example: {
+      caption: "Measuring a node's width and writing it back in the same frame avoids a visible flash that `useEffect` would cause.",
+      language: "tsx",
+      code: "import { useLayoutEffect, useRef, useState } from \"react\";\n\nfunction AutoWidthLabel() {\n  const ref = useRef<HTMLDivElement>(null);\n  const [width, setWidth] = useState(0);\n\n  useLayoutEffect(() => {\n    if (ref.current) {\n      setWidth(ref.current.offsetWidth);\n    }\n  }, []);\n\n  return (\n    <div ref={ref} style={{ width: width ? `${width}px` : \"auto\" }}>\n      Fitting text\n    </div>\n  );\n}"
+    }
   },
   {
     id: "react-what-are-the-limitations-of-react",
@@ -638,39 +722,46 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "It cannot render on servers or produce search-engine-friendly HTML markup.",
+        text: "It is limited to client-side rendering and cannot produce the static, search-engine-friendly HTML markup that search crawlers need for indexing.",
         isCorrect: false,
-        explanation: "React supports SSR (e.g. Next.js, Remix) which produces fully indexable HTML on the server."
+        explanation: "Tempting if you equate React with client-side `document.createElement` only, but React's rendering model is environment-agnostic. Next.js, React Router, and Astro all render React components to full HTML on the server, which search engines index without executing JavaScript."
       },
       {
         id: "B",
-        text: "It cannot be used to build single-page applications or dynamic web pages.",
+        text: "It is restricted to server-rendered pages and cannot be used to build single-page applications with client-side navigation and dynamic updates.",
         isCorrect: false,
-        explanation: "React is one of the most widely used libraries specifically designed for building SPAs."
+        explanation: "This inverts React's primary use case. React was designed around a virtual DOM and a re-rendering cycle that makes client-side navigation and dynamic updates its default mode. Most large SPAs (Instagram, Discord, Linear) are built on React."
       },
       {
         id: "C",
-        text: "It is only a view library (requiring external libraries for routing/state), has a fast-paced evolving ecosystem, and JSX with complex build tooling can have an initial learning curve.",
+        text: "It is a view-only library requiring external packages for routing and state, its ecosystem evolves quickly, and JSX with build tooling adds an initial learning curve.",
         isCorrect: true,
-        explanation: "Correct. React is not an all-in-one framework like Angular; developers must choose companion libraries for routing, state, and build systems."
+        explanation: "Correct. React deliberately scopes itself to the view layer, so routing, state, and data fetching are separate dependencies you choose and configure. The ecosystem around it (state libraries, data-fetching, styling) sees frequent major versions, and JSX requires a transform step plus a bundler before the browser can execute it."
       },
       {
         id: "D",
-        text: "It is incompatible with modern JavaScript ES6+ features and TypeScript.",
+        text: "It is incompatible with modern JavaScript ES6+ syntax such as arrow functions and destructuring, and does not support TypeScript type annotations.",
         isCorrect: false,
-        explanation: "React fully embraces modern JavaScript and has first-class TypeScript support."
+        explanation: "The opposite is true. React's source and its type definitions assume ES2015+ (arrow functions, destructuring, `class` fields), and the `@types/react` package plus React's own `.d.ts` files give you full TypeScript support out of the box."
       }
     ],
     correctAnswer: "C",
-    explanation: "The few limitations of React are as given below: React is not a full-blown framework as it is only a library. The components of React are numerous and will take time to fully grasp the benefits of all. It might be difficult for beginner programmers to understand React. Coding might become complex as it will make use of inline templating and JSX. You can download a PDF version of React Interview Questions. Click here to download.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the limitations of React?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the limitations of React?.",
+    explanation: "React is a view library, not a full framework. The `react` package ships components, hooks, and the reconciliation engine, but it does not include a router, a state-management store, a data-fetching layer, or a form-handling system. You pair it with React Router, Zustand, Redux, TanStack Query, or similar packages and wire them into your components yourself.\n\nIn practice this means a junior developer coming from Angular or Vue will open a blank `react` project and see no routing, no global store, no `HttpClient`. Every one of those is a separate `npm install` and a separate mental model. On top of that, JSX is not valid JavaScript, so you need a transform step (Babel, SWC, esbuild) and a bundler (Vite, Webpack) before the browser can run the code. That tooling chain is a real onboarding cost that a plain-HTML project does not have.\n\nAn interviewer will probe whether the instability lives in React's own API or in the ecosystem around it. React's core API (hooks, `useEffect`, `useMemo`) has been stable since React 18, and React 19 added Server Components and Actions without breaking those. The churn is in the surrounding libraries: state management, data fetching, and styling all see major rewrites every couple of years. Naming that distinction shows you understand where the real learning cost sits.",
+    interviewLine: "React is scoped to the view layer on purpose. Routing, state, and data fetching are deliberate choices you make with companion libraries, and the JSX-plus-bundler pipeline is a real but one-time onboarding cost, not an ongoing limitation.",
+    misconception: "Treating React like a full framework such as Angular or Vue, so when you open a blank `react` project and see no router, no DI container, and no global store, you read that as a defect rather than a deliberate scope boundary.",
     hints: [
-      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
+      "Open the `react` npm package and list what it actually exports, then compare that to what a full application needs.",
+      "Ask yourself: which parts of a typical web app (routing, state, data fetching, forms) are missing from the `react` package itself?",
+      "SSR and SPAs are both well-supported, so eliminate any option that claims React cannot do them."
     ],
     source: "interviewbit-70",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component",
+    example: {
+      caption: "Notice that `react-router-dom` is a separate import; React itself ships no routing.",
+      language: "tsx",
+      code: "import { createBrowserRouter, RouterProvider } from \"react-router-dom\";\nimport Home from \"./Home\";\nimport About from \"./About\";\n\nconst router = createBrowserRouter([\n  { path: \"/\", element: <Home /> },\n  { path: \"/about\", element: <About /> },\n]);\n\nexport default function App() {\n  return <RouterProvider router={router} />;\n}"
+    }
   },
   {
     id: "react-what-is-usestate-in-react",
@@ -692,37 +783,44 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
         id: "A",
         text: "A React Hook that declares a state variable in a functional component, returning a tuple `[state, setState]` to read and update the value.",
         isCorrect: true,
-        explanation: "Correct. `useState(initialValue)` returns the current state and a dispatcher function that schedules a component re-render when called."
+        explanation: "Correct. `useState(initialValue)` returns a two-element array: the current state value and a setter function that schedules a re-render when called."
       },
       {
         id: "B",
         text: "A hook that can only be called inside class component constructor methods.",
         isCorrect: false,
-        explanation: "Hooks cannot be called inside class components; they are for functional components."
+        explanation: "Tempting if you conflate hooks with the `this.state` / `this.setState()` pattern, but hooks are designed for functional components. Class components manage state through the instance and have no hook support."
       },
       {
         id: "C",
         text: "A method that mutates DOM elements directly without triggering component re-renders.",
         isCorrect: false,
-        explanation: "`useState` schedules a component re-render; it does not directly mutate DOM elements imperatively."
+        explanation: "Tempting if you picture React as a thin DOM wrapper, but `useState` never touches a DOM node. It updates React's internal state, and the re-render is what reconciles the DOM."
       },
       {
         id: "D",
         text: "A global store provider that synchronizes state across all browser windows.",
         isCorrect: false,
-        explanation: "`useState` provides isolated, local component state."
+        explanation: "Tempting if you picture a single shared store like Redux or Zustand, but `useState` is scoped to one component instance. Two components calling `useState(0)` each get their own independent value."
       }
     ],
     correctAnswer: "A",
-    explanation: "The useState() is a built-in React Hook that allows you for having state variables in functional components. It should be used when the DOM has something that is dynamically manipulating/controlling. In the below-given example code, The useState(0) will return a tuple where the count is the first parameter that represents the counter, s current state and the second parameter setCounter method will allow us to update the state of the counter. We can make use of setCounter() method for updating the state of count anywhere. In this example, we are using setCounter() inside the setCount function where various other things can also be done. The idea with the usage of hooks is that we will be able to keep our code more functional and avoid class-based components if they are not required.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is useState() in React?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is useState() in React?.",
+    explanation: "`useState` is a built-in React Hook that declares a piece of local state inside a functional component. It returns a two-element array: the current value and a setter function. Calling the setter does not mutate the variable you destructured; it schedules a re-render so the component function runs again and the value reflects the update.\n\nIn the example, `useState(0)` gives `count` and `setCounter`. When `setCounter(count + 1)` fires inside the event handler, React queues a re-render. Because `setCounter` and `setOtherStuffs` are called in the same handler, React batches both updates into a single re-render rather than two.\n\nThe setter never changes the value in the current render pass. If two consecutive calls depend on the previous value, pass a function updater: `setCounter(prev => prev + 1)`. Hooks must also be called unconditionally at the top level of the component; wrapping them in a conditional or loop violates the Rules of Hooks.",
+    interviewLine: "`useState` gives me a snapshot value and a setter; calling the setter doesn't change the variable in the current render, it queues a re-render where the component function runs again and the value is fresh.",
+    misconception: "Thinking of `useState` as a mutable variable you can read and write freely, rather than a snapshot that only changes when React re-renders the component.",
     hints: [
-      "State is a snapshot. Setting it schedules a render, it does not change the variable you already read, so two updates from the same value collapse into one."
+      "Look at what `useState(0)` returns and how the code destructures it.",
+      "Ask what happens in the current render when you call `setCounter` \u2014 does the `count` variable change right there?",
+      "It is not a DOM API, not a global store, and not available in class components."
     ],
     source: "interviewbit-70",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/reference/react/useState"
+    bestPracticeRef: "https://react.dev/reference/react/useState",
+    example: {
+      caption: "Notice that `seconds` still reads 0 in the same render even after two setter calls; the new value only appears on the next render.",
+      language: "jsx",
+      code: "function Timer() {\n  const [seconds, setSeconds] = useState(0);\n\n  const start = () => {\n    setSeconds(seconds + 1);\n    setSeconds(seconds + 1); // still seconds + 1, not seconds + 2\n    console.log(seconds);    // prints 0 in this render\n  };\n\n  return (\n    <div>\n      <p>{seconds}s</p>\n      <button onClick={start}>+1</button>\n    </div>\n  );\n}"
+    }
   },
   {
     id: "react-what-are-the-differences-between-functional-and-class-c",
@@ -744,37 +842,44 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
         id: "A",
         text: "Class components are executed on the server, while functional components only execute in the browser.",
         isCorrect: false,
-        explanation: "Both class and functional components can be rendered in both client and server environments."
+        explanation: "Tempting if you conflate component type with rendering location, but both class and functional components render identically on the server (SSR) and the client. The runtime environment is determined by where you call `render` or `hydrateRoot`, not by the component's declaration style."
       },
       {
         id: "B",
-        text: "Functional components require manual memory deallocation using C++ pointers.",
+        text: "Functional components require manual memory deallocation through C++ pointers, while class components rely on the JavaScript garbage collector.",
         isCorrect: false,
-        explanation: "All React components execute in JavaScript's automatic garbage-collected runtime."
+        explanation: "React components, regardless of form, run inside a garbage-collected JavaScript runtime. There is no C++ pointer layer exposed to component code, and neither style requires you to free memory manually."
       },
       {
         id: "C",
         text: "Functional components are JavaScript functions using Hooks for state/effects; class components extend `React.Component` and use `this.state` and lifecycle methods.",
         isCorrect: true,
-        explanation: "Correct. Functional components are simpler, avoid `this` binding complexities, and leverage composable Hooks for lifecycle and state."
+        explanation: "Correct. This captures the structural difference: a function component is a plain function that leans on Hooks, while a class component is an ES6 class that manages state through `this.state` and side effects through lifecycle methods."
       },
       {
         id: "D",
-        text: "Functional components cannot accept props, whereas class components can.",
+        text: "Functional components cannot accept or render props, whereas class components receive props through `this.props`.",
         isCorrect: false,
-        explanation: "Both functional and class components accept and render props."
+        explanation: "Pre-Hooks, functional components were sometimes called 'stateless,' which led people to assume they could not take props. In reality, props are the first argument to any functional component and are accessed directly, just as `this.props` works in a class component."
       }
     ],
     correctAnswer: "C",
-    explanation: "Before the introduction of Hooks in React, functional components were called stateless components and were behind class components on a feature basis. After the introduction of Hooks, functional components are equivalent to class components. Although functional components are the new trend, the react team insists on keeping class components in React. Therefore, it is important to know how these components differ. On the following basis let, s compare functional and class components: Declaration Functional components are nothing but JavaScript functions and therefore can be declared using an arrow function or the function keyword: Class components, on the other hand, are declared using the ES6 class: Handling props Let, s render the following component with props and analyse how functional and class components handle props: In functional components, the handling of props is pretty straightforward. Any prop provided as an argument to a functional component can be directly used inside HTML elements: In the case of class components, props are handled in a different way: As we can see in the code above, this keyword is used in the case of class components. Handling state Functional components use React hooks to handle state. It uses the useState hook to set the state of a variable inside the component: Since useState hook returns an array of two items, the first item contains the current state, and the second item is a function used to update the state. In the code above, using array destructuring we have set the variable name to studentsCount with a current value of, 0, and setStudentsCount is the function that is used to update the state. For reading the state, we can see from the code above, the variable name can be directly used to read the current state of the variable. We cannot use React Hooks inside class components, therefore state handling is done very differently in a class component: Let, s take the same above example and convert it into a class component: In the code above, we see we are using this.state to add the variable studentsCount and setting the value to: 0. For reading the state, we are using this.state.studentsCount. For updating the state, we need to first bind the addStudent function to this. Only then, we will be able to use the setState function which is used to update the state. Advance your career with Mock Assessments Refine your coding skills with Mock Assessments Real-world coding challenges for top company interviews Real-world coding challenges for top companies Real-Life Problems Detailed reports Attempt Now",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the differences between functional and class components?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the differences between functional and class components?.",
+    explanation: "Functional components are plain JavaScript functions\u2014declared with the `function` keyword or an arrow function\u2014that receive props as their argument and use Hooks like `useState` and `useEffect` for state and side effects. Class components extend `React.Component`, initialize state in the constructor via `this.state`, update it with `this.setState`, and manage lifecycle through methods such as `componentDidMount` and `componentDidUpdate`.\n\nIn practice this means a functional component reads state from a local variable (`studentsCount`) and updates it through a setter (`setStudentsCount`), while a class component reads from `this.state.studentsCount` and must bind methods to the instance so that `this` inside `addStudent` still points to the component. Forgetting the bind call is a frequent source of `this is undefined` errors in class components.\n\nBoth forms are fully supported in React 19 and can render on the server or the client. You cannot call Hooks inside a class component, and you cannot use `this.state` or lifecycle methods inside a functional component. Legacy codebases still ship class components, so reading and maintaining them remains a practical skill.",
+    interviewLine: "A functional component is just a function that takes props and uses Hooks like `useState` and `useEffect` for state and side effects; a class component extends `React.Component`, keeps state in `this.state`, and ties side effects to lifecycle methods like `componentDidMount`.",
+    misconception: "Thinking that 'functional' means 'stateless' or that the two styles differ in where they execute, when the real difference is how state and side effects are managed: Hooks versus `this.state` and lifecycle methods.",
     hints: [
-      "A class component's constructor must call super(props) before touching this.props, and its lifecycle methods map onto effects in a function component."
+      "Look at how each style declares itself: one is a plain function, the other is an ES6 class extending `React.Component`.",
+      "Ask how each one stores and updates state, and how each one runs a side effect like a timer or a fetch.",
+      "Neither difference is about where the code executes or whether it can receive props; the split is in the state-and-effects API."
     ],
     source: "interviewbit-70",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/reference/react/Component"
+    bestPracticeRef: "https://react.dev/reference/react/Component",
+    example: {
+      caption: "Notice how `useState` replaces `this.state` and `useEffect` replaces `componentDidMount` plus cleanup, with no `this` binding needed.",
+      language: "tsx",
+      code: "function Timer() {\n  const [seconds, setSeconds] = useState(0);\n\n  useEffect(() => {\n    const id = setInterval(() => setSeconds((s) => s + 1), 1000);\n    return () => clearInterval(id);\n  }, []);\n\n  return <p>{seconds}s</p>;\n}"
+    }
   },
   {
     id: "react-what-is-prop-drilling-in-react",
@@ -793,39 +898,46 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "The tedious practice of passing props through intermediate components that don't need the data themselves just to reach deeply nested child components.",
+        text: "Forwarding a prop through intermediate components that do not use it, just to reach a deeply nested child.",
         isCorrect: true,
-        explanation: "Correct. Prop drilling creates maintenance friction when intermediate components become cluttered with passthrough props; solved via Context, composition, or state managers."
+        explanation: "Correct. Prop drilling is exactly this: a prop is forwarded through components that accept it but never read it, solely to deliver the value to a deeper child, coupling every link in the chain to data it does not own."
       },
       {
         id: "B",
         text: "A compiler error thrown when a prop name contains uppercase characters.",
         isCorrect: false,
-        explanation: "Prop names commonly use camelCase; prop drilling is a structural pattern, not a compiler error."
+        explanation: "Tempting if you associate the word \"drilling\" with a compiler diagnostic, but prop drilling is a code-organization pattern visible in the component tree, not an error condition. React prop names are conventionally camelCase and uppercase names do not trigger any compiler error."
       },
       {
         id: "C",
         text: "The process of drilling down into JavaScript bytecode to optimize prop access speed.",
         isCorrect: false,
-        explanation: "Prop drilling refers to React component tree hierarchy prop forwarding."
+        explanation: "Tempting if you read \"drilling\" as a low-level optimization pass, but prop drilling operates at the component-tree level in your source code. It has no connection to bytecode, JIT compilation, or runtime performance tuning."
       },
       {
         id: "D",
         text: "A tool that automatically generates unit tests for React component props.",
         isCorrect: false,
-        explanation: "Prop drilling is an architectural design drawback, not a unit testing utility."
+        explanation: "Tempting if you associate the word \"prop\" with testing utilities, but prop drilling is an architectural pattern you can observe in any component hierarchy. No tool or code generator is involved; it is simply the shape of how data flows through the tree."
       }
     ],
     correctAnswer: "A",
-    explanation: "Sometimes while developing React applications, there is a need to pass data from a component that is higher in the hierarchy to a component that is deeply nested. To pass data between such components, we pass props from a source component and keep passing the prop to the next component in the hierarchy till we reach the deeply nested component. The disadvantage of using prop drilling is that the components that should otherwise be not aware of the data have access to the data.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is prop drilling in React?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is prop drilling in React?.",
+    explanation: "Prop drilling is the pattern of forwarding a prop through one or more intermediate components that do not consume it, solely so a deeply nested child can receive the value. In the example above, `Page`, `Content`, and `Panel` all accept `userId` in their props but never read it; they exist only to hand it down to `UserBadge`.\n\nThe practical cost is coupling. Every intermediate component now has a prop in its public API that it does not use, so renaming or removing that data forces you to touch every link in the chain. Refactoring `Content` into a different layout, or extracting `Panel` into a reusable library component, becomes harder because the component's signature is polluted by a value it was never meant to own.\n\nThe usual remedies are composition (passing the child as `children` or a render prop so the data never traverses the middle layers), React Context for genuinely shared values consumed by many branches, or lifting the consuming component higher in the tree. For a two- or three-level hierarchy, prop drilling is often the simplest and most explicit choice; it becomes a real maintenance problem when the chain grows long or the data is consumed in several unrelated branches.",
+    interviewLine: "Prop drilling is when you forward a prop through intermediate components that don't actually consume it, just to reach a deeply nested child \u2014 it works, but it couples unrelated components and makes refactoring painful because every link in the chain has to declare a prop it never reads.",
+    misconception: "Treating prop drilling as a bug, an error, or a tool rather than a code-organization pattern that becomes unwieldy as the component tree deepens and intermediate components accumulate props they never use.",
     hints: [
-      "Context solves passing data down, not re-rendering. Every consumer re-renders when the value changes, so the value's identity matters."
+      "Look at what \"drilling\" implies in the context of a component tree hierarchy.",
+      "Ask which components in the chain actually consume the prop and which merely accept and re-emit it.",
+      "It is not an error, a compiler feature, or a testing utility \u2014 it is a pattern you can see in the component structure itself."
     ],
     source: "interviewbit-70",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/reference/react/useContext"
+    bestPracticeRef: "https://react.dev/reference/react/useContext",
+    example: {
+      caption: "Notice that Page, Content, and Panel all accept userId in their props but never read it \u2014 they exist solely to pass it down to UserBadge.",
+      language: "tsx",
+      code: "function Dashboard() {\n  const userId = \"u_42\";\n  return (\n    <Page userId={userId}>\n      <Content userId={userId}>\n        <Panel userId={userId}>\n          <UserBadge userId={userId} />\n        </Panel>\n      </Content>\n    </Page>\n  );\n}\n\nfunction Page({ children, userId }: { children: React.ReactNode; userId: string }) {\n  return <main>{children}</main>;\n}\n\nfunction Content({ children, userId }: { children: React.ReactNode; userId: string }) {\n  return <section>{children}</section>;\n}\n\nfunction Panel({ children, userId }: { children: React.ReactNode; userId: string }) {\n  return <div className=\"panel\">{children}</div>;\n}\n\nfunction UserBadge({ userId }: { userId: string }) {\n  return <span>user {userId}</span>;\n}"
+    }
   },
   {
     id: "react-what-is-react-hooks",
@@ -847,37 +959,44 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
         id: "A",
         text: "Git commit hooks that enforce code linting before git push.",
         isCorrect: false,
-        explanation: "React Hooks are JavaScript APIs in the React package, distinct from Git VCS hooks."
+        explanation: "Tempting because the word \"hook\" is shared, but git hooks are shell scripts in .git/hooks (pre-commit, pre-push) that the version-control tool runs; they have no connection to the React library or its rendering model."
       },
       {
         id: "B",
-        text: "Functions introduced in React 16.8 that allow functional components to use state, lifecycle features, context, and refs without writing class components.",
+        text: "Functions introduced in React 16.8 that give function components state, lifecycle logic, context, and refs without class components.",
         isCorrect: true,
-        explanation: "Correct. Hooks let developers use state and other React features in functional components, simplifying code reuse and eliminating class boilerplate."
+        explanation: "Correct. Hooks are React's API for giving function components access to state (useState), side effects (useEffect), context (useContext), and mutable refs (useRef), removing the need for a class and its lifecycle methods."
       },
       {
         id: "C",
         text: "CSS pseudoclasses that hook into `:hover` and `:active` styling states.",
         isCorrect: false,
-        explanation: "React Hooks manage JavaScript state and lifecycle, not CSS styling selectors."
+        explanation: "A wordplay trap: pseudoclasses like :hover are CSS selectors evaluated by the browser's style engine; they are not JavaScript functions and have no runtime relationship to React's component model."
       },
       {
         id: "D",
         text: "Browser extension plugins that hook into Chrome DevTools to profile network traffic.",
         isCorrect: false,
-        explanation: "Hooks are core React library functions, not browser extensions."
+        explanation: "Conflates the English word \"hook\" with a specific React API. Browser extensions are separate packages loaded by the browser; they do not live inside the react npm package or participate in its render cycle."
       }
     ],
     correctAnswer: "B",
-    explanation: "React Hooks are the built-in functions that permit developers for using the state and lifecycle methods within React components. These are newly added features made available in React 16.8 version. Each lifecycle of a component is having 3 phases which include mount, unmount, and update. Along with that, components have properties and states. Hooks will allow using these methods by developers for improving the reuse of code with higher flexibility navigating the component tree. Using Hook, all features of React can be used without writing class components. For example, before React version 16.8, it required a class component for managing the state of a component. But now using the useState hook, we can keep the state in a functional component.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is React Hooks?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is React Hooks?.",
+    explanation: "React Hooks are a set of built-in functions \u2014 useState, useEffect, useRef, useContext, and others \u2014 introduced in React 16.8 in 2019. They let a plain function component read and update state, run side effects, subscribe to context, and hold refs without extending React.Component or juggling componentDidMount, componentDidUpdate, and componentWillUnmount.\n\nBefore 16.8, any component that needed state or lifecycle logic had to be a class. Hooks moved that capability into function components, which also made it straightforward to extract reusable logic into custom hooks (functions whose names start with use) and share it across components without a render-prop or HOC wrapper.\n\nThe nuance an interviewer probes next: hooks are tracked by their call order in the render function. That is why the Rules of Hooks forbid calling them inside conditionals, loops, or nested functions \u2014 React matches each hook to its internal slot by position, so a skipped or reordered call silently shifts every hook after it.",
+    interviewLine: "Hooks are functions like useState and useEffect that let me use React's state, lifecycle, and context features inside a plain function component, so I skip the class boilerplate and can pull reusable logic into custom hooks.",
+    misconception: "Treating \"hook\" as a generic programming term (event hook, git hook, CSS hook) rather than a specific React API: a set of functions that tap into React's internal per-component state and rendering pipeline. The word does not mean \"a callback you register\" the way an event listener does.",
     hints: [
-      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
+      "The word \"hook\" in React is a naming convention for a specific set of functions in the react package, not a general programming concept like event hooks or git hooks.",
+      "Before React 16.8, which component type was the only one that could hold state or run lifecycle logic? Hooks solved that limitation.",
+      "The answer describes what hooks let a function component do, not a versioning tool, a CSS selector, or a browser plugin."
     ],
     source: "interviewbit-70",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component",
+    example: {
+      caption: "A function component using useState to hold a counter \u2014 the same pattern a class component would have needed a constructor and a setState handler for.",
+      language: "tsx",
+      code: "import { useState } from \"react\";\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n\n  return (\n    <div>\n      <p>Clicked {count} times</p>\n      <button onClick={() => setCount(count + 1)}>\n        Increment\n      </button>\n    </div>\n  );\n}\n\nexport default Counter;"
+    }
   },
   {
     id: "react-explain-react-hooks",
@@ -900,37 +1019,44 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
         id: "A",
         text: "Hooks are class methods that must be bound to `this` inside the constructor.",
         isCorrect: false,
-        explanation: "Hooks cannot be used in class components and do not use `this` binding."
+        explanation: "Tempting if you picture hooks as part of the old class-component API, but hooks are standalone functions called at the top level of a function component; they never reference `this` and cannot be used inside a class at all."
       },
       {
         id: "B",
-        text: "Hooks are functions that let you 'hook into' React state and lifecycle from functional components, enabling logic reuse and cleaner component composition.",
+        text: "Hooks are functions that add state and lifecycle logic to functional components, enabling logic reuse and cleaner composition.",
         isCorrect: true,
-        explanation: "Correct. Hooks allow functional components to declare local state (`useState`), side effects (`useEffect`), and subscriptions without class inheritance."
+        explanation: "Correct. Hooks are ordinary functions that register state, effects, or context on the component's fiber, giving function components the same capabilities classes previously required and allowing logic to be extracted into reusable custom hooks."
       },
       {
         id: "C",
         text: "Hooks are global singletons that can only be instantiated once per domain name.",
         isCorrect: false,
-        explanation: "Hooks maintain distinct, isolated state for every component instance that calls them."
+        explanation: "Tempting if you conflate hooks with module-level singletons, but each call to a hook inside a component creates an independent slot on that component's fiber; two components calling `useState` get completely separate state values."
       },
       {
         id: "D",
         text: "Hooks are asynchronous worker threads that compile JSX into machine assembly instructions.",
         isCorrect: false,
-        explanation: "Hooks are synchronous JavaScript functions executed during component render."
+        explanation: "Tempting if you mix up runtime React APIs with build-time tooling, but hooks are synchronous JavaScript functions executed during the render or commit phase; they have nothing to do with Web Workers or code compilation."
       }
     ],
     correctAnswer: "B",
-    explanation: "What are Hooks? Hooks are functions that let us, hook into, React state and lifecycle features from a functional component. React Hooks cannot be used in class components. They let us write components without class. Why were Hooks introduced in React? React hooks were introduced in the 16.8 version of React. Previously, functional components were called stateless components. Only class components were used for state management and lifecycle methods. The need to change a functional component to a class component, whenever state management or lifecycle methods were to be used, led to the development of Hooks. Example of a hook: useState hook: In functional components, the useState hook lets us define a state for a component: The state variable, name, can be directly used inside the HTML.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain React Hooks.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain React Hooks.",
+    explanation: "Hooks are plain JavaScript functions that call internal React APIs to register state, effects, or context subscriptions on the current component instance. When you write `const [name, setName] = useState('')`, React stores the initial value in a slot on the component's fiber node and returns that value plus a stable setter function. No class, no `this`, no inheritance is involved.\n\nBefore React 16.8, a function component that needed state or lifecycle logic had to be rewritten as a class with `this.state`, `componentDidMount`, and `componentDidUpdate`. Hooks let you keep the function-component shape while declaring local state, running side effects with `useEffect`, and reading context. Custom hooks such as `useDebounce` let you extract that logic into a reusable function without a higher-order component or a render-prop wrapper.\n\nHooks must be called unconditionally at the top level of a component or custom hook, not inside loops, conditions, or nested callbacks. React identifies each hook by its call order in the fiber; breaking that rule shifts every subsequent hook's state to the wrong slot on the next render.",
+    interviewLine: "Hooks are plain functions that call into React's internal fiber API to register state, effects, or context subscriptions for the current component instance, so a function component gets the same capabilities a class used to provide without inheritance or `this`.",
+    misconception: "Hooks are some special React-internal mechanism tied to the class-component model, rather than plain functions that register data on the component's fiber by call order.",
     hints: [
-      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
+      "Look at what `useState` actually returns and where the value lives between renders.",
+      "Ask yourself what React stores, and where, when a function component calls `useState` at the top level.",
+      "Hooks are not tied to `this` or to any class; they are ordinary function calls that React tracks by their position in the call sequence."
     ],
     source: "interviewbit-70",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component",
+    example: {
+      caption: "A custom hook wraps `useRef` and `useEffect` to expose the previous render's value, showing how hooks compose without a class.",
+      language: "tsx",
+      code: "function usePrevious<T>(value: T): T | undefined {\n  const ref = useRef<T | undefined>(undefined);\n  useEffect(() => {\n    ref.current = value;\n  }, [value]);\n  return ref.current;\n}\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  const prev = usePrevious(count);\n  return <p>{count} (was {prev ?? '\u2014'})</p>;\n}"
+    }
   },
   {
     id: "react-what-are-the-rules-that-must-be-followed-while-using-re",
@@ -950,39 +1076,46 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "1) Only call hooks at the top level (never inside loops, conditions, or nested functions); 2) Only call hooks from React functional components or custom hooks.",
+        text: "Call hooks only at the top level of a function component or custom hook, and never inside loops, conditions, or nested functions.",
         isCorrect: true,
-        explanation: "Correct. Calling hooks at the top level guarantees that React preserves hook state correctly across re-renders based on stable call order."
+        explanation: "Correct. React stores hook state in an array indexed by call order, so a stable, unconditional call sequence is the only way to keep each hook's slot aligned across renders. Restricting calls to function components and custom hooks ensures that array exists and is owned by a single component instance."
       },
       {
         id: "B",
-        text: "Hooks must always be executed inside asynchronous `setTimeout` callbacks.",
+        text: "Call hooks inside `setTimeout` or `requestAnimationFrame` callbacks so they execute after the initial paint.",
         isCorrect: false,
-        explanation: "Hooks must run synchronously during component render, not inside async timers."
+        explanation: "Tempting if you picture hooks as deferred lifecycle callbacks, but hooks are plain function calls executed synchronously during render. Deferring them into a timer would place the call outside the render pass, so React's per-render hook array would never record the state."
       },
       {
         id: "C",
-        text: "Every component is strictly limited to calling a maximum of two hooks.",
+        text: "Limit each component to at most two hook calls to keep the internal hook list short.",
         isCorrect: false,
-        explanation: "Components can call multiple hooks of any type as long as the invocation order remains unconditional and constant."
+        explanation: "Tempting if you assume React imposes a small fixed budget of hook slots, but there is no cap: a component can call `useState`, `useEffect`, `useMemo`, and any number of custom hooks as long as every call is unconditional and in the same order each render."
       },
       {
         id: "D",
-        text: "Hooks must return a boolean value indicating whether the component should re-render.",
+        text: "Every hook must return a boolean that tells React whether to commit the re-render.",
         isCorrect: false,
-        explanation: "Hooks return values/state tuples/dispatchers; `shouldComponentUpdate` or `React.memo` control re-renders."
+        explanation: "Tempting if you conflate hooks with `shouldComponentUpdate` or `React.memo`, but hooks return whatever their API specifies \u2014 a state tuple, a ref, a value \u2014 and React decides whether to commit based on its own scheduling, not on a hook's return type."
       }
     ],
     correctAnswer: "A",
-    explanation: "There are 2 rules which must be followed while you code with Hooks: React Hooks must be called only at the top level. It is not allowed to call them inside the nested functions, loops, or conditions. It is allowed to call the Hooks only from the React Function Components.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the rules that must be followed while using React Hooks?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the rules that must be followed while using React Hooks?.",
+    explanation: "React enforces two rules because it tracks every hook call in a per-component array, indexed by the order the calls appear during render. Rule one: call hooks only at the top level of the function body, never inside loops, conditionals, or nested callbacks. Rule two: call hooks only from function components or from custom hooks (functions whose name starts with `use`), not from class components or from arbitrary utility functions.\n\nIf a conditional skips a `useState` call on one render and includes it on the next, the array shifts: the second hook's state is read from the first slot and vice versa. The component does not crash immediately; it silently assigns the wrong state to the wrong variable, and the bug surfaces only when the branch toggles.\n\nThe custom-hook rule is not an extra restriction. A custom hook is just a function that calls hooks, so the top-level rule still applies inside it. The `use` prefix is a convention that lets the React Compiler and `eslint-plugin-react-hooks` verify both rules mechanically.",
+    interviewLine: "React stores hook state in an array indexed by call order, so I always call hooks unconditionally at the top level and only inside function components or custom hooks; that keeps the array aligned across every render and lets the linter verify the order mechanically.",
+    misconception: "Hooks are treated as lifecycle callbacks that React schedules at specific times, when they are actually ordinary function calls whose order React records positionally in a per-component array; the rules exist to keep that array stable, not to control when or how often the calls run.",
     hints: [
-      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
+      "React records hooks in an internal array indexed by the order they are called during a render pass.",
+      "Ask what happens to that array if a hook call is skipped on one render but present on the next.",
+      "The two rules constrain call-site position and call-site context, not timing or return values."
     ],
     source: "interviewbit-70",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component",
+    example: {
+      caption: "Notice that every hook call sits at the top level of the custom hook, and the `use` prefix is what lets the linter check both rules.",
+      language: "typescript",
+      code: "function useLocalStorage<T>(key: string, initial: T) {\n  const [value, setValue] = useState<T>(initial);\n\n  useEffect(() => {\n    const stored = window.localStorage.getItem(key);\n    if (stored !== null) setValue(JSON.parse(stored) as T);\n  }, [key]);\n\n  const set = useCallback((next: T) => {\n    setValue(next);\n    window.localStorage.setItem(key, JSON.stringify(next));\n  }, [key]);\n\n  return [value, set] as const;\n}"
+    }
   },
   {
     id: "react-why-do-react-hooks-make-use-of-refs",
@@ -1004,37 +1137,44 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
         id: "A",
         text: "To replace the virtual DOM with direct real DOM string replacements on every keystroke.",
         isCorrect: false,
-        explanation: "Refs provide targeted access to specific elements; React continues to reconcile the virtual DOM tree."
+        explanation: "Tempting if you picture a ref as a shortcut around React's rendering. In reality React still reconciles the virtual DOM on every render; a ref simply gives you a handle to one mounted node after the fact, not a replacement for the whole diffing pipeline."
       },
       {
         id: "B",
         text: "To hold mutable values that persist across renders without causing re-renders when changed, and to directly access underlying DOM nodes.",
         isCorrect: true,
-        explanation: "Correct. `useRef` provides a persistent `{ current: value }` container for imperative DOM access (focus, scroll) and storing instance variables."
+        explanation: "Correct. `useRef` returns a persistent `{ current }` container whose mutations skip the scheduler, and it also serves as the standard way to reach a DOM node for imperative operations like focus, scroll, or third-party library integration."
       },
       {
         id: "C",
         text: "To trigger immediate synchronous re-renders of the entire parent component tree.",
         isCorrect: false,
-        explanation: "Updating `ref.current` intentionally does not trigger a re-render."
+        explanation: "This inverts the mechanism. Writing to `ref.current` is a plain property assignment that React never observes; it schedules no work. State updates are what trigger re-renders, and even those are batched, not immediate and synchronous."
       },
       {
         id: "D",
         text: "To encrypt component props before sending them to the backend API.",
         isCorrect: false,
-        explanation: "Refs are in-memory JavaScript reference objects, not encryption mechanisms."
+        explanation: "No connection exists between refs and data transmission. A ref is a plain in-memory JavaScript object holding a reference; it has no role in serialisation, encryption, or network requests."
       }
     ],
     correctAnswer: "B",
-    explanation: "Earlier, refs were only limited to class components but now it can also be accessible in function components through the useRef Hook in React. The refs are used for: Managing focus, media playback, or text selection. Integrating with DOM libraries by third-party. Triggering the imperative animations.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Why do React Hooks make use of refs?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Why do React Hooks make use of refs?.",
+    explanation: "`useRef` returns a stable object with a `current` property that survives every re-render. Mutating `ref.current` is a plain property write: React's scheduler never sees it, so no re-render is scheduled. This gives hooks a way to hold mutable data\u2014timer IDs, previous values, DOM nodes\u2014across renders without the cost of a state update.\n\nIn practice this means you can call `inputRef.current.focus()` or read `el.scrollHeight` without going through React's reconciliation loop. Storing a `setTimeout` ID in a ref lets you clear it in a cleanup effect without triggering a render just to record the ID. The value lives in memory, invisible to the render tree.\n\nThe edge case interviewers probe: reading a ref during render is fine, but writing to it during render breaks the purity guarantee of the render function. And because refs are non-reactive, no component re-renders when one changes. If your UI depends on the value, it belongs in state, not a ref.",
+    interviewLine: "I use `useRef` when a value needs to survive re-renders but the UI doesn't need to react to it\u2014a timer ID, a previous prop, a DOM node handle. Writing to `ref.current` is a plain property mutation; React's scheduler never sees it, so no render is scheduled.",
+    misconception: "Treating refs as a kind of slow state or as a reactivity mechanism. Refs are deliberately non-reactive: they exist precisely so you can store or access a value without the render cycle ever noticing.",
     hints: [
-      "Both refs and state survive a render. Only state causes one, so refs are for values the UI does not display."
+      "Compare what happens when you call `setState` versus when you assign to `ref.current`\u2014one schedules a render, the other does not.",
+      "Ask yourself: does the UI need to display this value? If not, a ref is the right home.",
+      "A ref is not a rendering mechanism; it is a storage-and-access mechanism that sits outside the reconciliation loop."
     ],
     source: "interviewbit-70",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/reference/react/useRef"
+    bestPracticeRef: "https://react.dev/reference/react/useRef",
+    example: {
+      caption: "Notice that `lastQuery.current` is written without ever calling a setter, and `inputRef.current` is used for an imperative DOM call\u2014neither triggers a re-render.",
+      language: "tsx",
+      code: "import { useRef, useEffect } from \"react\";\n\nfunction SearchInput() {\n  const inputRef = useRef<HTMLInputElement>(null);\n  const lastQuery = useRef(\"\");\n\n  function onSubmit() {\n    console.log(\"connected:\", inputRef.current?.isConnected);\n    lastQuery.current = inputRef.current?.value ?? \"\";\n  }\n\n  useEffect(() => {\n    inputRef.current?.focus();\n  }, []);\n\n  return (\n    <input\n      ref={inputRef}\n      placeholder=\"Search\u2026\"\n      onKeyDown={(e) => e.key === \"Enter\" && onSubmit()}\n    />);\n}"
+    }
   },
   {
     id: "react-does-react-hook-work-with-static-typing",
@@ -1054,39 +1194,46 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Yes, React Hooks work seamlessly with TypeScript, inferring state types or accepting explicit generics (e.g. `useState<User | null>(null)`).",
+        text: "Yes, React Hooks work seamlessly with TypeScript, inferring state types from the initial value or accepting explicit generics (e.g. `useState<User | null>(null)`).",
         isCorrect: true,
-        explanation: "Correct. TypeScript provides strong static type safety for all React built-in and custom hooks, supporting type inference and generics."
+        explanation: "Correct. `@types/react` declares every built-in hook with generic parameters, so the compiler infers the state type from the initial value and lets you override it with an explicit type argument, giving full static checking on both the value and the setter."
       },
       {
         id: "B",
-        text: "TypeScript compiler removes all React hooks during compile time.",
+        text: "TypeScript removes all React hook calls during compilation, so no runtime hook exists to type.",
         isCorrect: false,
-        explanation: "TypeScript transpiles types and preserves runtime JavaScript function calls."
+        explanation: "Tempting if you conflate type erasure with code removal. TypeScript strips type annotations and interfaces, but function calls like `useState` and `useEffect` are plain runtime JavaScript that the transpiler preserves untouched."
       },
       {
         id: "C",
-        text: "No, React Hooks can only be used with dynamic, un-typed JavaScript files.",
+        text: "No, React Hooks can only be used in untyped JavaScript files and have no TypeScript support.",
         isCorrect: false,
-        explanation: "React Hooks have comprehensive first-class TypeScript support."
+        explanation: "This assumes hooks are a JavaScript-only feature. In practice React ships its own type declarations, and the entire ecosystem of hooks libraries (`zustand`, `react-query`, `ahooks`) is written and consumed in TypeScript."
       },
       {
         id: "D",
-        text: "Only `useEffect` supports static typing; all other hooks must use `any`.",
+        text: "Only `useEffect` supports static typing; every other hook must be typed as `any` to compile.",
         isCorrect: false,
-        explanation: "All React hooks (`useState`, `useReducer`, `useContext`, `useRef`, etc.) are fully typed with generics in `@types/react`."
+        explanation: "This overstates the problem to a single hook. `useState`, `useReducer`, `useRef`, `useContext`, `useMemo`, and `useCallback` are all declared with generics in `@types/react`, so none of them require an `any` escape hatch."
       }
     ],
     correctAnswer: "A",
-    explanation: "Static typing refers to the process of code check during the time of compilation for ensuring all variables will be statically typed. React Hooks are functions that are designed to make sure about all attributes must be statically typed. For enforcing stricter static typing within our code, we can make use of the React API with custom Hooks.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Does React Hook work with static typing?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Does React Hook work with static typing?.",
+    explanation: "Yes. Every built-in React hook is typed in the `@types/react` package (or React 19's bundled types). TypeScript infers the state type from the initial value you pass to `useState`, and you can override that inference with an explicit generic such as `useState<User | null>(null)`. The same pattern applies to `useReducer`, `useRef`, `useContext`, and `useEffect`, whose callback parameters are checked against the effect's dependencies.\n\nIn real code this means the compiler catches mismatches at the call site. If `useState(0)` produces a `[number, Dispatch<SetStateAction<number>>]` tuple, then `setCount(\"five\")` is a compile error before the browser ever runs the component. Custom hooks inherit the benefit: annotate the return type once in `useAuth()` and every consumer that destructures `user` gets `User | null` without a single `as` cast.\n\nThe nuance an interviewer may probe: TypeScript's checking is opt-in per project, not enforced by the hook itself. You can still pass `any` as the initial value and lose all downstream inference, and `useRef()` with no argument gives `RefObject<undefined>` in React 19 types, which is a common footgun when you actually need a mutable ref to a DOM node.",
+    interviewLine: "Yes \u2014 TypeScript infers the tuple from `useState`'s initial value, and I can override it with an explicit generic like `useState<User | null>(null)`. In a custom hook I just annotate the return type once and every consumer gets full static checking without a single `any`.",
+    misconception: "TypeScript is a runtime layer that transforms or removes code, rather than a compile-time annotation system that erases type syntax while preserving every function call and expression as-is.",
     hints: [
-      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
+      "What does TypeScript do at compile time versus what the browser executes at runtime?",
+      "Check whether `useState(0)` produces a `number` type on the state variable without any annotation on your part.",
+      "The question is whether the type system can see into the hook's return value, not whether the hook itself performs type-checking."
     ],
     source: "interviewbit-70",
     estimatedMinutes: 3,
-    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component",
+    example: {
+      caption: "Notice how `count` and `increment` are fully inferred from the hook's return type, so the consumer needs zero annotations.",
+      language: "tsx",
+      code: "function useCounter(start: number) {\n  const [count, setCount] = useState(start);\n  const increment = () => setCount((c) => c + 1);\n  return { count, increment };\n}\n\nfunction Dashboard() {\n  const { count, increment } = useCounter(0);\n  // count: number, increment: () => void \u2014 both inferred\n  return (\n    <button onClick={increment}>\n      Clicked {count} times\n    </button>\n  );\n}"
+    }
   },
   {
     id: "react-what-are-the-lifecycle-methods-of-react",
@@ -1107,37 +1254,44 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
         id: "A",
         text: "Methods that execute only when the user reboots their physical computer.",
         isCorrect: false,
-        explanation: "Lifecycle methods execute during the component's runtime life inside the browser."
+        explanation: "Tempting if you read 'lifecycle' as the machine's power cycle, but React lifecycle methods are JavaScript methods invoked by the React renderer during a component's mount, update, and unmount phases, not OS events."
       },
       {
         id: "B",
         text: "Class methods including `componentDidMount`, `shouldComponentUpdate`, `getDerivedStateFromProps`, `render`, `componentDidUpdate`, and `componentWillUnmount`.",
         isCorrect: true,
-        explanation: "Correct. Class components provide distinct lifecycle hooks for initialization, update decision-making, DOM updates, and cleanup."
+        explanation: "Correct. These are the class-component lifecycle methods React calls automatically at the mount, update, and unmount phases, giving you deterministic hooks into the component's existence."
       },
       {
         id: "C",
         text: "Network packet routers used to configure DNS records.",
         isCorrect: false,
-        explanation: "Lifecycle methods manage component rendering and side effects, not DNS routing."
+        explanation: "Tempting if you associate 'lifecycle' with network infrastructure, but these are instance methods on a React class component, not routing or DNS configuration."
       },
       {
         id: "D",
         text: "Backend database stored procedures executed on SQL servers.",
         isCorrect: false,
-        explanation: "Lifecycle methods are client/SSR React component APIs."
+        explanation: "Tempting if you read 'lifecycle' as a database term, but React lifecycle methods run in the browser or during SSR as part of the render pipeline, not on a SQL server."
       }
     ],
     correctAnswer: "B",
-    explanation: "React lifecycle hooks will have the methods that will be automatically called at different phases in the component lifecycle and thus it provides good control over what happens at the invoked point. It provides the power to effectively control and manipulate what goes on throughout the component lifecycle. For example, if you are developing the YouTube application, then the application will make use of a network for buffering the videos and it consumes the power of the battery (assume only these two). After playing the video if the user switches to any other application, then you should make sure that the resources like network and battery are being used most efficiently. You can stop or pause the video buffering which in turn stops the battery and network usage when the user switches to another application after video play. So we can say that the developer will be able to produce a quality application with the help of lifecycle methods and it also helps developers to make sure to plan what and how to do it at different points of birth, growth, or death of user interfaces. The various lifecycle methods are: constructor(): This method will be called when the component is initiated before anything has been done. It helps to set up the initial state and initial values. getDerivedStateFromProps(): This method will be called just before element(s) rendering in the DOM. It helps to set up the state object depending on the initial props. The getDerivedStateFromProps() method will have a state as an argument and it returns an object that made changes to the state. This will be the first method to be called on an updating of a component. render(): This method will output or re-render the HTML to the DOM with new changes. The render() method is an essential method and will be called always while the remaining methods are optional and will be called only if they are defined. componentDidMount(): This method will be called after the rendering of the component. Using this method, you can run statements that need the component to be already kept in the DOM. shouldComponentUpdate(): The Boolean value will be returned by this method which will specify whether React should proceed further with the rendering or not. The default value for this method will be True. getSnapshotBeforeUpdate(): This method will provide access for the props as well as for the state before the update. It is possible to check the previously present value before the update, even after the update. componentDidUpdate(): This method will be called after the component has been updated in the DOM. componentWillUnmount(): This method will be called when the component removal from the DOM is about to happen.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the lifecycle methods of React?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the lifecycle methods of React?.",
+    explanation: "React class components define a fixed set of lifecycle methods that the renderer calls automatically at three phases: mounting, updating, and unmounting. `componentDidMount` fires after the first render commits to the DOM, `shouldComponentUpdate` lets you short-circuit an update by returning `false`, `getDerivedStateFromProps` derives state from new props before render, `render` produces the virtual-DOM output, `componentDidUpdate` fires after an update commits, and `componentWillUnmount` fires before the component is removed.\n\nIn practice this means you can start a WebSocket in `componentDidMount` and close it in `componentWillUnmount`, or skip an expensive re-render in `shouldComponentUpdate` when the props you do not use change. Without these methods you would have no clean place to attach or detach browser events, start or stop timers, or synchronise internal state with incoming props.\n\nIn React 19 the function-component equivalent is `useEffect` (and `useLayoutEffect`) with its cleanup callback, and most new code uses hooks. The class lifecycle methods still work in class components, but an interviewer who sees them in a 2025 codebase will ask why you are not using hooks.",
+    interviewLine: "React class components expose lifecycle methods like `componentDidMount`, `shouldComponentUpdate`, and `componentWillUnmount` that the renderer calls automatically at mount, update, and unmount, giving you deterministic hooks to run side effects and clean them up.",
+    misconception: "Treating 'lifecycle' as a generic systems or OS concept rather than React's specific mount \u2192 update \u2192 unmount sequence for a single component instance.",
     hints: [
-      "A class component's constructor must call super(props) before touching this.props, and its lifecycle methods map onto effects in a function component."
+      "In React, 'lifecycle' refers to the component's existence from mount through unmount, not the operating system or network stack.",
+      "The correct option lists methods that are all defined on a class component and invoked by React's render pipeline at specific phases.",
+      "The other options describe OS, network, or database concepts that have no part in React's rendering."
     ],
     source: "interviewbit-70",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/reference/react/Component"
+    bestPracticeRef: "https://react.dev/reference/react/Component",
+    example: {
+      caption: "Notice how `componentDidMount` starts the interval and `componentWillUnmount` clears it, preventing a timer leak if the component is removed.",
+      language: "tsx",
+      code: "class Timer extends React.Component {\n  state = { seconds: 0 };\n  interval: number;\n\n  componentDidMount() {\n    this.interval = window.setInterval(\n      () => this.setState({ seconds: this.state.seconds + 1 }),\n      1000\n    );\n  }\n\n  componentWillUnmount() {\n    window.clearInterval(this.interval);\n  }\n\n  render() {\n    return <span>{this.state.seconds}s</span>;\n  }\n}"
+    }
   },
   {
     id: "react-explain-about-types-of-hooks-in-react",
@@ -1157,39 +1311,46 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Built-in hooks (State: `useState`, `useReducer`; Effect: `useEffect`, `useLayoutEffect`; Ref: `useRef`; Context: `useContext`; Performance: `useMemo`, `useCallback`) and user-defined Custom Hooks.",
+        text: "Built-in hooks grouped by capability (state, effects, refs, context, memoization) and user-defined custom hooks.",
         isCorrect: true,
-        explanation: "Correct. React provides built-in hooks categorized by capability, and lets developers author custom hooks starting with `use` to compose logic."
+        explanation: "Correct. React provides a fixed set of built-in hooks grouped by capability (state, effects, refs, context, memoization), and any function starting with `use` that composes them is a custom hook."
       },
       {
         id: "B",
-        text: "Hardware hooks that control USB ports and software hooks that control mouse drivers.",
+        text: "Stateful hooks that persist data between renders and stateless hooks that execute once on mount.",
         isCorrect: false,
-        explanation: "React Hooks are JavaScript APIs for component state and lifecycle management."
+        explanation: "Tempting if you pattern-match \"hooks\" to OS-level device hooks, but React Hooks are JavaScript functions that manage component state and side effects; they have no relationship to USB ports, mouse drivers, or any hardware layer."
       },
       {
         id: "C",
-        text: "Public hooks that are published to npm and private hooks that are illegal to share.",
+        text: "Synchronous hooks that run during the render phase and asynchronous hooks that run after commit.",
         isCorrect: false,
-        explanation: "Hooks are categorized into built-in library hooks and custom application hooks."
+        explanation: "This borrows the public/private vocabulary from access modifiers in other languages. React does not gate hooks by publishing status or licensing; a hook is either a built-in function exported by the `react` package or a user-defined function in your codebase."
       },
       {
         id: "D",
-        text: "Synchronous hooks for HTML tags and asynchronous hooks for CSS classes.",
+        text: "Component hooks that attach to specific DOM nodes and global hooks that manage app-wide state.",
         isCorrect: false,
-        explanation: "Hooks manage JavaScript logic within React components, not static HTML/CSS."
+        explanation: "This invents a sync/async split tied to markup and styling. Every React Hook is a JavaScript function called during the component's render or commit phase; they do not map to HTML tags or CSS classes."
       }
     ],
     correctAnswer: "A",
-    explanation: "There are two types of Hooks in React. They are:",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Explain about types of Hooks in React.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Explain about types of Hooks in React.",
+    explanation: "React ships a fixed set of built-in hooks, grouped by the capability they expose: state management (`useState`, `useReducer`), side effects (`useEffect`, `useLayoutEffect`), stable references (`useRef`), context consumption (`useContext`), and memoization (`useMemo`, `useCallback`). On top of that, any function whose name starts with `use` and that itself calls other hooks is a custom hook.\n\nIn practice the split matters because custom hooks are the composition unit. You call `useAuth` in three components instead of repeating `useState` plus `useEffect` for a token in each one. The `use` prefix is not just convention: ESLint's `react-hooks` plugin and React's own runtime rely on it to enforce the Rules of Hooks (call at top level, call only from components or other hooks).\n\nThe categories in the list are a teaching aid, not a runtime distinction. `useState` and `useEffect` both participate in the same render-and-commit cycle; they differ in what they store and when their callback fires. A custom hook adds no new capability \u2014 it is a named bundle of built-in hook calls, so its behavior is fully determined by the hooks inside it.",
+    interviewLine: "React has a small fixed set of built-in hooks \u2014 `useState`, `useEffect`, `useRef`, `useContext`, `useMemo`, `useCallback`, `useReducer`, `useLayoutEffect` \u2014 and everything else is a custom hook, which is just a named function starting with `use` that composes those built-ins to reuse stateful logic across components.",
+    misconception: "The learner treats \"types of hooks\" as a runtime classification (synchronous vs asynchronous, public vs private) rather than a capability grouping of a small fixed API surface plus a naming convention for user-defined wrappers.",
     hints: [
-      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
+      "Look at what the `react` package actually exports: a short list of functions, not categories like hardware or public/private.",
+      "Ask whether the split is by capability (state, effects, refs, memoization) or by some runtime property like timing or access level.",
+      "The `use` prefix on user-defined functions is the rule that separates built-in hooks from custom ones; it is not a licensing or protocol distinction."
     ],
     source: "interviewbit-70",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component",
+    example: {
+      caption: "Notice that `useLocalStorage` adds no new primitive \u2014 it is `useState` plus `useEffect` wrapped in a named function that starts with `use`.",
+      language: "typescript",
+      code: "function useLocalStorage<T>(key: string, initial: T) {\n  const [value, setValue] = useState<T>(() => {\n    const stored = window.localStorage.getItem(key);\n    return stored !== null ? (JSON.parse(stored) as T) : initial;\n  });\n\n  useEffect(() => {\n    window.localStorage.setItem(key, JSON.stringify(value));\n  }, [key, value]);\n\n  return [value, setValue] as const;\n}"
+    }
   },
   {
     id: "react-differentiate-react-hooks-vs-classes",
@@ -1209,39 +1370,46 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Classes execute faster in web browsers because JavaScript classes are compiled to C++.",
+        text: "JavaScript classes are compiled to C++ by the browser engine, giving class components a measurable speed advantage over function components.",
         isCorrect: false,
-        explanation: "Both compile to JavaScript; functional components with hooks often have lower instantiation overhead."
+        explanation: "Tempting if you equate ES6 `class` syntax with C++ or Java classes, but JavaScript classes are syntactic sugar over prototypes. The V8 engine executes both class components and function components as ordinary JavaScript objects; there is no compilation step to C++."
       },
       {
         id: "B",
-        text: "Classes support asynchronous server requests, whereas Hooks are restricted to offline local calculations.",
+        text: "Class components can issue asynchronous network requests in lifecycle methods, while Hooks are limited to synchronous, local computation.",
         isCorrect: false,
-        explanation: "Both functional components (via `useEffect`/Server Components) and classes can make network requests."
+        explanation: "Tempting if you picture `useEffect` as a local-only utility, but a function component can call `fetch`, `axios`, or any async API inside an event handler or a `useEffect` callback. Both approaches can initiate and await network requests."
       },
       {
         id: "C",
-        text: "Hooks enable state and lifecycle logic reuse without class inheritance or `this` binding issues, resulting in cleaner, flatter, and more composable component code.",
+        text: "Hooks let you extract stateful logic into reusable functions without `this` binding or HOC nesting, keeping components flat and composable.",
         isCorrect: true,
-        explanation: "Correct. Functional components with Hooks avoid `this` confusion, reduce nesting from HOCs/render props, and make stateful logic easily extractable."
+        explanation: "Correct. A custom hook is a plain function that calls other hooks; any component calls it and receives state and handlers. This avoids the `this`-binding pitfalls of class callbacks and the extra nesting layer that HOCs or render props introduce."
       },
       {
         id: "D",
-        text: "Hooks can only manage primitive numbers, while classes can store strings and objects.",
+        text: "Hooks can only store primitive numbers, whereas class state can hold strings, objects, and arrays of any shape.",
         isCorrect: false,
-        explanation: "Hooks support all JavaScript data structures, including complex objects, arrays, and functions."
+        explanation: "Tempting if your only `useState` example is a counter, but `useState` accepts any value: objects, arrays, functions, class instances. The generic signature `useState<T>(initial: T)` has no restriction on the type parameter."
       }
     ],
     correctAnswer: "C",
-    explanation: "React Hooks Classes It is used in functional components of React. It is used in class-based components of React. It will not require a declaration of any kind of constructor. It is necessary to declare the constructor inside the class component. It does not require the use of this keyword in state declaration or modification. Keyword this will be used in state declaration (this.state) and in modification (this.setState()). It is easier to use because of the useState functionality. No specific function is available for helping us to access the state and its corresponding setState variable. React Hooks can be helpful in implementing Redux and context API. Because of the long setup of state declarations, class states are generally not preferred.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Differentiate React Hooks vs Classes.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Differentiate React Hooks vs Classes.",
+    explanation: "The correct answer is C. Hooks let you call `useState`, `useEffect`, and other hooks inside a function component, and you can group those calls into a custom hook, which is just a function that calls other hooks. Any component that needs that logic calls the custom hook and receives the state and handlers back. No class, no `this`, no wrapper component.\n\nIn a class component, sharing the same stateful logic between two components means writing a higher-order component or a render prop, which adds a layer of nesting. Callbacks passed to children also need `.bind(this)` or an arrow-function class field, because a plain method loses its `this` reference. Hooks remove both problems: the logic lives in a flat function call, and closures capture the values they need.\n\nThe constraint to remember is the Rules of Hooks: you call them at the top level of the component or custom hook, unconditionally. You cannot call a hook inside an `if` or a loop. Class components still work in React 19, but new code defaults to function components with hooks because the reuse story is simpler.",
+    interviewLine: "The key difference is reuse: with classes I wrap components in HOCs or use render props and fight `this` binding on every callback, but with hooks I extract the logic into a custom function and call it wherever I need it, keeping the component tree flat.",
+    misconception: "Hooks are just a cosmetic shorthand that compiles to the same class under the hood, so the real difference between the two is speed or capability rather than the structure of reusable logic and `this` handling.",
     hints: [
-      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
+      "Think about how you would share the same stateful logic between two components in each approach.",
+      "In a class, what do you do to a callback you pass to a child so it still knows which instance it belongs to?",
+      "Neither approach restricts what data types you can store, and neither is compiled to a lower-level language."
     ],
     source: "interviewbit-70",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component",
+    example: {
+      caption: "Notice how `useDebounce` is a plain function that calls two hooks; the component just calls it and gets the value back, with no wrapper or `this` in sight.",
+      language: "tsx",
+      code: "function useDebounce<T>(value: T, delay: number): T {\n  const [debounced, setDebounced] = useState(value);\n  useEffect(() => {\n    const id = setTimeout(() => setDebounced(value), delay);\n    return () => clearTimeout(id);\n  }, [value, delay]);\n  return debounced;\n}\n\nfunction SearchBar() {\n  const [query, setQuery] = useState(\"\");\n  const debouncedQuery = useDebounce(query, 300);\n  // use debouncedQuery for the API call\n  return (\n    <input\n      value={query}\n      onChange={(e) => setQuery(e.target.value)}\n      placeholder=\"Search\u2026\"\n    />\n  );\n}"
+    }
   },
   {
     id: "react-do-hooks-cover-all-the-functionalities-provided-by-the",
@@ -1261,39 +1429,46 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Hooks have completely replaced all class methods including error boundaries since React 15.",
+        text: "Hooks have fully replaced all class features, including error boundaries, since React 15.",
         isCorrect: false,
-        explanation: "Hooks were introduced in React 16.8, and Error Boundaries still require class components."
+        explanation: "Tempting if you conflate the long history of class components with the introduction of Hooks, but Hooks shipped in React 16.8, not 15, and no hook equivalent for `componentDidCatch` or `getDerivedStateFromError` exists in React 19."
       },
       {
         id: "B",
-        text: "Hooks cannot be used with React Context or refs.",
+        text: "Hooks cannot interact with React Context or refs, limiting their utility.",
         isCorrect: false,
-        explanation: "`useContext` and `useRef` provide full context and ref support in functional components."
+        explanation: "This reflects an assumption that Context and refs are tied to class internals, but `useContext` reads any context value and `useRef` creates a mutable ref, giving functional components the same capabilities as `this.context` and `this.refs`."
       },
       {
         id: "C",
-        text: "Hooks cover virtually all common class use cases, except for rare lifecycle methods like `componentDidCatch` / `getDerivedStateFromError` (Error Boundaries) which still require class components.",
+        text: "Hooks cover most class use cases, but error boundaries still require class components.",
         isCorrect: true,
-        explanation: "Correct. Hooks cover state, effects, context, refs, and updates, but Error Boundaries currently still rely on class component lifecycle methods."
+        explanation: "Correct. Every day-to-day class feature has a hook counterpart; the only remaining gap is the Error Boundary pair and the almost-never-used `getSnapshotBeforeUpdate`."
       },
       {
         id: "D",
-        text: "Hooks cover only 10% of class features, and cannot handle component state or updates.",
+        text: "Hooks only handle a small fraction of class features and cannot manage state updates.",
         isCorrect: false,
-        explanation: "Hooks provide full state management (`useState`, `useReducer`) and effect lifecycles (`useEffect`)."
+        explanation: "This underestimates the API surface; `useState` and `useReducer` fully replace `this.state` and `this.setState`, and `useEffect` replaces the mount, update, and unmount lifecycle trio."
       }
     ],
     correctAnswer: "C",
-    explanation: "Our goal is for Hooks to cover all the functionalities for classes at its earliest. There are no Hook equivalents for the following methods that are not introduced in Hooks yet: getSnapshotBeforeUpdate() getDerivedStateFromError() componentDidCatch() Since it is an early time for Hooks, few third-party libraries may not be compatible with Hooks at present, but they will be added soon.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Do Hooks cover all the functionalities provided by the classes?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Do Hooks cover all the functionalities provided by the classes?.",
+    explanation: "Hooks (introduced in React 16.8) provide functional equivalents for every class feature you use in day-to-day code: `useState` and `useReducer` replace `this.state` and `this.setState`, `useEffect` replaces the mount/update/unmount trio, `useContext` replaces `this.context`, and `useRef` replaces `this.refs`. The only class methods with no hook equivalent are the Error Boundary pair, `componentDidCatch` and `getDerivedStateFromError`, plus the almost-never-used `getSnapshotBeforeUpdate`.\n\nIn practice this means you write every component as a function except for the one wrapper that catches a render error thrown by a child and shows a fallback UI. That wrapper is a short class, and it is the only place `class` still appears in a modern codebase.\n\nAn interviewer will likely follow up by asking whether you could simulate an error boundary with a hook. You cannot: `componentDidCatch` fires synchronously during the commit phase when a child throws during render, and no hook can intercept that error before it propagates up the tree. The class boundary is the only mechanism React provides to stop the error from unmounting the whole tree.",
+    interviewLine: "Hooks replace state, lifecycle, context, and refs, so I write every component as a function except for the one case where I need an error boundary, which still requires a class with `componentDidCatch`.",
+    misconception: "Assuming that because Hooks are newer, they are a limited subset of class capabilities, or conversely that they already replicate every class method including error handling.",
     hints: [
-      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
+      "List the class features you use daily: state, lifecycle, context, refs. Now ask which hook maps to each.",
+      "The gap is not in state or effects; it is in catching a render error thrown by a child component.",
+      "`getSnapshotBeforeUpdate` is also class-only, but in practice the Error Boundary pair is the one you will actually hit."
     ],
     source: "interviewbit-70",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/reference/react/hooks"
+    bestPracticeRef: "https://react.dev/reference/react/hooks",
+    example: {
+      caption: "The class exists solely to catch render errors from children; the rest of the component tree is plain functions with hooks.",
+      language: "tsx",
+      code: "import { useState, useEffect } from \"react\";\n\nclass ErrorBoundary extends React.Component<\n  { children: React.ReactNode },\n  { hasError: boolean }\n> {\n  state = { hasError: false };\n  static getDerivedStateFromError() { return { hasError: true }; }\n  componentDidCatch(e: Error) { console.error(e.message); }\n  render() { return this.state.hasError ? <div>Something went wrong</div> : this.props.children; }\n}\n\nfunction Dashboard() {\n  const [items, setItems] = useState<string[]>([]);\n  useEffect(() => { fetch(\"/api/items\").then(r => r.json()).then(setItems); }, []);\n  return <ul>{items.map(i => <li key={i}>{i}</li>)}</ul>;\n}"
+    }
   },
   {
     id: "react-can-react-hook-replaces-redux",
@@ -1313,39 +1488,46 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "`useState` cannot store objects or arrays, making Redux mandatory for all state.",
+        text: "`useState` cannot store objects or arrays, forcing teams to use Redux for any complex state.",
         isCorrect: false,
-        explanation: "`useState` stores any JavaScript data type, including complex objects and arrays."
+        explanation: "Tempting if you picture `useState` as a single-value cell, but it accepts any JavaScript value, including nested objects and arrays, exactly like a Redux store's state. The pressure that pushes teams toward Redux is re-render granularity across many components, not the data type the hook can hold."
       },
       {
         id: "B",
         text: "Context API is 100x faster than Redux under high-frequency updates without selectors.",
         isCorrect: false,
-        explanation: "Unoptimized Context re-renders all consumers on any change, whereas Redux selectors prevent unnecessary consumer re-renders."
+        explanation: "Tempting if you assume the built-in API must outperform a third-party library, but an unoptimised Context provider re-renders every consumer on each update, while Redux's `useSelector` lets each component subscribe to only the slice it reads, avoiding most of those re-renders."
       },
       {
         id: "C",
-        text: "For moderate complexity, `useReducer` combined with `useContext` can manage global state, but Redux offers specialized devtools, middleware, and granular selector optimizations for large enterprise apps.",
+        text: "For moderate complexity, `useReducer` and `useContext` handle global state, but Redux adds devtools, middleware, and selector optimizations for large apps.",
         isCorrect: true,
-        explanation: "Correct. While `useContext` + `useReducer` replaces simple Redux stores, large applications benefit from Redux Toolkit's selector memoization, devtools, and middleware ecosystem."
+        explanation: "Correct. `useReducer` + `useContext` covers the core state-management job for moderate apps, while Redux adds the tooling layer\u2014devtools, middleware, selector-based subscriptions\u2014that keeps large codebases debuggable and performant."
       },
       {
         id: "D",
         text: "React Hooks immediately delete Redux from the npm registry upon installation.",
         isCorrect: false,
-        explanation: "Hooks and Redux coexist; in fact, React Redux uses hooks like `useSelector` and `useDispatch`."
+        explanation: "No installation of any package modifies the npm registry. In practice, React and Redux coexist: the `react-redux` package exposes `useSelector` and `useDispatch`, which are themselves React hooks wrapping a Redux store."
       }
     ],
     correctAnswer: "C",
-    explanation: "The React Hook cannot be considered as a replacement for Redux (It is an open-source, JavaScript library useful in managing the application state) when it comes to the management of the global application state tree in large complex applications, even though the React will provide a useReducer hook that manages state transitions similar to Redux. Redux is very useful at a lower level of component hierarchy to handle the pieces of a state which are dependent on each other, instead of a declaration of multiple useState hooks. In commercial web applications which is larger, the complexity will be high, so using only React Hook may not be sufficient. Few developers will try to tackle the challenge with the help of React Hooks and others will combine React Hooks with the Redux.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Can React Hook replaces Redux?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Can React Hook replaces Redux?.",
+    explanation: "`useReducer` gives you a pure state-transition function and `useContext` lets you share that state across the tree, so for a moderate number of components and a handful of state slices the pair covers what a single Redux store would do. Redux layers on top of that same reducer pattern: time-travel devtools, middleware for async side-effects (thunk, saga), and `useSelector`, which lets each component subscribe to a narrow slice instead of the whole store.\n\nThe practical difference shows up in re-render cost. A Context provider re-renders every consumer whenever its value changes, so a single `theme` update forces all 200 consumers to re-render. With Redux, `useSelector` compares only the slice a component reads, so the 198 components that do not touch `theme` stay untouched.\n\nThe boundary is not simply \"small app vs large app.\" A ten-component form with undo, redo, and optimistic server responses is a good fit for `useReducer` plus an effect for the async work, but a 300-component dashboard with cross-feature selectors and time-travel debugging is where Redux Toolkit's tooling earns its bundle size.",
+    interviewLine: "I'd reach for `useReducer` and `useContext` first; the moment I need selector-based subscriptions so that 200 components don't all re-render on one state change, or I want time-travel debugging and middleware for async flows, I'd bring in Redux Toolkit.",
+    misconception: "The belief that hooks either fully replace Redux or cannot handle shared state at all, when the real distinction is about re-render granularity, devtooling, and scale rather than the ability to store and transition state.",
     hints: [
-      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
+      "Ask whether the question is about storing state or about how many components re-render when that state changes.",
+      "Both `useReducer` and Redux use a reducer function; the difference is what wraps around that reducer.",
+      "Think about what happens to 200 consumers of a single Context provider versus 200 components each calling `useSelector` with a different slice."
     ],
     source: "interviewbit-70",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
+    bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component",
+    example: {
+      caption: "Notice that every consumer of Ctx re-renders whenever any part of state changes, which is the cost Redux's useSelector avoids by subscribing to a slice.",
+      language: "tsx",
+      code: "import React, { createContext, useContext, useReducer } from \"react\";\n\ntype State = { cart: string[]; user: string | null };\ntype Action = { type: \"ADD\"; item: string } | { type: \"LOGIN\"; name: string };\n\nfunction reducer(s: State, a: Action): State {\n  if (a.type === \"ADD\") return { ...s, cart: [...s.cart, a.item] };\n  if (a.type === \"LOGIN\") return { ...s, user: a.name };\n  return s;\n}\n\nconst Ctx = createContext<{ state: State; dispatch: React.Dispatch<Action> }>(null!);\n\nfunction Provider({ children }: { children: React.ReactNode }) {\n  const [state, dispatch] = useReducer(reducer, { cart: [], user: null });\n  return <Ctx.Provider value={{ state, dispatch }}>{children}</Ctx.Provider>;\n}\n\nfunction CartBadge() {\n  const { state } = useContext(Ctx);\n  return <span>{state.cart.length}</span>;\n}"
+    }
   },
   {
     id: "react-how-do-you-manage-global-state-compare-context-redux-an",
@@ -1364,39 +1546,46 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Store all temporary text keystrokes and button hovers in a single global Redux store.",
+        text: "Route every transient UI signal\u2014keystrokes, hover states, focus tracking\u2014through a single global Redux store so all components subscribe to one slice.",
         isCorrect: false,
-        explanation: "Globalizing ephemeral UI state causes unnecessary re-renders across the component tree."
+        explanation: "Tempting if you equate 'shared across components' with 'needs a global store,' but keystrokes and hovers are local to the input or button. Forcing them through a provider means every subscribing component re-renders on each event, and you gain no cross-component benefit."
       },
       {
         id: "B",
-        text: "Use React Context without selectors for high-frequency real-time stock price streams.",
+        text: "Subscribe a single React Context to a 60 Hz WebSocket price feed so every ticker component reads the latest value directly from the context value.",
         isCorrect: false,
-        explanation: "Context updates re-render all consuming components, causing frame drops under high-frequency updates."
+        explanation: "Tempting because Context is the built-in way to share data, but without a selector layer every consumer re-renders on every value change. At 60 updates per second the entire consumer tree re-renders 60 times per second, dropping frames. A Zustand or Redux store with per-component selectors limits re-renders to the slice each component actually reads."
       },
       {
         id: "C",
-        text: "Select state strategies by scope: `useState` for local UI, React Context for low-frequency app-wide data (themes/auth), Zustand/Redux for complex client state, and React Query/SWR for server cache.",
+        text: "Match the tool to the scope: useState for component-local UI, Context for low-frequency app-wide values like theme and auth, Zustand or Redux with selectors for complex client state, and React Query or SWR for server caches.",
         isCorrect: true,
-        explanation: "Correct. Modern architecture separates ephemeral UI state, global client stores with selector subscriptions, and specialized server state caching."
+        explanation: "Correct. Each layer solves a different re-render or data-lifecycle problem, and choosing by scope avoids both under-engineering (Context for 60 Hz feeds) and over-engineering (Redux for a theme toggle)."
       },
       {
         id: "D",
-        text: "Global state is prohibited in modern React applications.",
+        text: "Avoid all global state in modern React applications; every piece of data should live in the component that renders it.",
         isCorrect: false,
-        explanation: "Global state is essential for cross-cutting application data like user sessions, shopping carts, and global preferences."
+        explanation: "Tempting if you internalise 'lift state up' as 'keep state local,' but auth tokens, shopping carts, and theme preferences are inherently cross-cutting. Forcing them into a single component's useState either breaks the app or requires prop-drilling through every intermediate layer."
       }
     ],
     correctAnswer: "C",
-    explanation: "So, this question is more targeted towards ways that YOU would take to manage the global state. So while I write the answer down, it, s best that you personalize it with examples that seem fit to you. Managing global state in React really depends on its scope and complexity. Most of the time, you can use, useState, or, useReducer, which may work well for component-specific data. But there are many circumstances under which different features can be used,",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you manage global state? Compare Context, Redux, and modern alternatives.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you manage global state? Compare Context, Redux, and modern alternatives.",
+    explanation: "State management in React is a scope decision, not a single-tool decision. useState handles component-local state. Context provides app-wide access but re-renders every consumer when the value's identity changes. Zustand and Redux add selector subscriptions, so a component re-renders only when the slice it selects changes. React Query and SWR add server-state semantics: caching, request deduplication, and background revalidation.\n\nPutting a 60 Hz WebSocket price feed into Context means every consumer re-renders on every tick. Moving that value into a Zustand store with per-component selectors limits re-renders to the slice each component actually reads. The opposite mistake is equally common: wrapping a one-time auth token in Redux adds a provider, middleware, and devtools for something Context handles in two lines.\n\nThe boundary between client state and server state is where most production bugs hide. A shopping cart that syncs to a backend is server state; React Query owns the cache, invalidation, and concurrent-mutation queue. The local 'Adding\u2026' spinner is client state. Mixing both into one Redux store means hand-rolling revalidation and stale-while-revalidate logic that a server-state library already provides.",
+    interviewLine: "I treat state as a scope decision: local UI stays in useState, low-frequency cross-cutting values go in Context, complex client state with many interacting slices goes in Zustand or Redux with selector subscriptions, and anything that originates from a server goes in React Query so I get caching, deduplication, and revalidation for free.",
+    misconception: "If a value is shared across components it must live in a global store, and if a state library exists it must replace every other mechanism for managing data.",
     hints: [
-      "Context solves passing data down, not re-rendering. Every consumer re-renders when the value changes, so the value's identity matters."
+      "Ask what re-renders when the value changes: a single component, every consumer, or only the components that select that slice.",
+      "Context has no selector API\u2014every consumer re-renders on every value change\u2014so the frequency of updates determines whether it is the right layer.",
+      "Server data has a lifecycle (fetch, cache, invalidate, refetch) that a plain client store does not model; that is a separate concern from local UI state."
     ],
     source: "interviewbit-70",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/reference/react/useContext"
+    bestPracticeRef: "https://react.dev/reference/react/useContext",
+    example: {
+      caption: "Each component selects only the slice it reads, so updating items re-renders Total but not AddButton.",
+      language: "tsx",
+      code: "import { create } from \"zustand\";\n\nconst useCart = create<{\n  items: { id: string; qty: number }[];\n  add: (id: string) => void;\n}>((set) => ({\n  items: [],\n  add: (id) =>\n    set((s) => ({\n      items: [...s.items, { id, qty: 1 }],\n    })),\n}));\n\nfunction Total() {\n  const items = useCart((s) => s.items);\n  return <span>{items.length} items</span>;\n}\n\nfunction AddButton({ id }: { id: string }) {\n  const add = useCart((s) => s.add);\n  return <button onClick={() => add(id)}>Add</button>;\n}"
+    }
   },
   {
     id: "react-what-is-usereducer-and-when-would-you-use-it-over-usest",
@@ -1416,39 +1605,46 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "`useReducer` is used strictly to reduce the file size of JavaScript bundles.",
+        text: "`useReducer` is used strictly to reduce the file size of JavaScript bundles by eliminating redundant state code.",
         isCorrect: false,
-        explanation: "`useReducer` manages component state logic, not bundle minification."
+        explanation: "Tempting if you hear \"reducer\" and think of tree-shaking or minification, but the hook only governs how a component computes its next state from an action; it has no effect on what the bundler includes in the output."
       },
       {
         id: "B",
-        text: "`useState` cannot store boolean values, requiring `useReducer` for all flags.",
+        text: "`useState` cannot store boolean values, so every flag in a component must be managed through `useReducer`.",
         isCorrect: false,
-        explanation: "`useState` handles booleans and simple primitives effortlessly."
+        explanation: "This inverts the API: `useState` stores any value, including booleans, numbers, and objects. `useReducer` is an organizational tool for complex transitions, not a workaround for a type limitation that does not exist."
       },
       {
         id: "C",
-        text: "`useReducer` manages complex state logic involving multiple sub-values or interdependent transitions via `(state, action) => newState`, providing predictable action dispatching.",
+        text: "`useReducer` manages interdependent state through a `(state, action) => newState` reducer, keeping transitions atomic and testable.",
         isCorrect: true,
-        explanation: "Correct. `useReducer` centralizes complex state transitions into a single reducer function, decoupling 'what happened' (actions) from 'how state updates'."
+        explanation: "Correct. The reducer centralises every state transition in one pure function, so interdependent fields update atomically and each change is a named, testable action."
       },
       {
         id: "D",
-        text: "`useReducer` is deprecated in favor of writing raw mutable assignments to `this.state`.",
+        text: "`useReducer` is deprecated in React 19 in favor of writing raw mutable assignments directly to `this.state`.",
         isCorrect: false,
-        explanation: "`useReducer` is a modern, actively supported React state hook."
+        explanation: "Mixes up the modern hooks API with the legacy class-component pattern. `useReducer` is a first-class hook in React 19, and `this.state` mutation is the anti-pattern the hook was designed to replace."
       }
     ],
     correctAnswer: "C",
-    explanation: "useReducer and useState are React hooks that manage state within functional components. Here, useRender is used for more complex state logic, and useState carries out simpler values. Here, s how they work: With useState, you directly update values with Now you already know what change you want, so you update it immediately. The approach becomes a little different when it comes to useReducer. You will describe what happened, and a separate function then decides how to update the state. For example: Here: state - holds the current value dispatch - used to send actions reducer - a function that updates the state Looking at the reducer function, Here, the reducer receives the current, state, and an, action, then it checks what kind of action it is (action.type), and based on that, it returns a new state. At first, this feels like extra steps compared to useState. But it becomes useful when state is more complex. For example, in a form with multiple fields, instead of writing many useState calls, you can handle all updates in one reducer function. This keeps all the logic in one place instead of spreading it across different handlers.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is useReducer, and when would you use it over useState?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is useReducer, and when would you use it over useState?.",
+    explanation: "useReducer takes a reducer function with the signature (state, action) => newState and an initial state, and returns a [state, dispatch] pair. When you call dispatch with an action object, React invokes the reducer with the current state and that action, then stores the returned value as the new state for the next render.\n\nThis matters when state has multiple fields that must change together. A shopping cart holding items, subtotal, and discount is one reducer; three separate useState calls are three independent setters that can leave the cart in an inconsistent state mid-update. The reducer guarantees every transition is a single, named operation, and all the logic lives in one pure function you can unit-test without rendering a component.\n\nAn interviewer will likely probe whether useReducer reduces re-renders. It does not: every dispatch still schedules a re-render exactly like setState. The payoff is testability and a single place to audit every state transition, not a performance win. For a lone boolean or a simple counter, useState remains the lighter-weight choice.",
+    interviewLine: "I reach for useReducer when state has interdependent fields\u2014like a cart with items, subtotal, and discount\u2014because a single reducer keeps every transition atomic and testable, whereas three separate useState setters can leave the object in an inconsistent state mid-update.",
+    misconception: "Treating useReducer as a performance optimisation that cuts re-renders, when in reality every dispatch triggers a re-render just like setState; its value is centralising and making state transitions testable, not skipping renders.",
     hints: [
-      "State is a snapshot. Setting it schedules a render, it does not change the variable you already read, so two updates from the same value collapse into one."
+      "Look at the reducer signature: it receives the full current state and an action, then returns the entire next state.",
+      "Ask yourself: does every field that changes need to change together, or are they truly independent?",
+      "The hook is not a re-render optimisation; every dispatch still triggers a render, same as setState."
     ],
     source: "interviewbit-70",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/reference/react/useState"
+    bestPracticeRef: "https://react.dev/reference/react/useState",
+    example: {
+      caption: "Notice how one dispatch updates three fields atomically, and the reducer is a pure function you can test in isolation.",
+      language: "typescript",
+      code: "type CartState = { items: string[]; subtotal: number; discount: number };\n\nfunction cartReducer(state: CartState, action: { type: string; item?: string; price?: number }): CartState {\n  switch (action.type) {\n    case \"ADD_ITEM\":\n      return {\n        ...state,\n        items: [...state.items, action.item!],\n        subtotal: state.subtotal + action.price!,\n      };\n    case \"APPLY_DISCOUNT\":\n      return { ...state, discount: Math.round(state.subtotal * 0.1) };\n    default:\n      return state;\n  }\n}\n\nconst [cart, dispatch] = useReducer(cartReducer, { items: [], subtotal: 0, discount: 0 });\n\ndispatch({ type: \"ADD_ITEM\", item: \"Widget\", price: 25 });\ndispatch({ type: \"APPLY_DISCOUNT\" });"
+    }
   },
   {
     id: "react-useeffect-runs-after-the-browser-has-painted-the-update",
@@ -1470,37 +1666,44 @@ export const REACT_HOOKS_QUESTIONS: QuizQuestion[] = [
         id: "A",
         text: "`useEffect` blocks the browser paint synchronously until all internal network promises resolve.",
         isCorrect: false,
-        explanation: "`useEffect` is non-blocking; `useLayoutEffect` runs synchronously before paint, while `useEffect` fires after paint."
+        explanation: "Tempting if you conflate 'runs after paint' with 'waits for the network', but `useEffect` is scheduled asynchronously and never holds the frame open. There is no built-in mechanism that blocks paint until promises settle."
       },
       {
         id: "B",
         text: "`useEffect` runs inside the browser GPU shader compiler.",
         isCorrect: false,
-        explanation: "`useEffect` runs on the JavaScript event loop after paint."
+        explanation: "This mistakes 'after paint' for 'inside the rendering pipeline'. `useEffect` callbacks run on the JavaScript event loop as a low-priority task; they have no access to the GPU or the shader compilation stage."
       },
       {
         id: "C",
         text: "`useEffect` executes only once when the user closes their browser window tab.",
         isCorrect: false,
-        explanation: "`useEffect` runs after initial mount and subsequent re-renders based on its dependency array."
+        explanation: "This reads the effect as a teardown-only hook, but `useEffect` fires after every mount and after every re-render whose dependency array changes. Window close triggers the cleanup function, not the effect body itself."
       },
       {
         id: "D",
-        text: "`useEffect` is deferred until after browser layout and paint, ensuring that side effects (API calls, logging) do not block the UI from updating smoothly.",
+        text: "`useEffect` is deferred until after browser layout and paint, so side effects like API calls and logging do not block the UI update.",
         isCorrect: true,
-        explanation: "Correct. By running after the paint is committed to the screen, `useEffect` keeps user interactions responsive and prevents render-blocking delays."
+        explanation: "Correct. React schedules `useEffect` at a low priority so the browser finishes layout and paint first, keeping the frame responsive while side effects run in the background."
       }
     ],
     correctAnswer: "D",
-    explanation: "This is why it, s non-blocking and used for things like API calls, subscriptions, and logging. Here,",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of useEffect runs after the browser has painted the update. So the user already sees the UI change, and then your effect runs in the background.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of useEffect runs after the browser has painted the update. So the user already sees the UI change, and then your effect runs in the background.",
+    explanation: "Correct. When React commits a render it first mutates the DOM, then the browser performs layout and paint. `useEffect` callbacks are scheduled asynchronously by React's internal scheduler at a low priority, so they execute only after the browser has finished painting the new UI. This is the key difference from `useLayoutEffect`, which runs synchronously after DOM mutations but before the browser paints.\n\nIn practice this means the user sees the updated screen immediately. If you put a `fetch` call, a `console.log`, or a subscription setup inside `useEffect`, none of that work delays the paint. The user never sees a blank or stale frame while the effect runs. If you instead need to measure a DOM node and adjust its style in the same frame\u2014for example, preventing a flash of mispositioned content\u2014you would reach for `useLayoutEffect` because it blocks paint until the measurement is done.\n\nOne nuance an interviewer may probe: React batches multiple `useEffect` calls within the same commit and runs them in declaration order. The cleanup function of a previous effect runs before the next effect fires, so you can safely tear down a subscription and open a new one in the same render cycle without a gap.",
+    interviewLine: "`useEffect` is scheduled at a low priority by React's internal scheduler, so the browser gets to finish layout and paint before the callback runs; that is why I put non-visual work like fetches in `useEffect` and reserve `useLayoutEffect` for adjustments that must land before the user sees the frame.",
+    misconception: "Treating `useEffect` and `useLayoutEffect` as interchangeable, or reading 'after paint' to mean the effect is a stage inside the browser's rendering pipeline rather than a JavaScript task scheduled after it.",
     hints: [
-      "An effect synchronises with something outside React. Ask what it subscribes to, and what its cleanup has to undo when the dependencies change."
+      "React commits DOM mutations first, then the browser paints; ask where in that sequence `useEffect` fires relative to the paint.",
+      "Compare `useEffect` with `useLayoutEffect`: one blocks the paint, the other does not. Which is which?",
+      "The effect body is a JavaScript callback on the event loop, not a stage inside the browser's rendering or GPU pipeline."
     ],
     source: "interviewbit-70",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/reference/react/useEffect"
+    bestPracticeRef: "https://react.dev/reference/react/useEffect",
+    example: {
+      caption: "The 'Loading\u2026' text is painted to the screen before the `fetch` inside the effect even starts, so the user sees the spinner immediately.",
+      language: "tsx",
+      code: "function UserCard({ id }: { id: string }) {\n  const [user, setUser] = useState<{ name: string } | null>(null);\n\n  // Painted first: the user sees \"Loading\u2026\" right away.\n  // The fetch starts only after that paint is committed.\n  useEffect(() => {\n    const controller = new AbortController();\n    fetch(`/api/users/${id}`, { signal: controller.signal })\n      .then((res) => res.json())\n      .then(setUser)\n      .catch(() => {});\n    return () => controller.abort();\n  }, [id]);\n\n  return user ? <span>{user.name}</span> : <span>Loading\u2026</span>;\n}"
+    }
   },
   {
     id: "react-what-is-the-difference-between-reacts-class-components",

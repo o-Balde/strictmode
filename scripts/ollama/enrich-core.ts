@@ -1,16 +1,18 @@
 /**
- * The model-facing half of the question enricher (scripts/ollama-enrich.ts):
- * prompts, the structured-output schema, a streaming Ollama client, and the
- * validation that stands between the model and the bank.
+ * The data half of the question enricher (scripts/ollama-enrich.ts): the shape
+ * the model returns, the structured-output schemas, lenient parsing, patches,
+ * and the validation that stands between the model and the bank. Prompts live
+ * in ./prompts.ts, the Ollama client in ./client.ts.
  *
  * The model only ever proposes teaching copy. The answer key — which option is
  * correct, the option ids, the snippet, the console output an `output`
  * question prints — never passes through it, so `mergeEnrichment` rebuilds the
  * question from the original and takes only the prose fields from the model.
  */
+import ts from "typescript";
 import type { CodeLanguage, QuestionExample, QuizQuestion } from "../../src/data/types";
 
-// ─── Shape the model returns ────────────────────────────────────────────────
+// ─── Shapes ─────────────────────────────────────────────────────────────────
 
 export interface Enrichment {
   explanation: string;
@@ -19,282 +21,379 @@ export interface Enrichment {
   interviewLine: string;
   hints: string[];
   example: QuestionExample;
+  /** Non-empty when the model doubts the answer key; never written to the bank. */
+  keyConcern?: string;
 }
 
-const LANGUAGES: CodeLanguage[] = ["tsx", "typescript", "javascript", "jsx", "css", "json"];
+/** Only the fields that change. Options are matched by id. */
+export interface EnrichmentPatch {
+  explanation?: string;
+  options?: { id: string; text?: string; explanation?: string }[];
+  misconception?: string;
+  interviewLine?: string;
+  hints?: string[];
+  example?: QuestionExample;
+}
 
-/** Ollama structured outputs: the reply's `content` is constrained to this. */
+export interface Review {
+  issues: { field: string; problem: string }[];
+  patch: EnrichmentPatch;
+  keyConcern: string;
+}
+
+export const LANGUAGES: CodeLanguage[] = ["tsx", "typescript", "javascript", "jsx", "css", "json"];
+
+// ─── Structured-output schemas ──────────────────────────────────────────────
+
+const STRING = { type: "string" } as const;
+const EXAMPLE_SCHEMA = {
+  type: "object",
+  properties: { caption: STRING, language: { type: "string", enum: LANGUAGES }, code: STRING },
+  required: ["caption", "language", "code"],
+} as const;
+
 export const ENRICHMENT_SCHEMA = {
   type: "object",
   properties: {
-    explanation: { type: "string" },
+    explanation: STRING,
     options: {
       type: "array",
       items: {
         type: "object",
-        properties: {
-          id: { type: "string" },
-          text: { type: "string" },
-          explanation: { type: "string" },
-        },
+        properties: { id: STRING, text: STRING, explanation: STRING },
         required: ["id", "text", "explanation"],
       },
     },
-    misconception: { type: "string" },
-    interviewLine: { type: "string" },
-    hints: { type: "array", items: { type: "string" } },
-    example: {
-      type: "object",
-      properties: {
-        caption: { type: "string" },
-        language: { type: "string", enum: LANGUAGES },
-        code: { type: "string" },
-      },
-      required: ["caption", "language", "code"],
-    },
+    misconception: STRING,
+    interviewLine: STRING,
+    hints: { type: "array", items: STRING },
+    example: EXAMPLE_SCHEMA,
+    keyConcern: STRING,
   },
-  required: ["explanation", "options", "misconception", "interviewLine", "hints", "example"],
+  required: ["explanation", "options", "misconception", "interviewLine", "hints", "example", "keyConcern"],
 } as const;
 
-// ─── Prompts ────────────────────────────────────────────────────────────────
+export const PATCH_SCHEMA = {
+  type: "object",
+  properties: {
+    explanation: STRING,
+    options: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: { id: STRING, text: STRING, explanation: STRING },
+        required: ["id"],
+      },
+    },
+    misconception: STRING,
+    interviewLine: STRING,
+    hints: { type: "array", items: STRING },
+    example: EXAMPLE_SCHEMA,
+  },
+} as const;
 
-export const SYSTEM_PROMPT = `You are a staff frontend engineer and meticulous technical editor for StrictMode, a daily interview-drill app for React, TypeScript, Next.js (App Router) and JavaScript. You are improving ONE multiple-choice question at a time. A learner reads your copy right after answering, so every sentence must teach something true.
+/** Which fields a set of failed checks points at; null when one is unrecognised. */
+export interface FixTargets {
+  fields: ("explanation" | "misconception" | "interviewLine" | "hints" | "example")[];
+  /** Option id → the parts of it to rewrite. */
+  options: Record<string, ("text" | "explanation")[]>;
+}
 
-Ground truth: React 19, Next.js 16 App Router, TypeScript 5.x, modern ES2024 JavaScript, current browser APIs. Never invent APIs, flags or behaviour. If the original copy contains an error or outdated claim, fix it silently. Accuracy beats length.
+export function fixTargets(problems: string[], optionIds: string[]): FixTargets | null {
+  const fields = new Set<FixTargets["fields"][number]>();
+  const options: FixTargets["options"] = {};
+  const addOption = (id: string, part: "text" | "explanation") => {
+    options[id] = [...new Set([...(options[id] ?? []), part])];
+  };
+  for (const p of problems) {
+    const opt = p.match(/^option (\S+) (text|explanation|is )/);
+    if (opt) addOption(opt[1], opt[2] === "text" ? "text" : "explanation");
+    else if (/^two options have the same text/.test(p)) optionIds.forEach((id) => addOption(id, "text"));
+    else if (/^explanation\b/.test(p)) fields.add("explanation");
+    else if (/^misconception\b/.test(p)) fields.add("misconception");
+    else if (/^interviewLine\b/.test(p)) fields.add("interviewLine");
+    else if (/^(hints|a hint|hint \d|two hints)\b/.test(p)) fields.add("hints");
+    else if (/^example\b/.test(p)) fields.add("example");
+    else return null;
+  }
+  return { fields: [...fields], options };
+}
 
-THE ANSWER KEY IS FIXED. The option marked CORRECT stays the only correct answer; every other option must stay definitively wrong. Keep the same option ids in the same order.
+/**
+ * A grammar that only admits the fields being fixed. With every field
+ * optional, models rewrite the whole copy; this keeps a one-field fix at a
+ * few dozen tokens.
+ */
+export function fixSchema(t: FixTargets | null): object {
+  if (!t) return PATCH_SCHEMA;
+  const properties: Record<string, object> = {};
+  for (const f of t.fields) properties[f] = PATCH_SCHEMA.properties[f];
+  const ids = Object.keys(t.options);
+  if (ids.length) {
+    const parts = [...new Set(Object.values(t.options).flat())];
+    properties.options = {
+      type: "array",
+      items: {
+        type: "object",
+        properties: { id: { type: "string", enum: ids }, ...Object.fromEntries(parts.map((p) => [p, STRING])) },
+        required: ["id", ...parts],
+      },
+    };
+  }
+  return { type: "object", properties, required: Object.keys(properties) };
+}
 
-Write these fields:
+/** The same targets in words, for the fixer's prompt. */
+export function describeTargets(t: FixTargets | null): string {
+  if (!t) return "only the fields the failed checks name";
+  const opts = Object.entries(t.options).map(([id, parts]) => `option ${id} ${parts.join(" and ")}`);
+  return [...t.fields, ...opts].join(", ");
+}
 
-explanation — why the correct answer is correct. 2 to 4 short paragraphs separated by a blank line ("\\n\\n"). Cover: the underlying mechanism, why it matters in real code, and one edge case or nuance interviewers probe. Keep every true fact from the original, drop scraped junk ("Learn more", broken sentences). Plain text only: inline code in single backticks, no markdown headings, bullets, bold or fenced code blocks. Aim for 600–1400 characters.
+export const REVIEW_SCHEMA = {
+  type: "object",
+  properties: {
+    issues: {
+      type: "array",
+      items: { type: "object", properties: { field: STRING, problem: STRING }, required: ["field", "problem"] },
+    },
+    patch: PATCH_SCHEMA,
+    keyConcern: STRING,
+  },
+  required: ["issues", "patch", "keyConcern"],
+} as const;
 
-options — for every option, in order:
-  text: the option as the learner sees it. Sharpen it, but keep its meaning (a wrong option stays wrong, the correct one stays correct). Wrong options must be PLAUSIBLE traps a real candidate would pick — built from a genuine misconception, similar length and specificity to the correct one, never absurd or joke answers. The correct option must not stand out by length or by hedging words.
-  explanation: correct option → start with "Correct. " and say why in 1–3 sentences. Wrong option → name the belief that makes it tempting and precisely why it fails, 1–3 sentences. Never start a wrong option's explanation with "Correct".
+// ─── Parsing ────────────────────────────────────────────────────────────────
 
-misconception — the single most common wrong mental model behind this question, specific to it, in 1–2 sentences. Do not prefix it with "Common misconception" or "The trap".
+/**
+ * Escapes raw newlines and tabs inside JSON strings: the commonest way a model
+ * breaks JSON is pasting multi-line code into a string verbatim.
+ */
+function escapeControlCharsInStrings(text: string): string {
+  let out = "";
+  let inString = false;
+  let escaped = false;
+  for (const ch of text) {
+    if (inString) {
+      if (escaped) escaped = false;
+      else if (ch === "\\") escaped = true;
+      else if (ch === '"') inString = false;
+      else if (ch === "\n") {
+        out += "\\n";
+        continue;
+      } else if (ch === "\r") continue;
+      else if (ch === "\t") {
+        out += "\\t";
+        continue;
+      }
+    } else if (ch === '"') inString = true;
+    out += ch;
+  }
+  return out;
+}
 
-interviewLine — 1–2 sentences a strong candidate would actually say out loud in an interview: concrete, confident, with the key mechanism named. No "Interview takeaway:" prefix.
+/**
+ * Pulls the JSON object out of a free-form reply (thinking tags, fences, a
+ * sentence before or after) and repairs the two mistakes models make most.
+ */
+export function parseJsonObject(raw: string): Record<string, unknown> {
+  let text = raw.replace(/<think>[\s\S]*?<\/think>/gi, "").trim();
+  const fence = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
+  if (fence && fence[1].trimStart().startsWith("{")) text = fence[1];
+  const start = text.indexOf("{");
+  const end = text.lastIndexOf("}");
+  if (start < 0 || end < start) throw new Error("no JSON object in the reply");
+  text = text.slice(start, end + 1);
+  try {
+    return JSON.parse(text);
+  } catch (first) {
+    const repaired = escapeControlCharsInStrings(text).replace(/,(\s*[}\]])/g, "$1");
+    try {
+      return JSON.parse(repaired);
+    } catch {
+      throw first;
+    }
+  }
+}
 
-hints — 2 or 3 progressive hints, from a gentle nudge to nearly there. Never mention an option letter and never quote the correct option.
+/**
+ * Models fill keyConcern with remarks that agree with the key; a real concern
+ * names the option it believes in, as the prompt asks.
+ */
+export function realConcern(text: unknown): string {
+  const t = typeof text === "string" ? text.trim() : "";
+  return /^([Oo]ption\s+)?[A-F]\b|\b[Oo]ption\s+[A-F]\b/.test(t) ? t : "";
+}
 
-example — a small, realistic code example (4 to 25 lines) that illustrates the concept, different from the question's own snippet. caption: one sentence saying what to notice. language: one of tsx, typescript, javascript, jsx, css, json. For conceptual or architecture topics, still show a tiny concrete snippet (a config, a hook, a type, a function).
+export const parsePatch = (raw: string) => parseJsonObject(raw) as EnrichmentPatch;
 
-Think it through carefully before answering: verify each technical claim, check each wrong option really is wrong, then write. Reply with the JSON object only.`;
-
-/** What the model sees of a question: the content, not the bookkeeping. */
-function questionView(q: QuizQuestion) {
+export function parseReview(raw: string): Review {
+  const r = parseJsonObject(raw) as Partial<Review>;
   return {
-    title: q.title,
-    prompt: q.prompt,
-    level: q.level,
-    type: q.type,
-    topic: `${q.category} / ${q.subject}`,
-    codeSnippet: q.codeSnippet ?? undefined,
-    codeLanguage: q.codeSnippet ? q.codeLanguage : undefined,
-    consoleOutput: q.consoleOutput,
-    fixData: q.fixData,
-    options: (q.options ?? []).map((o) => ({
-      id: o.id,
-      text: o.text,
-      status: o.isCorrect ? "CORRECT" : "wrong",
-      explanation: o.explanation,
-    })),
-    explanation: q.explanation,
-    misconception: q.misconception,
-    interviewLine: q.interviewLine,
-    hints: q.hints,
-    example: q.example,
+    issues: Array.isArray(r.issues) ? r.issues.filter((i) => i && typeof i.problem === "string") : [],
+    patch: r.patch && typeof r.patch === "object" ? r.patch : {},
+    keyConcern: realConcern(r.keyConcern),
   };
 }
 
-export function buildDraftPrompt(q: QuizQuestion): string {
-  const locked = optionTextLocked(q)
-    ? `\nThis is an "${q.type}" question: the option texts are exact program output. Return every option text EXACTLY as given; improve only the explanations.\n`
-    : "";
-  return `Improve this question. Current version:\n\n${JSON.stringify(questionView(q), null, 2)}\n${locked}\nReturn the improved fields as JSON.`;
+/**
+ * Coerces a parsed reply onto the question's own shape: options keyed to the
+ * original ids (matched by id, else by position), missing strings as "". A
+ * structural slip then surfaces as an empty field, which a small patch can
+ * fix, instead of an unfixable mismatch that throws the whole draft away.
+ */
+export function normalizeEnrichment(q: QuizQuestion, raw: Record<string, unknown>): Enrichment {
+  const text = (v: unknown) => (typeof v === "string" ? v : "");
+  const given = (Array.isArray(raw.options) ? raw.options : []).filter(
+    (o): o is Record<string, unknown> => Boolean(o) && typeof o === "object",
+  );
+  const byId = new Map(given.map((o) => [String(o.id ?? "").trim().toUpperCase(), o]));
+  const original = q.options ?? [];
+  const options = original.map((src, i) => {
+    const o = byId.get(src.id.toUpperCase()) ?? (given.length === original.length ? given[i] : undefined);
+    return { id: src.id, text: text(o?.text) || src.text, explanation: text(o?.explanation) };
+  });
+  const ex = (raw.example && typeof raw.example === "object" ? raw.example : {}) as Record<string, unknown>;
+  return {
+    explanation: text(raw.explanation),
+    options,
+    misconception: text(raw.misconception),
+    interviewLine: text(raw.interviewLine),
+    hints: Array.isArray(raw.hints) ? raw.hints.filter((h): h is string => typeof h === "string") : [],
+    example: {
+      caption: text(ex.caption),
+      language: (LANGUAGES as string[]).includes(text(ex.language)) ? (ex.language as CodeLanguage) : "typescript",
+      code: text(ex.code),
+    },
+    keyConcern: realConcern(raw.keyConcern),
+  };
 }
 
-export function buildReviewPrompt(q: QuizQuestion, draft: Enrichment, warnings: string[]): string {
-  const notes = warnings.length
-    ? `\nAutomated checks flagged:\n${warnings.map((w) => `- ${w}`).join("\n")}\n`
-    : "";
-  return `You are now the reviewer. Below is the ORIGINAL question and a DRAFT of improved copy.
+// ─── Patches ────────────────────────────────────────────────────────────────
 
-ORIGINAL:
-${JSON.stringify(questionView(q), null, 2)}
+const str = (v: unknown): v is string => typeof v === "string" && v.trim().length > 0;
 
-DRAFT:
-${JSON.stringify(draft, null, 2)}
-${notes}
-Check the draft line by line: every technical claim is true; the option marked CORRECT in the original is still unambiguously correct and every other option still unambiguously wrong; no option gives the answer away by length or wording; the example code is valid and actually shows the concept; hints do not reveal the answer. Fix anything wrong and sharpen weak sentences. Do not shorten good content. Return the corrected full JSON.`;
+/** The fields a patch actually changes, for logs. */
+export function patchedFields(p: EnrichmentPatch): string[] {
+  const fields = (["explanation", "misconception", "interviewLine", "hints", "example"] as const).filter(
+    (k) => p[k] !== undefined,
+  ) as string[];
+  for (const o of p.options ?? []) {
+    if (o?.text !== undefined) fields.push(`option ${o.id} text`);
+    if (o?.explanation !== undefined) fields.push(`option ${o.id} explanation`);
+  }
+  return fields;
 }
+
+/**
+ * Applies only well-formed replacements; anything malformed is ignored and
+ * left for validation to catch on the result.
+ */
+export function applyPatch(e: Enrichment, p: EnrichmentPatch): Enrichment {
+  const next: Enrichment = { ...e, options: e.options.map((o) => ({ ...o })), hints: [...e.hints] };
+  for (const k of ["explanation", "misconception", "interviewLine"] as const) {
+    if (str(p[k])) next[k] = p[k];
+  }
+  if (Array.isArray(p.hints) && p.hints.length > 0 && p.hints.every(str)) next.hints = p.hints;
+  if (p.example && str(p.example.code) && str(p.example.caption)) next.example = p.example;
+  for (const po of Array.isArray(p.options) ? p.options : []) {
+    const target = next.options.find((o) => o.id === po?.id);
+    if (!target) continue;
+    if (str(po.text)) target.text = po.text;
+    if (str(po.explanation)) target.explanation = po.explanation;
+  }
+  return next;
+}
+
+// ─── Validation ─────────────────────────────────────────────────────────────
 
 export function optionTextLocked(q: QuizQuestion): boolean {
   return q.type === "output" || q.type === "puzzle";
-}
-
-// ─── Ollama client ──────────────────────────────────────────────────────────
-
-export interface ChatOptions {
-  host: string;
-  model: string;
-  numCtx: number;
-  timeoutMs: number;
-  /**
-   * Thinking past this is a loop, not diligence: qwen3.8:27b settles in ~9k
-   * chars per pass, while gpt-oss:20b at high effort ran past 39k without
-   * answering. The call is cut and the caller retries.
-   */
-  maxThinkingChars: number;
-  /** False for models without the capability (the coder models): Ollama rejects `think` for them. */
-  thinking: boolean;
-  /**
-   * How long Ollama keeps the model loaded afterwards. "0" when draft and
-   * review use different models: two 27B models resident at once push the
-   * CPU-only host into swap, which stalled generation outright in testing.
-   */
-  keepAlive: string;
-  signal?: AbortSignal;
-  onProgress?: (p: { thinking: number; content: number; elapsedMs: number }) => void;
-}
-
-export interface ChatResult {
-  thinking: string;
-  content: string;
-  elapsedMs: number;
-  evalCount?: number;
-}
-
-/**
- * gpt-oss takes a reasoning effort instead of a boolean; "high" loops on this
- * task, so it gets "medium". Every other thinking model takes `true`.
- */
-function thinkParam(model: string): boolean | "medium" {
-  return model.startsWith("gpt-oss") ? "medium" : true;
-}
-
-/**
- * Streams, because a 27B model thinking for several minutes would outlive
- * undici's 300 s headers timeout on a non-streaming request.
- */
-export async function chat(
-  messages: { role: "system" | "user" | "assistant"; content: string }[],
-  opts: ChatOptions,
-): Promise<ChatResult> {
-  const started = Date.now();
-  const timeout = AbortSignal.timeout(opts.timeoutMs);
-  const runaway = new AbortController();
-  const signal = AbortSignal.any([timeout, runaway.signal, ...(opts.signal ? [opts.signal] : [])]);
-
-  const res = await fetch(`${opts.host}/api/chat`, {
-    method: "POST",
-    headers: { "Content-Type": "application/json" },
-    signal,
-    body: JSON.stringify({
-      model: opts.model,
-      messages,
-      stream: true,
-      ...(opts.thinking ? { think: thinkParam(opts.model) } : {}),
-      format: ENRICHMENT_SCHEMA,
-      keep_alive: opts.keepAlive,
-      options: {
-        // Qwen3's recommended thinking-mode sampling; fine for the others too.
-        temperature: 0.6,
-        top_p: 0.95,
-        top_k: 20,
-        num_ctx: opts.numCtx,
-        num_predict: Math.floor(opts.numCtx * 0.75),
-      },
-    }),
-  });
-  if (!res.ok || !res.body) {
-    throw new Error(`Ollama HTTP ${res.status}: ${await res.text()}`);
-  }
-
-  let thinking = "";
-  let content = "";
-  let evalCount: number | undefined;
-  let buffer = "";
-  const decoder = new TextDecoder();
-  let lastTick = 0;
-
-  for await (const chunk of res.body as unknown as AsyncIterable<Uint8Array>) {
-    buffer += decoder.decode(chunk, { stream: true });
-    let nl: number;
-    while ((nl = buffer.indexOf("\n")) >= 0) {
-      const line = buffer.slice(0, nl).trim();
-      buffer = buffer.slice(nl + 1);
-      if (!line) continue;
-      const msg = JSON.parse(line);
-      if (msg.error) throw new Error(`Ollama: ${msg.error}`);
-      thinking += msg.message?.thinking ?? "";
-      content += msg.message?.content ?? "";
-      if (msg.done) evalCount = msg.eval_count;
-    }
-    if (thinking.length > opts.maxThinkingChars && !content) {
-      runaway.abort();
-      throw new Error(`runaway thinking: ${thinking.length} chars without an answer`);
-    }
-    const now = Date.now();
-    if (opts.onProgress && now - lastTick > 1000) {
-      lastTick = now;
-      opts.onProgress({ thinking: thinking.length, content: content.length, elapsedMs: now - started });
-    }
-  }
-
-  // Models without a separate thinking channel inline it.
-  const inline = content.match(/<think>([\s\S]*?)<\/think>/i);
-  if (inline && !thinking) thinking = inline[1].trim();
-
-  return { thinking, content, elapsedMs: Date.now() - started, evalCount };
-}
-
-/**
- * The host is unreachable or restarting, as opposed to the model misbehaving.
- * These say nothing about the question, so they must not count as attempts.
- */
-export function isHostDown(err: unknown): boolean {
-  const e = err as { message?: string; cause?: { code?: string } };
-  const code = e?.cause?.code ?? "";
-  const msg = e?.message ?? "";
-  return (
-    /ECONNREFUSED|ECONNRESET|EHOSTUNREACH|ENETUNREACH|ETIMEDOUT|EAI_AGAIN|UND_ERR_SOCKET|UND_ERR_CONNECT_TIMEOUT/.test(code) ||
-    /fetch failed|terminated|other side closed|socket hang up/i.test(msg) ||
-    /Ollama HTTP 5\d\d/.test(msg)
-  );
-}
-
-// ─── Parsing & validation ───────────────────────────────────────────────────
-
-export function parseEnrichment(raw: string): Enrichment {
-  let text = raw.replace(/<think>[\s\S]*?<\/think>/gi, "").trim();
-  const fence = text.match(/```(?:json)?\s*([\s\S]*?)\s*```/);
-  if (fence) text = fence[1];
-  const start = text.indexOf("{");
-  const end = text.lastIndexOf("}");
-  if (start < 0 || end < start) throw new Error("no JSON object in reply");
-  return JSON.parse(text.slice(start, end + 1)) as Enrichment;
 }
 
 const TEMPLATED = [
   /^common misconception:/i,
   /^interview takeaway:/i,
   /^the trap:/i,
+  /^misconception:/i,
   /clearly articulate the underlying mechanism/i,
   /misunderstanding the execution lifecycle/i,
 ];
 
-const str = (v: unknown): v is string => typeof v === "string" && v.trim().length > 0;
+const FILLER =
+  /\b(it'?s (important|worth) (to note|noting)|in summary|in conclusion|simply put|great question|as mentioned (above|earlier)|let'?s (dive|break))\b/i;
 
 /**
- * Hard problems make the attempt fail and retry with the problems fed back.
- * Warnings are handed to the review pass but never block a write.
+ * The app renders these fields as plain text with `code` spans only, so any
+ * other markdown shows up as literal asterisks and underscores.
+ */
+function proseProblems(label: string, text: string): string[] {
+  const problems: string[] = [];
+  if ((text.match(/`/g) ?? []).length % 2) problems.push(`${label} has an unmatched backtick`);
+  const prose = text.replace(/`[^`]*`/g, "");
+  if (/\*\*[^*]+\*\*|(^|[\s(])\*[^*\s][^*\n]*\*(?=[\s).,;:!?]|$)|(^|[\s(])_[^_\s][^_\n]*_(?=[\s).,;:!?]|$)/m.test(prose)) {
+    problems.push(`${label} uses markdown emphasis; the app shows plain text with backtick code only`);
+  }
+  return problems;
+}
+
+const normalizeCode = (code: string) => code.replace(/\s+/g, " ").trim();
+
+const SCRIPT_EXT: Partial<Record<CodeLanguage, string>> = {
+  tsx: "tsx",
+  typescript: "ts",
+  javascript: "js",
+  jsx: "jsx",
+};
+
+function syntaxErrors(code: string, ext: string): string[] {
+  const out = ts.transpileModule(code, {
+    fileName: `example.${ext}`,
+    reportDiagnostics: true,
+    compilerOptions: { jsx: ts.JsxEmit.Preserve, target: ts.ScriptTarget.ESNext, module: ts.ModuleKind.ESNext },
+  });
+  return (out.diagnostics ?? [])
+    .filter((d) => d.category === ts.DiagnosticCategory.Error)
+    .map((d) => ts.flattenDiagnosticMessageText(d.messageText, " "));
+}
+
+/**
+ * A syntax check, not a type check: examples are fragments that reference
+ * things they never import, but they must at least parse as the language
+ * they claim to be.
+ */
+export function exampleSyntaxProblems(ex: QuestionExample): string[] {
+  if (ex.language === "json") {
+    try {
+      JSON.parse(ex.code);
+      return [];
+    } catch (err) {
+      return [`example is not valid JSON: ${(err as Error).message}`];
+    }
+  }
+  if (ex.language === "css") {
+    const depth = [...ex.code].reduce((d, c) => d + (c === "{" ? 1 : c === "}" ? -1 : 0), 0);
+    return depth === 0 ? [] : ["example CSS has unbalanced braces"];
+  }
+  const ext = SCRIPT_EXT[ex.language];
+  if (!ext) return [];
+  const errors = syntaxErrors(ex.code, ext);
+  if (!errors.length) return [];
+  if (ext === "ts" && !syntaxErrors(ex.code, "tsx").length) return ['example contains JSX; set its language to "tsx"'];
+  if (ext === "js" && !syntaxErrors(ex.code, "jsx").length) return ['example contains JSX; set its language to "jsx"'];
+  if (ext === "js" && !syntaxErrors(ex.code, "ts").length) return ['example contains TypeScript syntax; set its language to "typescript"'];
+  return [`example does not parse as ${ex.language}: ${errors.slice(0, 2).join("; ")}`];
+}
+
+/**
+ * Hard problems make the attempt fail and get repaired with the problems fed
+ * back. Warnings are handed to the review pass but never block a write.
  */
 export function validate(q: QuizQuestion, e: Enrichment): { problems: string[]; warnings: string[] } {
   const problems: string[] = [];
   const warnings: string[] = [];
   const original = q.options ?? [];
+  const locked = optionTextLocked(q);
 
   if (!str(e.explanation)) problems.push("explanation is empty");
   else {
@@ -304,7 +403,12 @@ export function validate(q: QuizQuestion, e: Enrichment): { problems: string[]; 
     }
     if (e.explanation.length > 3500) problems.push(`explanation is ${e.explanation.length} chars; keep it under 3500`);
     if (/```/.test(e.explanation)) problems.push("explanation contains a fenced code block; use inline backticks only");
-    if (/^\s*(#{1,6}\s|[-*]\s)/m.test(e.explanation)) problems.push("explanation uses markdown headings or bullets");
+    if (/^\s*(#{1,6}\s|[-*•]\s|\d+[.)]\s)/m.test(e.explanation)) problems.push("explanation uses markdown headings or lists; write paragraphs");
+    problems.push(...proseProblems("explanation", e.explanation));
+    if (!e.explanation.includes("\n\n") && e.explanation.length > 700) {
+      warnings.push("explanation is one block of text; split it into 2–4 short paragraphs");
+    }
+    if (FILLER.test(e.explanation)) warnings.push("explanation contains filler phrases; cut them");
   }
 
   if (!Array.isArray(e.options)) problems.push("options is missing");
@@ -316,21 +420,33 @@ export function validate(q: QuizQuestion, e: Enrichment): { problems: string[]; 
       const src = original[i];
       if (!src || !o) continue;
       if (!str(o.text)) problems.push(`option ${o.id} text is empty`);
+      else if (!locked) problems.push(...proseProblems(`option ${o.id} text`, o.text));
       if (!str(o.explanation)) problems.push(`option ${o.id} explanation is empty`);
-      else if (!src.isCorrect && /^correct\b/i.test(o.explanation.trim())) {
-        problems.push(`option ${o.id} is WRONG but its explanation starts with "Correct"`);
-      } else if (src.isCorrect && !/^correct\b/i.test(o.explanation.trim())) {
-        warnings.push(`correct option ${o.id}'s explanation should start with "Correct."`);
+      else {
+        problems.push(...proseProblems(`option ${o.id} explanation`, o.explanation));
+        if (!src.isCorrect && /^correct\b/i.test(o.explanation.trim())) {
+          problems.push(`option ${o.id} is WRONG but its explanation starts with "Correct"`);
+        } else if (src.isCorrect && /^(incorrect|wrong)\b/i.test(o.explanation.trim())) {
+          problems.push(`option ${o.id} is the CORRECT answer but its explanation calls it wrong`);
+        } else if (src.isCorrect && !/^correct\b/i.test(o.explanation.trim())) {
+          warnings.push(`correct option ${o.id}'s explanation should start with "Correct."`);
+        }
       }
     }
-    if (!optionTextLocked(q) && e.options.length === original.length && original.length > 1) {
+    if (!locked && e.options.length === original.length && original.length > 1) {
+      const texts = e.options.map((o) => o.text?.trim().toLowerCase());
+      if (new Set(texts).size !== texts.length) problems.push("two options have the same text");
       const correct = e.options.find((_, i) => original[i].isCorrect);
       const wrong = e.options.filter((_, i) => !original[i].isCorrect);
       const avg = wrong.reduce((n, o) => n + (o.text?.length ?? 0), 0) / Math.max(1, wrong.length);
-      if (correct && avg > 0 && correct.text.length > avg * 1.8) {
+      if (correct?.text && avg > 0 && correct.text.length > avg * 1.8) {
         warnings.push(
           `the correct option is ${correct.text.length} chars vs ${Math.round(avg)} on average for the wrong ones — its length gives it away`,
         );
+      }
+      const hadCatchAll = original.some((o) => /\b(all|none) of the above\b/i.test(o.text));
+      if (!hadCatchAll && e.options.some((o) => /\b(all|none) of the above\b/i.test(o.text ?? ""))) {
+        warnings.push('an option became "all/none of the above"; keep each option a concrete claim');
       }
     }
   }
@@ -341,6 +457,7 @@ export function validate(q: QuizQuestion, e: Enrichment): { problems: string[]; 
     else {
       if (TEMPLATED.some((re) => re.test(v.trim()))) problems.push(`${field} is boilerplate; make it specific to this question`);
       if (v.length > 500) problems.push(`${field} is ${v.length} chars; keep it under 500`);
+      problems.push(...proseProblems(field, v));
     }
   }
 
@@ -348,20 +465,34 @@ export function validate(q: QuizQuestion, e: Enrichment): { problems: string[]; 
     problems.push("hints must be an array of 2 to 3 strings");
   } else {
     const correct = original.find((o) => o.isCorrect);
-    for (const h of e.hints) {
-      if (!str(h)) problems.push("a hint is empty");
-      else if (/\b(option|answer)\s+[A-D]\b/i.test(h)) problems.push(`hint names an option letter: "${h}"`);
-      else if (correct && correct.text.length > 20 && h.includes(correct.text)) problems.push("a hint quotes the correct option");
+    for (const [i, h] of e.hints.entries()) {
+      if (!str(h)) {
+        problems.push("a hint is empty");
+        continue;
+      }
+      if (/\b(option|answer|choice)\s+[A-F]\b/i.test(h)) problems.push(`hint ${i + 1} names an option letter`);
+      else if (correct && correct.text.length > 20 && h.toLowerCase().includes(correct.text.toLowerCase())) {
+        problems.push(`hint ${i + 1} quotes the correct option`);
+      }
+      problems.push(...proseProblems(`hint ${i + 1}`, h));
+      if (h.length > 300) warnings.push(`hint ${i + 1} is ${h.length} chars; hints should be one short sentence`);
     }
+    if (new Set(e.hints.map((h) => h?.trim().toLowerCase())).size !== e.hints.length) problems.push("two hints are identical");
   }
 
   const ex = e.example;
   if (!ex || !str(ex.code) || !str(ex.caption)) problems.push("example needs caption and code");
+  else if (!LANGUAGES.includes(ex.language)) problems.push(`example.language must be one of ${LANGUAGES.join(", ")}`);
   else {
-    if (!LANGUAGES.includes(ex.language)) problems.push(`example.language must be one of ${LANGUAGES.join(", ")}`);
     const lines = ex.code.trim().split("\n").length;
     if (lines > 30) problems.push(`example is ${lines} lines; keep it at 25 or fewer`);
+    if (lines < 3) warnings.push(`example is only ${lines} line(s); show a small but complete snippet`);
     if (ex.code.length > 1800) problems.push("example code is too long");
+    if (q.codeSnippet && normalizeCode(ex.code) === normalizeCode(q.codeSnippet)) {
+      problems.push("example repeats the question's own snippet; show the concept from a different angle");
+    }
+    problems.push(...exampleSyntaxProblems(ex));
+    problems.push(...proseProblems("example caption", ex.caption));
   }
 
   return { problems, warnings };

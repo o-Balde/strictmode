@@ -253,39 +253,46 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Portals create encrypted VPN network tunnels between browser tabs.",
+        text: "Portals re-parent the component in the React fiber tree, so it loses access to Context providers that were above its original position.",
         isCorrect: false,
-        explanation: "React Portals control DOM subtree render locations, not network VPN tunnels."
+        explanation: "Tempting because a different DOM location feels like a different tree, but `createPortal` only changes where the DOM nodes are committed. The component's fiber node stays at the same spot in the parent's child list, so every Context value above it remains reachable."
       },
       {
         id: "B",
-        text: "Portals are only supported in Node.js server terminal applications.",
+        text: "Portals create a separate React root, so the portal content re-renders on its own schedule independent of the parent component.",
         isCorrect: false,
-        explanation: "Portals are client-side `react-dom` rendering utilities for browser DOM trees."
+        explanation: "People associate \"different DOM container\" with \"different reconciler root,\" but `createPortal` does not call `createRoot` or start a new reconciler. The portal child re-renders in the same commit phase as its React parent, exactly like any other child."
       },
       {
         id: "C",
-        text: "Portals permanently delete the child component from memory when clicked.",
+        text: "Portals can only target a direct child of `document.body`; passing any other DOM node throws a runtime error.",
         isCorrect: false,
-        explanation: "Portals render active, interactive React components into alternate DOM nodes."
+        explanation: "The restriction feels plausible because most examples target `body`, but the second argument accepts any `Element` or `DocumentFragment`. In practice you often use a dedicated `<div id=\"modal-root\">` or even a section header, and React simply appends the rendered nodes there."
       },
       {
         id: "D",
-        text: "`ReactDOM.createPortal(child, domNode)` renders children into a different DOM container outside the parent hierarchy while preserving React tree context and event bubbling.",
+        text: "`ReactDOM.createPortal(child, domNode)` commits the child's DOM output into a different container while the component stays in its original React tree, preserving Context, hooks, and event bubbling through the parent.",
         isCorrect: true,
-        explanation: "Correct. Portals are ideal for modals, tooltips, and dropdowns that need to break out of parent `overflow: hidden` or `z-index` stacking contexts while retaining React event propagation."
+        explanation: "Correct. The portal changes only the DOM commit target. The component retains its position in the fiber tree, so Context, state, and event propagation all behave as if the element were rendered in place."
       }
     ],
     correctAnswer: "D",
-    explanation: "When you work with React, you might have noticed how a component renders inside its parent in the DOM. But even so, there are times when you don, t necessarily want that. For example, think of a modal. Even if the modal component is written deep inside your component tree, you usually want it to appear at the top of the page, and not stuck inside some parent container. And to mitigate this very problem, Portals are used. So, you don't have to render from your usual place, and run something like: This practically commands to render the component elsewhere in the DOM. Now, here, s how you can set it up: First write, Then, from anywhere in your React app, you can render into it like this: Even when it, s done, you need to keep this in mind that even though the modal is rendered outside the parent in the DOM, it still showcases like a normal React child. Which means that it still receives props, it still has access to context, and event handling still works. In fact, event bubbling can take place here. If you click inside a modal rendered via a portal, the event still bubbles up to the parent component in the React tree, and not based on the DOM structure. Now, coming to when to use these Portals, You can say that mostly when UI needs to, break out, of layout restrictions like overflow: hidden, z-index stacking issues. That, s why they, re commonly used for modals, tooltips, dropdowns, and toast notifications.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are React Portals, and when would you use them?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are React Portals, and when would you use them?.",
+    explanation: "ReactDOM.createPortal(child, container) tells the React renderer to commit the child's DOM output into `container`, a node that lives outside the parent's DOM subtree. Crucially, the component itself stays in its original position in the React fiber tree: it keeps its hooks, state, and access to every Context provider above it. Only the DOM placement changes.\n\nThis matters in production code because CSS layout is hierarchical. A modal rendered inside a card with `overflow: hidden` or a `position: relative` ancestor gets clipped or trapped in a low stacking context. A portal lets you drop the rendered markup into `document.body` (or a dedicated `<div id=\"modal-root\">`) so it sits at the top of the stacking order while the component still receives props and context as if it were a normal child.\n\nThe nuance interviewers probe: event bubbling follows the React tree, not the DOM tree. A click inside a portal-targeted modal bubbles up to the modal's React parent (the component that called `createPortal`), not to the DOM parent of the target node. That is why a `onClick` handler on the wrapping component still fires even though the DOM elements are siblings of the target container, not descendants.",
+    interviewLine: "A portal only changes the DOM commit target; the component's fiber node stays in the same parent's child list, so Context flows normally and events bubble through the React tree rather than the DOM tree. That is exactly what lets a modal escape an `overflow: hidden` ancestor without losing access to its provider.",
+    misconception: "Because the rendered markup appears in a different part of the DOM, the component is treated as if it moved to a new React root or lost its ancestry, so Context and event handlers stop working.",
     hints: [
-      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
+      "Think about what `createPortal` actually changes: the DOM node where output is committed, versus the component's position in the fiber tree.",
+      "Ask yourself whether Context providers above the calling component can still reach a portal child, and whether a `click` event inside the portal bubbles to the React parent or the DOM parent of the target node.",
+      "The key invariant is that only the DOM placement changes. Everything that lives in the React tree\u2014hooks, state, Context, event handlers\u2014stays put."
     ],
     source: "interviewbit-70",
     estimatedMinutes: 3,
-    bestPracticeRef: "https://react.dev/learn/render-and-commit"
+    bestPracticeRef: "https://react.dev/learn/render-and-commit",
+    example: {
+      caption: "Notice that `Tooltip` is declared inside `Button`'s component tree, yet its DOM output lands in `#tooltip-layer`; the `onClick` on `Button` still fires because bubbling follows the React tree.",
+      language: "tsx",
+      code: "import { createPortal } from \"react-dom\";\n\nfunction Tooltip({ text }: { text: string }) {\n  return (\n    <div className=\"tooltip\" role=\"tooltip\">\n      {text}\n    </div>\n  );\n}\n\nfunction Button({ label }: { label: string }) {\n  const layer = document.getElementById(\"tooltip-layer\");\n  if (!layer) return null;\n\n  return (\n    <button onClick={() => console.log(\"button clicked\")}>\n      {label}\n      {createPortal(<Tooltip text={label} />, layer)}\n    </button>\n  );\n}\n\n// index.html must include:\n// <div id=\"tooltip-layer\"></div>"
+    }
   },
   {
     id: "algorithms-how-does-virtual-dom-in-react-work-what-are-its-benefit",
@@ -304,39 +311,46 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "React performs an exhaustive O(n^3) tree comparison on every frame to calculate mathematical minimums.",
+        text: "React performs a full O(n^3) pairwise tree comparison on every render to guarantee the mathematically minimal set of DOM mutations.",
         isCorrect: false,
-        explanation: "An exhaustive tree comparison is O(n^3) and too slow; React uses heuristic assumptions to achieve linear O(n) performance."
+        explanation: "This is tempting because a 'perfect' diff would indeed compare every node to every other node, but React deliberately avoids that cost. Its type-and-key heuristics reduce the work to roughly O(n), trading a tiny number of suboptimal updates (e.g., replacing a subtree instead of patching it) for a large speed win."
       },
       {
         id: "B",
-        text: "The Virtual DOM directly manipulates GPU registers to bypass the browser DOM tree entirely.",
+        text: "The virtual DOM layer writes mutations directly to the browser's compositor thread, skipping style recalculation and layout entirely.",
         isCorrect: false,
-        explanation: "React still renders to the browser DOM via ReactDOM."
+        explanation: "This sounds like a clever optimisation, but React still calls real DOM APIs (appendChild, setAttribute, etc.) through ReactDOM. The browser's normal style \u2192 layout \u2192 paint pipeline still runs after the commit; React only reduces how many DOM nodes are touched, not which phases the browser must execute."
       },
       {
         id: "C",
-        text: "Virtual DOM completely eliminates all JavaScript garbage collection overhead.",
+        text: "Because the diff happens in JavaScript memory, React avoids the browser's garbage collector and never causes frame drops from object allocation.",
         isCorrect: false,
-        explanation: "Creating VDOM objects allocates JavaScript memory that requires normal garbage collection."
+        explanation: "Every render allocates a tree of plain element objects on the JS heap, and the V8 garbage collector still reclaims them on its normal cycle. Under heavy re-render loads, GC pauses can still contribute to jank; the virtual DOM reduces DOM work, not JS allocation cost."
       },
       {
         id: "D",
-        text: "On state change, React creates a new VDOM tree, runs a heuristic O(n) diffing algorithm against the previous tree, and batches minimal mutations to the real DOM.",
+        text: "On state change, React builds a new tree of element objects, diffs it against the previous tree using type-and-key heuristics to stay near O(n), and commits the smallest possible batch of real-DOM mutations.",
         isCorrect: true,
-        explanation: "Correct. VDOM provides declarative programming and minimizes expensive direct DOM manipulations, though it carries some memory and diffing overhead."
+        explanation: "Correct. React's reconciliation relies on structural assumptions (same type \u2192 update, different type \u2192 replace, keys \u2192 list identity) to keep diffing linear, then batches the resulting DOM writes so the browser's style/layout/paint pipeline runs once per commit."
       }
     ],
     correctAnswer: "D",
-    explanation: "The virtual DOM in React is an in-memory representation of the real DOM. When state or props change, React creates a new virtual DOM tree, compares it to the previous one using a diffing algorithm, and efficiently updates only the parts of the real DOM that changed. Benefits: It improves performance by reducing costly direct DOM manipulations and makes UI updates declarative and predictable. Downsides: There's some overhead from diffing and extra memory usage, and in very dynamic UIs, it may not always outperform manual optimizations. Find in-depth explanations and track study progress here ->",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How does virtual DOM in React work? What are its benefits and downsides?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How does virtual DOM in React work? What are its benefits and downsides?.",
+    explanation: "When state or props change, React's render phase produces a fresh tree of React Elements \u2014 plain JavaScript objects describing the UI. During reconciliation, React compares this new tree against the previous one using three heuristics: elements of different types at the same position are unmounted and rebuilt; elements of the same type get their props diffed and updated in place; and child lists are matched by their key prop so items can be reordered or removed without full re-creation.\n\nThese assumptions let React skip the O(n^3) all-pairs comparison a na\u00efve tree diff would require, landing at roughly O(n) where n is the number of nodes. The commit phase then applies only the minimal set of DOM mutations (setAttribute, insertBefore, textContent changes) in a single batch, so the browser's style recalculation, layout, and paint happen once instead of once per mutation.\n\nThe trade-off is real: every render allocates new element objects that the garbage collector must eventually reclaim, and the diff itself has a CPU cost. In highly dynamic UIs \u2014 a 10,000-row virtualized table where most rows change every frame \u2014 a framework that mutates the DOM imperatively can outperform React's diff-and-commit cycle.\n\nAn edge case interviewers probe: using the array index as a key. If you reorder a list, index keys tell React that the item at position 0 changed to the item at position 1 rather than that the same item moved, so React updates props in place instead of moving the DOM node, which can leave stale internal state in child components.",
+    interviewLine: "React makes three structural assumptions \u2014 same type means update in place, different type means replace, and keys identify list identity \u2014 which keeps reconciliation near linear time instead of the cubic cost of a full tree diff, so the commit phase touches only the DOM nodes that actually changed.",
+    misconception: "React exhaustively compares every node in the new tree to every node in the old tree to find the absolute minimum number of DOM writes, so the only cost after rendering is the DOM mutations themselves.",
     hints: [
-      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
+      "Think about what React produces during the render phase before anything touches the real DOM. What is that intermediate structure, and what is it made of?",
+      "React avoids comparing every node to every other node. What three structural assumptions let it skip the O(n^3) work and stay near O(n)?",
+      "After the diff is done, how many times does the browser's layout engine run for a single state update? What does that tell you about how mutations are applied?"
     ],
     source: "100-react",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/learn/render-and-commit"
+    bestPracticeRef: "https://react.dev/learn/render-and-commit",
+    example: {
+      caption: "Using a stable `todo.id` as the key lets React match items across renders by identity, so reordering moves DOM nodes instead of resetting their internal state.",
+      language: "tsx",
+      code: "function TodoList({ todos }: { todos: Todo[] }) {\n  return (\n    <ul>\n      {todos.map((todo) => (\n        <li key={todo.id}>\n          <input type=\"checkbox\" checked={todo.done} />\n          <span>{todo.label}</span>\n          <button onClick={() => toggle(todo.id)}>\u2715</button>\n        </li>\n      ))}\n    </ul>\n  );\n}"
+    }
   },
   {
     id: "algorithms-what-is-react-fiber",
@@ -355,39 +369,46 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "A native mobile operating system that runs React apps without a JavaScript engine.",
+        text: "The virtual-DOM data structure that replaced the old React element tree, storing component instances and props in a flat array for faster diffing.",
         isCorrect: false,
-        explanation: "Fiber is the internal architecture of the React JavaScript library."
+        explanation: "Tempting because people conflate Fiber with the virtual DOM, but React elements (the vDOM) still exist unchanged. Fiber is the *reconciliation algorithm* that walks and diffs those elements, not the elements themselves."
       },
       {
         id: "B",
-        text: "A hardware accelerator card installed on web servers to render React pages.",
+        text: "A Web Worker\u2013based concurrent rendering engine that offloads component updates to background threads to avoid blocking the main thread.",
         isCorrect: false,
-        explanation: "Fiber is a software data structure and scheduling algorithm in JavaScript."
+        explanation: "The word \"concurrent\" in React's branding makes this feel right, but React 18/19 concurrent features use cooperative scheduling *on* the main thread. Fiber never spawns Workers; it simply yields between small units of work."
       },
       {
         id: "C",
-        text: "React's internal reconciliation architecture that represents the component tree as a linked list of fibers, enabling incremental rendering, interruptible work, and priority scheduling.",
+        text: "React's internal reconciliation architecture that represents the component tree as a linked list of fiber nodes, enabling React to pause, resume, and prioritize rendering work within a single thread.",
         isCorrect: true,
-        explanation: "Correct. Fiber rewrote React's stack reconciler into a linked list structure, allowing React to yield execution to the browser, prioritize urgent user input, and pause non-urgent rendering."
+        explanation: "Correct. Fiber replaced the old recursive Stack Reconciler with a linked-list structure (child/sibling/return pointers) so the work loop can be interrupted, resumed, and interleaved with higher-priority updates\u2014all without leaving the main thread."
       },
       {
         id: "D",
-        text: "A CSS stylesheet preprocessor developed by Meta to replace Sass and Less.",
+        text: "The separate `scheduler` package that manages the requestAnimationFrame loop and assigns time-slicing priorities to React updates.",
         isCorrect: false,
-        explanation: "Fiber is React's core internal JavaScript reconciliation engine, not a CSS tool."
+        explanation: "The `scheduler` package is a small utility library that Fiber's work loop *uses* to schedule chunks, but it is not Fiber itself. Fiber is the reconciliation algorithm inside React core; the scheduler is just its timing helper."
       }
     ],
     correctAnswer: "C",
-    explanation: "React Fiber is a complete rewrite of the React core algorithm, designed to improve performance and enable new features like async rendering, error boundaries, and incremental rendering. It breaks down the rendering process into smaller chunks, allowing React to pause, abort, or prioritize updates as needed. Find in-depth explanations and track study progress here ->",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is React Fiber?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is React Fiber?.",
+    explanation: "React Fiber is the rewrite of React's core reconciliation algorithm, shipped in React 16. The old \"Stack Reconciler\" walked the component tree with a single recursive call that ran to completion on the main thread\u2014if the tree was deep, the browser could not paint or respond to input until it finished. Fiber replaces that recursion with a linked list of fiber nodes, each carrying `child`, `sibling`, and `return` (parent) pointers, so the work loop can yield control back to the browser between small units of work.\n\nThis is the mechanism behind every concurrent feature: `useTransition`, `useDeferredValue`, Suspense, and automatic batching all depend on Fiber's ability to pause non-urgent rendering, resume it later, and interleave urgent updates (keyboard input, pointer events) in between. The work stays single-threaded; React cooperatively yields via `MessageChannel` postMessage or `requestIdleCallback`, but each chunk is small enough that the main thread remains responsive.\n\nAn interviewer will often follow up with: \"If Fiber is a linked list, why do we still call it a component tree?\" The fiber structure *represents* the tree through its pointers but is stored flat for O(1) traversal and interruption. Each fiber also holds an `alternate` pointer that links the current and work-in-progress trees, which is how React diffs without cloning the entire tree on every update.",
+    interviewLine: "Fiber is React's reconciliation engine rewritten as a linked list of work units with child, sibling, and return pointers, so the render loop can yield to the browser between chunks\u2014that's what makes useTransition, Suspense, and priority scheduling possible without ever leaving the main thread.",
+    misconception: "Fiber is the virtual DOM itself or a separate Web Worker thread, rather than the reconciliation *algorithm* that operates on the element tree cooperatively within the main thread.",
     hints: [
-      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
+      "Think about what happens between React calling your component and the browser painting. What structure does React walk, and what changed in React 16 about how that walk works?",
+      "The old reconciler was one recursive function that could not be interrupted. Fiber replaced that recursion with explicit pointers. What three pointers does each fiber node carry, and why does that matter for interruptibility?",
+      "It is not the vDOM, not a Worker, and not the scheduler package. It is the algorithm that connects them, stored as a linked list so work can be paused, resumed, and re-prioritized."
     ],
     source: "100-react",
     estimatedMinutes: 4,
-    bestPracticeRef: "https://react.dev/learn/render-and-commit"
+    bestPracticeRef: "https://react.dev/learn/render-and-commit",
+    example: {
+      caption: "useTransition relies on Fiber's interruptible work loop: the expensive list render is scheduled as low-priority work that can be paused mid-way if a keystroke arrives.",
+      language: "tsx",
+      code: "import { useTransition, useState } from \"react\";\n\nfunction FilteredList({ items }: { items: string[] }) {\n  const [filter, setFilter] = useState(\"\");\n  const [isPending, startTransition] = useTransition();\n\n  const visible = items.filter((i) => i.includes(filter));\n\n  return (\n    <div>\n      <input\n        value={filter}\n        onChange={(e) =>\n          startTransition(() => setFilter(e.target.value))\n        }\n        aria-busy={isPending}\n      />\n      <ul>\n        {visible.map((item) => (\n          <li key={item}>{item}</li>\n        ))}\n      </ul>\n    </div>\n  );\n}"
+    }
   },
   {
     id: "algorithms-what-is-the-purpose-of-the-push-and-replace-methods-of",
@@ -406,39 +427,46 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "`push` clears all browser cookies; `replace` preserves them.",
+        text: "`push` clears all cookies for the current origin; `replace` leaves cookies untouched.",
         isCorrect: false,
-        explanation: "History navigation methods do not alter browser cookies."
+        explanation: "Tempting if you conflate history management with storage management, but History API methods never read or write cookies. They only mutate the in-memory session history stack."
       },
       {
         id: "B",
-        text: "`push` adds a new entry onto the history stack (user can navigate back with the back button); `replace` overwrites the current history entry (back button returns to the entry before).",
+        text: "`push` appends a new entry to the session history stack (Back returns to the previous entry); `replace` overwrites the current entry in place (Back skips to the entry before it).",
         isCorrect: true,
-        explanation: "Correct. `push` appends a new URL to history, while `replace` substitutes the active URL, ideal for redirects or login screens where users shouldn't navigate back."
+        explanation: "Correct. `pushState` grows the stack by one; `replaceState` keeps the stack length constant by substituting the active entry, which is exactly why redirects and post-auth navigation use it."
       },
       {
         id: "C",
-        text: "`replace` deletes the entire browser history database permanently.",
+        text: "`replace` removes the current entry from the stack entirely, so the Back button has no effect at all.",
         isCorrect: false,
-        explanation: "`replace` only overwrites the current active history entry."
+        explanation: "The word \"removes\" is the trap: `replaceState` does not delete the slot, it overwrites the data in it. The stack still has the same number of entries, and Back still works\u2014it just lands on the entry that was before the one you replaced."
       },
       {
         id: "D",
-        text: "`push` executes on the client; `replace` executes on the server.",
+        text: "`push` is a client-side History API call; `replace` is a server-side redirect issued by the framework.",
         isCorrect: false,
-        explanation: "Both methods operate on the client browser history stack."
+        explanation: "Both are synchronous, client-side methods on the `window.history` object. A server-side redirect is an entirely different mechanism (HTTP 301/302) and has nothing to do with `replaceState`."
       }
     ],
     correctAnswer: "B",
-    explanation: "The push and replace methods of the history library are used to manage the browser's history stack and control navigation. push: Adds a new entry to the history stack, which means the user can navigate back to it using the browser's back button. Example: history.push('/new-page') replace: Replaces the current entry in the history stack with a new one, meaning the user cannot go back to the previous page using the back button. Example: history.replace('/new-page')",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the purpose of the push and replace methods of history?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the purpose of the push and replace methods of history?.",
+    explanation: "The browser History API exposes two methods that mutate the session history stack without triggering a page load. `history.pushState(state, title, url)` appends a new entry to the stack, so the user can press Back to return to the previous URL. `history.replaceState(state, title, url)` overwrites the current entry in place; the stack length stays the same, and Back now jumps to whatever entry sat before the one you replaced.\n\nIn a single-page app this distinction controls back-button UX. A typical login flow calls `replaceState` after authentication so the user pressing Back lands on the page before the login form, not on a stale, unauthenticated URL. A wizard that advances through steps calls `pushState` for each step so Back walks through them in reverse.\n\nTwo nuances interviewers probe: first, neither method fires a `popstate` event by itself\u2014that event only dispatches when the user actually navigates via Back, Forward, or a programmatic `history.go` call. Second, both methods require the target URL to be same-origin; passing a cross-origin URL throws a `SecurityError` rather than silently failing.",
+    interviewLine: "`pushState` grows the session history stack so the user can step back through each URL, while `replaceState` swaps the current entry in place without changing the stack length\u2014that's why we use it after a login redirect so Back doesn't return to an unauthenticated form.",
+    misconception: "Candidates often treat `replaceState` as \"deleting\" the current history entry rather than overwriting it, which leads them to believe Back stops working after a replace\u2014when in fact Back still functions, it just targets the previous entry in the unchanged-length stack.",
     hints: [
-      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
+      "Think about what happens to `history.length` after each call: one method increments it, the other does not.",
+      "Neither method causes a page load. Ask yourself which one you'd pick when you want the user's Back button to skip over the page they just left.",
+      "Both are synchronous, same-origin-only methods on `window.history`. The difference is purely whether the new URL is added as a new slot or written into the existing slot."
     ],
     source: "100-react",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/reference/react/hooks"
+    bestPracticeRef: "https://react.dev/reference/react/hooks",
+    example: {
+      caption: "Notice that `replaceState` keeps `history.length` unchanged while `pushState` increments it, and neither triggers a navigation or a `popstate` event on its own.",
+      language: "typescript",
+      code: "function advanceStep(step: number) {\n  // Adds a new entry \u2013 Back walks through steps in reverse\n  window.history.pushState({ step }, \"\", `/checkout/${step}`);\n}\n\nfunction finishOrder(orderId: string) {\n  // Overwrites the current entry \u2013 Back skips to the page\n  // before checkout, not to a stale /checkout/3 URL\n  window.history.replaceState({ orderId }, \"\", `/orders/${orderId}`);\n  // history.length is the same as before the call\n}"
+    }
   },
   {
     id: "algorithms-virtual-dom-how-react-batches-updates-and-minimizes-dom",
@@ -457,39 +485,46 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "The Virtual DOM completely replaces the need for browser rendering engines.",
+        text: "React diffs the new element tree against the browser's live DOM to figure out which nodes changed, then patches only those nodes.",
         isCorrect: false,
-        explanation: "React applies minimal calculated changes to the browser's real DOM via ReactDOM."
+        explanation: "This sounds reasonable because both trees represent the same UI, but React reconciles the new element tree against the previous element tree (stored in the fiber), never against the live DOM. The real DOM is only touched during the commit phase, after the diff is already computed."
       },
       {
         id: "B",
-        text: "React directly modifies real DOM nodes synchronously on every individual keystroke.",
+        text: "React queues each setState call, re-renders the component once per call, and flushes a separate batch of DOM mutations after every individual update.",
         isCorrect: false,
-        explanation: "React batches updates and reconciles via the Virtual DOM to prevent layout thrashing."
+        explanation: "This is tempting if you think of setState as a fire-and-forget mutation, but automatic batching coalesces all updates in the same task into a single re-render and a single commit. The component renders once with the final state, not once per call."
       },
       {
         id: "C",
-        text: "React batches state updates within the event loop, creates a new in-memory VDOM, diffs it against the old VDOM, and applies minimal batched mutations to the real DOM.",
+        text: "React batches state updates, re-renders to build a new element tree, reconciles it against the previous tree for the minimal diff, and commits those DOM mutations in one pass.",
         isCorrect: true,
-        explanation: "Correct. Virtual DOM diffing combined with automatic state batching minimizes expensive DOM reflows and repaints, ensuring high-performance UI updates."
+        explanation: "Correct. This captures the full pipeline: batching collapses multiple updates into one render, reconciliation computes the minimal change set by comparing against the prior fiber tree, and the commit phase applies those mutations to the real DOM synchronously."
       },
       {
         id: "D",
-        text: "React writes all updates to disk before rendering them to the screen.",
+        text: "React schedules all DOM mutations on the next requestAnimationFrame tick, using the Virtual DOM as a frame-level buffer between the render and the browser's paint.",
         isCorrect: false,
-        explanation: "Virtual DOM operations execute entirely in RAM."
+        explanation: "This confuses React's commit phase with the browser's own rendering pipeline. React applies DOM mutations synchronously within the current task; it does not defer them to rAF. The browser handles style, layout, paint, and compositing after JavaScript yields, but that is the browser's job, not React's."
       }
     ],
     correctAnswer: "C",
-    explanation: "Virtual DOM is an in-memory representation of UI elements. React updates the virtual DOM first, diffs it against the previous version, then applies the minimal set of fundamental DOM changes. This reduces costly DOM operations. How it helps: React compares virtual DOM trees and calculates the least work to update the real DOM. Keys help the diffing algorithm identify moved or removed items. React also batches state updates inside events for efficiency.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Virtual DOM: How React Batches Updates and Minimizes DOM Work.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Virtual DOM: How React Batches Updates and Minimizes DOM Work.",
+    explanation: "The Virtual DOM (more precisely, React's element tree) is a lightweight in-memory representation of the UI, built from plain objects during the render phase. When state changes, React re-renders the affected components, producing a new tree of element objects. It then reconciles this new tree against the previous one stored in the fiber structure, computing the minimal set of changes. In the commit phase, those changes are applied as real DOM mutations\u2014attribute updates, node insertions, removals\u2014in a single synchronous pass.\n\nWhy it matters in real code: without this mechanism, every state change would force the browser to reflow and repaint large subtrees. Automatic batching (the default since React 18's createRoot) means multiple setState calls in the same event, promise, or timeout collapse into one render and one commit, eliminating redundant work.\n\nEdge case interviewers probe: reconciliation is not a full tree diff. React uses keys on list items to match elements across renders; without stable keys it falls back to index-based matching, which can cause unnecessary re-renders or state loss when items are reordered. Also, the commit phase is synchronous and uninterruptible\u2014concurrent features can pause the render phase but never the commit.",
+    interviewLine: "React batches state updates, re-renders to build a new element tree, reconciles it against the previous fiber tree to compute the minimal diff, and then commits those mutations to the real DOM in one synchronous pass\u2014so the browser only ever sees the final result, never intermediate states.",
+    misconception: "React diffs its new element tree against the browser's live DOM, or that each setState call triggers its own independent re-render and separate DOM flush.",
     hints: [
-      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
+      "Think of the full pipeline: what happens between a setState call and the browser actually painting a new pixel? Name each phase.",
+      "React doesn't compare against the live DOM. What does it compare the new tree against, and in which phase does the real DOM finally get touched?",
+      "Batching means multiple updates become one render. The render produces element objects; reconciliation computes a diff against the previous tree; the commit phase is where the browser's DOM is mutated\u2014all in a single synchronous pass."
     ],
     source: "150-react",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/learn/render-and-commit"
+    bestPracticeRef: "https://react.dev/learn/render-and-commit",
+    example: {
+      caption: "Three setState calls in one handler produce a single re-render, not three\u2014batching in action.",
+      language: "tsx",
+      code: "import { useState } from \"react\";\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  const [label, setLabel] = useState(\"idle\");\n\n  function handleClick() {\n    setCount((c) => c + 1);\n    setCount((c) => c + 1);\n    setLabel(\"updated\");\n    // All three updates are batched: the component\n    // renders ONCE with count = 2, label = \"updated\".\n  }\n\n  return (\n    <button onClick={handleClick}>\n      {label}: {count}\n    </button>\n  );\n}\n\nexport default Counter;"
+    }
   },
   {
     id: "algorithms-types-of-side-effects-in-components-and-how-to-manage-c",
@@ -508,39 +543,46 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Side effects only exist in class components and cannot be run in functional components.",
+        text: "Side effects only exist in class components via lifecycle methods and cannot be expressed in functional components.",
         isCorrect: false,
-        explanation: "Functional components manage side effects cleanly using the `useEffect` hook."
+        explanation: "Tempting if you learned React through class lifecycles, but `useEffect` (and `useLayoutEffect`) were introduced precisely so functional components can run and clean up side effects with the same guarantees as `componentDidMount` / `componentWillUnmount`."
       },
       {
         id: "B",
-        text: "Side effects include network requests, subscriptions, DOM mutations, and timers; manage cleanup by returning a cleanup function from `useEffect` to avoid memory leaks.",
+        text: "Side effects include network requests, subscriptions, DOM mutations, and timers; you manage cleanup by returning a cleanup function from `useEffect` so resources are released before the next run or on unmount.",
         isCorrect: true,
-        explanation: "Correct. Returning a cleanup function from `useEffect` ensures that timers, event listeners, and subscriptions are cancelled before re-running or unmounting."
+        explanation: "Correct. `useEffect` runs after paint, and the function you return is invoked by React both before the next effect execution (dependency change) and on unmount, guaranteeing that subscriptions, timers, and listeners are torn down rather than leaking."
       },
       {
         id: "C",
-        text: "Cleanup functions are automatically executed by the browser GPU hardware.",
+        text: "The browser's garbage collector automatically calls your cleanup logic when a component unmounts, so an explicit cleanup function is optional.",
         isCorrect: false,
-        explanation: "React invokes effect cleanup functions during unmounting and before subsequent effect runs."
+        explanation: "A common belief, but GC reclaims unreachable memory; it does not invoke your user-defined teardown. A `setInterval` callback, an open `WebSocket`, or a `window` event listener each hold a live reference that keeps the closure reachable, so the connection or timer persists until you explicitly close, clear, or remove it."
       },
       {
         id: "D",
-        text: "Side effects must always be placed directly inside the component render function body.",
+        text: "Side effects should be called directly in the component's render body so they execute once per render and stay in sync with props.",
         isCorrect: false,
-        explanation: "Placing side effects in the render body causes duplicate executions, infinite loops, and breaks React lifecycle rules."
+        explanation: "Calling `fetch`, `setInterval`, or `addEventListener` in the render body means they fire on every render (twice under Strict Mode), you get no cleanup hook, and you cannot cancel the previous run\u2014leading to duplicate requests, stacked timers, and stale-closure bugs."
       }
     ],
     correctAnswer: "B",
-    explanation: "Side effects include network requests, subscriptions, manual DOM mutations, timers, and logging. Some effects need cleanup to avoid leaks or duplicate work.Two categories: Effects without cleanup: simple requests, logging, and non-persistent actions. Effects with cleanup: subscriptions, timers, and manually attached event listeners. Return a cleanup function from useEffect to remove subscriptions or clear timers. Example: useEffect(() => { const id = setInterval(tick, 1000); return () => clearInterval(id);}, []); Rules: Keep effect dependencies precise to avoid unnecessary re-runs. Clean up resources to prevent memory leaks and duplicate listeners.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Types of Side Effects in Components and How to Manage Cleanup.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Types of Side Effects in Components and How to Manage Cleanup.",
+    explanation: "In React, a side effect is any operation that reaches outside the component's render cycle: fetching data, subscribing to a WebSocket or event emitter, starting a `setInterval` timer, or directly mutating the DOM. Because React may call your render function multiple times, re-render, or unmount and remount the component, these operations must be isolated in `useEffect` so they run after the DOM is committed and can be torn down cleanly.\n\nThe cleanup mechanism works in two situations: before the next effect execution (when dependencies change) and when the component unmounts. You return a function from `useEffect`, and React calls it in both cases. A subscription should be closed in cleanup so you don't accumulate duplicate listeners, and a timer should be cleared so it doesn't keep firing after the component is gone.\n\nAn edge case interviewers probe: in React 18+ Strict Mode, effects are intentionally invoked twice in development (mount \u2192 cleanup \u2192 mount) to surface missing or incorrect cleanup logic. If your cleanup is correct the double-run is harmless; if it is absent you will see duplicate subscriptions or timers in the console, which is exactly the bug the pattern is designed to prevent.",
+    interviewLine: "I isolate every external interaction\u2014subscriptions, timers, fetches\u2014inside `useEffect` and return a cleanup function that closes the socket, clears the interval, or aborts the request. React calls that cleanup before re-running the effect on a dependency change and again on unmount, so I never leak listeners or keep timers alive past the component's lifetime.",
+    misconception: "Assuming the browser's garbage collector will close WebSockets, clear intervals, and detach event listeners once a component unmounts, making an explicit cleanup return unnecessary.",
     hints: [
-      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
+      "Think about what happens if you call `setInterval` directly in the render body. What stops that timer when the component unmounts?",
+      "React provides a hook that runs code after the DOM is committed, and that hook can return a function. What is that function called, and in how many distinct moments does React invoke it?",
+      "The cleanup runs before the next effect fires (dependency change) and on unmount. The key detail is that you explicitly `return` it from the effect body\u2014React does not discover it for you."
     ],
     source: "150-react",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/reference/react/hooks"
+    bestPracticeRef: "https://react.dev/reference/react/hooks",
+    example: {
+      caption: "Notice the `return () => ws.close()` inside the effect: React calls it before re-subscribing when `channelId` changes and again on unmount, so no stale socket is left open.",
+      language: "tsx",
+      code: "function LiveFeed({ channelId }: { channelId: string }) {\n  const [messages, setMessages] = useState<string[]>([]);\n\n  useEffect(() => {\n    const ws = new WebSocket(`wss://api.example.com/feed/${channelId}`);\n    ws.onmessage = (e) => setMessages((prev) => [...prev, e.data]);\n\n    return () => {\n      ws.close();\n    };\n  }, [channelId]);\n\n  return (\n    <ul>\n      {messages.map((m, i) => (\n        <li key={i}>{m}</li>\n      ))}\n    </ul>\n  );\n}"
+    }
   },
   {
     id: "algorithms-what-is-cra-and-its-benefits",
@@ -560,39 +602,46 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Create React App (CRA) was an official CLI tool for scaffolding single-page React apps with zero configuration; it is now deprecated in favor of Vite, Next.js, and Remix.",
+        text: "A zero-config CLI scaffold that bundled Webpack, Babel, and ESLint for single-page React apps; it was deprecated in 2021 and is now superseded by Vite, Next.js, and other meta-frameworks.",
         isCorrect: true,
-        explanation: "Correct. CRA simplified initial React setup for years with preconfigured Webpack and Babel, but is now unmaintained, with Vite and full-stack frameworks taking its place."
+        explanation: "Correct. CRA generated a hidden Webpack + Babel + ESLint setup so developers could skip build configuration entirely, and the React team archived the repo in 2021 as the ecosystem moved to Vite and meta-frameworks."
       },
       {
         id: "B",
-        text: "A native mobile operating system built for smartwatches.",
+        text: "A React component library shipping pre-built UI primitives (Button, Modal, Form); it was deprecated because React 19 removed the class-component API it relied on.",
         isCorrect: false,
-        explanation: "CRA was an npm build scaffolding tool for web applications."
+        explanation: "This confuses a scaffolding tool with a UI kit. CRA never exported components, and React 19 still fully supports class components, so the stated deprecation reason is factually wrong on both counts."
       },
       {
         id: "C",
-        text: "A CSS stylesheet compiler that replaces Tailwind.",
+        text: "A production JavaScript bundler that replaced Webpack across the ecosystem; it was deprecated when Rollup became the default bundler mandated by the ES2024 specification.",
         isCorrect: false,
-        explanation: "CRA bundled Webpack, Babel, and ESLint for React development."
+        explanation: "CRA configured Webpack but was not itself a bundler, and ES2024 is a language specification that does not mandate any bundler. Rollup gained popularity but was never a spec-level requirement."
       },
       {
         id: "D",
-        text: "A database management system for running real-time SQL queries.",
+        text: "A server-side rendering framework maintained by the React team; it was deprecated when Next.js was open-sourced in 2016 and absorbed its routing API.",
         isCorrect: false,
-        explanation: "CRA was a client-side project scaffolding tool, not a database."
+        explanation: "CRA produced purely client-side bundles with no SSR capability, and the timeline is inverted: CRA launched in 2017, after Next.js appeared. CRA also never implemented a routing API to be absorbed."
       }
     ],
     correctAnswer: "A",
-    explanation: "The create-react-app CLI tool allows you to quickly create & run React applications with no configuration step. Let's create Todo App using CRA: It includes everything we need to build a React app: React, JSX, ES6, and Flow syntax support. Language extras beyond ES6 like the object spread operator. Autoprefixed CSS, so you don, t need -webkit- or other prefixes. A fast interactive unit test runner with built-in support for coverage reporting. A live development server that warns about common mistakes. A build script to bundle JS, CSS, and images for production, with hashes and sourcemaps.: ",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is CRA and its benefits?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is CRA and its benefits?.",
+    explanation: "Create React App was a CLI released by the React team in 2017 that scaffolded a single-page React application with zero configuration. Under the hood it wired together Webpack for bundling, Babel for transpiling JSX and modern JavaScript, ESLint for linting, and a dev server with hot module replacement. A developer ran `npx create-react-app my-app` and immediately had a working project with no visible build config.\n\nThe team archived the create-react-app repository in 2021, ending maintenance. The ecosystem shifted toward Vite (a fast dev server and build tool usable standalone or via `create-vite`) and meta-frameworks like Next.js (App Router, server components, file-based routing) and Remix (now folded into React Router v7). These alternatives expose the build pipeline, support server-side rendering, and let teams swap bundlers without fighting a hidden config layer.\n\nA nuance interviewers probe: CRA was a configuration generator, not a bundler. It produced a `webpack.config.js`, a Babel preset, and the right `package.json` scripts, then delegated all actual bundling to Webpack. Calling CRA \"a bundler\" or \"a framework\" misidentifies its role in the toolchain.",
+    interviewLine: "CRA was really a config generator: it wrote out a Webpack config, a Babel preset, and the right npm scripts, then handed the actual bundling to Webpack. That indirection made upgrades painful and is exactly why the community moved to Vite and meta-frameworks where the pipeline is explicit.",
+    misconception: "Treating CRA as a bundler or a framework rather than a configuration generator that delegated all build work to Webpack and Babel behind a `react-scripts` wrapper.",
     hints: [
-      "Measure before optimising. Ask what the user actually waits for."
+      "Think about what `react-scripts start` actually does under the hood versus what a bundler does directly.",
+      "CRA never rendered a single component or handled a server request\u2014its job ended once the project files were generated.",
+      "Consider what changed in the React tooling landscape around 2020\u20132021 that made a hidden-Webpack wrapper less attractive."
     ],
     source: "300-react",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://web.dev/articles/vitals"
+    bestPracticeRef: "https://web.dev/articles/vitals",
+    example: {
+      caption: "Every CRA project pinned `react-scripts` as a dependency; the `eject` script exposed the hidden Webpack config but permanently locked you out of future `react-scripts` upgrades.",
+      language: "json",
+      code: "{\n  \"name\": \"todo-app\",\n  \"scripts\": {\n    \"start\": \"react-scripts start\",\n    \"build\": \"react-scripts build\",\n    \"test\": \"react-scripts test\",\n    \"eject\": \"react-scripts eject\"\n  },\n  \"dependencies\": {\n    \"react\": \"^18.2.0\",\n    \"react-dom\": \"^18.2.0\",\n    \"react-scripts\": \"5.0.1\"\n  }\n}"
+    }
   },
   {
     id: "algorithms-what-are-the-lifecycle-methods-going-to-be-deprecated-i",
@@ -611,39 +660,46 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "`shouldComponentUpdate()` and `componentDidCatch()`.",
+        text: "`componentDidUpdate()` and `shouldComponentUpdate()`.",
         isCorrect: false,
-        explanation: "These methods remain fully supported in class components."
+        explanation: "These are stable, fully supported class-component methods. `componentDidUpdate` runs after a commit and `shouldComponentUpdate` is an opt-in bail-out for skipping re-renders; neither made unsafe assumptions about render timing, so they were never deprecated."
       },
       {
         id: "B",
-        text: "`componentWillMount`, `componentWillReceiveProps`, and `componentWillUpdate` (aliased with `UNSAFE_` in React 16.3 and removed from modern React due to async rendering hazards).",
+        text: "`componentWillMount`, `componentWillReceiveProps`, and `componentWillUpdate`.",
         isCorrect: true,
-        explanation: "Correct. These legacy lifecycles frequently caused race conditions and memory leaks during async reconciliation, replaced by `getDerivedStateFromProps`, `getSnapshotBeforeUpdate`, and Hooks."
+        explanation: "Correct. These three ran synchronously before a render and assumed it would complete exactly once. Concurrent rendering broke that assumption, so React 16.3 renamed them with the `UNSAFE_` prefix and pointed developers toward `getDerivedStateFromProps`, `getSnapshotBeforeUpdate`, and Hooks."
       },
       {
         id: "C",
-        text: "`componentDidMount` and `componentWillUnmount`.",
+        text: "`componentWillUnmount()` and `componentDidMount()`.",
         isCorrect: false,
-        explanation: "`componentDidMount` and `componentWillUnmount` remain core stable lifecycle methods in class components."
+        explanation: "The \"Will\" in `componentWillUnmount` is tempting, but it runs during the commit phase after the DOM has already been removed\u2014it never assumed a render was about to happen. `componentDidMount` runs after the first commit. Both remain fully supported in React 19."
       },
       {
         id: "D",
-        text: "`render()` and `constructor()`.",
+        text: "`getDerivedStateFromProps()` and `getSnapshotBeforeUpdate()`.",
         isCorrect: false,
-        explanation: "`render` and `constructor` are fundamental class component methods."
+        explanation: "These are the *replacement* methods introduced alongside the deprecation. A candidate who equates \"newer and less familiar\" with \"deprecated\" might pick them, but they are the recommended, stable way to derive state from props or read DOM before an update."
       }
     ],
     correctAnswer: "B",
-    explanation: "The following lifecycle methods going to be unsafe coding practices and will be more problematic with async rendering. componentWillMount() componentWillReceiveProps() componentWillUpdate() Starting with React v16.3 these methods are aliased with UNSAFE_ prefix, and the unprefixed version will be removed in React v17.: ",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the lifecycle methods going to be deprecated in React v16?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the lifecycle methods going to be deprecated in React v16?.",
+    explanation: "The three `componentWill*` methods assumed rendering would complete synchronously and exactly once. `componentWillMount` ran before the first `render`, `componentWillReceiveProps` ran before a re-render triggered by new props, and `componentWillUpdate` ran before a re-render triggered by state or prop changes. With concurrent and async rendering (introduced in React 16, fully shipped in React 18), React can interrupt, pause, or restart a render, so a component can receive `componentWillMount` and then be discarded before it ever mounts, or receive `componentWillReceiveProps` multiple times for the same prop update.\n\nIn React 16.3 the three methods were renamed with an `UNSAFE_` prefix and the original unprefixed names were removed. The recommended replacements are `static getDerivedStateFromProps` for deriving state from props, `getSnapshotBeforeUpdate` for reading DOM values before a commit, and Hooks such as `useEffect` and `useReducer` for imperative side-effects and state logic.\n\nA nuance interviewers probe: these methods were not hard-removed from the runtime in React 19. The `UNSAFE_`-prefixed versions still execute if you call them, but React logs a warning and the team signals they may be removed in a future major release. They are deprecated by convention and warning, not by a compile-time error, which is why legacy codebases can still build.",
+    interviewLine: "The three `componentWill*` methods assumed a synchronous, single-pass render. Once React introduced concurrent rendering, that assumption broke\u2014React could interrupt or restart a render, so a component might get `willMount` and then be discarded. That's why 16.3 renamed them with `UNSAFE_` and pointed us toward `getDerivedStateFromProps`, `getSnapshotBeforeUpdate`, and Hooks.",
+    misconception: "The 'Will' prefix in a lifecycle name means it is deprecated. In reality, `componentWillUnmount` contains 'Will' but is a stable, fully supported method, while the three deprecated ones all ran *before* a render and made unsafe timing assumptions under async rendering.",
     hints: [
-      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
+      "Think about which lifecycle methods ran *before* a render rather than after it committed. Those are the ones whose timing assumptions break under async rendering.",
+      "The deprecation targeted methods that made a promise about what was 'about to happen' next in the render pipeline. Which three used that 'about to' language?",
+      "React 16.3 introduced an `UNSAFE_` prefix. The three affected methods all start with `componentWill`\u2014but not `componentWillUnmount`, which runs during commit, not before render."
     ],
     source: "300-react",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/learn/render-and-commit"
+    bestPracticeRef: "https://react.dev/learn/render-and-commit",
+    example: {
+      caption: "Notice how the `UNSAFE_componentWillReceiveProps` logic maps to a `useEffect` keyed on `step`, and the state update becomes a plain `useState` setter\u2014no assumption that a render is 'about to' happen.",
+      language: "tsx",
+      code: "import { useState, useEffect } from \"react\";\n\n// Legacy (deprecated) \u2013 still compiles but warns\nclass Counter extends React.Component<\n  { step: number },\n  { count: number }\n> {\n  state = { count: 0 };\n  UNSAFE_componentWillReceiveProps(next: { step: number }) {\n    if (next.step !== this.props.step) {\n      this.setState({ count: 0 });\n    }\n  }\n  render() {\n    return (\n      <button onClick={() => this.setState({ count: this.state.count + 1 })}>\n        {this.state.count}\n      </button>\n    );\n  }\n}\n\n// Modern replacement \u2013 no unsafe timing assumptions\nfunction Counter({ step }: { step: number }) {\n  const [count, setCount] = useState(0);\n  useEffect(() => { setCount(0); }, [step]);\n  return <button onClick={() => setCount(c => c + 1)}>{count}</button>;\n}"
+    }
   },
   {
     id: "react-how-to-combine-multiple-inline-style-objects",
@@ -663,39 +719,46 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Use the object spread operator `style={{ ...styles.base, ...styles.active }}` in React web, or array syntax `style={[styles.base, styles.active]}` in React Native.",
+        text: "Use object spread in React web (`style={{ ...base, ...override }}`) or array syntax in React Native (`style={[base, override]}`).",
         isCorrect: true,
-        explanation: "Correct. In web React, object spreading merges multiple style objects together into a single style object passed to the `style` prop."
+        explanation: "Correct. React web's `style` prop is a single `CSSProperties` object, so spreading merges multiple objects immutably; React Native's `style` prop natively accepts an array and the native engine merges it left-to-right."
       },
       {
         id: "B",
-        text: "Concatenate style objects as strings `style={styles.a + styles.b}`.",
+        text: "Use array syntax in both React web and React Native: `style={[styles.base, styles.active]}`.",
         isCorrect: false,
-        explanation: "Concatenating objects with `+` results in `\"[object Object][object Object]\"` which breaks styling."
+        explanation: "This is the most common cross-platform mistake. Array syntax works in React Native, but React web's `style` prop expects a plain object; passing an array is silently ignored (or produces a console warning) and the element renders unstyled."
       },
       {
         id: "C",
-        text: "Pass multiple `style` props `<div style={styleA} style={styleB} />`.",
+        text: "Mutate the first object in place with `Object.assign(styles.base, styles.active)` and pass the result.",
         isCorrect: false,
-        explanation: "Duplicate JSX props overwrite preceding props; object spreading merges them cleanly."
+        explanation: "Object.assign does produce the merged output, but it mutates the first argument. If `styles.base` is a shared module-level constant, every call permanently bakes the variant into it, corrupting every other component that reuses that base style."
       },
       {
         id: "D",
-        text: "Inline styles cannot be combined in React.",
+        text: "Pass both as separate props on the same element: `<button style={styles.base} style={styles.active}>`.",
         isCorrect: false,
-        explanation: "Object spreading `...` allows combining multiple style objects seamlessly."
+        explanation: "JSX does not allow duplicate attribute names on the same element. The compiler keeps only the last `style` prop, so `styles.base` is silently discarded and the element renders with only `styles.active`."
       }
     ],
     correctAnswer: "A",
-    explanation: "You can use spread operator in regular React: If you're using React Native then you can use the array notation:: ",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to combine multiple inline style objects?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to combine multiple inline style objects?.",
+    explanation: "In React for the web, the `style` prop expects a single `CSSProperties` object. When you have a base style and a variant or conditional override, you merge them with the object spread operator: `style={{ ...base, ...override }}`. Later keys win, so the override replaces any conflicting property from the base, and no new intermediate objects are created beyond the one literal.\n\nIn React Native the `style` prop has a different type: `StyleProp<ViewStyle>`, which accepts an array of style objects. The native style engine merges the array left-to-right, so `style={[base, override]}` produces the same visual result as spreading, but without allocating a merged object on every render in the JS bridge.\n\nThis matters in real code because you will almost always layer a component's base styles with conditional or variant styles. Spreading is immutable and composable; mutating a shared source object with `Object.assign` or direct assignment introduces shared-state bugs the moment two components reference the same style constant.\n\nOne nuance interviewers probe: spread order. Writing `{ ...override, ...base }` silently reverts your override back to the base value. And a `null` value in a spread (e.g. `...(active ? variant : null)`) is a safe no-op, while an empty object `{}` would not reset any property\u2014so the two look similar but behave differently when a key is intentionally set to `null` to clear an inherited value.",
+    interviewLine: "In React web I spread the objects into one literal so the prop stays a single CSSProperties object; in React Native I pass an array because the native style engine merges it for free. Either way later keys override earlier ones, so I always put the base first and the variant last.",
+    misconception: "Treating the `style` prop as platform-agnostic: the same array-of-objects syntax that works in React Native is silently dropped by React web, where `style` must be a single merged object.",
     hints: [
-      "State the time and space cost before you optimise. A Set or Map turns a repeated scan into a lookup."
+      "Think about what type the `style` prop actually accepts in React for the web versus React Native. They are different.",
+      "In React web you need a single object. Which operator lets you take two objects and produce a third without mutating either?",
+      "Spread order matters: the object that appears later in the spread wins for any conflicting key. Put the base first, the override second."
     ],
     source: "300-react",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map"
+    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map",
+    example: {
+      caption: "Notice how the conditional spread with `null` safely no-ops when `active` is false, and how the merged object is created fresh each render without mutating the shared constants.",
+      language: "tsx",
+      code: "const base: React.CSSProperties = { padding: 12, borderRadius: 8 };\nconst active: React.CSSProperties = { padding: 16, background: '#f0f0f0' };\n\nfunction Card({ isActive }: { isActive: boolean }) {\n  const style: React.CSSProperties = {\n    ...base,\n    ...(isActive ? active : null),\n  };\n  return <div style={style}>Card content</div>;\n}"
+    }
   },
   {
     id: "algorithms-how-to-update-a-component-every-second",
@@ -715,39 +778,46 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Update timers cannot be cleared in React.",
+        text: "React's unmount lifecycle automatically clears any pending `setInterval` callbacks, so returning a cleanup function is redundant.",
         isCorrect: false,
-        explanation: "Returning cleanup functions from `useEffect` ensures clean timer disposal."
+        explanation: "Tempting if you assume React tracks every side-effect for you, but React only cleans up what you explicitly return from `useEffect` (or `componentWillUnmount`). A bare `setInterval` handle is invisible to the reconciler and will keep firing after unmount."
       },
       {
         id: "B",
-        text: "Write a synchronous `while(true)` loop inside the component render body.",
+        text: "Spin a synchronous `while (true)` loop in the render body that calls `setState` to force continuous re-renders.",
         isCorrect: false,
-        explanation: "Synchronous loops freeze the browser UI and block the entire JavaScript execution thread."
+        explanation: "This conflates \"I want the component to keep updating\" with \"I'll block the thread until it does.\" A synchronous infinite loop in the render path freezes the main thread, prevents paint, and in practice crashes the tab before React can ever schedule a re-render."
       },
       {
         id: "C",
-        text: "Call `window.location.reload()` every 1000ms.",
+        text: "Schedule `window.location.reload()` on a `setInterval` so the browser fetches fresh data every second.",
         isCorrect: false,
-        explanation: "Full page reloads cause flashing screens and destroy user experience."
+        explanation: "This treats \"I need updated data\" as \"I need a full page teardown.\" A reload discards all component state, re-fetches every asset, flashes the UI, and resets scroll position\u2014none of which a one-second tick requires."
       },
       {
         id: "D",
-        text: "Set up `setInterval(() => setTime(Date.now()), 1000)` inside `useEffect`, and return a cleanup function `() => clearInterval(id)` to clear the timer on unmount.",
+        text: "Create a `setInterval` in `useEffect` that calls `setTime(Date.now())` every 1000 ms, and return a cleanup that calls `clearInterval` on unmount.",
         isCorrect: true,
-        explanation: "Correct. Running `setInterval` inside `useEffect` with proper `clearInterval` cleanup prevents memory leaks, dangling timers, and state updates on unmounted components."
+        explanation: "Correct. The setup and teardown live in the same `useEffect`, so the timer is created after mount and destroyed on unmount or dependency change. The returned cleanup also makes the pattern safe under Strict Mode's double-invocation in development."
       }
     ],
     correctAnswer: "D",
-    explanation: "You need to use setInterval() to trigger the change, but you also need to clear the timer when the component unmounts to prevent errors and memory leaks.: ",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to update a component every second?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to update a component every second?.",
+    explanation: "The pattern: start the interval inside `useEffect` after the component has mounted, capture the ID that `setInterval` returns, and return a cleanup function that calls `clearInterval`. Because `useEffect` runs its setup after paint and runs the returned cleanup on unmount (or before a re-run when dependencies change), the timer's lifetime is scoped to the component's lifetime.\n\nIn production code this matters for two reasons. First, an uncleared interval keeps invoking `setState` on a component that is no longer in the tree; the callback still holds a closure over that component's scope, so the old closure and its references are never garbage-collected. Second, in development React 18 and 19 Strict Mode deliberately mounts, unmounts, and remounts every component. Without the cleanup return you end up with two live intervals both calling `setTime`, doubling the update rate and making timing bugs hard to reproduce.\n\nA nuance interviewers probe: the interval callback closes over the variables that existed when the effect ran. If the handler needs the latest prop or state value, you either add that value to the dependency array (tearing down and recreating the interval on every change) or read it through a ref / functional `setState` to avoid a stale closure.",
+    interviewLine: "I start the interval inside `useEffect` and return a cleanup that calls `clearInterval`, so the timer's lifetime is scoped to the component's mount. In Strict Mode the double mount\u2013unmount\u2013mount cycle in dev actually validates that the cleanup path runs correctly.",
+    misconception: "Timers started inside a component are automatically cleaned up when the component unmounts, so an explicit `clearInterval` is unnecessary.",
     hints: [
-      "Measure before optimising. Ask what the user actually waits for."
+      "Think about where in the component lifecycle you can safely start a side-effect without blocking the render pass.",
+      "The setup and the teardown should live in the same place. What does `useEffect` let you return?",
+      "Store the numeric ID that `setInterval` returns, then pass it to `clearInterval` inside the function you return from the effect."
     ],
     source: "300-react",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://web.dev/articles/vitals"
+    bestPracticeRef: "https://web.dev/articles/vitals",
+    example: {
+      caption: "Notice how the cleanup return is the only thing that ties the timer's lifetime to the component's lifetime.",
+      language: "tsx",
+      code: "function useClock() {\n  const [now, setNow] = useState(() => Date.now());\n\n  useEffect(() => {\n    const id = setInterval(() => setNow(Date.now()), 1000);\n    return () => clearInterval(id);\n  }, []);\n\n  return now;\n}\n\nfunction Header() {\n  const now = useClock();\n  return <time>{new Date(now).toLocaleTimeString()}</time>;\n}"
+    }
   },
   {
     id: "algorithms-how-do-you-apply-vendor-prefixes-to-inline-styles-in-re",
@@ -767,39 +837,46 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Write raw CSS strings with `-webkit-` inside JSX quotes.",
+        text: "Use kebab-case CSS names as object keys, e.g. `{'webkit-transform': 'rotate(90deg)'}`.",
         isCorrect: false,
-        explanation: "React `style` prop requires JavaScript objects with camelCase keys, not raw CSS strings."
+        explanation: "This reads like valid CSS, but the `style` prop is a JS object whose keys map to DOM `style` properties. A key of `'webkit-transform'` would call `element.style['webkit-transform']`, which is not a recognized property; you need the camelCase form `WebkitTransform`."
       },
       {
         id: "B",
-        text: "React automatically downloads vendor prefixes from Google servers on every keystroke.",
+        text: "React's style prop auto-applies all vendor prefixes, so writing just `transform: 'rotate(90deg)'` targets every engine.",
         isCorrect: false,
-        explanation: "Inline styles require manual camelCase prefixing or CSS build tools with Autoprefixer."
+        explanation: "This sounds right because Autoprefixer handles prefixes in CSS files, but Autoprefixer is a PostCSS plugin that runs at build time on `.css` sources. React's inline `style` object is a runtime JS value assigned directly to `element.style`; no prefixing pass ever touches it."
       },
       {
         id: "C",
-        text: "Vendor prefixes are illegal in web browsers.",
+        text: "Pass a `vendorPrefixes` array prop on the element, e.g. `<div vendorPrefixes={['webkit','ms']} style={{ transform: '\u2026' }} />`.",
         isCorrect: false,
-        explanation: "Vendor prefixes are standard browser engine extensions."
+        explanation: "No such prop exists in React's API. The element receives standard HTML attributes plus `style` as an object; there is no declarative list that tells React which prefixes to expand at render time."
       },
       {
         id: "D",
-        text: "Capitalize vendor prefixes in inline style objects (e.g. `WebkitTransform: '...'`, `MozTransform: '...'`), with `ms` remaining lowercase (`msTransform: '...'`).",
+        text: "Capitalize vendor prefixes in style objects (`WebkitTransform`, `MozTransform`), keeping `ms` lowercase (`msTransform`).",
         isCorrect: true,
-        explanation: "Correct. React does not auto-prefix inline style objects; vendor prefixes must follow JavaScript camelCase conventions (capitalized `Webkit`/`Moz`, lowercase `ms`)."
+        explanation: "Correct. React assigns each key directly to `element.style[key]`, so the key must match the DOM property name exactly: `WebkitTransform`, `MozTransform`, `msTransform`. The `ms` prefix stays lowercase because it is not a proper noun in the JS/DOM convention."
       }
     ],
     correctAnswer: "D",
-    explanation: "React does not apply vendor prefixes automatically. You need to add vendor prefixes manually.: ",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How do you apply vendor prefixes to inline styles in React?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How do you apply vendor prefixes to inline styles in React?.",
+    explanation: "React's `style` prop expects a plain JavaScript object whose keys are assigned directly to the DOM `style` property at render time (`element.style[key] = value`). When a CSS property requires a vendor prefix, you include the prefixed variant as a separate key using the same camelCase rule: capitalize the vendor token (`Webkit`, `Moz`) and keep it lowercase only for Microsoft (`ms`). So `-webkit-transform` becomes `WebkitTransform` and `-ms-transform` becomes `msTransform`. React does not run Autoprefixer over inline style objects; it simply sets each key on the live DOM node.\n\nIn practice this matters when you still support older Safari or legacy Edge builds that read only the prefixed property. Because the `style` object is a runtime JavaScript value, no PostCSS or Autoprefixer pass ever sees it\u2014those tools only transform `.css` source files at build time. If you need many prefixed properties, a small helper or a CSS-in-JS library that emits real stylesheets is usually cleaner than hand-writing every prefixed key.\n\nA nuance interviewers probe: the `ms` prefix stays lowercase while `Webkit` and `Moz` are capitalized. This mirrors the DOM `CSSStyleDeclaration` property names, not an arbitrary React convention, so the same casing works if you ever fall back to `el.style.msTransform = '\u2026'` imperatively.",
+    interviewLine: "Inline style objects in React are plain JS values assigned directly to `element.style` at render time, so I hand-write each prefixed variant in camelCase\u2014`WebkitTransform`, `MozTransform`, `msTransform`\u2014because Autoprefixer only processes CSS source files, not runtime objects.",
+    misconception: "Assuming Autoprefixer or the browser will auto-prefix inline style objects the same way it handles `.css` files, so a single unprefixed property name is enough for all engines.",
     hints: [
-      "A regular function resolves this at call time from its receiver. An arrow captures it at definition time."
+      "Think about what React does with the `style` object at render time: it assigns each key to a DOM `style` property. There is no CSS parser or build step in between.",
+      "The rule is the same camelCase conversion as any other CSS property, but the vendor token's capitalization matters. Check how `Webkit` differs from `ms` in the DOM API.",
+      "Autoprefixer transforms `.css` files at build time. An inline `style={{ }}` object is a runtime JavaScript value\u2014no build tool ever sees it, so you must spell out each prefixed key yourself."
     ],
     source: "300-react",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this"
+    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators/this",
+    example: {
+      caption: "Notice that `WebkitAnimation` is a separate object key alongside the standard `animation`; both are set on the same DOM node at render time.",
+      language: "tsx",
+      code: "function Spinner() {\n  const style: React.CSSProperties = {\n    display: 'inline-block',\n    width: 24,\n    height: 24,\n    border: '3px solid #ccc',\n    borderTopColor: 'transparent',\n    borderRadius: '50%',\n    animation: 'spin 0.8s linear infinite',\n    // Older Safari (< 9) and legacy Edge read only the prefixed key:\n    WebkitAnimation: 'spin 0.8s linear infinite',\n  };\n  return <div style={style} aria-label=\"Loading\" />;\n}"
+    }
   },
   {
     id: "algorithms-why-is-a-component-constructor-called-only-once",
@@ -818,39 +895,46 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Because JavaScript engines delete class constructors after first execution.",
+        text: "Because `React.createElement` is only invoked during the initial mount, so the `new Component(props)` call inside it never fires again on subsequent renders.",
         isCorrect: false,
-        explanation: "Constructors remain on the class; React simply retains the existing instance during updates."
+        explanation: "This conflates element creation with instance construction. `createElement` is called on every render (it is what JSX compiles to), but it merely returns a plain descriptor object `{ type, props, key }`; it never calls the constructor. The instance persists because the fiber node persists, not because `createElement` is skipped."
       },
       {
         id: "B",
-        text: "React's reconciliation engine preserves component instances across re-renders when the component maintains the same type and position in the tree, reusing the instance instead of re-instantiating.",
+        text: "React's reconciliation preserves the component instance across renders when the element type and position in the tree remain the same, so it calls `render()` again without re-invoking the constructor.",
         isCorrect: true,
-        explanation: "Correct. Re-renders execute the `render()` method, but the component instance and its constructor/mount state remain alive unless unmounted or keyed differently."
+        explanation: "Correct. Reconciliation matches the new element to the existing fiber by type and position (or key). Because the fiber already holds a live instance in `stateNode`, React simply calls `render()` to get the next tree and commits the diff\u2014no `new` is performed."
       },
       {
         id: "C",
-        text: "Constructors actually run on every single frame 60 times per second.",
+        text: "Because React's scheduler memoizes component instantiation per render pass, caching the `new` expression result so that identical props skip re-construction.",
         isCorrect: false,
-        explanation: "Constructors run only once upon initial component instance creation."
+        explanation: "There is no memoization layer around construction. The instance survives because the fiber node is long-lived and already carries the `stateNode`; it is not a cache that React consults to decide whether to skip `new`. Props identity is irrelevant to whether the constructor runs."
       },
       {
         id: "D",
-        text: "Because constructors can only run on January 1st.",
+        text: "Because Babel's class transformation injects a `__reactMounted` guard flag that short-circuits the constructor body on subsequent calls.",
         isCorrect: false,
-        explanation: "Constructor lifecycle execution is controlled by React's reconciliation tree matching."
+        explanation: "Babel (or TypeScript) transpiles class syntax to ES5 prototypes but adds no React-specific guard. The decision to skip the constructor lives entirely in React's reconciler, which simply reuses the existing fiber and never calls `new` a second time for the same mount."
       }
     ],
     correctAnswer: "B",
-    explanation: "React's reconciliation algorithm assumes that without any information to the contrary, if a custom component appears in the same place on subsequent renders, it's the same component as before, so reuses the previous instance rather than creating a new one.: ",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Why is a component constructor called only once?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Why is a component constructor called only once?.",
+    explanation: "React's reconciliation algorithm compares the new element tree against the previous one. When a component's type and position (or key) are unchanged, React reuses the existing fiber node and its attached instance (fiber.stateNode). It calls render() to produce the next output, but it never re-invokes the constructor because the instance already exists in memory.\n\nThis matters in practice: any expensive work you put in the constructor (building a lookup table, parsing a large config) runs exactly once per mount, not once per render. If you need to react to prop changes, you reach for getDerivedStateFromProps or componentDidUpdate instead of relying on the constructor.\n\nThe nuance interviewers probe is what forces a re-construction. Changing the key prop, swapping the component type at that position, or conditionally removing and re-adding the component all cause React to unmount the old fiber (firing componentWillUnmount) and mount a fresh one, calling the constructor again. A simple prop or state update does not.",
+    interviewLine: "The constructor runs once per mount because reconciliation matches the element type and position to the existing fiber, which already holds the instance in `stateNode`; re-renders just call `render()` on that same object. You only see the constructor fire again if you change the key, swap the type, or unmount and remount the component.",
+    misconception: "Learners assume that every render is a full re-creation of the component (constructor \u2192 render \u2192 commit), so they expect side-effects in the constructor to re-run on every state or prop change. In reality, the constructor is a mount-only hook; re-renders only re-execute `render()` on the already-lived instance.",
     hints: [
-      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
+      "Think about what React actually calls between two renders of the same component. Is it `new`, or is it a method on the existing object?",
+      "What data structure does React keep for each component across renders, and what does it store there that lets it skip construction?",
+      "Now ask: what single prop change would force React to throw away that stored instance and build a brand-new one?"
     ],
     source: "300-react",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/learn/render-and-commit"
+    bestPracticeRef: "https://react.dev/learn/render-and-commit",
+    example: {
+      caption: "Clicking the inner button logs only \"render\"; clicking \"remount\" changes the key, so you see \"constructor\" followed by \"render\"\u2014proving the constructor is a mount-only event.",
+      language: "tsx",
+      code: "class Counter extends React.Component {\n  state = { n: 0 };\n\n  constructor(_props: object) {\n    super(_props);\n    console.log(\"constructor\");\n  }\n\n  render() {\n    console.log(\"render\");\n    return (\n      <button onClick={() => this.setState({ n: this.state.n + 1 })}>\n        {this.state.n}\n      </button>\n    );\n  }\n}\n\nfunction App() {\n  const [key, setKey] = React.useState(1);\n  return (\n    <>\n      <Counter key={key} />\n      <button onClick={() => setKey((k) => k + 1)}>remount</button>\n    </>\n  );\n}"
+    }
   },
   {
     id: "react-what-is-the-purpose-of-push-and-replace-methods-of-hist",
@@ -869,39 +953,46 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "`replace()` deletes all previous browser history permanently.",
+        text: "`replace()` removes the current entry and the one immediately before it, so the Back button skips two pages.",
         isCorrect: false,
-        explanation: "`replace()` only substitutes the current active location entry."
+        explanation: "Tempting because \"replace\" sounds destructive, but it only overwrites the topmost entry in place. The entry beneath it is untouched, so Back lands on that single prior page."
       },
       {
         id: "B",
-        text: "`push()` deletes cookies; `replace()` clears local storage.",
+        text: "`push()` performs a full document navigation while `replace()` performs a same-document soft navigation.",
         isCorrect: false,
-        explanation: "History methods manipulate the browser navigation stack, not storage."
+        explanation: "Conflates history mutation with actual loading. Both methods are same-document; neither fires a navigation event or reloads the document. The difference is purely whether a new stack entry is created."
       },
       {
         id: "C",
-        text: "`push()` executes on the server; `replace()` executes in the browser.",
+        text: "`push()` and `replace()` both append a new entry; `replace()` additionally dispatches a `popstate` event.",
         isCorrect: false,
-        explanation: "Both operate in client-side browser navigation history."
+        explanation: "Mixes up the mutation methods with the navigation event. Neither pushState nor replaceState fires popstate\u2014that event is reserved for the user pressing Back or Forward. And replace does not append; it overwrites."
       },
       {
         id: "D",
-        text: "`push()` pushes a new entry onto the history stack (user can navigate back); `replace()` replaces the current entry (back button returns to the previous page).",
+        text: "`push()` adds a new entry to the session history stack so Back returns to the prior page; `replace()` overwrites the current entry so Back returns to the page before it.",
         isCorrect: true,
-        explanation: "Correct. `push` records a new navigation step, while `replace` overwrites the active location, ideal for redirects and login flows."
+        explanation: "Correct. pushState grows the stack (history.length +1) and creates a revisitable step; replaceState mutates the top entry in place (history.length unchanged) so the intermediate URL is invisible to Back."
       }
     ],
     correctAnswer: "D",
-    explanation: "A history instance has two methods for navigation purpose. push() replace() If you think of the history as an array of visited locations, push() will add a new location to the array and replace() will replace the current location in the array with the new one.: ",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the purpose of push() and replace() methods of history?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the purpose of push() and replace() methods of history?.",
+    explanation: "pushState and replaceState are the two mutation methods on the History API. They let JavaScript change the URL and attach a state object without triggering a full document load. pushState appends a new entry to the top of the session history stack, so history.length increments and the Back button returns the user to the entry that was previously on top. replaceState overwrites the URL and state of the current (topmost) entry in place; history.length stays the same, and Back goes to the entry beneath the one just rewritten.\n\nIn real applications this distinction drives routing decisions. React Router, Next.js, and most SPA routers call replace for redirects\u2014after a successful login, when a 404 handler bounces to /not-found, or when normalizing a trailing slash\u2014so the user's Back button skips the intermediate URL. push is reserved for genuine navigation steps the user should be able to revisit.\n\nA nuance interviewers probe: the state parameter is a single JSON-serializable object per entry, readable only via history.state while that entry is current. It is not a key-value store and does not persist across a full reload unless you serialize it into the URL or storage yourself.",
+    interviewLine: "I use pushState for normal navigation so every step is revisitable, and replaceState for redirects and route corrections so the user's Back button skips the intermediate URL. Neither triggers a page load, and replaceState keeps history.length the same while pushState increments it.",
+    misconception: "Thinking that replace() deletes the current entry from the stack (shrinking it) rather than overwriting the URL and state of the existing entry in place. The stack length is unchanged; only the top entry's data is modified.",
     hints: [
-      "State the time and space cost before you optimise. A Set or Map turns a repeated scan into a lookup."
+      "Think of the session history as an array of visited URLs. Which operation appends a new element to the end, and which one rewrites the last element in place?",
+      "After calling replaceState, what does the Back button do? Does it skip the replaced URL, or does it go to the entry that was second-from-top?",
+      "Check history.length: does it change after each call? That tells you whether a new entry was created or the existing one was mutated."
     ],
     source: "300-react",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map"
+    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map",
+    example: {
+      caption: "Notice how router.replace is used after login so the user's Back button skips the /login?token=\u2026 URL and goes straight to the pre-login page.",
+      language: "tsx",
+      code: "\"use client\";\nimport { useRouter } from \"next/navigation\";\nimport { useEffect } from \"react\";\n\nfunction LoginRedirect({ token }: { token: string }) {\n  const router = useRouter();\n\n  useEffect(() => {\n    // replace: Back won't land on /login?token=\u2026\n    router.replace(\"/dashboard\");\n  }, [router, token]);\n\n  return <p>Redirecting\u2026</p>;\n}"
+    }
   },
   {
     id: "algorithms-how-relay-is-different-from-redux",
@@ -920,39 +1011,46 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Relay compiles React code into WebAssembly.",
+        text: "Relay is a Redux middleware that layers GraphQL fetching on top of the existing Redux store and dispatch/reducer cycle.",
         isCorrect: false,
-        explanation: "Relay is a data-fetching framework for React and GraphQL."
+        explanation: "This is tempting because teams sometimes run both libraries in the same codebase, and \"middleware\" is a word strongly associated with Redux. In reality Relay ships its own normalized store, its own fragment-subscription mechanism, and its own optimistic-update pipeline; it never dispatches Redux actions or reads a Redux reducer."
       },
       {
         id: "B",
-        text: "Relay is a GraphQL client that collocates data requirements with components via fragments, managing server caching automatically; Redux is a general-purpose local/global state container.",
+        text: "Relay is a GraphQL data layer that colocates fetch requirements in component fragments and automatically normalizes and caches server data; Redux is a protocol-agnostic client-side state container driven by actions and reducers.",
         isCorrect: true,
-        explanation: "Correct. Relay focuses on declaratively fetching, caching, and normalizing GraphQL server data, whereas Redux manages arbitrary application-wide client/server state."
+        explanation: "Correct. Relay's unit of work is a fragment that declares fields, and its store is a normalized object cache keyed by GraphQL IDs. Redux's unit of work is an action flowing through reducers, and it carries no opinion about the wire protocol or caching strategy."
       },
       {
         id: "C",
-        text: "Relay only works with REST APIs; Redux only works with GraphQL.",
+        text: "Both are general-purpose state containers; the only meaningful difference is that Relay is React-specific while Redux works with any UI framework.",
         isCorrect: false,
-        explanation: "Relay is built specifically for GraphQL, whereas Redux is protocol-agnostic."
+        explanation: "Redux's core is indeed framework-agnostic, which makes this feel right. But Relay is not a general-purpose container\u2014you cannot store an arbitrary boolean or form draft in it. Its store is purpose-built for normalized GraphQL objects, and its API surface (fragments, subscriptions, optimistic responses) has no analogue for non-GraphQL client state."
       },
       {
         id: "D",
-        text: "There are no differences; Relay is a rename of Redux.",
+        text: "Relay replaces all local state management because it handles UI state, forms, and server data in one normalized store; Redux is limited to caching GraphQL responses.",
         isCorrect: false,
-        explanation: "Relay (by Meta) and Redux (by Dan Abramov) are distinct architectures."
+        explanation: "This inverts both roles. Relay does not manage UI or form state\u2014there is no action/reducer concept to express `sidebarOpen`. And Redux is protocol-agnostic; it is commonly used with REST, websockets, and local-only state, not restricted to GraphQL."
       }
     ],
     correctAnswer: "B",
-    explanation: "Relay is similar to Redux in that they both use a single store. The main difference is that relay only manages state originated from the server, and all access to the state is used via GraphQL queries (for reading data) and mutations (for changing data). Relay caches the data for you and optimizes data fetching for you, by fetching only changed data and nothing more.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How Relay is different from Redux?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How Relay is different from Redux?.",
+    explanation: "Relay and Redux solve fundamentally different problems. Relay is a GraphQL data layer: you declare which fields a component needs using fragments, and Relay handles fetching, normalizing (storing each object once by its ID), caching, and invalidation automatically. You never write a cache-invalidation function or a fetch thunk; the fragment IS the query, and Relay's store is a normalized object cache driven by fragment subscriptions.\n\nRedux is a general-purpose state container. You model any slice of application state\u2014UI flags, form drafts, server data, websocket messages\u2014behind actions and reducers. It knows nothing about HTTP, GraphQL, or caching; you wire those concerns in via thunks, RTK Query, or custom middleware. Its store is an action log, not a relational object cache.\n\nIn practice you often see both in the same app: Relay owns the server-data cache, Redux owns everything else. The edge case interviewers probe: can you say why you'd still reach for Redux when Relay is already caching server data? The answer is arbitrary client state, cross-cutting UI logic, and non-GraphQL data sources\u2014none of which Relay's fragment-based model is designed to express.",
+    interviewLine: "Relay owns the server-data cache through fragment subscriptions and automatic normalization by GraphQL ID, so I reach for Redux for everything else\u2014UI flags, form drafts, non-GraphQL sources\u2014because Redux is protocol-agnostic and action-driven.",
+    misconception: "Treating Relay as a GraphQL-flavoured Redux store, so the action/reducer mental model transfers directly; in practice Relay's store is a normalized object cache driven by fragment subscriptions, with no action log, no reducer, and no way to store arbitrary client state.",
     hints: [
-      "Ask where the state genuinely belongs: the URL, a server cache, a global store, or one component."
+      "Ask what each library is tied to at the protocol level. Which one is hard-wired to a specific wire format, and which one is deliberately format-agnostic?",
+      "Relay's unit of data requirement is a fragment attached to a component; Redux's unit is an action dispatched into a reducer. Which of those two mechanisms implies automatic fetching, normalization, and cache invalidation?",
+      "If you need to store a boolean `isSidebarOpen` or a form draft, which library's API is designed for that? If you need to fetch a GraphQL query and cache the result by object ID so a second component reuses it without re-fetching, which one does that for you?"
     ],
     source: "300-react",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/learn/choosing-the-state-structure"
+    bestPracticeRef: "https://react.dev/learn/choosing-the-state-structure",
+    example: {
+      caption: "Notice how Relay's fragment declares the data need right next to the component (and Relay handles fetching, caching, and normalization), while the Redux slice models arbitrary client state with no awareness of any network protocol.",
+      language: "tsx",
+      code: "import { graphql, useFragment } from \"react-relay\";\nimport { createSlice, PayloadAction } from \"@reduxjs/toolkit\";\n\n// Relay: data requirement colocated with the component\nconst PostCardFragment = graphql`\n  fragment PostCard_Post on Post {\n    title\n    author { name }\n  }\n`;\n\nfunction PostCard(props: { post: { \" $fragmentRefs\": typeof PostCardFragment } }) {\n  const post = useFragment(PostCard_Post, props.post);\n  return <article>{post.title} \u2014 {post.author.name}</article>;\n}\n\n// Redux: arbitrary client state, protocol-agnostic\nconst uiSlice = createSlice({\n  name: \"ui\",\n  initialState: { sidebarOpen: true, theme: \"dark\" },\n  reducers: {\n    toggleSidebar: (s) => { s.sidebarOpen = !s.sidebarOpen; },\n    setTheme: (s, a: PayloadAction<string>) => { s.theme = a.payload; },\n  },\n});"
+    }
   },
   {
     id: "algorithms-can-you-describe-about-componentdidcatch-lifecycle-meth",
@@ -972,39 +1070,46 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "A hook called on every mouse click.",
+        text: "A static method called during the render phase that receives the throwing component's instance, letting you inspect its state and suppress the fallback.",
         isCorrect: false,
-        explanation: "It is an Error Boundary lifecycle method triggered only on child component errors."
+        explanation: "Tempting because `getDerivedStateFromError` is static and runs before the fallback, but `componentDidCatch` is an instance method, fires during commit (after the fallback is already rendered), and its second argument is an info object, not the component instance."
       },
       {
         id: "B",
-        text: "A method that catches network disconnects and reconnects the Wi-Fi.",
+        text: "An instance method that receives the thrown error and an array of component instances in the stack, so you can call cleanup on the throwing component.",
         isCorrect: false,
-        explanation: "`componentDidCatch` catches JavaScript runtime errors in React rendering."
+        explanation: "The belief that `errorInfo` exposes live component references is understandable, but `componentStack` is a plain string for display and logging; you cannot invoke methods on the throwing component from the boundary."
       },
       {
         id: "C",
-        text: "A method that catches syntax errors during Webpack compilation.",
+        text: "A method invoked for any unhandled error in the subtree, including those from event handlers, useEffect callbacks, and unhandled Promise rejections.",
         isCorrect: false,
-        explanation: "`componentDidCatch` runs in the browser runtime when child components throw during rendering."
+        explanation: "The scope feels broad because the boundary wraps the whole subtree, but React only routes synchronous throws from rendering, lifecycle methods, and constructors through `componentDidCatch`; event-handler and async errors must be handled with try/catch or `.catch()`."
       },
       {
         id: "D",
-        text: "`componentDidCatch(error, info)` is called after an error is thrown in a descendant; it receives the thrown error and an `info` object containing the `componentStack` trace, ideal for error logging.",
+        text: "`componentDidCatch(error, errorInfo)` is called during the commit phase after a descendant throws in the render path; `errorInfo.componentStack` is a string of the component hierarchy, useful for logging.",
         isCorrect: true,
-        explanation: "Correct. `componentDidCatch` runs during the commit phase, making it the appropriate place to log errors and component stack traces to reporting services like Sentry."
+        explanation: "Correct. It is an instance method invoked post-commit, receives the thrown `Error` and an `errorInfo` object with a `componentStack` string, making it the standard place to report to Sentry or Datadog."
       }
     ],
     correctAnswer: "D",
-    explanation: "The componentDidCatch lifecycle method is invoked after an error has been thrown by a descendant component. The method receives two parameters, error: - The error object which was thrown info: - An object with a componentStack key contains the information about which component threw the error. The method structure would be as follows: ",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Can you describe about componentDidCatch lifecycle method signature?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Can you describe about componentDidCatch lifecycle method signature?.",
+    explanation: "`componentDidCatch(error, errorInfo)` is an instance method you define on a class component to make it an error boundary. It fires during the commit phase, after React has already rendered the boundary's fallback UI, when a descendant throws synchronously during rendering, in a lifecycle method, or in a constructor. The first argument is the `Error` object that was thrown; the second is an `errorInfo` object whose `componentStack` property is a human-readable string of the component hierarchy at the throw site.\n\nIn production this is your hook into error telemetry. Because it runs after the fallback is committed, you can safely call `Sentry.captureException(error, { extra: { componentStack: errorInfo.componentStack } })` without risking re-entrant rendering. The string stack (e.g. `\"in Button (at Button.tsx:12)\\n in Page (at index.tsx:5)\"`) is far easier to triage than a bare `Error.stack`.\n\nA nuance interviewers probe: `componentDidCatch` does not catch errors in event handlers, `useEffect` callbacks, `setTimeout`, or Promise rejections\u2014only synchronous throws in the render path and class lifecycle methods. Also, `componentStack` is a string, not an array of component instances, so you cannot call methods on the throwing component from inside the boundary.",
+    interviewLine: "`componentDidCatch` is called during the commit phase after the fallback is rendered, so I use it to log the error and the `componentStack` string to Sentry. I keep in mind it only catches synchronous throws in the render path and class lifecycle methods, not event handlers or effects.",
+    misconception: "Candidates often assume componentDidCatch fires before the fallback renders and that the second argument is the throwing component's instance (or an array of them), when in reality it runs during commit after the fallback is already painted and the second argument is an opaque info object whose componentStack is a plain string.",
     hints: [
-      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
+      "Think about where in the commit lifecycle this method fires relative to the fallback render, and whether it is a static or instance method.",
+      "The second parameter is not a component instance. What does the `errorInfo` object actually contain, and what type is `componentStack`?",
+      "Remember that errors in `useEffect`, event handlers, and async callbacks are outside the boundary's scope\u2014only synchronous throws in the render path are caught."
     ],
     source: "300-react",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/learn/render-and-commit"
+    bestPracticeRef: "https://react.dev/learn/render-and-commit",
+    example: {
+      caption: "Notice that componentDidCatch receives a string stack trace, not component instances, and is the only place in the boundary where you can safely perform side-effects like logging.",
+      language: "tsx",
+      code: "import { Component, type ReactNode } from \"react\";\n\nclass ErrorBoundary extends Component<{ children: ReactNode }, { hasError: boolean }> {\n  state = { hasError: false };\n\n  static getDerivedStateFromError() {\n    return { hasError: true };\n  }\n\n  componentDidCatch(error: Error, errorInfo: { componentStack: string }) {\n    // errorInfo.componentStack is a string, e.g.:\n    // \"in Button (at Button.tsx:12)\\n in Page (at index.tsx:5)\"\n    console.error(error, errorInfo.componentStack);\n  }\n\n  render() {\n    if (this.state.hasError) return <p>Something went wrong.</p>;\n    return this.props.children;\n  }\n}"
+    }
   },
   {
     id: "algorithms-what-is-diffing-algorithm",
@@ -1023,39 +1128,46 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "An algorithm that sorts numbers in ascending order.",
+        text: "A generic minimum-edit-distance tree algorithm with O(n\u00b3) complexity that computes the exact smallest set of insertions, deletions, and moves between two DOM trees.",
         isCorrect: false,
-        explanation: "The diffing algorithm compares Virtual DOM trees to minimize DOM updates."
+        explanation: "The theoretical problem is indeed O(n\u00b3), which makes this tempting, but React explicitly avoids that cost. React's reconciliation is a heuristic O(n) pass, not an optimal tree-diff; it trades a few extra DOM writes for a linear-time guarantee."
       },
       {
         id: "B",
-        text: "React's heuristic O(n) reconciliation algorithm that compares two virtual trees based on element types and `key` props to generate the minimum set of DOM mutations.",
+        text: "React's O(n) reconciliation heuristic that compares two virtual trees using element type and `key` props to compute the set of DOM mutations for the next render.",
         isCorrect: true,
-        explanation: "Correct. Generic tree comparison algorithms have O(n^3) complexity; React's heuristic algorithm assumes different types produce different trees and keys identify stable siblings, achieving O(n) performance."
+        explanation: "Correct. React's two heuristics \u2014 different types produce different subtrees, and keys identify stable children \u2014 reduce reconciliation from O(n\u00b3) to O(n), which is what keeps large lists interactive."
       },
       {
         id: "C",
-        text: "A compression algorithm that compresses JPEG images.",
+        text: "A mechanism that reads the live browser DOM, compares it pixel-by-pixel with the previous frame, and patches only the changed regions.",
         isCorrect: false,
-        explanation: "Diffing reconciles virtual element trees in React's rendering pipeline."
+        explanation: "The word \"diff\" evokes visual comparison, but React never inspects the live DOM or performs pixel comparisons to compute updates. Reconciliation operates entirely on the in-memory virtual tree; the DOM is only touched when applying the resulting mutations."
       },
       {
         id: "D",
-        text: "A cryptographic hashing algorithm for blockchain transactions.",
+        text: "A serialization step that converts the component tree to a JSON string, hashes it against the previous render, and re-renders only when the hash changes.",
         isCorrect: false,
-        explanation: "Diffing is React's internal tree reconciliation heuristic."
+        explanation: "Hashing two snapshots sounds like a clean way to detect changes, and it is a common caching pattern, but React never serializes the tree to a string. Reconciliation walks the object graph directly, comparing element types and keys in a single pass."
       }
     ],
     correctAnswer: "B",
-    explanation: "React needs to use algorithms to find out how to efficiently update the UI to match the most recent tree. The diffing algorithms is generating the minimum number of operations to transform one tree into another. However, the algorithms have a complexity in the order of O(n3) where n is the number of elements in the tree. In this case, for displaying 1000 elements would require in the order of one billion comparisons. This is far too expensive. Instead, React implements a heuristic O(n) algorithm based on two assumptions: Two elements of different types will produce different trees. The developer can hint at which child elements may be stable across different renders with a key prop.: ",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is diffing algorithm?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is diffing algorithm?.",
+    explanation: "React's reconciliation (often called \"diffing\") is the pass that compares the previous virtual tree with the next one to decide which DOM nodes to create, update, or remove. A generic minimum-edit-distance tree diff runs in O(n\u00b3); for a 1,000-element tree that is roughly a billion operations, far too slow for interactive UIs.\n\nReact sidesteps that cost with two heuristics. First, elements of different types are treated as producing entirely different subtrees, so React can discard the old subtree and build a new one without comparing children. Second, the `key` prop tells React which children are stable across renders, letting it match them in O(1) instead of scanning the whole list. The net result is a single O(n) pass over the tree.\n\nThe trade-off: because the algorithm is a heuristic, it does not always produce the absolute minimum number of DOM writes \u2014 it produces a good-enough set that is cheap to compute. Interviewers often probe this nuance: when you reorder a keyed list, React moves the existing DOM nodes rather than tearing them down and rebuilding, which is exactly what the key heuristic is designed to enable. Without keys, React falls back to index-based matching and will unmount/remount nodes on reorder, losing state and focus.",
+    interviewLine: "React's reconciliation is an O(n) heuristic, not an optimal tree-diff. It relies on two assumptions \u2014 different element types produce different subtrees, and keys identify stable children across renders \u2014 to avoid the O(n\u00b3) cost of a generic minimum-edit-distance algorithm.",
+    misconception: "The most common wrong model is that React performs a full O(n\u00b3) tree-diff every render. In reality, the two heuristics (type boundary and key) reduce the work to a single O(n) pass, and the algorithm intentionally sacrifices optimality for speed.",
     hints: [
-      "State the time and space cost before you optimise. A Set or Map turns a repeated scan into a lookup."
+      "Think about what React actually compares: the real DOM, a serialized string, or an in-memory tree? And what is the time complexity of a naive full tree-diff?",
+      "React makes two specific assumptions to cut the cost from O(n\u00b3) to O(n). One involves element type; the other involves a prop you set on list items.",
+      "The algorithm does not guarantee the minimum number of DOM writes. It guarantees a fast pass. What are the two heuristics that make that possible, and what happens when you omit them on a reordered list?"
     ],
     source: "300-react",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map"
+    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map",
+    example: {
+      caption: "With keys, React moves three <li> nodes; without keys it would unmount all three and remount three, losing any per-item state.",
+      language: "tsx",
+      code: "function Playlist({ tracks }: { tracks: Track[] }) {\n  return (\n    <ul>\n      {tracks.map((t) => (\n        <li key={t.id}>{t.name}</li>\n      ))}\n    </ul>\n  );\n}\n\n// [A, B, C] \u2192 [C, A, B]\n// keyed:   3 moves (DOM nodes preserved)\n// unkeyed: 3 unmounts + 3 mounts (state lost)"
+    }
   },
   {
     id: "algorithms-what-are-the-rules-covered-by-diffing-algorithm",
@@ -1075,39 +1187,46 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "1) Diffing only runs once per year; 2) Diffing requires Python 2.7.",
+        text: "1) Different element types are reconciled by copying attributes between the old and new node; 2) Same DOM types always destroy and recreate the DOM element; 3) Same component types re-mount with fresh state; 4) Children are matched purely by array index; keys are ignored.",
         isCorrect: false,
-        explanation: "Diffing runs on every state/prop update in the browser JavaScript engine."
+        explanation: "This inverts every rule: React never patches across a type boundary, never recreates a same-type node, and keys override index-based matching. The belief behind it is that React is 'just innerHTML with extra steps.'"
       },
       {
         id: "B",
-        text: "1) All elements are deleted on every render; 2) Keys are ignored; 3) Attributes cannot be changed.",
+        text: "1) Different element types trigger a full page reload; 2) Same DOM types create a new node and remove the old one; 3) Same component types discard state and re-run the constructor; 4) Keys must be unique across the entire application, not just among siblings.",
         isCorrect: false,
-        explanation: "These contradict React's reconciliation rules."
+        explanation: "A type change causes an unmount/mount, not a page reload; same-type DOM nodes are patched in place; component state survives prop updates; and key uniqueness is scoped to the sibling list, not global."
       },
       {
         id: "C",
-        text: "1) Different element types tear down and rebuild subtree; 2) Same DOM types update only changed attributes; 3) Same component types preserve instance/state; 4) Children diffing uses `key` props.",
+        text: "1) Different element types cause React to unmount the old subtree and mount a new one; 2) Same DOM types keep the existing node and patch only changed attributes; 3) Same component types reuse the instance, updating its props; 4) Children are matched by key when present, falling back to index.",
         isCorrect: true,
-        explanation: "Correct. These four core rules allow React to efficiently reconcile virtual trees and perform minimal real DOM operations in O(n) time."
+        explanation: "Correct. These four heuristics let React skip entire subtrees, patch in place, preserve state, and reorder lists efficiently, keeping reconciliation at O(n)."
       },
       {
         id: "D",
-        text: "There are no rules; React regenerates the entire HTML document on every frame.",
+        text: "1) React diffs the real DOM directly with no virtual tree; 2) Keys are a styling hint that affects className assignment; 3) Component state lives on the DOM node as a data attribute; 4) The diffing algorithm runs only once at initial mount.",
         isCorrect: false,
-        explanation: "React uses heuristic rules to avoid full-page rebuilds."
+        explanation: "React maintains a virtual tree and diffs that, not the live DOM; keys are identity markers for reconciliation, not style hooks; state lives in React's internal fiber, not on DOM nodes; and reconciliation runs on every update, not just mount."
       }
     ],
     correctAnswer: "C",
-    explanation: "When diffing two trees, React first compares the two root elements. The behavior is different depending on the types of the root elements. It covers the below rules during reconciliation algorithm, Elements Of Different Types: Whenever the root elements have different types, React will tear down the old tree and build the new tree from scratch. For example, elements to, or from to of different types lead a full rebuild. DOM Elements Of The Same Type: When comparing two React DOM elements of the same type, React looks at the attributes of both, keeps the same underlying DOM node, and only updates the changed attributes. Lets take an example with same DOM elements except className attribute, Component Elements Of The Same Type: When a component updates, the instance stays the same, so that state is maintained across renders. React updates the props of the underlying component instance to match the new element, and calls componentWillReceiveProps() and componentWillUpdate() on the underlying instance. After that, the render() method is called and the diff algorithm recurses on the previous result and the new result. Recursing On Children: when recursing on the children of a DOM node, React just iterates over both lists of children at the same time and generates a mutation whenever there, s a difference. For example, when adding an element at the end of the children, converting between these two trees works well. Handling keys: React supports a key attribute. When children have keys, React uses the key to match children in the original tree with children in the subsequent tree. For example, adding a key can make the tree conversion efficient,: ",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the rules covered by diffing algorithm?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the rules covered by diffing algorithm?.",
+    explanation: "When React reconciles two renders, it compares the new virtual tree against the previous one using heuristics that keep the walk at O(n) rather than a full O(n\u00b2) tree comparison.\n\nRule 1 \u2013 different types: if the element type changes (e.g. <div> \u2192 <span>, or <List> \u2192 <Table>), React unmounts the entire old subtree and mounts a new one from scratch. No state survives that boundary.\n\nRule 2 \u2013 same DOM type: when both elements are the same host tag, React keeps the existing DOM node and patches only the attributes that changed (className, style, event handlers). No node is destroyed or recreated.\n\nRule 3 \u2013 same component type: React reuses the same component instance, updates its props, and calls render again. State from useState, useReducer, or class fields persists across the update.\n\nRule 4 \u2013 children with keys: when iterating over a list of children, React matches them by key if keys are provided, otherwise by positional index. Keys let React move, insert, or remove items without destroying and recreating siblings.\n\nAn edge case interviewers probe: keys only need to be unique among siblings in the same array, not globally. Also, changing a key is treated as a type change \u2013 the old subtree is unmounted and a new one mounted, which resets all state inside it.",
+    interviewLine: "React's reconciliation is O(n) because it short-circuits on type mismatches, patches attributes in place for same-type host nodes, reuses component instances across prop updates, and relies on keys to match list children by identity rather than position.",
+    misconception: "Keys are a globally unique identifier that must be distinct across every list in the app, and React uses them to store or track component state across unrelated parent components.",
     hints: [
-      "State the time and space cost before you optimise. A Set or Map turns a repeated scan into a lookup."
+      "Think about the very first check React performs when comparing two elements: what single comparison lets it skip an entire subtree without looking inside?",
+      "Now imagine a <ul> whose <li> items are reordered. What does React consult to decide which node to keep, which to move, and which to remove?",
+      "For two <div> elements that differ only in className, React never calls document.createElement again \u2013 it reads the existing node and writes the new property."
     ],
     source: "300-react",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map"
+    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map",
+    example: {
+      caption: "Notice how keys let React move 'Banana' and add 'Cherry' instead of patching index 0 and index 1 in place.",
+      language: "tsx",
+      code: "function FruitList({ fruits }: { fruits: string[] }) {\n  return (\n    <ul>\n      {fruits.map((f) => (\n        <li key={f}>{f}</li>\n      ))}\n    </ul>\n  );\n}\n\n// Render 1: [\"Apple\", \"Banana\"]\n// Render 2: [\"Banana\", \"Cherry\"]\n// With keys: remove \"Apple\", move \"Banana\", insert \"Cherry\".\n// Without keys (index match): patch index 0 Apple\u2192Banana, patch index 1 Banana\u2192Cherry."
+    }
   },
   {
     id: "algorithms-what-is-the-typical-use-case-of-portals",
@@ -1126,39 +1245,46 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Compiling TypeScript into Python bytecode.",
+        text: "Rendering a component into a separate React tree so it escapes the parent's re-render cycle and avoids cascading updates.",
         isCorrect: false,
-        explanation: "Portals are a DOM rendering feature of `react-dom`."
+        explanation: "Portals change the DOM mount point, not the React tree. The component stays in the same fiber hierarchy, so re-renders, context, and event bubbling behave exactly as if it were rendered inline."
       },
       {
         id: "B",
-        text: "Modals, dialogs, tooltips, hovercards, and toast notifications that need to break out of parent containers with `overflow: hidden`, `z-index`, or stacking context constraints.",
+        text: "Modals, dialogs, tooltips, hover cards, and toasts that must visually escape a parent's `overflow: hidden`, `z-index`, or stacking-context constraints.",
         isCorrect: true,
-        explanation: "Correct. `createPortal` renders children into a separate DOM container (like `document.body`) while preserving React component hierarchy, events, and context."
+        explanation: "Correct. `createPortal` mounts the child's DOM output into an alternate node (commonly `document.body`) so it is no longer clipped or stacked by the parent's CSS, while React's component-tree semantics\u2014context, events, state\u2014remain unchanged."
       },
       {
         id: "C",
-        text: "Transferring large SQL database backups over WebSockets.",
+        text: "Server-side rendering of UI fragments that logically belong to a different page or route than the current component tree.",
         isCorrect: false,
-        explanation: "Portals render React UI elements into alternate DOM nodes."
+        explanation: "`createPortal` is a client-side `react-dom` API that manipulates the live DOM. It has no role in SSR; server rendering is handled by the framework's render pipeline, not by choosing a different DOM mount target."
       },
       {
         id: "D",
-        text: "Encrypting passwords before sending to an API.",
+        text: "Sharing mutable state between unrelated components without lifting it to a common ancestor or adding a context provider.",
         isCorrect: false,
-        explanation: "Portals manage DOM element mounting targets."
+        explanation: "Portals only change where in the DOM the output appears; they do not create a new state or data channel. Cross-component state sharing is the job of Context, a store, or lifted props\u2014none of which portals provide."
       }
     ],
     correctAnswer: "B",
-    explanation: "React portals are very useful when a parent component has overflow: hidden or has properties that affect the stacking context(z-index,position,opacity etc styles) and you need to visually, break out, of its container. For example, dialogs, global message notifications, hovercards, and tooltips.: ",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the typical use case of portals?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the typical use case of portals?.",
+    explanation: "React portals (`createPortal` from `react-dom`) render their children into a DOM node outside the parent's DOM hierarchy while keeping them in the same React component tree. Events still bubble through the React tree, `useContext` still resolves to the nearest provider in the component hierarchy, and the component's state and lifecycle are completely unaffected by the DOM relocation.\n\nThe typical use case is UI that must visually break out of a constrained parent: a modal inside a card with `overflow: hidden`, a tooltip inside a table cell trapped by a low `z-index` stacking context, or a toast notification that needs to sit above a `position: fixed` header. Without a portal you would either fight CSS specificity or restructure your component tree just to escape one ancestor's box.\n\nAn edge case interviewers probe: because the DOM node is detached from the parent, the portal's children do not inherit CSS from the parent (no `:hover` from an ancestor, no inherited `font-size` unless set on the portal target). Crucially, the portal does NOT create a new React fiber tree\u2014`useContext` still walks the component hierarchy, not the DOM hierarchy, so a provider above the portal in the component tree still reaches the portal's children.",
+    interviewLine: "I use `createPortal` to mount a modal or tooltip into `document.body` so it escapes the parent's `overflow: hidden` or stacking context, while React events still bubble through my component tree and context still flows from the nearest provider.",
+    misconception: "Because the portal's DOM node lives under `document.body`, the portal's children form a separate React tree that no longer receives context from providers above the portal in the component hierarchy.",
     hints: [
-      "Ask where the state genuinely belongs: the URL, a server cache, a global store, or one component."
+      "Think about which CSS properties on a parent can visually trap a child element inside its box.",
+      "The key distinction is that the DOM mount point changes, but the React component hierarchy\u2014and therefore context resolution and event bubbling\u2014does not.",
+      "If a tooltip inside a table cell with `overflow: hidden` needs to appear above the cell, where does the tooltip's DOM node need to live?"
     ],
     source: "300-react",
     estimatedMinutes: 3,
-    bestPracticeRef: "https://react.dev/learn/choosing-the-state-structure"
+    bestPracticeRef: "https://react.dev/learn/choosing-the-state-structure",
+    example: {
+      caption: "Notice that `createPortal` moves the DOM output to `document.body` but the component still lives in the same React tree, so context and event handlers work normally.",
+      language: "tsx",
+      code: "import { createPortal } from \"react-dom\";\nimport { useState, useRef } from \"react\";\n\nfunction Tooltip({ label, children }: {\n  label: string;\n  children: React.ReactNode;\n}) {\n  const [open, setOpen] = useState(false);\n  const ref = useRef<HTMLSpanElement>(null);\n\n  const tip = open && createPortal(\n    <div className=\"tooltip\" style={{ position: \"fixed\" }}>{label}</div>,\n    document.body // escapes parent overflow / z-index\n  );\n\n  return (\n    <span\n      ref={ref}\n      onMouseEnter={() => setOpen(true)}\n      onMouseLeave={() => setOpen(false)}\n    >\n      {children}\n    </span>\n  );\n}"
+    }
   },
   {
     id: "algorithms-how-does-new-jsx-transform-different-from-old-transform",
@@ -1178,38 +1304,45 @@ export const ALGORITHMS_DSA_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Old transform was written in Python; New transform is written in C++.",
+        text: "The new transform removes the `React` import by inlining the element factory at compile time, so no `createElement` or `jsx` function call remains in the emitted code.",
         isCorrect: false,
-        explanation: "Both are compiler plugins implemented in Babel, SWC, and TypeScript."
+        explanation: "This is tempting because \"no React import\" sounds like \"no function call at all.\" In reality the new transform still emits a function call\u2014`jsx('h1', { \u2026 })`\u2014it just imports `jsx` from `react/jsx-runtime` instead of calling a method on the `React` namespace."
       },
       {
         id: "B",
-        text: "Old transform compiled `<h1 />` to `React.createElement('h1')` (requiring `React` in scope); New transform imports `_jsx` from `react/jsx-runtime` (`_jsx('h1', { ... })`) automatically without needing `React` in scope.",
+        text: "The old transform compiled `<h1 />` to `React.createElement('h1', \u2026)`, requiring `React` in scope; the new transform auto-imports `jsx` from `react/jsx-runtime` and calls `jsx('h1', { \u2026 })` without any `React` binding.",
         isCorrect: true,
-        explanation: "Correct. The new transform delegates element creation to dedicated compiler runtime helpers (`react/jsx-runtime`), decoupling JSX from the global `React` object namespace."
+        explanation: "Correct. The new transform delegates element creation to dedicated helpers in `react/jsx-runtime`, decoupling JSX from the `React` global namespace and removing the mandatory `import React` from every file."
       },
       {
         id: "C",
-        text: "There is no difference; they output identical byte code.",
+        text: "The only practical difference is that the new transform lets you use `<>\u2026</>` fragments without importing `React.Fragment`; both transforms still emit `React.createElement` calls under the hood.",
         isCorrect: false,
-        explanation: "The new transform outputs direct calls to `_jsx` from `react/jsx-runtime` rather than `React.createElement`."
+        explanation: "Fragments work in both transforms (the old one emits `React.createElement(React.Fragment, \u2026)`), so that is not the distinguishing change. The new transform calls `jsx`/`jsxs` from `react/jsx-runtime`, not `React.createElement`."
       },
       {
         id: "D",
-        text: "Old transform only ran on Internet Explorer 6.",
+        text: "The new transform is purely a DX convenience; at runtime the emitted code is byte-for-byte identical because Babel rewrites `jsx()` calls back to `React.createElement` for compatibility.",
         isCorrect: false,
-        explanation: "The old transform was the standard JSX transpilation mechanism for all browsers prior to React 17."
+        explanation: "Babel does not rewrite the new runtime calls back to `createElement`. The emitted code references `react/jsx-runtime`, a separate module with its own `jsx` and `jsxs` functions, so the runtime path is genuinely different."
       }
     ],
     correctAnswer: "B",
-    explanation: "The new JSX transform automatically imports the special JSX runtime functions from the compiler package (e.g. react/jsx-runtime) instead of converting JSX tags into React.createElement calls. Consequently, 'import React from 'react'' is no longer required in scope solely for writing JSX, slightly reducing bundle size and improving compilation performance.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How does new JSX transform different from old transform?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How does new JSX transform different from old transform?.",
+    explanation: "The old JSX transform (React \u2264 16) desugared every JSX element into `React.createElement(type, props, \u2026children)`. Because that call references the `React` identifier, every file containing JSX needed `import React from 'react'` in scope, even if the component used no other React API.\n\nThe new transform, introduced in React 17, changes the emission target. The compiler (Babel, SWC, or TypeScript with `jsx: \"react-jsx\"`) emits calls to `jsx` or `jsxs` imported from `react/jsx-runtime`. `jsx` handles elements with zero or one child; `jsxs` handles multiple static children. The import is injected automatically, so the file never needs a `React` binding.\n\nIn practice this lets you drop the unused `import React` line, shrinks the module graph, and gives bundlers a tiny separate entry point (`react/jsx-runtime`) to deduplicate independently of the full `react` package. It also opens the door for compiler-level optimisations the generic `createElement` path could not express\u2014React 19's automatic memoisation of static JSX elements is one example.\n\nEdge case: if a monorepo mixes `jsx: \"react\"` (old) and `jsx: \"react-jsx\"` (new) across packages, files compiled with the old setting will still throw \"React is not defined\" at runtime if the import was removed, a subtle build error that only surfaces in the package using the old setting.",
+    interviewLine: "The new transform swaps the emission target from `React.createElement` to `jsx`/`jsxs` in `react/jsx-runtime`, so the compiler injects the import itself and the file no longer needs `React` in scope\u2014this is the same mechanism that lets React 19 memoise static JSX automatically.",
+    misconception: "Treating the removal of `import React` as a style preference rather than a consequence of a different runtime call target: the old transform's output literally references the `React` identifier, so omitting the import is a runtime ReferenceError, not a lint warning.",
     hints: [
-      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
+      "Think about which identifier the compiled output actually references at runtime. In the old transform, what global must exist in the module's scope?",
+      "In the new transform the compiler auto-injects an import from a specific sub-path of the `react` package. Which sub-path, and which two functions does it export for single-child vs multi-child elements?",
+      "Check the `jsx` compiler option in TypeScript (`\"react\"` vs `\"react-jsx\"`) or Babel (`runtime: \"classic\"` vs `runtime: \"automatic\"`). Which value maps to which transform?"
     ],
     source: "300-react",
     estimatedMinutes: 2,
-    bestPracticeRef: "https://react.dev/reference/react/hooks"
+    bestPracticeRef: "https://react.dev/reference/react/hooks",
+    example: {
+      caption: "Notice that the new-transform file has no `import React` line at all, yet the emitted code still calls a factory function\u2014just one from a different module.",
+      language: "tsx",
+      code: "import { useState } from \"react\";\n\nfunction Counter() {\n  const [n, setN] = useState(0);\n  return (\n    <button onClick={() => setN(n + 1)}>\n      Clicked {n} times\n    </button>\n  );\n}\n\n// Old transform output (simplified):\n// import React from \"react\";          // \u2190 required\n// React.createElement(\"button\", { onClick: \u2026 }, \"Clicked \", n, \" times\");\n\n// New transform output (simplified):\n// import { jsx as _jsx } from \"react/jsx-runtime\";  // \u2190 auto-injected\n// _jsx(\"button\", { onClick: \u2026, children: \"Clicked \", n, \" times\" });"
+    }
   }
 ];

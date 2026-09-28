@@ -14,7 +14,8 @@
     "verify": "tsx scripts/verify-logic.ts",
     "enrich": "tsx scripts/ollama-enrich.ts",
     "enrich:forever": "bash scripts/enrich-forever.sh",
-    "enrich:status": "tsx scripts/ollama-enrich.ts --status"
+    "enrich:status": "tsx scripts/ollama-enrich.ts --status",
+    "enrich:recheck": "tsx scripts/ollama-enrich.ts --recheck"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

@@ -4,9 +4,11 @@
 # - Restarts the enricher whenever it dies (crash, OOM, killed) after 60 s;
 #   each start skips whatever the bank already shows as enriched.
 # - Stops for good once a run exits cleanly: the queue is empty, or you
-#   pressed Ctrl+C (once = finish the current question, twice = now) —
-#   or on a configuration error such as a model that is not pulled (exit 2).
-# - Keeps the Mac awake for as long as this script lives.
+#   pressed Ctrl+C (once = finish the questions in flight, twice = now) —
+#   or on a configuration error: a model that is not pulled, or another
+#   enricher already running (exit 2).
+# - Keeps a Mac awake for as long as this script lives (elsewhere, keep the
+#   host from sleeping yourself).
 # - Appends everything to scratch/ollama-enrich/run.log.
 #
 # Usage: npm run enrich:forever [-- <enrich flags>]
@@ -16,7 +18,7 @@ cd "$(dirname "$0")/.."
 mkdir -p scratch/ollama-enrich
 LOG=scratch/ollama-enrich/run.log
 
-caffeinate -i -w $$ &
+if command -v caffeinate > /dev/null; then caffeinate -i -w $$ & fi
 
 while true; do
   echo "[supervisor] start $(date '+%F %T')" | tee -a "$LOG"

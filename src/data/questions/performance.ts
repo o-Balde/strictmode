@@ -57,7 +57,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     example: {
       caption: "Notice how useState, useRef, useCallback, and useEffect each occupy a fixed slot by call order, and how the cleanup returned from useEffect closes over the stable `clear` reference.",
       language: "tsx",
-      code: "import { useState, useEffect, useRef, useCallback } from \"react\";\n\nfunction Timer() {\n  const [seconds, setSeconds] = useState(0);\n  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);\n\n  const clear = useCallback(() => {\n    if (intervalRef.current !== null) {\n      clearInterval(intervalRef.current);\n      intervalRef.current = null;\n    }\n  }, []);\n\n  useEffect(() => {\n    intervalRef.current = setInterval(\n      () => setSeconds((s) => s + 1),\n      1000\n    );\n    return clear;\n  }, [clear]);\n\n  return (\n    <div>\n      <span>{seconds}s</span>\n      <button onClick={clear}>Stop</button>\n    </div>\n  );\n}"
+      code: "import { useState, useEffect, useRef, useCallback } from \"react\";\n\nfunction Timer() {\n  const [seconds, setSeconds] = useState(0);\n  const intervalRef = useRef<ReturnType<typeof setInterval> | null>(null);\n  const clear = useCallback(() => {\n    if (intervalRef.current !== null) {\n      clearInterval(intervalRef.current);\n      intervalRef.current = null;\n    }\n  }, []);\n  useEffect(() => {\n    intervalRef.current = setInterval(() => setSeconds((s) => s + 1), 1000);\n    return clear;\n  }, [clear]);\n  return (\n    <div>\n      <span>{seconds}s</span>\n      <button onClick={clear}>Stop</button>\n    </div>\n  );\n}"
     }
   },
   {
@@ -102,7 +102,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "A",
     explanation: "The Virtual DOM is a tree of plain JavaScript objects \u2014 each with a `type`, `props`, and `children` \u2014 that React builds in memory on every render. It is not a real DOM node and the browser never sees it. During reconciliation, React diffs the new tree against the previous one to identify exactly which nodes changed, then translates those differences into the smallest set of real DOM mutations.\n\nIn practice this means a single `setState` call that changes one prop on a deeply nested component results in one `setAttribute` call on the real element, rather than React tearing down and rebuilding the entire subtree. The browser avoids unnecessary layout, paint, and reflow work because untouched nodes are simply skipped.\n\nOne nuance worth naming: the Virtual DOM is a heuristic working copy, not a guarantee of minimal DOM writes. React's reconciliation relies on heuristics like the `key` prop and the assumption that sibling order is stable; if you violate those assumptions, React may issue more DOM operations than a hand-written diff would. The Virtual DOM also does not replace the DOM \u2014 it is a description React uses to decide what to do to the DOM.",
-    interviewLine: "The Virtual DOM is just a tree of plain objects \u2014 type, props, children \u2014 that React keeps in memory, and during reconciliation it diffs the new tree against the previous one so it only issues the handful of `setAttribute` or `appendChild` calls the browser actually needs.",
+    interviewLine: "I describe the Virtual DOM as just a tree of plain objects \u2014 type, props, children \u2014 that React keeps in memory, and during reconciliation it diffs the new tree against the previous one so it only issues the handful of `setAttribute` or `appendChild` calls the browser actually needs.",
     misconception: "Conflating \"virtual\" with a browser-native rendering technology or with Shadow DOM, rather than recognizing it as a userland data structure React uses as a working copy for diffing before touching the real DOM.",
     hints: [
       "Think about what React actually stores between renders: real DOM nodes, or something else the browser never sees?",
@@ -194,25 +194,25 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Redux stores state in client RAM, while MobX stores state on a remote backend Redis server.",
+        text: "Redux persists its state tree to a backend Redis server on every dispatch, while MobX keeps its observables entirely in client memory.",
         isCorrect: false,
         explanation: "Tempting if you conflate state management with data persistence, but both Redux and MobX are in-memory, client-side libraries. Neither ships state to a database; any server sync is an extra layer you add yourself."
       },
       {
         id: "B",
-        text: "Redux is only for functional components, whereas MobX is only for class components.",
+        text: "Redux can only be consumed from functional components via hooks, whereas MobX can only be wired into class components through decorators.",
         isCorrect: false,
         explanation: "This inverts the actual history. Redux originally paired with `connect` for class components but now uses `useSelector` and `useDispatch` hooks in function components. MobX started with the `observer` higher-order component for classes and now also supports `useObserver` and `useLocalObservable` hooks."
       },
       {
         id: "C",
-        text: "Redux uses a single immutable state tree with explicit pure reducers; MobX uses mutable observable objects with automatic granular dependency tracking.",
+        text: "Redux uses a single immutable state tree with explicit pure reducers; MobX uses mutable observable objects with granular dependency tracking.",
         isCorrect: true,
         explanation: "Correct. The architectural split is exactly this: Redux enforces a unidirectional flow through immutable snapshots, while MobX lets you mutate observable properties and relies on its internal tracker to update only the components that read the changed property."
       },
       {
         id: "D",
-        text: "MobX requires writing significantly more boilerplate code than Redux.",
+        text: "MobX requires far more boilerplate than Redux, since each observable field needs its own action type, action creator, and selector.",
         isCorrect: false,
         explanation: "This is the inverse of the common experience. A MobX store is typically a class with `observable` fields and `action` methods, while a Redux setup requires separate action types, action creators, a reducer, a store configuration, and selector functions for the same feature."
       }
@@ -232,7 +232,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     example: {
       caption: "Notice how Redux builds a new array on every update while MobX mutates the item in place and lets its tracker decide which components to re-render.",
       language: "typescript",
-      code: "// Redux: pure reducer returns a new reference\ntype Cart = { items: { id: string; qty: number }[] };\n\nfunction cartReducer(state: Cart, action: { type: string; id?: string }): Cart {\n  if (action.type === \"increment\") {\n    return {\n      items: state.items.map((i) =>\n        i.id === action.id ? { ...i, qty: i.qty + 1 } : i\n      ),\n    };\n  }\n  return state;\n}\n\n// MobX: mutable observable, tracker handles re-render\nimport { observable, action } from \"mobx\";\n\nclass CartStore {\n  items = observable.array(\n    [{ id: \"a\", qty: 1 }, { id: \"b\", qty: 2 }],\n    { deep: true }\n  );\n\n  increment = action((id: string) => {\n    const item = this.items.find((i) => i.id === id)!;\n    item.qty += 1; // direct mutation; only readers of .qty re-render\n  });\n}"
+      code: "// Redux: pure reducer returns a new reference\ntype Cart = { items: { id: string; qty: number }[] };\n\nfunction cartReducer(state: Cart, action: { type: string; id?: string }): Cart {\n  if (action.type === \"increment\") {\n    return {\n      items: state.items.map((i) => (i.id === action.id ? { ...i, qty: i.qty + 1 } : i)),\n    };\n  }\n  return state;\n}\n\n// MobX: mutable observable, tracker handles re-render\nimport { observable, action } from \"mobx\";\n\nclass CartStore {\n  items = observable.array([{ id: \"a\", qty: 1 }, { id: \"b\", qty: 2 }], { deep: true });\n  increment = action((id: string) => {\n    const item = this.items.find((i) => i.id === id)!;\n    item.qty += 1; // direct mutation; only readers of .qty re-render\n  });\n}"
     }
   },
   {
@@ -337,7 +337,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "B",
     explanation: "useCallback(fn, deps) stores the function and its dependency array between renders. On the next render it compares each dependency with the previous value using Object.is. If every value is the same, it returns the previously created function object; if any value differs, it creates and returns a new one. The result is a function reference that stays the same object across renders as long as its inputs do not change.\n\nWithout useCallback, a plain arrow function defined in the component body gets a new identity on every render. If you pass that function as a prop to a child wrapped in React.memo, the shallow prop comparison sees a new reference and re-renders the child even though nothing else changed. useCallback breaks that chain by handing the child the same object it already holds.\n\nThe nuance: useCallback adds a per-render comparison cost, so it is pure overhead when the child is cheap or when the callback is not passed to a memoized consumer. Also, the closure still captures the variables from the render in which it was created; memoization controls the reference, not the captured values.",
-    interviewLine: "useCallback memoizes the function reference across renders via a dependency array, so a child wrapped in React.memo sees an identical prop and skips its re-render instead of doing a shallow comparison that would fail on a new reference.",
+    interviewLine: "I use useCallback to memoize the function reference across renders via a dependency array, so a child wrapped in React.memo sees an identical prop and skips its re-render instead of doing a shallow comparison that would fail on a new reference.",
     misconception: "Thinking useCallback changes what the function does or when it runs, when in reality it only controls whether the function's reference is the same object across renders.",
     hints: [
       "Compare what useCallback returns on render N versus render N+1 when the dependencies are unchanged, and contrast that with a plain arrow function in the component body.",
@@ -395,7 +395,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "D",
     explanation: "`useMemo(fn, deps)` calls `fn` during render and caches the value it returns. On the next render, if every entry in `deps` is referentially equal to the previous render's entry, React skips the call and hands you the stored result. `useCallback(fn, deps)` never calls `fn`; it caches the function reference itself and returns that same reference until `deps` change.\n\nIn practice this means `useCallback` exists to give a child component a stable prop identity so `React.memo` can skip a re-render, while `useMemo` exists to avoid re-running an expensive computation (a `filter` over a large list, a `new Map(...)` build) on every render. Swapping them does not work: wrapping a handler in `useMemo` would call the handler and cache its return value, not the handler.\n\nThe two are formally linked: `useCallback(fn, deps)` is equivalent to `useMemo(() => fn, deps)`. A nuance interviewers probe is that neither hook is a performance guarantee. React may discard a cached value at any time (for example on concurrent re-renders), so you must not write logic that depends on the factory running exactly once per dependency change.",
-    interviewLine: "`useMemo` invokes the factory and caches the returned value; `useCallback` never calls the function, it just returns a stable reference. In fact, `useCallback(fn, deps)` is exactly `useMemo(() => fn, deps)` under the hood.",
+    interviewLine: "I'd say `useMemo` invokes the factory and caches the returned value while `useCallback` never calls the function, it just returns a stable reference \u2014 in fact `useCallback(fn, deps)` is exactly `useMemo(() => fn, deps)` under the hood.",
     misconception: "Treating `useCallback` as `useMemo` that also executes the function, rather than recognizing that the two differ in what they cache: a computed value versus a function reference.",
     hints: [
       "Look at what each hook returns to the component body when dependencies are unchanged.",
@@ -513,7 +513,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "A",
     explanation: "React.memo is a higher-order component. You pass a function component to it and it returns a new component that wraps the original. During reconciliation, the wrapper compares the new props object to the previous one using shallow equality (Object.is on each key). If every prop is identical, React skips calling the component function and reuses the last rendered output.\n\nThis matters when a parent re-renders often. Without memo, every child in the tree re-renders on each parent update. Wrap a child in memo and, as long as its props keep the same references, the child stays out of the render cycle. The parent still runs; only the child's function is skipped.\n\nTwo limits to keep in mind. The comparison is shallow, so a prop that is an object or array will trigger a re-render if its reference changes, even if its contents are the same. And memo does not freeze the component: changes to its own state (useState, useReducer) or to a context it consumes (useContext) still cause a re-render.",
-    interviewLine: "React.memo is a higher-order component that takes a component and returns a wrapper which does a shallow Object.is comparison on each prop key; if every prop is identical the component function is skipped and the previous output is reused.",
+    interviewLine: "I describe React.memo as a higher-order component that takes a component and returns a wrapper doing a shallow Object.is comparison on each prop key; if every prop is identical the component function is skipped and the previous output is reused.",
     misconception: "Candidates see the word 'memo' and assume it is a hook like useMemo that caches a computed value, rather than a wrapper applied outside a component definition that gates the entire render call.",
     hints: [
       "Look at what you pass into memo and what it returns: is it a hook called inside a component, or a wrapper applied outside one?",
@@ -570,7 +570,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "D",
-    explanation: "These techniques target four distinct bottlenecks in a React app. `React.memo`, `useMemo`, and `useCallback` reduce redundant re-renders and recomputations. `React.lazy` with `<Suspense>` splits the initial JavaScript bundle so the browser downloads and parses less code before first paint. List virtualization (for example `react-window`) replaces rendering 10,000 DOM nodes with rendering only the roughly 20 visible rows. State colocation keeps a value in the component that reads it, so a change re-renders one subtree instead of an ancestor and everything below.\n\nIn practice the biggest wins come from not doing work at all. A `useMemo` around an expensive `filter` or `reduce` means that computation runs only when its dependencies actually change, not on every parent render. `React.memo` on a list row means typing in a search box re-renders the input and the list container but skips every row whose `id` and `label` props are unchanged. Code splitting turns a 400 KB dashboard bundle into a 60 KB shell plus on-demand chunks.\n\nThe nuance an interviewer will probe next: memoization has a cost. `React.memo` performs a shallow prop comparison on every render, and `useMemo` stores a reference and re-checks its dependency array. Wrapping a cheap expression or a primitive in `useMemo` adds overhead with no savings. The right question is always whether the computation or the re-render is expensive enough to justify the bookkeeping.",
+    explanation: "These techniques target four distinct bottlenecks in a React app. `React.memo`, `useMemo`, and `useCallback` reduce redundant re-renders and recomputations. `React.lazy` with `<Suspense>` splits the initial JavaScript bundle so the browser downloads and parses less code before first paint. List virtualization (for example `react-window`) replaces rendering 10,000 DOM nodes with only the roughly 20 visible rows. State colocation keeps a value in the component that reads it, so a change re-renders one subtree instead of an ancestor and everything below.\n\nIn practice the biggest wins come from not doing work at all. A `useMemo` around an expensive `filter` or `reduce` means that computation runs only when its dependencies change, not on every parent render. `React.memo` on a list row means typing in a search box re-renders the input and the list container but skips every row whose props are unchanged. Code splitting turns a 400 KB dashboard bundle into a 60 KB shell plus on-demand chunks.\n\nThe nuance an interviewer will probe next: memoization has a cost. `React.memo` does a shallow prop comparison every render, and `useMemo` re-checks its dependency array. Wrapping a cheap expression or a primitive adds overhead with no savings. The right question is whether the computation or re-render is expensive enough to justify the bookkeeping.",
     interviewLine: "I identify which bottleneck I am actually hitting first. If it is redundant re-renders I reach for `React.memo` or `useMemo`; if it is bundle size I split with `React.lazy`; if it is a 50,000-row table I virtualize. Each tool has its own overhead, so I only add it where the cost of not doing so is higher.",
     misconception: "Treating React performance as one problem with one fix\u2014usually 'add `useMemo` everywhere'\u2014instead of recognizing that re-render cost, bundle size, DOM node count, and state scope are separate bottlenecks that need separate tools.",
     hints: [
@@ -630,7 +630,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "A",
     explanation: "The virtual DOM is a plain JavaScript object tree that mirrors the structure, types, and props of the real DOM. On every render, React builds this new in-memory tree from JSX, then runs reconciliation: it walks the previous fiber tree and the new tree in parallel, comparing node types, `key` values, and props to identify which subtrees actually changed.\n\nThe result is a list of minimal mutations\u2014attribute updates, insertions, removals\u2014batched into a single commit phase. Without this step, a state change in one component would force the browser to re-parse and re-layout the entire subtree, which is expensive because layout and paint are synchronous and block the main thread.\n\nReact does not keep two full copies of the tree in memory. It retains the previous fiber tree (each node carries `memoizedState`, `child`, and `sibling` links) and builds the new tree incrementally, reusing unchanged subtrees. The `key` prop matters here: it lets reconciliation match list items by identity rather than index, so reordering a list updates the right nodes instead of shuffling text into the wrong `<li>`.",
-    interviewLine: "The virtual DOM is just a plain object tree React builds from JSX on every render. Reconciliation walks the previous and new fiber trees in parallel, and only the nodes that actually changed produce DOM mutations in the commit phase\u2014so a single state update in one list item does not re-layout the whole page.",
+    interviewLine: "I describe the virtual DOM as just a plain object tree React builds from JSX on every render. Reconciliation walks the previous and new fiber trees in parallel, and only the nodes that actually changed produce DOM mutations in the commit phase\u2014so a single state update in one list item does not re-layout the whole page.",
     misconception: "The virtual DOM is often imagined as a second full copy of the DOM sitting in memory, or as a browser-level optimization. In reality it is a plain JS object tree that React builds and discards each render, and the 'diff' is a comparison between the previous fiber tree and the new one, not a comparison of two complete DOM snapshots.",
     hints: [
       "Between `setState` and the browser painting pixels, React builds a JS object tree, compares it to the last one, and writes only the differences to the real DOM.",
@@ -984,7 +984,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "B",
     explanation: "B is correct. A class component requires the runtime to call `new`, allocate an object, bind every method to `this`, and store state on that instance. A function component with hooks is just a function call: React invokes it, reads the hook slots from the fiber, and moves on. No object allocation, no `this` binding.\n\nThe second part matters in a real codebase. Wrapping a component in three HOCs adds three extra nodes to the fiber tree, each with its own render pass and reconciliation. Replacing those wrappers with custom hooks (`useAuth`, `useTheme`, `useRouter`) keeps the tree flat: the logic runs inside the one component that needs it, and the extracted functions minify to single characters because they are standalone, not named properties on a prototype.\n\nThe per-component delta is small. The difference compounds when a screen nests five HOCs or a class hierarchy of four levels. The bigger structural win is composition: you can call `useAuth()` in any component without wrapping it, pass its return value into another hook's arguments, or branch on it in a render expression. An HOC forces a fixed parent-child relationship in the tree and passes data down through props, which makes reordering or combining wrappers awkward.",
-    interviewLine: "Hooks are plain function calls, so there is no `new` allocation or `this` binding per component, and extracting logic into a custom hook does not add a wrapper node to the tree the way an HOC does. The per-component delta is tiny, but it compounds across a deep HOC stack, and the minification win is measurable in final bundle size.",
+    interviewLine: "I'd note that hooks are plain function calls, so there is no `new` allocation or `this` binding per component, and extracting logic into a custom hook does not add a wrapper node to the tree the way an HOC does. The per-component delta is tiny, but it compounds across a deep HOC stack, and I find the minification win measurable in final bundle size.",
     misconception: "The assumption that hooks are slower because they are \"just functions\" flips the cost model: the extra allocation, `this` binding, and HOC wrapper nodes belong to the class side, not the hook side.",
     hints: [
       "What does React actually allocate in memory when it mounts a class component versus a function component?",
@@ -1115,7 +1115,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     example: {
       caption: "Both Header and Footer re-render on every toggle because each subscribes to the same context value, even though they display it independently.",
       language: "tsx",
-      code: "import { createContext, useContext, useState } from \"react\";\n\nconst ThemeContext = createContext(\"light\");\n\nfunction Header() {\n  const theme = useContext(ThemeContext);\n  console.log(\"Header re-rendered\");\n  return <div>{theme}</div>;\n}\n\nfunction Footer() {\n  const theme = useContext(ThemeContext);\n  console.log(\"Footer re-rendered\");\n  return <div>{theme}</div>;\n}\n\nexport default function App() {\n  const [theme, setTheme] = useState(\"light\");\n  return (\n    <ThemeContext.Provider value={theme}>\n      <Header />\n      <Footer />\n      <button onClick={() => setTheme(\"dark\")}>Toggle</button>\n    </ThemeContext.Provider>\n  );\n}"
+      code: "import { createContext, useContext, useState } from \"react\";\n\nconst ThemeContext = createContext(\"light\");\n\nfunction Header() {\n  const theme = useContext(ThemeContext);\n  console.log(\"Header re-rendered\");\n  return <div>{theme}</div>;\n}\nfunction Footer() {\n  const theme = useContext(ThemeContext);\n  console.log(\"Footer re-rendered\");\n  return <div>{theme}</div>;\n}\nexport default function App() {\n  const [theme, setTheme] = useState(\"light\");\n  return (\n    <ThemeContext.Provider value={theme}>\n      <Header />\n      <Footer />\n      <button onClick={() => setTheme(\"dark\")}>Toggle</button>\n    </ThemeContext.Provider>\n  );\n}"
     }
   },
   {
@@ -1135,13 +1135,13 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Delete all React components and rewrite the entire app in raw vanilla HTML files.",
+        text: "Delete every React component and rewrite the whole app in static vanilla HTML files, hand-wiring each interaction with manual `document` calls.",
         isCorrect: false,
         explanation: "Tempting if you blame React itself for slowness, but removing the framework loses declarative rendering, state management, and the component model. You would rebuild every interaction in manual DOM manipulation, and the performance problem would simply reappear as uncontrolled reflows and lost state."
       },
       {
         id: "B",
-        text: "Apply `useMemo` to every single function and arithmetic addition in the app before profiling.",
+        text: "Apply `useMemo` to every function and arithmetic expression across the app before profiling, assuming more caching always means faster renders.",
         isCorrect: false,
         explanation: "Tempting if you equate memoization with speed, but `useMemo` allocates a new reference and runs a dependency comparison on every render. Sprinkling it across hundreds of trivial expressions adds measurable overhead and makes the code harder to read without fixing any actual bottleneck."
       },
@@ -1153,7 +1153,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       },
       {
         id: "D",
-        text: "Run all React rendering calculations inside `eval()` statements.",
+        text: "Run every React rendering calculation inside `eval()` statements, assuming dynamic code execution is faster than statically evaluated expressions.",
         isCorrect: false,
         explanation: "Tempting if you think dynamic code execution is faster than static evaluation, but `eval()` prevents the JavaScript engine from optimizing the surrounding scope, breaks source-map accuracy, and opens a code-injection vector. No modern React pattern requires it."
       }
@@ -1194,7 +1194,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "`React.memo` forces a component to re-render 60 times per second.",
+        text: "`React.memo` forces the wrapped component to re-render 60 times per second, synchronised to the browser's animation frame cadence.",
         isCorrect: false,
         explanation: "Tempting if you conflate \"memo\" with an animation loop or requestAnimationFrame, but memo does the opposite: it prevents re-renders. There is no timer, no frame-rate coupling, and no forced cadence anywhere in the implementation."
       },
@@ -1206,13 +1206,13 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       },
       {
         id: "C",
-        text: "`React.memo` performs deep recursive comparisons of nested JSON objects by default.",
+        text: "`React.memo` performs a deep recursive comparison of every nested JSON object in props by default, like `lodash.isEqual`, before deciding to re-render.",
         isCorrect: false,
         explanation: "Tempting if you expect a structural diff like lodash isEqual, but the default comparison is Object.is per top-level key. A nested object with identical contents still produces a new reference each render, so the shallow check fails and the component re-renders. You can pass a custom comparator as the second argument, but that is opt-in, not the default."
       },
       {
         id: "D",
-        text: "`React.memo` is a hook that replaces `useState` inside functional components.",
+        text: "`React.memo` is a hook you call inside a functional component body to replace `useState` and persist a value across re-renders.",
         isCorrect: false,
         explanation: "Tempting because the name sounds like `useMemo` (which is a hook), but React.memo is a plain function you call outside the component body. It returns a new component; it stores no state and cannot be called conditionally or inside render."
       }
@@ -1406,7 +1406,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     example: {
       caption: "Notice how only a slice of the array is mapped into JSX, and a single spacer div reserves the full scroll height so the scrollbar stays accurate.",
       language: "tsx",
-      code: "import { useState } from \"react\";\n\nfunction VirtualList({ items, itemHeight = 48 }) {\n  const [scrollTop, setScrollTop] = useState(0);\n  const viewport = 400;\n  const overscan = 3;\n\n  const start = Math.max(0, Math.floor(scrollTop / itemHeight) - overscan);\n  const end = Math.min(items.length, Math.ceil((scrollTop + viewport) / itemHeight) + overscan);\n  const visible = items.slice(start, end);\n\n  return (\n    <div\n      style={{ height: viewport, overflow: \"auto\" }}\n      onScroll={(e) => setScrollTop(e.currentTarget.scrollTop)}\n    >\n      <div style={{ height: items.length * itemHeight, position: \"relative\" }}>\n        {visible.map((item, i) => (\n          <div key={start + i} style={{ position: \"absolute\", top: (start + i) * itemHeight, height: itemHeight }}>\n            {item}\n          </div>\n        ))}\n      </div>\n    </div>\n  );\n}"
+      code: "import { useState } from \"react\";\n\nfunction VirtualList({ items, itemHeight = 48 }) {\n  const [scrollTop, setScrollTop] = useState(0);\n  const viewport = 400;\n  const overscan = 3;\n  const start = Math.max(0, Math.floor(scrollTop / itemHeight) - overscan);\n  const end = Math.min(items.length, Math.ceil((scrollTop + viewport) / itemHeight) + overscan);\n  const visible = items.slice(start, end);\n  return (\n    <div\n      style={{ height: viewport, overflow: \"auto\" }}\n      onScroll={(e) => setScrollTop(e.currentTarget.scrollTop)}\n    >\n      <div style={{ height: items.length * itemHeight, position: \"relative\" }}>\n        {visible.map((item, i) => (\n          <div key={start + i} style={{ position: \"absolute\", top: (start + i) * itemHeight, height: itemHeight }}>\n            {item}\n          </div>\n        ))}\n      </div>\n    </div>\n  );\n}"
     }
   },
   {
@@ -1427,13 +1427,13 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "React.memo runs on the server; useMemo runs in the browser; useCallback runs in Web Workers.",
+        text: "React.memo executes on the server during rendering, useMemo executes in the browser main thread, and useCallback offloads its function to a Web Worker.",
         isCorrect: false,
         explanation: "Tempting if you conflate memoization with a specific runtime environment, but all three operate in the same JavaScript runtime during React's render cycle. There is no server, browser, or Worker split among them."
       },
       {
         id: "B",
-        text: "useMemo and useCallback only work in class components.",
+        text: "useMemo and useCallback can only be called inside class components, while React.memo is reserved exclusively for functional components.",
         isCorrect: false,
         explanation: "This reverses the actual constraint: hooks can only be called inside functional components or custom hooks. Class components have no hook support at all."
       },
@@ -1445,14 +1445,14 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       },
       {
         id: "D",
-        text: "React.memo is deprecated and replaced entirely by useMemo for all components.",
+        text: "React.memo is deprecated in React 19 and the compiler now replaces every usage of it with an equivalent useMemo call automatically.",
         isCorrect: false,
         explanation: "Tempting if you hear 'memo' and assume one API subsumes the others, but React.memo is still the documented way to memoize a component. useMemo cannot replace it because it has no access to the component's prop comparison."
       }
     ],
     correctAnswer: "C",
     explanation: "`React.memo` is a higher-order component: you wrap a component with it, and React shallow-compares the new props against the previous props before deciding whether to re-render. `useMemo` and `useCallback` are hooks that live inside a component body. `useMemo` caches a computed value so it is not recalculated on every render; `useCallback` caches a function reference so the same identity is passed to children on every render.\n\nThe code in the question shows why they work together. Without `useMemo`, the object `{ name: \"Kamala\" }` is a new reference every render, so `React.memo` sees changed props and re-renders the child. Without `useCallback`, `handleClick` is a new function every render, with the same effect. Stabilising the value or the callback lets `React.memo`'s shallow comparison actually succeed.\n\nAn interviewer will probe the limits: a component that calls `useContext` re-renders whenever that context changes even if its own props are identical, and `React.memo` cannot stop that. The shallow comparison itself also has a cost, so wrapping every child in `React.memo` can slow rendering down rather than speed it up.",
-    interviewLine: "React.memo is a wrapper that shallow-compares props and skips the render if they are unchanged; useMemo and useCallback are hooks inside the component that keep a value or function reference stable across renders, which is what makes React.memo's comparison actually succeed.",
+    interviewLine: "I describe React.memo as a wrapper that shallow-compares props and skips the render if they are unchanged, while useMemo and useCallback are hooks inside the component that keep a value or function reference stable across renders \u2014 which is what makes React.memo's comparison actually succeed.",
     misconception: "Treating all three as interchangeable caching tools that do the same thing at different levels. In reality, React.memo operates at the component boundary (compare props, skip or run render), while useMemo and useCallback operate at the value level inside a render and have no say over whether the component re-renders.",
     hints: [
       "Ask yourself where each tool lives: outside the component boundary or inside its body.",
@@ -1523,7 +1523,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     example: {
       caption: "Type a note in Bob's row, remove Alice, and that text now shows in Carol's row because React kept the DOM node at each index and only swapped the label prop.",
       language: "tsx",
-      code: "import { useState } from \"react\";\n\nfunction Row({ label }: { label: string }) {\n  const [note, setNote] = useState(\"\");\n  return (\n    <div>\n      <b>{label}:</b>{\" \"}\n      <input value={note} onChange={(e) => setNote(e.target.value)} />\n    </div>\n  );\n}\n\nexport function List() {\n  const [items, setItems] = useState([\"Alice\", \"Bob\", \"Carol\"]);\n  const removeFirst = () => setItems((p) => p.slice(1));\n  const addFirst = () => setItems((p) => [`New ${p.length}`, ...p]);\n\n  return (\n    <div>\n      <button onClick={removeFirst}>Remove first</button>\n      <button onClick={addFirst}>Add to top</button>\n      {items.map((name, i) => (\n        <Row key={i} label={name} />\n      ))}\n    </div>\n  );\n}"
+      code: "import { useState } from \"react\";\n\nfunction Row({ label }: { label: string }) {\n  const [note, setNote] = useState(\"\");\n  return (\n    <div>\n      <b>{label}:</b>{\" \"}\n      <input value={note} onChange={(e) => setNote(e.target.value)} />\n    </div>\n  );\n}\nexport function List() {\n  const [items, setItems] = useState([\"Alice\", \"Bob\", \"Carol\"]);\n  const removeFirst = () => setItems((p) => p.slice(1));\n  const addFirst = () => setItems((p) => [`New ${p.length}`, ...p]);\n  return (\n    <div>\n      <button onClick={removeFirst}>Remove first</button>\n      <button onClick={addFirst}>Add to top</button>\n      {items.map((name, i) => (\n        <Row key={i} label={name} />\n      ))}\n    </div>\n  );\n}"
     }
   },
   {
@@ -1568,7 +1568,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "B",
     explanation: "Reconciliation is React's runtime algorithm that compares the previous element tree with the new one produced by a render function. For each node it checks the type and key; if either changed, it unmounts the old subtree and mounts a fresh one. If the type and key match, it updates the props in place. The result is a minimal list of insert, remove, and attribute-change operations applied to the real DOM.\n\nWithout reconciliation, every state change would tear down and rebuild the entire page. Because React only touches the nodes that actually changed, incrementing a counter in one component does not re-create its siblings or their DOM nodes. This is why `key` matters in list rendering: it tells reconciliation which item is which when the array reorders.\n\nThe comparison is structural, not a deep value equality check. Two elements with the same type and key but different prop objects are still the same node to reconciliation; React simply patches the changed props. This is why `React.memo` helps: without it, reconciliation still visits the child on every parent render even when its props are referentially equal.",
-    interviewLine: "Reconciliation is React's runtime structural diff: it walks the old and new element trees in parallel, uses type and key to decide whether a node is the same, and emits only the DOM mutations needed\u2014so a single state change never rebuilds the whole page.",
+    interviewLine: "I describe reconciliation as React's runtime structural diff: it walks the old and new element trees in parallel, uses type and key to decide whether a node is the same, and emits only the DOM mutations needed\u2014so a single state change never rebuilds the whole page.",
     misconception: "Treating reconciliation as a one-time build step or a generic \"compare two objects\" utility, rather than React's specific runtime algorithm that runs on every render to decide which DOM nodes to keep, patch, or replace.",
     hints: [
       "Think about what happens between the moment a component returns a new tree of elements and the moment the browser actually paints pixels.",
@@ -1601,32 +1601,32 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Shadow DOM is deprecated and replaced by Virtual DOM in HTML6.",
+        text: "Shadow DOM was deprecated in a later HTML revision and the Virtual DOM is the official browser standard that replaced it for component encapsulation.",
         isCorrect: false,
         explanation: "Tempting if you associate Shadow DOM with early-2010s experiments, but it is an active W3C specification underpinned by the Web Components Level 1 spec, and no \"HTML6\" standard exists that removed it."
       },
       {
         id: "B",
-        text: "Both are exact duplicates of each other running in parallel Web Workers.",
+        text: "Shadow DOM and the Virtual DOM are exact duplicates of the same tree, each running in its own parallel Web Worker to keep rendering off the main thread.",
         isCorrect: false,
         explanation: "This conflates two unrelated mechanisms and adds Web Workers, which neither technology requires. Shadow DOM is a browser rendering-engine feature; the Virtual DOM is a JavaScript data structure maintained by a framework."
       },
       {
         id: "C",
-        text: "Shadow DOM is a browser standard for encapsulated DOM and scoped CSS; Virtual DOM is an in-memory JS tree used to optimize rendering diffs.",
+        text: "Shadow DOM is a browser standard for encapsulated DOM and scoped CSS; the Virtual DOM is an in-memory JS tree used to optimize rendering diffs.",
         isCorrect: true,
         explanation: "Correct. Shadow DOM is defined by the W3C Web Components spec and gives native encapsulation; the Virtual DOM is a JavaScript in-memory tree that React (and similar frameworks) diff to compute minimal DOM updates."
       },
       {
         id: "D",
-        text: "Shadow DOM is used only in React; Virtual DOM is a native standard in all web browsers.",
+        text: "Shadow DOM is a React-only abstraction, whereas the Virtual DOM is a native browser standard that every modern engine implements directly.",
         isCorrect: false,
         explanation: "This reverses the relationship. Shadow DOM is the native browser standard available in every modern browser; the Virtual DOM is a library-level pattern that React, Vue, and others implement in JavaScript."
       }
     ],
     correctAnswer: "C",
     explanation: "Shadow DOM is a W3C specification (part of Web Components) that attaches a separate, hidden DOM tree to a host element. Its markup and `<style>` rules are isolated from the document, so page-level CSS cannot reach in and the component's CSS cannot leak out. The Virtual DOM is a JavaScript pattern, popularised by React, where the framework keeps an in-memory tree of UI state, diffs it against the previous tree, and issues only the minimal set of real DOM mutations.\n\nIn practice these solve two different jobs. Shadow DOM gives you encapsulation: a `<style>` tag inside the shadow root is invisible to the rest of the page. The Virtual DOM gives you efficient re-rendering: React never calls `appendChild` or `setAttribute` during render; it builds an object tree, compares it to the last one, and batches the small number of real DOM calls needed.\n\nThey are not alternatives and they can coexist. A Web Component can render its internal UI with a virtual-DOM framework, and a React app can mount into a shadow root. The word \"DOM\" in both names refers to the same underlying tree, but each technology touches it for a completely different reason.",
-    interviewLine: "Shadow DOM is a browser-level encapsulation boundary defined by the Web Components spec, while the Virtual DOM is an in-memory JavaScript tree that React diffs to compute the minimum set of real DOM mutations. They solve different problems and can even be layered on top of each other.",
+    interviewLine: "I distinguish Shadow DOM as a browser-level encapsulation boundary defined by the Web Components spec from the Virtual DOM, which is an in-memory JavaScript tree that React diffs to compute the minimum set of real DOM mutations. I point out they solve different problems and can even be layered on top of each other.",
     misconception: "Because both names contain the word \"DOM,\" learners assume they are two versions of the same feature, when in fact one is a browser-level encapsulation boundary and the other is a JavaScript rendering-optimisation pattern that never touches the real DOM during its diff phase.",
     hints: [
       "One of the two lives inside the browser's rendering engine; the other lives in a JavaScript library's heap.",
@@ -1685,7 +1685,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "D",
     explanation: "A Pure Component is one where React skips calling render when a shallow comparison shows its inputs are unchanged. For class components, extending `React.PureComponent` makes React compare `this.props` and `this.state` key-by-key with `Object.is` before invoking `render`. For function components, wrapping with `React.memo` applies the same shallow check to props. If every top-level key passes, the child's render is skipped entirely and the previous output is reused.\n\nIn real code this matters when a parent re-renders frequently\u2014say a counter button above a long list. If the parent passes a stable reference (a module-level array, a memoised value), the pure child skips work. If the parent creates a new object or array literal on every render, the shallow check fails and the child re-renders anyway, negating the optimisation. This is the interaction that makes `useMemo` and `useCallback` useful alongside `React.memo`.\n\nThe nuance an interviewer will probe: the check is strictly top-level. If a prop is an object whose internal fields mutated but whose reference stayed the same, a pure component will NOT re-render. Conversely, if the reference changed but the contents are identical, it WILL re-render. React 19's React Compiler inserts equivalent memoisation automatically, so manual `React.memo` is increasingly a performance escape hatch rather than a default.",
-    interviewLine: "A pure component is one where React compares each top-level prop (and state) with `Object.is` and skips the render call entirely if nothing changed, so the cost is a single pass over keys rather than a full re-render or a deep structural diff.",
+    interviewLine: "I describe a pure component as one where React compares each top-level prop (and state) with `Object.is` and skips the render call entirely if nothing changed, so the cost is a single pass over keys rather than a full re-render or a deep structural diff.",
     misconception: "The word \"pure\" suggests a deep, exhaustive structural comparison or a special runtime, when it actually means a cheap, top-level `Object.is` check that decides whether `render` is invoked.",
     hints: [
       "Look at what React does between receiving new props and actually calling your render function.",
@@ -1865,7 +1865,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "C",
     explanation: "A custom hook is a plain JavaScript function whose name starts with `use`. It calls built-in hooks such as `useState` or `useEffect` and returns the state values or handler functions the caller needs. The `use` prefix is not optional decoration: React's linter and the Rules of Hooks treat any function matching that pattern as a hook, which means it must be called unconditionally at the top level of a component or another hook.\n\nIn the example, `useForm` wraps `useState` and a `handleChange` closure. Every component that calls `useForm` gets its own independent `formData` because `useState` is invoked inside the hook and React tracks hook state per component instance. The hook adds no extra render pass and no extra node to the component tree; it is simply a function call that lets you extract and share stateful logic without duplicating the `useState` boilerplate.\n\nThe constraint an interviewer will probe: you cannot call a custom hook conditionally, inside a loop, or inside a nested callback, because React identifies hooks by their position in the call sequence. A custom hook may also call other custom hooks, letting you compose small hooks into larger ones while each still obeys the same ordering rules.",
-    interviewLine: "A custom hook is just a function whose name starts with `use`; it calls built-in hooks internally and returns state or handlers, so each component that calls it gets its own isolated state. The `use` prefix is what lets React's linter enforce the Rules of Hooks at every call site.",
+    interviewLine: "I describe a custom hook as just a function whose name starts with `use`; it calls built-in hooks internally and returns state or handlers, so each component that calls it gets its own isolated state. The `use` prefix is what lets React's linter enforce the Rules of Hooks at every call site.",
     misconception: "A custom hook is a special React primitive (a class, a registered component, or a browser API) rather than a plain function that happens to call other hooks and must follow the Rules of Hooks by name and call position.",
     hints: [
       "Look at `useForm` in the code: what is it syntactically, and what does it call internally?",
@@ -1924,7 +1924,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "D",
     explanation: "React Suspense is a component boundary. When a child or descendant throws a Promise during the render phase, the nearest Suspense boundary catches it and renders its `fallback` prop in place of the subtree. Once that Promise resolves, React re-renders the same subtree with the real content.\n\nIn practice this removes the manual `useState` + `useEffect` loading dance for every async operation. You wrap the component that needs data or a dynamic import in a boundary, declare the fallback once, and the loading UI stays colocated with the component it protects. It works with `React.lazy` for code-splitting and with any data-fetching pattern that suspends by throwing a Promise.\n\nThe word \"suspend\" is a render-phase concept, not a thread-blocking one. The browser event loop is never frozen. Multiple boundaries can nest, each showing its own fallback independently, and in React 19 the `use` hook lets you read a Promise directly inside a component without a separate hook.",
-    interviewLine: "Suspense is a component boundary, not a hook. When a child throws a Promise during render, the nearest boundary renders its `fallback` prop, and once that Promise resolves React re-renders the subtree with the resolved content \u2014 the event loop is never blocked.",
+    interviewLine: "I describe Suspense as a component boundary, not a hook. When a child throws a Promise during render, the nearest boundary renders its `fallback` prop, and once that Promise resolves React re-renders the subtree with the resolved content \u2014 the event loop is never blocked.",
     misconception: "Reading \"suspend\" as a thread-blocking or execution-pausing operation, when in reality it is a render-phase signal: a child throws a Promise, the boundary swaps in a fallback, and the browser thread is never held up.",
     hints: [
       "Look at how the code wraps `LazyComponent` in a boundary that has a `fallback` prop and a child.",
@@ -2114,7 +2114,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     example: {
       caption: "Clicking the button changes `fontSize`, creating a new `value` object, so `Header` re-renders even though it only reads `theme`.",
       language: "tsx",
-      code: "const ThemeContext = React.createContext({\n  theme: \"light\",\n  fontSize: 14,\n});\n\nfunction Header() {\n  const { theme } = React.useContext(ThemeContext);\n  return <div style={{ color: theme }}>{theme}</div>;\n}\n\nfunction Body() {\n  const { fontSize } = React.useContext(ThemeContext);\n  return <p style={{ fontSize }}>{fontSize}px</p>;\n}\n\nfunction App() {\n  const [fontSize, setFontSize] = React.useState(14);\n  const value = { theme: \"light\", fontSize };\n  return (\n    <ThemeContext.Provider value={value}>\n      <Header />\n      <Body />\n      <button onClick={() => setFontSize((f) => f + 1)}>+1</button>\n    </ThemeContext.Provider>\n  );\n}"
+      code: "const ThemeContext = React.createContext({ theme: \"light\", fontSize: 14 });\n\nfunction Header() {\n  const { theme } = React.useContext(ThemeContext);\n  return <div style={{ color: theme }}>{theme}</div>;\n}\nfunction Body() {\n  const { fontSize } = React.useContext(ThemeContext);\n  return <p style={{ fontSize }}>{fontSize}px</p>;\n}\nfunction App() {\n  const [fontSize, setFontSize] = React.useState(14);\n  const value = { theme: \"light\", fontSize };\n  return (\n    <ThemeContext.Provider value={value}>\n      <Header />\n      <Body />\n      <button onClick={() => setFontSize((f) => f + 1)}>+1</button>\n    </ThemeContext.Provider>\n  );\n}"
     }
   },
   {
@@ -2160,7 +2160,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "C",
     explanation: "When `setCount(count + 1)` runs, React does not reassign the local variable `count`. It records the new value in the internal queue attached to that `useState` call, then marks the component as needing a re-render. The `count` binding in the current render's closure still holds the old number for the rest of that synchronous execution.\n\nIn practice this means two `setCount` calls in the same handler produce one re-render, not two: React batches the updates, re-runs `Counter` once with the final queued value, and the button text updates a single time. If you `console.log(count)` immediately after the setter, you see the pre-update value, not the new one.\n\nThe nuance an interviewer will probe: batching is per event-loop tick, not per component. Updates scheduled from different components in the same tick are coalesced into one render pass. In React 18 and later, this batching extends to updates inside promises and `setTimeout`, so the older 'one update, one render' intuition no longer holds.",
-    interviewLine: "Calling `setCount` doesn't mutate `count` in the current render; it enqueues an update that React batches with any other pending updates, then re-runs the component function with the new state and patches only the changed DOM nodes.",
+    interviewLine: "I'd point out that calling `setCount` doesn't mutate `count` in the current render; it enqueues an update that React batches with any other pending updates, then re-runs the component function with the new state and patches only the changed DOM nodes.",
     misconception: "Reading `setCount(count + 1)` as a synchronous assignment that immediately changes the value of `count` in the current scope, rather than an enqueue operation whose effect is only visible on the next render.",
     hints: [
       "What does `count` hold if you `console.log(count)` on the very next line after calling `setCount`?",
@@ -2253,25 +2253,25 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "A global switch that moves all React rendering onto parallel C++ worker threads and the GPU.",
+        text: "A single global switch that moves all React rendering onto parallel C++ worker threads and the GPU to render components in true parallel.",
         isCorrect: false,
         explanation: "Tempting if you equate \"concurrent\" with \"parallel hardware threads,\" but React's scheduler runs entirely on the main JavaScript thread. There is no C++ worker pool, no GPU offloading, and no global toggle \u2014 the APIs are per-update."
       },
       {
         id: "B",
-        text: "A mode that suppresses every state update so that no re-render can occur.",
+        text: "A mode that suppresses every state update and discards queued setState calls so that no re-render can ever occur while it is active.",
         isCorrect: false,
         explanation: "Tempting if you read \"concurrent\" as an access-control lock, but concurrent features change when and how React schedules renders; they never discard a state update. Every `setState` still triggers a render \u2014 the difference is whether that render can be interrupted."
       },
       {
         id: "C",
-        text: "A feature that serialises client components into SQL tables for server-side persistence.",
+        text: "A feature that serialises client component trees into SQL tables so the server can persist and restore interactive UI state between requests.",
         isCorrect: false,
         explanation: "No React API maps component trees to database tables. \"Client components\" is a Next.js App Router label for components that execute in the browser; it has no relation to SQL or data storage."
       },
       {
         id: "D",
-        text: "Features introduced in React 18 (`useTransition`, `useDeferredValue`, Suspense) that allow React to pause, interrupt, and prioritize rendering work to keep the UI responsive during heavy updates.",
+        text: "React 18 features (`useTransition`, `useDeferredValue`, Suspense) that let React pause, interrupt, and prioritize rendering to keep the UI responsive during heavy updates.",
         isCorrect: true,
         explanation: "Correct. `useTransition` and `useDeferredValue` mark specific updates as non-urgent, and `Suspense` handles data boundaries; together they let the scheduler interleave urgent and deferred work on the same thread."
       }
@@ -2395,7 +2395,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "C",
     explanation: "Static generation (SSG) renders each page to complete HTML during the build step. The framework executes your React components, runs any data-fetching functions (for example `generateStaticParams` and `generateMetadata` in the App Router), and writes the resulting markup to disk as plain `.html` files. No server is needed to serve the result; the output is a folder of static assets.\n\nBecause the files are static, a CDN can cache them at every edge location. A request from Tokyo and a request from S\u00e3o Paulo hit the same pre-built bytes with no round-trip to an origin server, which is what gives SSG its near-zero server load and very low time-to-first-byte. Search crawlers also receive fully rendered HTML immediately, so there is no dependency on JavaScript execution for indexing.\n\nThe trade-off an interviewer will probe: the HTML is frozen at the moment of the build. If the underlying data changes, the page stays stale until a new build or an incremental regeneration (ISR via `revalidate`) runs. Pure SSG is ideal for content that changes infrequently\u2014marketing pages, documentation, blog archives\u2014rather than for dashboards that need live data.",
-    interviewLine: "SSG means the framework renders each route to a complete HTML file during `next build`. Those files are static assets, so a CDN can serve them from the edge with no origin round-trip. The cost is that the content is frozen until you rebuild or trigger an ISR revalidation.",
+    interviewLine: "I explain SSG as the framework rendering each route to a complete HTML file during `next build`. Those files are static assets, so a CDN can serve them from the edge with no origin round-trip. The cost I flag is that the content is frozen until I rebuild or trigger an ISR revalidation.",
     misconception: "Confusing SSG with SSR because both involve the server producing HTML. The distinction is timing: SSG runs once at build time and writes files to disk; SSR runs on every request and streams a fresh response, so it still needs a live server in the request path.",
     hints: [
       "Think about when the HTML is produced: at deploy time or at request time?",
@@ -2510,7 +2510,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "C",
-    explanation: "React Router v6 ships four `<Router>` components: `<BrowserRouter>`, `<HashRouter>`, `<MemoryRouter>`, and `<StaticRouter>`. They all inject the same router context into the component tree; the only thing that changes is the history object underneath. `<BrowserRouter>` reads and writes the URL through the HTML5 History API (`pushState`, `replaceState`, `popstate`). `<HashRouter>` does the same but scopes the path to the `#` fragment, so the server always sees the root URL. `<MemoryRouter>` keeps its history stack in a plain JavaScript array with no DOM interaction, which is why it works in Jest, React Native, or any environment without a real `window.location`. `<StaticRouter>` accepts a fixed `location` prop and silently ignores `navigate()` calls, making it safe for a single server-side render pass.\n\nIn practice the choice is mechanical: a normal SPA gets `<BrowserRouter>`; a static-CDN deploy that cannot rewrite URLs gets `<HashRouter>`; a unit test or embedded widget gets `<MemoryRouter>`; a custom Node.js SSR script gets `<StaticRouter>`. Mixing them up is a real bug \u2014 reaching for `<BrowserRouter>` in a test couples your test to a browser history implementation it does not need, and wrapping `<StaticRouter>` around a client-side SPA will freeze navigation because it never responds to `navigate()` calls.\n\nThe nuance an interviewer probes next is that these are thin wrappers, not different routing engines. Under the hood every one of them calls the same `createRoutesFromChildren` and `matchRoutes` logic from `@remix-run/router`; the router component only decides which `createBrowserHistory`, `createHashHistory`, `createMemoryHistory`, or a no-op static history to pass in. So swapping routers in a codebase should not change which routes match \u2014 only where the URL string is stored and whether navigation actually mutates the address bar.",
+    explanation: "React Router v6 ships four `<Router>` components: `<BrowserRouter>`, `<HashRouter>`, `<MemoryRouter>`, and `<StaticRouter>`. They all inject the same router context; only the history object underneath changes. `<BrowserRouter>` reads and writes the URL through the HTML5 History API (`pushState`, `popstate`). `<HashRouter>` scopes the path to the `#` fragment, so the server always sees the root URL. `<MemoryRouter>` keeps its history stack in a plain JS array with no DOM interaction, which is why it works in Jest or React Native. `<StaticRouter>` takes a fixed `location` and ignores `navigate()`, making it safe for one server-side render pass.\n\nIn practice the choice is mechanical: a normal SPA gets `<BrowserRouter>`; a static-CDN deploy that cannot rewrite URLs gets `<HashRouter>`; a test or widget gets `<MemoryRouter>`; a Node SSR script gets `<StaticRouter>`. Mixing them up is a bug: `<StaticRouter>` around a client SPA freezes navigation.\n\nThe nuance an interviewer probes next is that these are thin wrappers, not different engines. Each calls the same `matchRoutes` logic from `@remix-run/router`; the component only picks which history to pass in. Swapping routers never changes which routes match \u2014 only where the URL lives and whether navigation mutates the address bar.",
     interviewLine: "React Router v6 gives you four `<Router>` wrappers \u2014 `<BrowserRouter>`, `<HashRouter>`, `<MemoryRouter>`, `<StaticRouter>` \u2014 and they all expose the same `useNavigate` and `useLocation` hooks; the only difference is the history object they inject, so I pick the one that matches where the URL actually lives in my environment.",
     misconception: "Treating the router as a single opaque component rather than a thin wrapper whose only job is to pick a history implementation (browser, hash, memory, or static) and inject it into context, so the rest of the routing code stays identical.",
     hints: [
@@ -2602,13 +2602,13 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "SQL tables, Redis caches, Apache web servers, and Docker containers.",
+        text: "SQL tables for data, Redis caches for sessions, Apache web servers for routing, and Docker containers for deployment of the component tree.",
         isCorrect: false,
         explanation: "Tempting if you equate a web application's full architecture with its hosting stack, but React is a client-side rendering library; none of these are React concepts or appear in a component file."
       },
       {
         id: "B",
-        text: "CPU registers, motherboard buses, RAM slots, and disk drivers.",
+        text: "CPU registers for state, motherboard buses for data flow, RAM slots for props, and disk drivers for persistence, mapped onto component internals.",
         isCorrect: false,
         explanation: "Tempting if you read 'building blocks' as physical hardware, but React runs inside a browser or Node.js process and has no direct access to registers, buses, or memory slots."
       },
@@ -2620,14 +2620,14 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       },
       {
         id: "D",
-        text: "Flash animations, Java Applets, ActiveX plugins, and Silverlight modules.",
+        text: "Flash animations for motion, Java Applets for logic, ActiveX plugins for interactivity, and Silverlight modules for media, composed into a page.",
         isCorrect: false,
         explanation: "Tempting if you associate early-2000s web interactivity with React, but React was created in 2013 specifically to replace plugin-based UI approaches; none of these technologies are part of React."
       }
     ],
     correctAnswer: "C",
     explanation: "React's architecture rests on a small set of composable pieces. A Component is a plain function that returns JSX, a syntax extension that describes the UI declaratively. Props are the read-only inputs a parent passes down; state is mutable data the component owns and updates through its setter. Context lets a value skip intermediate levels of the tree without threading it through every prop. The Virtual DOM is React's in-memory tree that the reconciler diffs against the previous render to compute the smallest set of real DOM mutations.\n\nIn practice this means you never call `document.createElement` or `appendChild`. You describe what the UI should look like for a given props/state combination, and React's scheduler decides which nodes to create, update, or remove. A component that receives a new prop and re-renders does not touch the DOM directly; it produces a new virtual tree, and the diff step applies the patch.\n\nOne nuance an interviewer will probe: the Virtual DOM is not a performance guarantee. It is a reconciliation strategy. For a large list, React still walks every node in the diff; `React.memo`, stable `key` values, and splitting state to limit re-render scope are what actually control cost.",
-    interviewLine: "React's core loop is: a component function returns a virtual tree from JSX, the reconciler diffs it against the previous tree, and applies minimal DOM patches. Props are the read-only contract from the parent, state is the component's own mutable data, and context is the escape hatch for data that would otherwise require prop drilling through every level.",
+    interviewLine: "I describe React's core loop as: a component function returns a virtual tree from JSX, the reconciler diffs it against the previous tree, and applies minimal DOM patches. Props are the read-only contract from the parent, state is the component's own mutable data, and context is the escape hatch for data that would otherwise require prop drilling through every level.",
     misconception: "Treating React as a server-side framework or a static HTML templating engine rather than a client-side library whose components are live functions managed by a reconciler that diffs virtual trees and patches the real DOM.",
     hints: [
       "Think about what a React component actually is at runtime: a function call that returns a description of UI, not a DOM node or a server process.",
@@ -2685,7 +2685,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "B",
     explanation: "The Virtual DOM is a tree of plain JavaScript objects \u2014 each carrying a `type`, `props`, and `children` \u2014 that describes the UI without touching the browser. On every render, React builds a fresh virtual tree, then reconciliation walks both the previous and new trees to identify exactly which nodes changed.\n\nIn practice this means React never replaces a subtree's `innerHTML` on a state update. Instead it calls targeted operations such as `node.textContent = \"42\"` or `node.setAttribute(\"class\", \"active\")` on only the elements that differ, leaving the rest of the DOM untouched. That targeted mutation is what keeps updates cheap relative to a full re-render.\n\nOne nuance an interviewer may probe: the virtual tree is ephemeral. It exists only long enough to be diffed and committed, then is eligible for garbage collection. It is not a second persistent DOM, and it is not a browser feature \u2014 it is a strategy inside React's JavaScript runtime. React 19's concurrent scheduling (transitions, Suspense) layers on top of this same reconciliation step without changing what a virtual node is.",
-    interviewLine: "The Virtual DOM is a tree of plain JS objects that React rebuilds each render; reconciliation diffs the old and new trees in memory, then applies only the changed attributes, text, or child nodes to the real DOM, so we avoid full re-renders of the page.",
+    interviewLine: "I treat the Virtual DOM as a tree of plain JS objects that React rebuilds each render; reconciliation diffs the old and new trees in memory, then applies only the changed attributes, text, or child nodes to the real DOM, so I avoid full page re-renders.",
     misconception: "Thinking the Virtual DOM is a second, persistent DOM tree maintained by the browser or a CSS-scoping mechanism like Shadow DOM, rather than an ephemeral in-memory object tree that React rebuilds and discards on every render.",
     hints: [
       "Think about what `React.createElement` actually returns \u2014 is it a DOM node or something else?",
@@ -2743,7 +2743,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "A",
     explanation: "The Real DOM is the browser's live tree of elements, attributes, and text nodes, managed by the browser's C++ engine. Every direct mutation\u2014setting `innerHTML`, appending a node, changing a style\u2014can force a synchronous reflow (layout recalculation) and repaint (pixel redraw). The Virtual DOM is a plain JavaScript object tree that React keeps in memory. React diffs the new virtual tree against the previous one, then applies only the minimal set of real DOM mutations in a single batch.\n\nIn practice, hand-mutating 500 list items with `appendChild` in a loop can trigger a reflow after each call. React computes the diff in JS (cheap object comparison) and issues a small number of targeted DOM writes, so the browser reflows once.\n\nThe Virtual DOM is not a universal speedup. For a single `textContent` change, the overhead of building and diffing the virtual tree can exceed the cost of one direct assignment. React's benefit scales with the number of simultaneous changes and the depth of the component tree.",
-    interviewLine: "The Real DOM is the browser's live tree where each mutation can trigger reflow and repaint; the Virtual DOM is just a JS object tree React keeps in memory. React diffs the two virtual trees, then batches the minimal set of real DOM writes so the browser only reflows once.",
+    interviewLine: "I describe the Real DOM as the browser's live tree where each mutation can trigger reflow and repaint, and the Virtual DOM as just a JS object tree React keeps in memory. React diffs the two virtual trees, then batches the minimal set of real DOM writes so the browser only reflows once.",
     misconception: "Thinking the Virtual DOM is a separate rendering engine or a browser feature, when it is simply a JavaScript object tree that React uses as a staging area before committing changes to the real DOM.",
     hints: [
       "Ask yourself what the browser actually renders versus what React keeps in a JS variable.",
@@ -2801,7 +2801,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "D",
     explanation: "`this.setState` is a method available on class components. It accepts a partial state object or an updater function, enqueues that update in React's internal queue, and after the queue is processed, shallowly merges the partial into `this.state` before scheduling a re-render of the component subtree.\n\nIn practice this means you can call `this.setState({ count: this.state.count + 1 })` and then, on the very next line, `this.state.count` still holds the old value. React applies the merge and re-renders later within the same batch. Multiple `setState` calls inside one event handler collapse into a single re-render.\n\nThe merge is shallow: passing `{ user: { name: \"Ada\" } }` replaces the entire `user` object rather than merging `name` into an existing one. The optional second argument, a callback, runs after React has committed the update and the component has re-rendered, which is the reliable place to read the new `this.state`.",
-    interviewLine: "`this.setState` enqueues a partial update, React shallow-merges it into `this.state` during the next render, and schedules a re-render of the component subtree \u2014 so `this.state` on the line after the call still holds the old value.",
+    interviewLine: "I'd explain that `this.setState` enqueues a partial update, React shallow-merges it into `this.state` during the next render, and schedules a re-render of the component subtree \u2014 so `this.state` on the line after the call still holds the old value.",
     misconception: "Treating `this.setState` like a synchronous assignment: calling it and then reading `this.state` on the next line, expecting the new value to already be there.",
     hints: [
       "Look at what `this.state` holds on the line immediately after a `this.setState` call.",
@@ -2834,13 +2834,13 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Disable browser JavaScript execution to eliminate all render and reconciliation overhead.",
+        text: "Disable browser JavaScript execution entirely so the page skips all render and reconciliation overhead and paints only static markup.",
         isCorrect: false,
         explanation: "Tempting if you equate \"less code running\" with \"faster,\" but a React application is JavaScript; turning it off removes the app entirely, not its overhead."
       },
       {
         id: "B",
-        text: "Wrap every component in its own Redux store so no parent re-render can cascade.",
+        text: "Wrap every component in its own dedicated Redux store so that no parent re-render can ever cascade down into its children.",
         isCorrect: false,
         explanation: "Plausible if you think more isolation always helps, but each store subscription adds a listener and a selector call per render, and primitive elements like `<div>` have no state to isolate in the first place."
       },
@@ -2892,13 +2892,13 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Wrap every single integer variable in its own global Redux store.",
+        text: "Wrap every single integer and string variable in its own global Redux store so each primitive value is tracked independently across the app.",
         isCorrect: false,
         explanation: "Tempting if you equate \"more state management\" with \"more control,\" but a Redux store per primitive means thousands of subscriptions, a new `useSelector` per variable, and a global dispatch round-trip for what a local `useState` handles in one line. It also forces every subscriber to re-render on any unrelated store change, which is the opposite of the isolation you want."
       },
       {
         id: "B",
-        text: "Mutate state directly without calling `setState` or dispatching actions.",
+        text: "Mutate state objects directly in place without calling `setState` or dispatching an action, so React skips the re-render that an update would schedule.",
         isCorrect: false,
         explanation: "Tempting because it looks like a normal variable assignment, but React schedules a re-render only when `setState` (or a reducer dispatch) signals that a value changed. Mutating the object in place leaves the reference identical, so React's diffing sees no change and the UI stays stale."
       },
@@ -2910,13 +2910,13 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       },
       {
         id: "D",
-        text: "Disable browser JavaScript execution entirely.",
+        text: "Disable browser JavaScript execution entirely so the framework never runs its render loop or reconciliation on the client.",
         isCorrect: false,
         explanation: "Tempting only if you treat the framework as the problem rather than the tool, but a React app is JavaScript; turning it off removes interactivity, routing, and rendering altogether. Performance work is about doing less of the right work, not removing the runtime."
       }
     ],
     correctAnswer: "C",
-    explanation: "React re-renders a component whenever its state changes or a parent re-renders and passes new props. `React.memo` shallow-compares props and skips the child's render if nothing changed. `useMemo` caches an expensive computation so it only re-runs when its dependency array changes. `useCallback` caches a function reference so children wrapped in `React.memo` don't see a \"new\" prop each render. `React.lazy` combined with `<Suspense>` defers loading a component's JavaScript chunk until it is actually mounted. Virtualization (for example `react-window`) renders only the rows visible in the viewport instead of thousands of DOM nodes at once. Colocating state means declaring it in the component that reads it, so an update re-renders only that subtree rather than a distant ancestor and everything below.\n\nWithout these techniques, a single state change in a top-level component cascades re-renders through every child, even those whose props are identical. For a data table with ten thousand rows, rendering and diffing all of them on every keystroke causes layout thrash and dropped frames on a phone.\n\nThe trade-off an interviewer will probe: every `useMemo` and `useCallback` call adds its own comparison cost on each render. If the wrapped computation is a simple arithmetic expression, memoizing it is measurably slower than just computing it inline. `React.memo` also runs a shallow `Object.is` check per prop, so if a parent always passes a freshly created object, the memo adds overhead without saving a render. Profile first, memoize second.",
+    explanation: "React re-renders a component whenever its state changes or a parent re-renders and passes new props. `React.memo` shallow-compares props and skips the child's render if nothing changed. `useMemo` caches an expensive computation so it only re-runs when its dependency array changes. `useCallback` caches a function reference so children wrapped in `React.memo` don't see a \"new\" prop each render. `React.lazy` with `<Suspense>` defers loading a component's chunk until it mounts. Virtualization (for example `react-window`) renders only the rows visible in the viewport. Colocating state re-renders only that subtree rather than a distant ancestor.\n\nWithout these techniques, a single state change in a top-level component cascades re-renders through every child, even those whose props are identical. For a table with ten thousand rows, diffing all of them on every keystroke causes layout thrash and dropped frames on a phone.\n\nThe trade-off an interviewer will probe: every `useMemo` and `useCallback` adds its own comparison cost on each render. If the wrapped computation is a simple arithmetic expression, memoizing it is slower than computing it inline. `React.memo` also runs a shallow `Object.is` check per prop, so if a parent always passes a freshly created object, the memo adds overhead without saving a render. Profile first, memoize second.",
     interviewLine: "I profile with React DevTools first to find which components actually re-render on a state change, then I add `React.memo` or `useMemo` only where the render cost is measurable, and I keep state as local as possible so an update re-renders the smallest subtree.",
     misconception: "Performance optimization means adding more infrastructure\u2014more stores, more wrappers, more middleware\u2014rather than reducing the number of components that re-render and the amount of DOM the browser must lay out.",
     hints: [
@@ -2975,7 +2975,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "C",
     explanation: "Lazy loading in React means the JavaScript code for a component is not downloaded with the initial bundle. `React.lazy()` wraps a dynamic `import()` call and returns a component; when that component first enters the render tree, React triggers the import, fetches the chunk, and renders it. `<Suspense>` wraps the lazy component and displays a fallback while the promise is pending.\n\nIn practice this shrinks the initial payload. A user who lands on a marketing page never downloads the analytics dashboard code, so first paint and time-to-interactive improve. The trade-off is a brief fallback flash the first time the user navigates to a lazy route.\n\nTwo details an interviewer will probe: `React.lazy` only accepts a default export, and the fetch is triggered by first render, not by a scroll position or a timer. If the component unmounts before the chunk arrives, the import still completes in the background but the result is discarded.",
-    interviewLine: "`React.lazy()` wraps a dynamic `import()`, so the component's code chunk is not downloaded until that component first renders. `<Suspense>` handles the in-flight window by showing a fallback, which keeps the initial bundle small without blocking the rest of the page.",
+    interviewLine: "I use `React.lazy()` to wrap a dynamic `import()`, so the component's code chunk is not downloaded until that component first renders. `<Suspense>` handles the in-flight window by showing a fallback, which keeps my initial bundle small without blocking the rest of the page.",
     misconception: "Treating lazy loading as a timing mechanism for state updates or renders, when it is actually about deferring the network fetch of a JavaScript chunk until the component first enters the render tree.",
     hints: [
       "Look at what `React.lazy()` actually wraps: a function that returns a promise from `import()`.",
@@ -3008,19 +3008,19 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Forcing components to re-render 60 times per second.",
+        text: "Forcing a component to re-render 60 times per second so its cached output always reflects the newest frame of application state.",
         isCorrect: false,
         explanation: "The exact opposite of what memoization does. Memoization exists to skip work that would otherwise repeat; it never schedules, throttles, or forces renders."
       },
       {
         id: "B",
-        text: "Deleting unused variables from JavaScript runtime memory automatically.",
+        text: "Automatically deleting unused variables from JavaScript runtime memory once no component references them anymore, like a manual garbage collector.",
         isCorrect: false,
         explanation: "This describes garbage collection, which reclaims unreachable objects. Memoization does the inverse: it deliberately keeps a computed value alive in a closure so you can reuse it instead of recomputing."
       },
       {
         id: "C",
-        text: "Storing user passwords permanently in unencrypted browser cookies.",
+        text: "Storing user passwords and session tokens permanently in unencrypted browser cookies so they survive a page reload without a server call.",
         isCorrect: false,
         explanation: "Memoization is an in-memory, per-render optimization scoped to a component or hook. It has no relationship to persistent browser storage, cookies, or credential handling."
       },
@@ -3066,7 +3066,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "useState persists all component data to the browser's localStorage automatically.",
+        text: "useState persists all of a component's data to the browser's localStorage automatically, so the values survive a full page reload without extra code.",
         isCorrect: false,
         explanation: "Tempting if you conflate React state with browser storage, but useState keeps values in memory for the lifetime of the component. Nothing touches localStorage unless you explicitly call it yourself."
       },
@@ -3078,7 +3078,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       },
       {
         id: "C",
-        text: "useState provides local, per-component state where the setter schedules a re-render rather than mutating the current variable, and updater callbacks handle dependent updates by reading the latest queued value.",
+        text: "useState gives local, per-component state where the setter schedules a re-render instead of mutating the current variable, and updater callbacks read the latest queued value.",
         isCorrect: true,
         explanation: "Correct. useState returns a snapshot value and a setter that queues a re-render; the updater form guarantees each step sees the previous step's result, which is the mechanism that prevents lost updates in batched or rapid sequences."
       },
@@ -3358,7 +3358,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Hooks automatically uninstall Redux from the project once installed.",
+        text: "Installing a React hook automatically uninstalls Redux from the project, since the two cannot coexist in the same `node_modules` tree.",
         isCorrect: false,
         explanation: "Tempting if you read \"replace\" as a destructive action, but installing a React hook has no effect on other packages in `node_modules` or the registry; `react-redux` simply exposes `useSelector` and `useDispatch` as hooks that read from an existing store."
       },
@@ -3370,13 +3370,13 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       },
       {
         id: "C",
-        text: "Context API is always faster than Redux because it has fewer abstraction layers.",
+        text: "The Context API is always at least 100x faster than Redux because it has fewer abstraction layers and ships no extra runtime code.",
         isCorrect: false,
         explanation: "Tempting if you assume fewer layers means fewer re-renders, but without selectors every Context consumer re-renders on any state change, whereas Redux's `useSelector` with a narrow selector prevents that; the \"100\u00d7\" figure has no basis in either library's implementation."
       },
       {
         id: "D",
-        text: "`useState` only accepts primitives, so any object or array state requires Redux.",
+        text: "`useState` can only hold primitive values, so any object or array state must be moved into a Redux store to be managed correctly.",
         isCorrect: false,
         explanation: "Tempting if you conflate reference identity with a type restriction, but `useState` accepts any JavaScript value including objects and arrays; the real limitation is that replacing a reference triggers re-renders, which `useReducer` and selectors help manage, not a ban on non-primitive types."
       }
@@ -3396,7 +3396,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     example: {
       caption: "Notice how every component calling `useCart` re-renders on any cart change, which is fine for a few consumers but becomes the reason to reach for Redux selectors at scale.",
       language: "tsx",
-      code: "import { createContext, useContext, useReducer } from \"react\";\n\ntype Cart = { items: string[] };\ntype Action = { type: \"ADD\"; item: string } | { type: \"CLEAR\" };\n\nfunction cartReducer(state: Cart, action: Action): Cart {\n  switch (action.type) {\n    case \"ADD\":\n      return { items: [...state.items, action.item] };\n    case \"CLEAR\":\n      return { items: [] };\n  }\n}\n\nconst CartCtx = createContext<\n  { state: Cart; dispatch: React.Dispatch<Action> } | null\n>(null);\n\nexport function CartProvider({ children }: { children: React.ReactNode }) {\n  const [state, dispatch] = useReducer(cartReducer, { items: [] });\n  return <CartCtx.Provider value={{ state, dispatch }}>{children}</CartCtx.Provider>;\n}\n\nexport function useCart() {\n  const ctx = useContext(CartCtx);\n  if (!ctx) throw new Error(\"useCart must be inside CartProvider\");\n  return ctx;\n}"
+      code: "import { createContext, useContext, useReducer } from \"react\";\n\ntype Cart = { items: string[] };\ntype Action = { type: \"ADD\"; item: string } | { type: \"CLEAR\" };\n\nfunction cartReducer(state: Cart, action: Action): Cart {\n  switch (action.type) {\n    case \"ADD\":\n      return { items: [...state.items, action.item] };\n    case \"CLEAR\":\n      return { items: [] };\n  }\n}\n\nconst CartCtx = createContext<{ state: Cart; dispatch: React.Dispatch<Action> } | null>(null);\n\nexport function CartProvider({ children }: { children: React.ReactNode }) {\n  const [state, dispatch] = useReducer(cartReducer, { items: [] });\n  return <CartCtx.Provider value={{ state, dispatch }}>{children}</CartCtx.Provider>;\n}\nexport function useCart() {\n  const ctx = useContext(CartCtx);\n  if (!ctx) throw new Error(\"useCart must be inside CartProvider\");\n  return ctx;\n}"
     }
   },
   {
@@ -3454,7 +3454,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     example: {
       caption: "Notice that `useMemo` wraps only the sort, `useCallback` exists only because `Row` is wrapped in `memo`, and the rest of the code is left alone.",
       language: "tsx",
-      code: "import { useMemo, useCallback, memo } from \"react\";\n\nfunction ExpensiveTable({ rows }: { rows: number[] }) {\n  const sorted = useMemo(() => [...rows].sort((a, b) => b - a), [rows]);\n\n  const onRowClick = useCallback(\n    (id: number) => console.log(\"row\", id),\n    []\n  );\n\n  return (\n    <tbody>\n      {sorted.slice(0, 50).map((v, i) => (\n        <Row key={i} value={v} onClick={onRowClick} />\n      ))}\n    </tbody>\n  );\n}\n\nconst Row = memo(function Row({\n  value,\n  onClick,\n}: {\n  value: number;\n  onClick: (id: number) => void;\n}) {\n  return <tr onClick={() => onClick(value)}>{value}</tr>;\n});"
+      code: "import { useMemo, useCallback, memo } from \"react\";\n\nfunction ExpensiveTable({ rows }: { rows: number[] }) {\n  const sorted = useMemo(() => [...rows].sort((a, b) => b - a), [rows]);\n  const onRowClick = useCallback((id: number) => console.log(\"row\", id), []);\n  return (\n    <tbody>\n      {sorted.slice(0, 50).map((v, i) => (\n        <Row key={i} value={v} onClick={onRowClick} />\n      ))}\n    </tbody>\n  );\n}\n\nconst Row = memo(function Row({\n  value,\n  onClick,\n}: {\n  value: number;\n  onClick: (id: number) => void;\n}) {\n  return <tr onClick={() => onClick(value)}>{value}</tr>;\n});"
     }
   },
   {
@@ -3474,19 +3474,19 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "React components can only be styled using native browser Flash animations.",
+        text: "React components can only be styled through native browser Flash animations loaded as a plugin alongside the component tree.",
         isCorrect: false,
         explanation: "Adobe Flash was discontinued in 2020 and never integrated with React or the DOM. Styling in React works through CSS (modules, utility classes, or CSS-in-JS) applied via the `className` or `style` attribute, not through a plugin-based animation runtime."
       },
       {
         id: "B",
-        text: "React requires all styles to be written in SQL database tables.",
+        text: "React requires every style rule to be written as rows in a SQL database table and queried at render time to produce the CSS.",
         isCorrect: false,
         explanation: "SQL is a query language for relational databases; it has no mechanism to emit visual properties to a browser. React styles are declared in CSS files, CSS Modules, utility-class frameworks, or CSS-in-JS libraries, all of which produce CSS that the browser's rendering engine consumes."
       },
       {
         id: "C",
-        text: "Styling can only be done using raw inline strings with `document.write`.",
+        text: "Styling can only be applied by concatenating raw inline strings and writing them into the page with `document.write` on each render.",
         isCorrect: false,
         explanation: "`document.write` overwrites the entire document stream and is incompatible with React's virtual-DOM reconciliation. React sets styles through the `className` prop (which maps to the `class` attribute) or the `style` prop (which maps to `element.style`), both of which are safe, declarative, and diffable."
       },
@@ -3557,7 +3557,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "C",
-    explanation: "React.memo wraps a function component and, before rendering, performs a shallow equality check on its props. If every prop reference is identical to the previous render, the component skips its render pass. That check only succeeds when references are stable: a new object literal or arrow function created inline in the parent is a different reference each time, so the memo bails out and the child re-renders anyway. useMemo and useCallback freeze those references to a single allocation. Colocating state means the component that calls the setter is the one that re-renders, so the update does not propagate through ancestors that do not need the new value. Passing children as composition slots lets a wrapper render opaque content without receiving a new data object on every pass.\n\nIn a real dashboard, a parent that holds a search query re-renders on every keystroke. Without memo and stable props, every chart, table row, and badge in that subtree re-renders and re-lays out. With the patterns above, only the input and the filter logic re-execute; the expensive chart component sees the same data reference and bails out entirely.\n\nThe nuance an interviewer probes next: React.memo adds a comparison cost on every render of the parent. For a component that is trivially cheap to render, the comparison itself may cost more than the saved work. Also, useMemo is not a cache; it is a guard that recomputes only when its dependency array changes, and an empty array means the value is computed once for the lifetime of that component instance.",
+    explanation: "React.memo wraps a function component and, before rendering, performs a shallow equality check on its props. If every prop reference is identical to the previous render, the component skips its render pass. That check only succeeds when references are stable: a new object literal or arrow function created inline in the parent is a different reference each time, so the memo bails out and the child re-renders anyway. useMemo and useCallback freeze those references to a single allocation. Colocating state means the component that calls the setter is the one that re-renders.\n\nIn a real dashboard, a parent that holds a search query re-renders on every keystroke. Without memo and stable props, every chart, table row, and badge in that subtree re-renders and re-lays out. With the patterns above, only the input and the filter logic re-execute; the expensive chart sees the same data reference and bails out.\n\nThe nuance an interviewer probes next: React.memo adds a comparison cost on every render of the parent. For a trivially cheap component, the comparison itself may cost more than the saved work. Also, useMemo is not a cache; it is a guard that recomputes only when its dependency array changes, and an empty array means the value is computed once for the component's lifetime.",
     interviewLine: "I wrap leaf components in React.memo and make sure every object or function prop I pass them has a stable reference via useMemo or useCallback. I also keep state as close to the component that reads it as possible, so a keystroke in one input does not re-render the whole page.",
     misconception: "React.memo compares prop values deeply, so passing a new object with the same contents is harmless. In reality it is a shallow reference check: `{ a: 1 } !== { a: 1 }`, and the child re-renders every time.",
     hints: [
@@ -3571,7 +3571,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     example: {
       caption: "Typing in the input re-renders FilteredList, but each Row receives the same string prop, so React.memo skips every Row's render.",
       language: "tsx",
-      code: "import { memo, useState } from \"react\";\n\nconst Row = memo(function Row({ name }: { name: string }) {\n  console.log(`Row \"${name}\" rendered`);\n  return <li>{name}</li>;\n});\n\nconst NAMES = [\"Alpha\", \"Beta\", \"Gamma\"];\n\nfunction FilteredList() {\n  const [query, setQuery] = useState(\"\");\n\n  return (\n    <div>\n      <input\n        value={query}\n        onChange={(e) => setQuery(e.target.value)}\n        placeholder=\"filter\"\n      />\n      <ul>\n        {NAMES.map((name) => (\n          <Row key={name} name={name} />\n        ))}\n      </ul>\n    </div>\n  );\n}"
+      code: "import { memo, useState } from \"react\";\n\nconst Row = memo(function Row({ name }: { name: string }) {\n  console.log(`Row \"${name}\" rendered`);\n  return <li>{name}</li>;\n});\n\nconst NAMES = [\"Alpha\", \"Beta\", \"Gamma\"];\n\nfunction FilteredList() {\n  const [query, setQuery] = useState(\"\");\n  return (\n    <div>\n      <input value={query} onChange={(e) => setQuery(e.target.value)} placeholder=\"filter\" />\n      <ul>\n        {NAMES.map((name) => (\n          <Row key={name} name={name} />\n        ))}\n      </ul>\n    </div>\n  );\n}"
     }
   },
   {
@@ -3676,7 +3676,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "A",
     explanation: "`key` is a prop you set on each element in a mapped array so React can identify which item is which across renders. During reconciliation, React compares the keys in the previous render's list with the keys in the next list. A matching key means \"same item, possibly moved\"; a missing key means \"removed\"; a new key means \"added.\" This lets React reuse existing DOM nodes and component instances instead of tearing everything down and rebuilding it.\n\nIn practice this matters when a list reorders or an item is deleted in the middle. If you use `index` as the key and delete the first item, every remaining item's key shifts by one. React sees every key as changed, re-runs mount logic for every row, discards local `useState` values, resets focused inputs, and triggers unnecessary layout work.\n\nKeys only need to be unique among siblings in the same array; they do not need to be globally unique. If you extract a row into a `TodoRow` component, the key still goes on `<TodoRow key={todo.id}>` in the parent's map, not inside the component itself. Using `index` as a key is acceptable only when the list is purely append-only and never reorders or mutates in place.",
-    interviewLine: "A key is React's identity token for list reconciliation. It tells the diffing algorithm which element is which between two renders, so DOM nodes and local component state follow the data rather than the position, which is why a stable ID beats an index whenever the list can reorder.",
+    interviewLine: "I describe a key as React's identity token for list reconciliation. It tells the diffing algorithm which element is which between two renders, so DOM nodes and local component state follow the data rather than the position, which is why I use a stable ID over an index whenever the list can reorder.",
     misconception: "Treating `key` as a data attribute, a CSS hook, or a database identifier rather than a reconciliation identity token, or assuming that using the array index is equivalent to using a stable ID because both produce unique values within a single render.",
     hints: [
       "Think about what React must decide when a five-item list becomes four items because one was deleted in the middle.",
@@ -3833,19 +3833,19 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       },
       {
         id: "B",
-        text: "They permanently disable all CSS stylesheets on child elements.",
+        text: "They permanently disable every CSS stylesheet and inherited style on their child elements, forcing you to re-declare styles inline.",
         isCorrect: false,
         explanation: "Tempting if you read \"no wrapper element\" as \"no styling context,\" but fragments pass through every inherited and applied style to their children unchanged; the children are styled exactly as if the fragment were not there."
       },
       {
         id: "C",
-        text: "They automatically translate text into 50 spoken languages.",
+        text: "They automatically translate the text content of their children into 50 spoken languages at render time using a built-in i18n engine.",
         isCorrect: false,
         explanation: "Fragments are a structural grouping mechanism in JSX; they have no relationship to text processing, i18n libraries, or language translation."
       },
       {
         id: "D",
-        text: "They execute 1000x faster by compiling directly into C++ binaries.",
+        text: "They execute roughly 1000x faster than a `<div>` because the compiler emits their children directly as a native C++ binary.",
         isCorrect: false,
         explanation: "React renders to the DOM through JavaScript in the browser; there is no C++ compilation step. The small performance benefit of a fragment comes from one fewer DOM node to allocate and diff, not from a different runtime."
       }
@@ -3982,7 +3982,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     example: {
       caption: "One `Button` component used in two places; the parent owns the state and passes a callback down, so data flows in a single direction.",
       language: "tsx",
-      code: "import { useState } from \"react\";\n\ntype ButtonProps = {\n  label: string;\n  variant: \"primary\" | \"secondary\";\n  onClick: () => void;\n};\n\nfunction Button({ label, variant, onClick }: ButtonProps) {\n  return (\n    <button className={`btn btn--${variant}`} onClick={onClick}>\n      {label}\n    </button>\n  );\n}\n\nexport function Toolbar() {\n  const [count, setCount] = useState(0);\n  return (\n    <div className=\"toolbar\">\n      <Button label=\"Save\" variant=\"primary\" onClick={() => console.log(\"saved\")} />\n      <Button\n        label={`Retry (${count})`}\n        variant=\"secondary\"\n        onClick={() => setCount((c) => c + 1)}\n      />\n    </div>\n  );\n}"
+      code: "import { useState } from \"react\";\n\ntype ButtonProps = { label: string; variant: \"primary\" | \"secondary\"; onClick: () => void };\n\nfunction Button({ label, variant, onClick }: ButtonProps) {\n  return (\n    <button className={`btn btn--${variant}`} onClick={onClick}>\n      {label}\n    </button>\n  );\n}\nexport function Toolbar() {\n  const [count, setCount] = useState(0);\n  return (\n    <div className=\"toolbar\">\n      <Button label=\"Save\" variant=\"primary\" onClick={() => console.log(\"saved\")} />\n      <Button\n        label={`Retry (${count})`}\n        variant=\"secondary\"\n        onClick={() => setCount((c) => c + 1)}\n      />\n    </div>\n  );\n}"
     }
   },
   {
@@ -4087,7 +4087,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "C",
     explanation: "C is correct. `setState` is asynchronous and batched: React queues the update and applies it before the next render, not immediately after the call. When you pass an object, the expression `this.state.count + 1` is evaluated at call time, reading whatever `this.state` holds in that moment. When you pass a function, React stores the updater in a queue and feeds the result of each one into the next, so every step sees the value produced by the previous step.\n\nIn the code, all three object-based calls read `this.state.count` as 0 because no re-render has happened yet. Each one sets `count` to 1, and after batching the final state is 1, not 3. The functional form avoids this: the first updater receives `{ count: 0 }`, the second receives `{ count: 1 }`, the third receives `{ count: 2 }`, and the final state is 3.\n\nThis matters most inside event handlers, lifecycle methods, or any code path that fires more than one update before the next render. React 18's automatic batching widened the window in which stale reads occur, making the functional form the safer default whenever the next update depends on the previous one.",
-    interviewLine: "`setState` batches updates and defers the state write until the next render, so reading `this.state` in a subsequent call still gives you the old value; by passing an updater function, React feeds each result into the next updater and the increments accumulate correctly.",
+    interviewLine: "I'd explain that `setState` batches updates and defers the state write until the next render, so reading `this.state` in a subsequent call still gives me the old value; by passing an updater function, React feeds each result into the next updater and the increments accumulate correctly.",
     misconception: "Assuming that `this.state` is refreshed synchronously after each `setState` call, so the next call in the same tick reads the already-updated value.",
     hints: [
       "What value does `this.state.count` hold at the exact moment the second and third `setState` calls execute?",
@@ -4100,7 +4100,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     example: {
       caption: "The same stale-read problem in a function component: three `setCount(count + 1)` calls all capture `count` as 0, while the functional form accumulates correctly.",
       language: "tsx",
-      code: "import { useState } from \"react\";\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n\n  function staleIncrement() {\n    setCount(count + 1);\n    setCount(count + 1);\n    setCount(count + 1);\n    // all three read count as 0 \u2192 final value is 1\n  }\n\n  function functionalIncrement() {\n    setCount((prev) => prev + 1);\n    setCount((prev) => prev + 1);\n    setCount((prev) => prev + 1);\n    // each updater receives the previous result \u2192 final value is 3\n  }\n\n  return (\n    <div>\n      <p>Count: {count}</p>\n      <button onClick={staleIncrement}>+1 (stale)</button>\n      <button onClick={functionalIncrement}>+3 (functional)</button>\n    </div>\n  );\n}"
+      code: "import { useState } from \"react\";\n\nfunction Counter() {\n  const [count, setCount] = useState(0);\n  function staleIncrement() {\n    setCount(count + 1);\n    setCount(count + 1);\n    setCount(count + 1);\n    // all three read count as 0 \u2192 final value is 1\n  }\n  function functionalIncrement() {\n    setCount((prev) => prev + 1);\n    setCount((prev) => prev + 1);\n    setCount((prev) => prev + 1);\n    // each updater receives the previous result \u2192 final value is 3\n  }\n  return (\n    <div>\n      <p>Count: {count}</p>\n      <button onClick={staleIncrement}>+1 (stale)</button>\n      <button onClick={functionalIncrement}>+3 (functional)</button>\n    </div>\n  );\n}"
     }
   },
   {
@@ -4180,13 +4180,13 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "The newest state management hook introduced in React 19.",
+        text: "The newest state-management hook introduced in React 19, used to merge several pieces of local state into one shared object.",
         isCorrect: false,
         explanation: "Tempting if you associate the word 'mixin' with a modern React API, but mixins predate ES6 classes and Hooks; they were removed from the recommended API long before React 19."
       },
       {
         id: "B",
-        text: "A database replication tool used for mixing SQL and NoSQL tables.",
+        text: "A database replication tool for mixing SQL and NoSQL tables into a single query layer that React components can read from directly.",
         isCorrect: false,
         explanation: "The word 'mix' suggests data blending, but React mixins had nothing to do with databases; they merged JavaScript methods and lifecycle hooks into a component object."
       },
@@ -4198,14 +4198,14 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       },
       {
         id: "D",
-        text: "A CSS processor used to mix multiple RGB colors into gradients.",
+        text: "A CSS preprocessor feature that mixes multiple RGB color channels into gradients applied to a component's rendered output.",
         isCorrect: false,
         explanation: "Confusing a component-composition pattern with a styling tool; mixins operated on JavaScript methods and lifecycle hooks, not CSS values or color channels."
       }
     ],
     correctAnswer: "C",
     explanation: "Mixins were a code-sharing mechanism in `React.createClass`, the pre-ES6 way of defining React components. You listed objects in the `mixins` array, and React merged each object's methods and lifecycle hooks directly into your component. In the example, `PureRenderMixin` injects a `shouldComponentUpdate` that does a shallow comparison of props and state to skip re-renders.\n\nThe pattern was deprecated because it made component behavior implicit: a component silently gained methods and lifecycle hooks from every mixin it listed, and two mixins could collide on the same method name. Reading a single component's source did not tell you what it actually did.\n\nReact replaced mixins with higher-order components, render props, and eventually Hooks. `PureRenderMixin` specifically became `React.PureComponent` for class components and `React.memo` for function components.",
-    interviewLine: "Mixins were a `React.createClass` pattern where you listed objects in a `mixins` array and React merged their methods and lifecycle hooks into the component. It was deprecated because dependencies became implicit and names could collide; `React.memo` and Hooks replaced the common use cases.",
+    interviewLine: "I'd explain that mixins were a `React.createClass` pattern where you listed objects in a `mixins` array and React merged their methods and lifecycle hooks into the component. It was deprecated because dependencies became implicit and names could collide, and I now use `React.memo` and Hooks for those cases.",
     misconception: "Mixins sound like a current React feature or a general JavaScript concept, but they are a specific, deprecated mechanism from the `React.createClass` era that has no role in modern component code.",
     hints: [
       "Look at the `mixins` array and `React.createClass` in the code\u2014those two signals place this firmly in legacy React.",
@@ -4321,7 +4321,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "C",
     explanation: "React Router v4 exposes three top-level `<Router>` components, each wrapping a different `history` object that tracks the current URL and a stack of past entries. `<BrowserRouter>` uses the HTML5 History API (`pushState`, `replaceState`, and the `popstate` event) to produce clean URLs like `/about`. `<HashRouter>` stores the route in the fragment identifier (`#/about`), so the browser never sends a path change to the server. `<MemoryRouter>` keeps the entire history stack in a plain JavaScript array, with no URL at all.\n\nYou pick the wrapper based on your hosting environment. `<BrowserRouter>` gives the best user-facing URLs but requires a server rewrite rule so that a hard refresh on `/about` returns the app shell instead of a 404. `<HashRouter>` works on any static file server with zero configuration because the hash is never part of the request path. `<MemoryRouter>` is the default in Jest and React Native, where there is no `window.history` to drive.\n\nThe three wrappers are interchangeable at the API level: both `<Route>` and `<Link>` read the same context, so switching from `<BrowserRouter>` to `<HashRouter>` is a one-line change. In React Router v6 the same three history backends still exist, now also available as `createBrowserRouter`, `createHashRouter`, and `createMemoryRouter` for the data-router API.",
-    interviewLine: "React Router v4 gives you three top-level router components \u2014 BrowserRouter, HashRouter, and MemoryRouter \u2014 and the choice between them is really about where the history stack lives: the HTML5 History API, the URL hash, or a plain in-memory array.",
+    interviewLine: "I'd name React Router v4's three top-level router components \u2014 BrowserRouter, HashRouter, and MemoryRouter \u2014 and explain the choice between them is really about where the history stack lives: the HTML5 History API, the URL hash, or a plain in-memory array.",
     misconception: "Treating \"router\" as a single monolithic component when the three wrappers differ in a concrete way: where the URL history stack physically lives (History API, `#` fragment, or a JS array).",
     hints: [
       "Each `<Router>` component wraps a `history` object. Ask yourself: what are the three places a URL history can live in a browser or test environment?",
@@ -4379,7 +4379,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "B",
     explanation: "Reselect is a memoization library for selectors, most commonly paired with Redux. Its core function, `createSelector`, takes one or more input selectors and a result function, and returns a new selector that caches its computation.\n\nOn each invocation the returned selector calls every input selector to get its current value, then compares those values by reference (`===`) against the values stored from the previous call. If every input is referentially identical, it returns the cached output and skips the result function. If any input reference changed, it runs the result function, stores the new inputs and output, and returns the fresh result.\n\nIn practice this means a selector that filters and sorts a ten-thousand-item array runs only when the array reference actually changes, not on every component re-render. Multiple components can share the same memoized selector without triggering redundant work. The nuance an interviewer probes: memoization is only as good as the input selectors it wraps. If an input selector returns a new object or array on every call, the downstream selector sees a changed reference and recomputes every time, silently defeating the cache.",
-    interviewLine: "Reselect's `createSelector` compares input selector outputs by reference on each call; if they are all identical to the previous call it returns the cached result, otherwise it runs the result function and updates the cache. The key gotcha is that an input selector returning a fresh object every time will invalidate the downstream cache on every render.",
+    interviewLine: "I'd explain that Reselect's `createSelector` compares input selector outputs by reference on each call; if they are all identical to the previous call it returns the cached result, otherwise it runs the result function and updates the cache. The key gotcha I watch for is an input selector returning a fresh object every time, which invalidates the downstream cache on every render.",
     misconception: "Assuming that once a memoized selector runs, its result is cached forever. In reality the cache is invalidated the instant any input selector returns a new reference, so a poorly composed input selector (one that builds a fresh array or object each call) silently defeats the memoization on every render.",
     hints: [
       "Think about what `createSelector` returns and what it compares on each invocation.",
@@ -4497,7 +4497,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "B",
     explanation: "`React.lazy` takes a function that returns a Promise resolving to a module with a default export. That default export is the component. By wrapping a dynamic `import()` call, React places the component's code in a separate chunk that the browser fetches only when the component is actually rendered, rather than shipping it in the initial bundle.\n\nIn practice this means you pair `React.lazy` with a `<Suspense>` boundary. While the Promise is pending, React suspends that subtree and shows the `fallback` prop instead. Once the chunk arrives and the module resolves, React re-renders the subtree with the real component. Without a `<Suspense>` ancestor the render throws, so the pairing is required, not optional.\n\nOne constraint worth knowing: the Promise must resolve to a module object whose `default` property is a React component, not the component itself. Also, `React.lazy` does not perform server-side rendering; in a Next.js App Router project you would reach for `next/dynamic` or server components to get the same code-splitting benefit with SSR support.",
-    interviewLine: "`React.lazy` wraps a dynamic import so the component's code lives in a separate chunk; React suspends the render and shows the Suspense fallback until the Promise resolves, which is why you must pair it with a `<Suspense>` boundary.",
+    interviewLine: "I use `React.lazy` to wrap a dynamic import so the component's code lives in a separate chunk; React suspends the render and shows the Suspense fallback until the Promise resolves, which is why I always pair it with a `<Suspense>` boundary.",
     misconception: "Reading \"lazy\" as a timing or throttling mechanism (like `setTimeout`) rather than a code-splitting mechanism that controls when the browser downloads the component's JavaScript chunk.",
     hints: [
       "Look at what the argument to `React.lazy` returns \u2014 it is not a component, it is a function that returns a Promise.",
@@ -4615,7 +4615,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "A",
     explanation: "Code-splitting is a build-time bundling technique. The bundler (Webpack, Vite, Rollup) carves your application into multiple chunk files instead of one monolithic bundle. The trigger that tells the browser to fetch a specific chunk at runtime is a dynamic `import()` call, `React.lazy()`, or a framework-level route split.\n\nIn the code, the top-level `import` statements pull `React` and `Component` into the main bundle. But `moduleA` is only referenced inside a dynamic `import('./moduleA')` that fires on click. The bundler extracts `moduleA` and its unique dependencies into a separate chunk file. The browser downloads that file only when the promise resolves, so the initial HTML and main bundle are smaller and the user can interact with the page sooner.\n\nNothing is deleted from the build output; the chunk still exists on disk or on a CDN. After the first fetch the browser caches it, so subsequent clicks are instant. `React.lazy` wraps this same mechanism for components, pairing it with `<Suspense>` so a fallback renders while the chunk is still in flight.",
-    interviewLine: "Code-splitting is a bundler-level optimization: the build tool carves the app into chunk files, and a dynamic `import()` or `React.lazy` triggers the browser to fetch a specific chunk only when that code path is actually reached, so the initial payload stays small while every feature still ships.",
+    interviewLine: "I describe code-splitting as a bundler-level optimization: the build tool carves the app into chunk files, and a dynamic `import()` or `React.lazy` triggers the browser to fetch a specific chunk only when that code path is actually reached, so my initial payload stays small while every feature still ships.",
     misconception: "Thinking code-splitting removes code from the bundle rather than deferring when a subset of it is downloaded by the browser.",
     hints: [
       "Look at the difference between the static `import` at the top of the file and the dynamic `import('./moduleA')` inside the click handler.",
@@ -4649,13 +4649,13 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "HOCs only work in Internet Explorer 8 and are not supported in modern browsers.",
+        text: "HOCs only work in Internet Explorer 8 and earlier, because they rely on a legacy prototype feature that modern browser engines removed years ago.",
         isCorrect: false,
         explanation: "Tempting if you associate HOCs with legacy patterns, but HOCs are a pure JavaScript/React pattern that works in any environment that supports React, including all modern browsers and Node.js."
       },
       {
         id: "B",
-        text: "HOCs can only be written in Python and cannot run in web browsers.",
+        text: "HOCs can only be authored in Python on a build server and cannot run inside a web browser, so they require a server round-trip per wrap.",
         isCorrect: false,
         explanation: "Tempting if you confuse HOCs with a language-specific feature, but HOCs are implemented in JavaScript or TypeScript and run in any JavaScript runtime, including web browsers and Node.js."
       },
@@ -4667,14 +4667,14 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       },
       {
         id: "D",
-        text: "HOCs prevent components from using CSS styles.",
+        text: "HOCs prevent the components they wrap from receiving any CSS styles, because the wrapper element strips `className` and `style` before rendering.",
         isCorrect: false,
         explanation: "Tempting if you imagine the wrapper blocking style injection, but the wrapper renders the wrapped component normally, so CSS applied to the inner element or via class names works exactly as before."
       }
     ],
     correctAnswer: "C",
     explanation: "The correct answer names three real constraints of the HOC pattern. Defining a HOC inside `render()` creates a new component type on every render, so React sees a different `type` in the element and unmounts and remounts the entire subtree, discarding all local state and firing every `useEffect` cleanup. Static methods live on the original component's constructor and are not inherited by the wrapper, so `EnhancedComponent.staticMethod` is `undefined` unless you copy it manually. `ref` is not a regular prop for class components, so spreading `{...props}` does not forward it; you need `React.forwardRef` to pass it through explicitly.\n\nIn practice the remount bug is the one that bites hardest: a counter, a form, or any `useEffect` cleanup fires on every parent update and the user sees values reset to their initial state. The fix is to hoist the HOC call to module scope so the enhanced component is created once and its identity stays stable across renders.\n\nAn interviewer may probe whether `forwardRef` is still required in React 19, where `ref` is a regular prop on function components. The API still works and is still needed when the wrapped component is a class, but for function components you can now pass `ref` through `props` directly without the wrapper.",
-    interviewLine: "The three real gotchas are identity, statics, and refs: define the HOC at module scope so the type is stable, copy any static methods onto the wrapper explicitly, and use `forwardRef` (or pass `ref` as a prop in React 19 function components) so the ref reaches the inner element.",
+    interviewLine: "I name the three real gotchas as identity, statics, and refs: I define the HOC at module scope so the type is stable, copy any static methods onto the wrapper explicitly, and use `forwardRef` (or pass `ref` as a prop in React 19 function components) so the ref reaches the inner element.",
     misconception: "The enhanced component is a brand-new type on every render, so React must always unmount and remount the wrapped subtree, regardless of where the HOC call lives in the module.",
     hints: [
       "Look at where the HOC is called in the code sample and ask what `type` React sees on the next render.",
@@ -4709,19 +4709,19 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Arrow functions are strictly forbidden in JSX.",
+        text: "Arrow functions are strictly forbidden inside JSX and the compiler rejects any `onClick={() => ...}` expression as a syntax error.",
         isCorrect: false,
         explanation: "JSX accepts any valid JavaScript expression inside curly braces, including arrow functions. There is no syntax rule that excludes them."
       },
       {
         id: "B",
-        text: "Arrow functions in render run on the GPU while regular functions run on the CPU.",
+        text: "Arrow functions defined in render are dispatched to the GPU for execution, while regular named functions run on the CPU as usual.",
         isCorrect: false,
         explanation: "Tempting if you conflate 'render' (DOM painting, which can involve the GPU) with function execution. All JavaScript, arrow or not, runs in the JavaScript engine on the CPU."
       },
       {
         id: "C",
-        text: "Arrow functions in render immediately cause a fatal JavaScript crash.",
+        text: "Defining an arrow function inside render immediately throws a fatal, unrecoverable JavaScript error that crashes the whole component tree.",
         isCorrect: false,
         explanation: "Tempting if you think inline definitions are a special case the engine rejects. They are ordinary function expressions and execute without error; the only cost is a new object allocation each render."
       },
@@ -4885,32 +4885,32 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Real DOM is the browser's live node tree where direct mutations trigger reflows; Virtual DOM is a lightweight in-memory JavaScript representation diffed to batch minimal real DOM updates.",
+        text: "Real DOM is the browser's live node tree where direct mutations trigger reflows; Virtual DOM is an in-memory JS representation diffed to batch minimal real DOM updates.",
         isCorrect: true,
         explanation: "Correct. The Real DOM lives in the browser's C++ engine and each mutation can force a synchronous reflow; the Virtual DOM is a JavaScript object tree that React diffs against the previous render to compute the minimal set of real DOM writes, batching them into one commit."
       },
       {
         id: "B",
-        text: "Real DOM is a JavaScript object graph; Virtual DOM is a hardware-accelerated rendering layer.",
+        text: "Real DOM is a plain JavaScript object graph in the heap, while Virtual DOM is a hardware-accelerated rendering layer that paints pixels directly.",
         isCorrect: false,
         explanation: "Tempting if the word 'virtual' suggests a separate physical layer, but no such circuit exists. The Virtual DOM is a plain JavaScript object graph in the heap; the Real DOM lives in the browser's C++ rendering engine. Neither is hardware."
       },
       {
         id: "C",
-        text: "They are identical; the terms are just different names for the same browser node tree.",
+        text: "They are identical; 'Real DOM' and 'Virtual DOM' are two interchangeable names for the exact same browser node tree with no difference in behavior.",
         isCorrect: false,
         explanation: "Tempting if you treat every React abstraction as just another name for the DOM, but they differ in location (JS heap vs browser engine), representation (plain objects vs typed node objects), and mutation cost (cheap object property set vs potential synchronous layout)."
       },
       {
         id: "D",
-        text: "Real DOM updates are always faster because they bypass the JavaScript engine entirely.",
+        text: "Real DOM updates are always faster than any Virtual DOM diff because they bypass the JavaScript engine entirely and write straight to the screen.",
         isCorrect: false,
         explanation: "Tempting if you assume the real DOM is the fast path because it is the actual rendering surface, but individual DOM mutations are expensive precisely because they can force synchronous layout. The Virtual DOM exists to reduce the number of such mutations, not because the real DOM is slow by design."
       }
     ],
     correctAnswer: "A",
     explanation: "The Real DOM is the browser's live node tree, implemented in C++ inside the rendering engine. Every mutation you apply to it\u2014changing a text node, inserting an element, toggling a style\u2014can force the browser to recalculate layout and repaint. The Virtual DOM is a plain JavaScript object tree that React builds in memory during render. React diffs the new tree against the previous one, computes the smallest set of attribute and node changes, and applies only those to the real DOM in a single commit.\n\nIn practice this means fifty `appendChild` calls in a loop can trigger up to fifty reflows, while the same fifty items rendered as children of one React component produce one commit. The browser batches style and layout work within a frame, but it cannot batch across separate JavaScript tasks; the Virtual DOM lets you collapse many logical updates into one task.\n\nThe Virtual DOM is not a faster rendering engine. For a single text change, writing `node.textContent = 'x'` is cheaper than running a full React render cycle. The trade-off favours the Virtual DOM when updates are numerous, interdependent, or conditional, because computing the correct mutation set by hand becomes error-prone.",
-    interviewLine: "The real DOM is the browser's live node tree where each mutation can trigger a synchronous reflow; the virtual DOM is a JavaScript object tree that React diffs against the previous render to compute the minimal set of real DOM writes, batching them into a single commit phase.",
+    interviewLine: "I describe the real DOM as the browser's live node tree where each mutation can trigger a synchronous reflow, and the virtual DOM as a JavaScript object tree that React diffs against the previous render to compute the minimal set of real DOM writes, batching them into a single commit phase.",
     misconception: "The Virtual DOM is a separate rendering engine or hardware layer, rather than a JavaScript-side bookkeeping structure whose sole job is to compute the minimal set of real-DOM mutations before they are applied.",
     hints: [
       "Ask yourself where each structure lives: one in the browser's C++ engine, one in the JavaScript heap.",
@@ -4944,7 +4944,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Rewrite the entire Bootstrap CSS file in raw assembly language.",
+        text: "Rewrite the entire Bootstrap CSS file in raw assembly language first, because React requires a compiled low-level styling layer before import.",
         isCorrect: false,
         explanation: "Tempting only if you imagine React requires a new 'language layer' for styling, but Bootstrap is plain CSS; you import the compiled file, you do not transpile or rewrite it into another language."
       },
@@ -4956,13 +4956,13 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
       },
       {
         id: "C",
-        text: "Bootstrap can only be used on WordPress websites.",
+        text: "Bootstrap can only be used on WordPress-powered websites, so a React app must first be embedded inside a WordPress theme to load it.",
         isCorrect: false,
         explanation: "Tempting if your only exposure to Bootstrap was a WordPress theme, but it is a standalone CSS and JS framework with no dependency on any CMS, server, or hosting platform."
       },
       {
         id: "D",
-        text: "Bootstrap is strictly incompatible with React.",
+        text: "Bootstrap is strictly incompatible with React because its class-based styling cannot coexist with React's component rendering model.",
         isCorrect: false,
         explanation: "Tempting if you equate React with a closed styling ecosystem, but React components render to the same DOM nodes that CSS selectors target, so Bootstrap classes and React markup compose without conflict."
       }
@@ -5156,7 +5156,7 @@ export const PERFORMANCE_QUESTIONS: QuizQuestion[] = [
     example: {
       caption: "Notice the three distinct fallback paths: static assets fall through to network, API calls fall through to cache, and images serve stale immediately while refreshing in the background.",
       language: "typescript",
-      code: "const STATIC = /^\\/static\\/[a-z0-9]+\\.[a-f0-9]{8}\\.(js|css|woff2)$/;\nconst IMAGES = /\\.(png|webp|avif|svg)$/;\nconst API = /^\\/api\\/(v\\d+\\/)?(cart|checkout|auth)\\//;\n\nself.addEventListener('fetch', (event) => {\n  const url = new URL(event.request.url);\n\n  if (STATIC.test(url.pathname)) {\n    event.respondWith(\n      caches.match(event.request).then((hit) => hit ?? fetch(event.request))\n    );\n  } else if (API.test(url.pathname)) {\n    event.respondWith(\n      fetch(event.request).catch(() => caches.match(event.request))\n    );\n  } else if (IMAGES.test(url.pathname)) {\n    event.respondWith(\n      caches.match(event.request).then((hit) => {\n        const refresh = fetch(event.request)\n          .then((res) => {\n            caches.open('images').then((c) => c.put(event.request, res.clone()));\n            return res;\n          })\n          .catch(() => hit);\n        return hit ?? refresh;\n      })\n    );\n  }\n});"
+      code: "const STATIC = /^\\/static\\/[a-z0-9]+\\.[a-f0-9]{8}\\.(js|css|woff2)$/;\nconst IMAGES = /\\.(png|webp|avif|svg)$/;\nconst API = /^\\/api\\/(v\\d+\\/)?(cart|checkout|auth)\\//;\nself.addEventListener('fetch', (event) => {\n  const url = new URL(event.request.url);\n  if (STATIC.test(url.pathname)) {\n    event.respondWith(\n      caches.match(event.request).then((hit) => hit ?? fetch(event.request))\n    );\n  } else if (API.test(url.pathname)) {\n    event.respondWith(\n      fetch(event.request).catch(() => caches.match(event.request))\n    );\n  } else if (IMAGES.test(url.pathname)) {\n    event.respondWith(\n      caches.match(event.request).then((hit) => {\n        const refresh = fetch(event.request).then((res) => {\n          caches.open('images').then((c) => c.put(event.request, res.clone()));\n          return res;\n        }).catch(() => hit);\n        return hit ?? refresh;\n      })\n    );\n  }\n});"
     }
   },
   {

@@ -19,36 +19,43 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "A pure function that takes (state, action) and returns a new state object without mutating the previous state.",
+        text: "A pure function that takes `(state, action)` and returns the next state without mutating the previous one.",
         isCorrect: true,
-        explanation: "Correct. Reducers calculate (previousState, action) => newState immutably with zero side effects, enabling predictable state transitions."
+        explanation: "Correct. A reducer computes `(previousState, action) => newState` with no side effects, which is what makes state transitions predictable and replayable."
       },
       {
         id: "B",
-        text: "An asynchronous network handler that takes (url, callback) and executes an AJAX request.",
+        text: "An async handler that takes `(url, callback)` and performs the network request for an action.",
         isCorrect: false,
-        explanation: "Reducers must be 100% pure synchronous functions with no side effects or network calls."
+        explanation: "Tempting if you conflate the reducer with the thunk or saga that fetches data, but reducers are synchronous and pure; the async work happens before an action is ever dispatched."
       },
       {
         id: "C",
-        text: "A function that mutates state.items.push(action.payload) and returns nothing.",
+        text: "A function that calls `state.items.push(action.payload)` in place and returns nothing.",
         isCorrect: false,
-        explanation: "Mutating state directly breaks Redux's shallow equality checks and prevents components from re-rendering."
+        explanation: "Appealing because it looks like the simplest way to update, but mutating the argument and returning `undefined` breaks the store's reference checks and wipes the state."
       },
       {
         id: "D",
-        text: "A DOM mutation method that takes (elementId, newHtml) and updates the browser view imperatively.",
+        text: "A DOM method that takes `(elementId, newHtml)` and updates the rendered view directly.",
         isCorrect: false,
-        explanation: "Reducers operate exclusively on state objects in memory; React components handle DOM rendering."
+        explanation: "This confuses state updates with rendering; a reducer only transforms in-memory state, and React, not the reducer, reconciles that state to the DOM."
       }
     ],
     correctAnswer: "A",
-    explanation: "A reducer is a pure function that takes the state and action as parameters. Inside the reducer, we track the type of the received action and, depending on it, we modify the state and return a new state object. Learn more",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is a reducer in Redux and what parameters does it take?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is a reducer in Redux and what parameters does it take?.",
+    explanation: "A reducer is a pure function with the signature `(previousState, action) => newState`. It reads the current state and an action describing what happened, then returns the next state. Given the same inputs it always returns the same output, and it performs no side effects: no network calls, no mutation of its arguments, no reading of the clock or random values.\n\nThat purity is what makes a Redux store predictable, replayable and testable. Because the reducer returns a brand-new state object rather than editing the old one, the store can compare references cheaply to decide what changed, and tools can time-travel by re-running the same actions over the same initial state.\n\nThe common nuance an interviewer probes is immutability: spreading the top level is not enough for nested data. `state.items.push(x)` mutates in place even inside a reducer, so you copy each level you touch, which is exactly the boilerplate Redux Toolkit's Immer removes while keeping the function pure.",
+    interviewLine: "I describe a reducer as a pure `(state, action) => newState` function: no mutation, no side effects, which is what lets the store compare references and makes time-travel debugging possible.",
+    misconception: "Thinking a reducer may mutate the state it receives or run async work. Mutating breaks reference-equality checks, and any side effect makes it non-replayable.",
     hints: [
-      "Ask where the state genuinely belongs: the URL, a server cache, a global store, or one component."
+      "Start from the signature: what goes in, what comes out.",
+      "Ask whether calling it twice with the same inputs could ever differ.",
+      "Returning the same object you were handed, even edited, is not a new state."
     ],
+    example: {
+      caption: "Spread each level you change so the previous state object is never mutated.",
+      language: "typescript",
+      code: "type State = { count: number; items: string[] };\ntype Action = { type: \"add\"; item: string } | { type: \"reset\" };\n\nfunction reducer(state: State, action: Action): State {\n  switch (action.type) {\n    case \"add\":\n      return { ...state, items: [...state.items, action.item] };\n    case \"reset\":\n      return { ...state, items: [] };\n    default:\n      return state;\n  }\n}"
+    },
     source: "44-react",
     estimatedMinutes: 2,
     bestPracticeRef: "https://redux.js.org/style-guide/"
@@ -73,34 +80,41 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
         id: "A",
         text: "State is updated by calling `store.mutateState(key, value)` directly from UI components.",
         isCorrect: false,
-        explanation: "Redux prohibits direct store mutations; dispatching actions is the only valid mutation path."
+        explanation: "Tempting if you picture the store as a mutable object, but Redux exposes no such setter; writing to state outside a reducer bypasses the one update path and breaks replay."
       },
       {
         id: "B",
-        text: "An action is a plain JS object with a `type` property; state is updated by passing this action to `dispatch(action)`, which invokes reducers.",
+        text: "An action is a plain object with a `type`; `dispatch(action)` runs it through the reducers.",
         isCorrect: true,
-        explanation: "Correct. In Redux, state changes occur exclusively by dispatching descriptive action objects to pure reducers."
+        explanation: "Correct. The action describes the change and `dispatch` is the single entry point that runs the reducers to produce the next state."
       },
       {
         id: "C",
-        text: "An action is an event listener that directly modifies `window.state`.",
+        text: "An action is an event listener that mutates a global `window.state` property when fired.",
         isCorrect: false,
-        explanation: "Redux maintains an isolated store object, not global `window` state properties."
+        explanation: "This assumes global mutable state, but Redux keeps an isolated store, and listeners never write to it; only dispatched actions and reducers do."
       },
       {
         id: "D",
-        text: "An action is an asynchronous thread that directly overwrites the Redux store memory buffer.",
+        text: "An action is an async thread that overwrites the store's memory buffer when it resolves.",
         isCorrect: false,
-        explanation: "Actions are plain descriptive objects; state is computed synchronously by pure reducer functions."
+        explanation: "Appealing if you expect async work in the action itself, but actions are plain synchronous data; any fetching lives in middleware that dispatches further actions."
       }
     ],
     correctAnswer: "B",
-    explanation: "Action is a simple JavaScript object that must have a field with a type. You can also optionally add some data as payload. In order to change the state, it is necessary to call the dispatch function, to which we pass action Learn more",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is an action and how can you change the state in Redux?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is an action and how can you change the state in Redux?.",
+    explanation: "An action is a plain JavaScript object with a required `type` field and, optionally, a `payload` carrying the data for that change. It is a description of something that happened, not the change itself. The only way to update a Redux store is to hand an action to `dispatch`, which runs it through the reducers to produce the next state.\n\nThat indirection is the point: components never write to the store directly, they announce intent by dispatching, and every state transition flows through one choke point. This is what makes the event log inspectable and the whole system replayable, since the sequence of actions fully determines the state.\n\nThe nuance worth stating is serialisability. Actions should hold plain data, not functions, Promises or class instances, so middleware can log, persist and replay them. Side effects such as fetching belong in middleware (thunks, sagas) that dispatch further plain actions when the work completes.",
+    interviewLine: "I treat an action as a serialisable description of what happened; `dispatch(action)` is the only path into the store, so every state change runs through the reducers in one place.",
+    misconception: "Believing you can mutate the store directly or that an action itself changes state. The action only describes intent; `dispatch` running the reducers is what produces the new state.",
     hints: [
-      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
+      "Look at what field every action object is required to carry.",
+      "Ask what function has to be called before a reducer ever runs.",
+      "The action describes the change; it does not apply it."
     ],
+    example: {
+      caption: "An action creator returns a plain, serialisable object; dispatch sends it to the reducers.",
+      language: "typescript",
+      code: "const addTodo = (text: string) => ({ type: \"todos/add\", payload: text });\n\n// in a component\ndispatch(addTodo(\"write tests\"));\n// -> { type: \"todos/add\", payload: \"write tests\" } flows through the reducers"
+    },
     source: "44-react",
     estimatedMinutes: 2,
     bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
@@ -122,36 +136,43 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "State is mutable and observable; components wrapped in `observer` automatically track which properties they read and re-render only when those mutate.",
+        text: "State is mutable and observable; `observer` components track the properties they read and re-render on change.",
         isCorrect: true,
-        explanation: "Correct. MobX provides granular reactivity by automatically subscribing components to exact accessed observable properties."
+        explanation: "Correct. MobX records exactly which observables a render touched and re-runs only those readers when the value mutates, giving fine-grained updates for free."
       },
       {
         id: "B",
-        text: "MobX stores all state permanently in the browser URL query string.",
+        text: "All application state is persisted in the browser URL query string and read back on each render.",
         isCorrect: false,
-        explanation: "MobX stores state in JavaScript memory objects, not URL query strings."
+        explanation: "This confuses MobX with URL-based routing state; MobX holds observable state in ordinary in-memory objects, not the query string."
       },
       {
         id: "C",
-        text: "Every single property change requires writing an explicit reducer switch statement and dispatching an action.",
+        text: "Every property change requires an explicit reducer switch and a dispatched action to apply it.",
         isCorrect: false,
-        explanation: "Redux requires reducers and action dispatching; MobX allows direct property mutation on observable objects."
+        explanation: "That describes Redux, and is the very ceremony MobX avoids: you mutate an observable directly and the tracked readers update themselves."
       },
       {
         id: "D",
-        text: "MobX can only be used with class components and does not support React functional components.",
+        text: "It works only with class components and cannot integrate with React function components.",
         isCorrect: false,
-        explanation: "MobX supports functional components via the `observer` HOC from `mobx-react-lite`."
+        explanation: "Tempting because MobX stores are often classes, but functional components integrate through the `observer` wrapper in `mobx-react-lite`."
       }
     ],
     correctAnswer: "A",
-    explanation: "Mobx provides decorators like observable and computed to define observable state and reactive functions. Actions decorated with action are used to modify the state, ensuring that all changes are tracked. Mobx also offers automatic dependency tracking, different types of reactions, fine-grained control over reactivity, and seamless integration with React through the mobx-react package. Overall, Mobx simplifies state management by automating the update process based on changes in observable state.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the peculiarities of working with Mobx?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the peculiarities of working with Mobx?.",
+    explanation: "MobX is built on transparent reactivity. You mark state as observable and mutate it directly, no actions or reducers required by default. Any computation or component that reads an observable is tracked, so when that specific value changes MobX re-runs only the readers that depended on it.\n\nIn React this is wired up through the `observer` wrapper from `mobx-react-lite`. An `observer` component records exactly which observable properties it touched during render, and re-renders only when one of those mutates. The practical consequence is fine-grained updates with almost no manual memoisation: you rarely reach for `useMemo` or `React.memo` because the dependency graph is tracked for you.\n\nThe nuance an interviewer probes is where MobX differs from Redux's explicit, immutable flow. MobX favours direct mutation and derived `computed` values; the trade is less obvious time-travel and a reactivity graph you must understand, which is why `action` and strict mode exist to keep mutations batched and predictable.",
+    interviewLine: "I'd explain that MobX tracks exactly which observables a component read and re-renders only those readers on mutation, which is why I barely need manual memoisation in `observer` components.",
+    misconception: "Assuming MobX needs reducers and actions like Redux, or that it is class-only. State is mutable and observable, and functional components use it through the `observer` wrapper.",
     hints: [
-      "Types are erased before the code runs. Ask what the compiler knows, and what it can only assume."
+      "Think about how a component learns that a value it read has changed.",
+      "Ask what MobX records during a render and what it does with that record.",
+      "Direct mutation is allowed here; the subscription is automatic, not manual."
     ],
+    example: {
+      caption: "An observer component re-renders only because it read the property that changed.",
+      language: "tsx",
+      code: "import { makeAutoObservable } from \"mobx\";\nimport { observer } from \"mobx-react-lite\";\n\nclass Counter {\n  value = 0;\n  constructor() { makeAutoObservable(this); }\n  increment() { this.value++; }\n}\n\nconst store = new Counter();\n\nconst View = observer(() => <button onClick={() => store.increment()}>{store.value}</button>);"
+    },
     source: "44-react",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
@@ -174,36 +195,43 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "The exposed interface (props, methods, exports, forwarded refs) of a component or module intended for external consumers, hiding internal implementation details.",
+        text: "The exported interface of a module or component, props, methods and exports, that hides its internals.",
         isCorrect: true,
-        explanation: "Correct. A public API defines how external code interacts with a component or library while encapsulating internal state and private helper functions."
+        explanation: "Correct. The public API is the surface consumers depend on, which lets you refactor the private internals freely as long as the exported contract holds."
       },
       {
         id: "B",
-        text: "A free public REST API provided by government organizations on the internet.",
+        text: "A free, publicly hosted REST service that any client on the internet can call over HTTP.",
         isCorrect: false,
-        explanation: "In software modularity and component design, public API refers to the exported interface of a module or component."
+        explanation: "Tempting because 'API' often means a web service, but in module design it refers to the exported surface of your own code, not a network endpoint."
       },
       {
         id: "C",
-        text: "A setting in `package.json` that publishes source code to the npm registry automatically.",
+        text: "A `package.json` field that publishes the module's source to the npm registry automatically.",
         isCorrect: false,
-        explanation: "Public API describes component contracts and exported interfaces, not npm publish configs."
+        explanation: "This confuses the contract with the packaging step; the public API is which exports you expose, independent of how or whether you publish."
       },
       {
         id: "D",
-        text: "The raw HTML source code displayed in browser 'View Page Source'.",
+        text: "The raw rendered HTML a browser shows under 'View Page Source' for the running app.",
         isCorrect: false,
-        explanation: "Public API is an architectural interface boundary, not raw rendered HTML source."
+        explanation: "That is output, not interface; the public API is the code boundary other modules import against, not the markup the browser displays."
       }
     ],
     correctAnswer: "A",
-    explanation: "In the context of index files, a Public API typically refers to the interface or functions that are exposed and accessible to external modules or components. Here's a code example of an index file representing a Public API: In this example, the index.js file acts as a Public API where the functions greet() and calculateSum() are exported and can be accessed from other modules by importing them. Other modules can import and use these functions as part of their implementation: By exporting specific functions from the index file, we are defining the Public API of the module, allowing other modules to use those functions.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is Public API?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is Public API?.",
+    explanation: "A public API is the surface a module or component deliberately exposes to the outside: its exports, the props it accepts, the methods or refs it forwards. Everything else, the internal state, helper functions and implementation details, is private. A barrel file like `index.ts` is the usual place to declare that surface by re-exporting only what consumers should depend on.\n\nThe value is in the boundary. Consumers couple to the public API, not the internals, so you can refactor or rewrite what is behind it without breaking them, as long as the exported contract holds. This is the same encapsulation idea whether the unit is a React component (props in, callbacks out) or an npm package (its entry point).\n\nThe nuance worth raising is that the public API is a contract you have to maintain: once something is exported, changing it is a breaking change. Keeping the surface small and intentional, rather than re-exporting everything, is what makes a module safe to evolve.",
+    interviewLine: "The public API is the surface I let consumers depend on, its exports, props and forwarded refs, so I can rewrite everything behind it without breaking them as long as the contract holds.",
+    misconception: "Reading 'API' as a networked web service. Here it means the exported interface of a module or component, the boundary between what consumers may use and the private internals.",
     hints: [
-      "Types are erased before the code runs. Ask what the compiler knows, and what it can only assume."
+      "Ask which parts of a module other code is allowed to depend on.",
+      "Think about what a barrel `index` file deliberately re-exports and what it hides.",
+      "It is an interface boundary in your own code, not a server endpoint."
     ],
+    example: {
+      caption: "The barrel exposes only the intended surface; the helper stays private.",
+      language: "typescript",
+      code: "// internal.ts\nexport function format(n: number) { return n.toFixed(2); } // not re-exported\nexport function price(cents: number) { return `$${format(cents / 100)}`; }\n\n// index.ts, the public API\nexport { price } from \"./internal\";\n// consumers import { price }; format stays an implementation detail"
+    },
     source: "44-react",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
@@ -226,36 +254,43 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "A compiler that converts React code into WebAssembly binaries.",
+        text: "A compiler that transforms React components into WebAssembly binaries for faster execution.",
         isCorrect: false,
-        explanation: "PropTypes is a runtime validation library, not a WebAssembly compiler."
+        explanation: "This invents a compilation role; PropTypes never compiled anything, it validated prop values at runtime in development."
       },
       {
         id: "B",
-        text: "A tool that automatically formats CSS stylesheets inside JSX.",
+        text: "A tool that automatically formats and prefixes the CSS written inside JSX style blocks.",
         isCorrect: false,
-        explanation: "PropTypes validates JavaScript prop types, not CSS formatting."
+        explanation: "Tempting as a vague 'React helper', but PropTypes concerns JavaScript prop values, not stylesheet formatting."
       },
       {
         id: "C",
-        text: "`PropTypes` was React's runtime prop validation library that logged console warnings in development; it is deprecated in modern React in favor of static TypeScript type checking.",
+        text: "A development-only runtime prop validator that warned in the console; now deprecated for TypeScript.",
         isCorrect: true,
-        explanation: "Correct. PropTypes provided runtime type validation in development mode; TypeScript has superseded it by catching type mismatches at compile time with zero runtime bundle overhead."
+        explanation: "Correct. PropTypes checked props at runtime in development and is superseded by TypeScript's compile-time checking, which ships nothing to the client."
       },
       {
         id: "D",
-        text: "A security firewall that encrypts all network props sent to child components.",
+        text: "A security layer that encrypts the props passed over the network to each child component.",
         isCorrect: false,
-        explanation: "PropTypes provides type validation checks, not cryptographic encryption."
+        explanation: "Props are passed in memory, not over a network, and PropTypes performs type validation, not encryption."
       }
     ],
     correctAnswer: "C",
-    explanation: "PropTypes was React's runtime prop type-checker. You declared expected types, and React would warn in the console when a mismatch occurred in development. PropTypes is deprecated as of React 19 and no longer ships from the react package. Use TypeScript instead; it catches the same mismatches at compile time and integrates with editor tooling.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the role of PropTypes in React?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the role of PropTypes in React?.",
+    explanation: "`PropTypes` was React's runtime prop validator. You declared the expected type of each prop on `Component.propTypes`, and in development React logged a console warning when a value failed the check. It never affected production builds and never changed runtime behaviour, it only surfaced mismatches while you worked.\n\nIt is a runtime mechanism, which is its defining limitation: the check happens when the component renders with bad data, not when you write the code. TypeScript supersedes it by checking prop types statically at compile time, catching the same class of bug before the app runs and adding editor autocomplete and refactoring, with zero bytes shipped to the client.\n\nThe current-state nuance: `prop-types` is deprecated and no longer bundled with React 19, so new code should type props with TypeScript. If you maintain a codebase still importing `prop-types`, the migration is to convert those declarations into `type` or `interface` prop shapes.",
+    interviewLine: "I'd say PropTypes was a development-only runtime check that warned in the console, and I now let TypeScript replace it by catching the same mismatches at compile time with nothing shipped to the client.",
+    misconception: "Thinking PropTypes validates in production or is still the recommended approach. It only warned in development and is deprecated in React 19 in favour of static TypeScript types.",
     hints: [
-      "Types are erased before the code runs. Ask what the compiler knows, and what it can only assume."
+      "Ask when the check happens, at build time or while the component renders.",
+      "Consider what reaches the production bundle in each approach.",
+      "A console warning in dev is not the same as a compile error."
     ],
+    example: {
+      caption: "The TypeScript equivalent moves the same check from runtime to compile time.",
+      language: "tsx",
+      code: "type Props = { name: string; age: number };\n\nfunction Profile({ name, age }: Props) {\n  return <div>{name} is {age}</div>;\n}\n\n// <Profile name=\"Ada\" age=\"old\" /> is a compile error, not a dev-only warning"
+    },
     source: "100-react",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
@@ -278,36 +313,43 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Use TypeScript by defining explicit prop interfaces/types (`type Props = { ... }`), enabling compile-time validation, IDE autocomplete, and zero runtime bundle overhead.",
+        text: "Define explicit prop types or interfaces in TypeScript for compile-time checks and editor autocomplete.",
         isCorrect: true,
-        explanation: "Correct. TypeScript is the industry standard for type checking React components, catching bugs at build time and integrating with editor tooling."
+        explanation: "Correct. A typed prop shape is caught at build time, powers editor tooling, and is erased from the bundle at zero runtime cost."
       },
       {
         id: "B",
-        text: "Rely entirely on runtime `console.log` statements inside the component render body.",
+        text: "Add `console.log` calls to the render body to inspect each prop's value as it comes in.",
         isCorrect: false,
-        explanation: "Console logging is ad-hoc manual debugging, not automated static type checking."
+        explanation: "This is ad-hoc manual debugging that runs after the fact; it checks nothing automatically and never fails a build."
       },
       {
         id: "C",
-        text: "Use raw JavaScript without any type checking or linter tools.",
+        text: "Ship plain JavaScript with no type layer and rely on code review to catch bad props.",
         isCorrect: false,
-        explanation: "Unchecked JavaScript lacks type safety, refactoring support, and compile-time error detection."
+        explanation: "Tempting as the lightest setup, but it gives up compile-time safety, autocomplete and safe refactors that typed props provide for free."
       },
       {
         id: "D",
-        text: "Write manual `typeof` validation checks at the top of every component function.",
+        text: "Write manual `typeof` guards at the top of every component to assert each prop's type.",
         isCorrect: false,
-        explanation: "Manual runtime checks add boilerplate and runtime overhead compared to compile-time TypeScript."
+        explanation: "Appealing as explicit, but it adds runtime boilerplate and overhead for checks TypeScript does statically at compile time."
       }
     ],
     correctAnswer: "A",
-    explanation: "Use TypeScript. It catches prop mismatches at compile time, integrates with editor tooling (autocomplete, refactors, jump-to-definition), and is the default in most React project templates. The older alternative was PropTypes, a runtime checker that warned in dev mode when prop types didn't match. It is deprecated as of React 19 and no longer ships from the react package. If you're maintaining a codebase that still uses prop-types, migrate to TypeScript.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the recommended ways for type checking of React component props?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the recommended ways for type checking of React component props?.",
+    explanation: "The recommended approach is TypeScript: declare a `type` or `interface` for a component's props and annotate the parameter. The compiler then rejects missing or mis-typed props at build time, and your editor gets autocomplete, jump-to-definition and safe renames across every call site. None of this adds a single byte to the runtime bundle, because the types are erased on compile.\n\nThat compile-time guarantee is the whole advantage over the alternatives. A mismatch is caught where you write the JSX, not when the component happens to render with bad data in front of a user, and refactoring a prop name updates its consumers under the type checker's supervision.\n\nThe historical nuance is `PropTypes`, the older runtime checker that warned in development only. It is deprecated as of React 19 and no longer ships from the `react` package, so new code should type props statically and existing `prop-types` declarations should be migrated to TypeScript.",
+    interviewLine: "I type props with a `type` or `interface` and let the compiler reject bad props at the call site; it is checked at build time and erased from the bundle, unlike the old runtime PropTypes.",
+    misconception: "Assuming prop checking must happen at runtime, as PropTypes did. TypeScript validates props statically at compile time, before the component ever renders.",
     hints: [
-      "Types are erased before the code runs. Ask what the compiler knows, and what it can only assume."
+      "Ask where a bad prop should be caught, at the call site or during render.",
+      "Consider what each option costs in the shipped bundle.",
+      "A runtime console warning is weaker than a build-time error."
     ],
+    example: {
+      caption: "A typed prop shape rejects the mistake before the app runs.",
+      language: "tsx",
+      code: "interface ButtonProps {\n  label: string;\n  onClick: () => void;\n  disabled?: boolean;\n}\n\nfunction Button({ label, onClick, disabled }: ButtonProps) {\n  return <button onClick={onClick} disabled={disabled}>{label}</button>;\n}\n// <Button label={42} /> fails to compile"
+    },
     source: "100-react",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
@@ -329,36 +371,43 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "React Router only works on mobile devices; `history` only works on desktop.",
+        text: "React Router runs only on mobile browsers while the `history` library runs only on desktop browsers.",
         isCorrect: false,
-        explanation: "Both operate across all JavaScript web platforms."
+        explanation: "This invents a platform split; both are platform-agnostic JavaScript that run anywhere the browser history API exists."
       },
       {
         id: "B",
-        text: "The `history` library renders UI components directly to the DOM; React Router does not.",
+        text: "The `history` library renders route UI directly into the DOM, and React Router only parses URLs.",
         isCorrect: false,
-        explanation: "`history` has no UI or React dependencies; React Router handles UI rendering."
+        explanation: "This reverses the roles: `history` has no UI at all, and React Router is the layer that renders for a location."
       },
       {
         id: "C",
-        text: "The `history` library is a low-level utility managing browser navigation history; React Router is a high-level framework built on top of `history` providing declarative routing, components, and hooks.",
+        text: "`history` is a low-level navigation primitive; React Router is the declarative routing layer built on it.",
         isCorrect: true,
-        explanation: "Correct. React Router uses the `history` library under the hood to manage history stacks while providing JSX route matching, parameter parsing, and layout outlets."
+        explanation: "Correct. `history` manages the location stack and React Router adds route matching, params and hooks on top of it."
       },
       {
         id: "D",
-        text: "They are identical libraries maintained by different competing organizations.",
+        text: "They are identical libraries released by two competing teams that never share any code.",
         isCorrect: false,
-        explanation: "`history` is a lightweight primitive library maintained by the same team that created React Router."
+        explanation: "Tempting if the names feel interchangeable, but React Router is built on `history` by the same maintainers, not a rival of it."
       }
     ],
     correctAnswer: "C",
-    explanation: "React Router is a routing library for React that provides a declarative API for defining routes and handling navigation. It manages components and URLs. History library is a lower-level utility that only manages browser history (e.g., pushing and popping history entries). It doesn't handle UI rendering or routing, making it more generic and not React-specific. React Router uses the history library internally but adds additional features like routing and component management.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How React Router is different from the history library?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How React Router is different from the history library?.",
+    explanation: "The `history` library is a small, framework-agnostic primitive. It abstracts the browser's navigation stack, `pushState`, `popState`, the hash, into a single API with `push`, `replace`, `go` and a `listen` subscription. It knows nothing about React, components or rendering; it just manages location.\n\nReact Router is the higher-level layer built on top of that primitive. It adds declarative route matching, URL parameter parsing, nested layouts and the hooks (`useNavigate`, `useParams`, `useLocation`) that connect the current location to the component tree. In other words, `history` tracks where you are, and React Router decides what to render for it.\n\nThe nuance an interviewer may probe is why the split exists: keeping navigation state in a tiny, UI-free package means it can be shared, tested and even used without React, while the routing and rendering concerns live in a separate layer that depends on it. Modern React Router has largely absorbed `history` internally, but the conceptual boundary still explains the architecture.",
+    interviewLine: "I describe `history` as a UI-free primitive over the browser navigation stack, and React Router as the declarative routing layer I build on top of it that maps the current location to components.",
+    misconception: "Assuming the two are competitors or that `history` renders UI. `history` only manages the location stack; React Router consumes it to do route matching and rendering.",
     hints: [
-      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
+      "Separate the piece that tracks location from the piece that renders for it.",
+      "Ask which one has any knowledge of React components at all.",
+      "One is a low-level primitive the other is built on, not an alternative to it."
     ],
+    example: {
+      caption: "The history primitive manages location with no UI; React Router renders on top of it.",
+      language: "typescript",
+      code: "import { createBrowserHistory } from \"history\";\n\nconst history = createBrowserHistory();\n\nhistory.listen(({ location }) => {\n  console.log(\"now at\", location.pathname);\n});\n\nhistory.push(\"/about\"); // updates the stack; renders nothing itself"
+    },
     source: "100-react",
     estimatedMinutes: 3,
     bestPracticeRef: "https://react.dev/learn/render-and-commit"
@@ -381,36 +430,43 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Forces the browser to perform a synchronous full-page HTTP POST reload.",
+        text: "It forces the browser to perform a synchronous full-page HTTP POST and reload the document.",
         isCorrect: false,
-        explanation: "React intercepts the submission to execute the async action in a client transition without full page reloads."
+        explanation: "Tempting because that is how a classic HTML form acts, but React intercepts the submit and runs the action in a client transition without a reload."
       },
       {
         id: "B",
-        text: "Requires installing 15 third-party form packages before forms can submit.",
+        text: "It requires installing several third-party form packages before any form can submit at all.",
         isCorrect: false,
-        explanation: "Form Actions are natively integrated into React 19 core without third-party dependencies."
+        explanation: "This assumes forms need an external library, but Form Actions are built into React 19 core with no extra dependencies."
       },
       {
         id: "C",
-        text: "Allows passing async functions directly to `<form action={fn}>`, automatically receiving `FormData`, running inside a transition, and coordinating with `useActionState` and `useFormStatus`.",
+        text: "You pass an async function to `<form action={fn}>`; it receives FormData, runs in a transition, and pairs with the form hooks.",
         isCorrect: true,
-        explanation: "Correct. React 19 elevates `<form action>` so that async actions receive native FormData instances, track pending states automatically, and reset uncontrolled inputs on success."
+        explanation: "Correct. React calls the action with a FormData instance inside a transition, which is what lets `useFormStatus` and `useActionState` track pending state."
       },
       {
         id: "D",
-        text: "Disallows user text input inside `<input>` fields within the form.",
+        text: "It disables typing in the `<input>` fields inside the form until the action has resolved.",
         isCorrect: false,
-        explanation: "Form Actions work seamlessly with standard controlled and uncontrolled inputs."
+        explanation: "This confuses the action with input locking; Form Actions work with normal controlled and uncontrolled inputs and do not freeze them."
       }
     ],
     correctAnswer: "C",
-    explanation: "React 19 lets you pass async functions directly to <form action> and <button formAction>. React automatically passes a FormData instance to the action, manages pending states via useActionState or useFormStatus, and resets uncontrolled inputs upon successful submission.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How does the new form action prop work in React 19?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How does the new form action prop work in React 19?.",
+    explanation: "In React 19 you can pass a function to `<form action={fn}>` (or `<button formAction>`). On submit, React intercepts the native submission, builds a `FormData` from the form, and calls your function with it inside a transition rather than reloading the page. If the action succeeds, React resets uncontrolled inputs for you.\n\nRunning inside a transition is what makes the surrounding hooks work. `useFormStatus` lets a nested component read `pending` without prop-drilling, so a submit button can disable itself while the action runs, and `useActionState` threads the action's return value and pending flag back into the component. You get optimistic, non-blocking submission with very little wiring.\n\nThe nuance worth raising is that the same `action` prop accepts a plain client function or a Server Function (`\"use server\"`). With a Server Function the form can submit before hydration and the mutation runs on the server, which is why this feature is central to the App Router's data-mutation story rather than just a client convenience.",
+    interviewLine: "I'd point out that React 19 lets a form action be an async function that receives FormData and runs in a transition, so I can track pending state with `useFormStatus` and `useActionState` without prop-drilling.",
+    misconception: "Expecting `<form action={fn}>` to trigger a full-page POST reload. React intercepts the submit, passes FormData to the function, and runs it in a client transition.",
     hints: [
-      "A controlled input reads its value from state, so React is the single source of truth. An uncontrolled one leaves it in the DOM."
+      "Ask what React passes to the function when the form submits.",
+      "Think about how a nested submit button learns the form is pending.",
+      "The submission does not reload the page; it runs in a transition."
     ],
+    example: {
+      caption: "useActionState threads the action's result and pending flag back to the component.",
+      language: "tsx",
+      code: "function Subscribe() {\n  const [error, submit, pending] = useActionState(\n    async (_prev: string | null, formData: FormData) => {\n      const email = String(formData.get(\"email\"));\n      return email.includes(\"@\") ? null : \"invalid email\";\n    },\n    null,\n  );\n  return (\n    <form action={submit}>\n      <input name=\"email\" />\n      <button disabled={pending}>Join</button>\n      {error && <p>{error}</p>}\n    </form>\n  );\n}"
+    },
     source: "100-react",
     estimatedMinutes: 4,
     bestPracticeRef: "https://react.dev/reference/react-dom/components/input"
@@ -432,36 +488,43 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "A native hardware driver for Intel and AMD graphic cards.",
+        text: "A native hardware driver that accelerates rendering on Intel and AMD graphics cards.",
         isCorrect: false,
-        explanation: "MUI is a React UI component library, not a hardware graphics driver."
+        explanation: "This places MUI in the hardware layer; it is JavaScript running in React, with no connection to GPU drivers."
       },
       {
         id: "B",
-        text: "An operating system kernel developed for mobile devices.",
+        text: "A lightweight operating-system kernel designed to run React apps on mobile devices.",
         isCorrect: false,
-        explanation: "MUI is a JavaScript/TypeScript React component library."
+        explanation: "Tempting if 'Material' sounds system-level, but MUI is a React component library, not an operating system."
       },
       {
         id: "C",
-        text: "A database migration tool for PostgreSQL servers.",
+        text: "A database migration tool that versions and applies schema changes to PostgreSQL servers.",
         isCorrect: false,
-        explanation: "MUI provides React UI components and styles."
+        explanation: "This confuses a frontend UI library with backend tooling; MUI provides React components and styles, not migrations."
       },
       {
         id: "D",
-        text: "MUI (formerly Material-UI) is a comprehensive open-source React component library implementing Google's Material Design system with ready-to-use accessible UI components.",
+        text: "An open-source React component library implementing Google's Material Design with accessible, themeable UI parts.",
         isCorrect: true,
-        explanation: "Correct. MUI provides pre-built buttons, dialogs, inputs, data grids, and theming tools following Material Design principles."
+        explanation: "Correct. MUI ships ready-made, accessible components and a theming system so you build a consistent Material Design UI quickly."
       }
     ],
     correctAnswer: "D",
-    explanation: "Material UI is an open-source UI component library for React that implements Material Design. It provides styled, accessible components and speeds up building consistent interfaces.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is React-Material UI?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is React-Material UI?.",
+    explanation: "MUI, formerly Material-UI, is an open-source React component library that implements Google's Material Design. It ships ready-made, accessible components, buttons, dialogs, text fields, data grids, and a theming system so an application can present a consistent, keyboard- and screen-reader-friendly interface without building each primitive from scratch.\n\nThe practical value is speed and consistency. Instead of hand-rolling a dialog's focus trap or a text field's label-and-error wiring, you compose tested components and adjust them through a central theme, which keeps spacing, colour and typography uniform across the app.\n\nThe nuance an interviewer may probe is the trade-off: a design-system library adds bundle weight and an opinionated styling layer, and deep customisation means learning its theming and `sx` conventions. It is the right tool when you want Material Design quickly; a lighter headless library may fit better when you need full control over markup and styles.",
+    interviewLine: "MUI is a React component library implementing Material Design, accessible, themeable components so I compose a consistent UI instead of rebuilding primitives like dialogs and inputs.",
+    misconception: "Reading 'Material' as hardware, graphics or an OS feature. MUI is purely a React UI component and theming library implementing Google's Material Design.",
     hints: [
-      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
+      "Focus on what kind of artefact a React developer installs and renders.",
+      "Ask what problem a pre-built component and theming system solves.",
+      "It lives in the React UI layer, not in hardware, databases or operating systems."
     ],
+    example: {
+      caption: "Prebuilt, themeable components compose directly in JSX.",
+      language: "tsx",
+      code: "import { Button, TextField, Stack } from \"@mui/material\";\n\nfunction LoginForm() {\n  return (\n    <Stack spacing={2}>\n      <TextField label=\"Email\" type=\"email\" />\n      <TextField label=\"Password\" type=\"password\" />\n      <Button variant=\"contained\">Sign in</Button>\n    </Stack>\n  );\n}"
+    },
     source: "150-react",
     estimatedMinutes: 2,
     bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
@@ -483,36 +546,43 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "A security authentication protocol for encrypting user passwords in transit.",
+        text: "An authentication protocol that encrypts user credentials as they travel between client and server.",
         isCorrect: false,
-        explanation: "Reconciliation manages Virtual DOM rendering, not user authentication."
+        explanation: "This invents a security role; reconciliation is about diffing element trees to update the DOM, not transporting credentials."
       },
       {
         id: "B",
-        text: "React's internal diffing algorithm (powered by Fiber) that compares the previous and new Virtual DOM trees to compute the minimal real DOM mutations required.",
+        text: "React's diffing algorithm that compares the new and old element trees to compute minimal DOM updates.",
         isCorrect: true,
-        explanation: "Correct. Reconciliation achieves linear O(n) performance using element type matching and list keys to update the real DOM efficiently."
+        explanation: "Correct. Type- and key-based heuristics bring the diff to near O(n), and Fiber makes the work interruptible so urgent updates stay responsive."
       },
       {
         id: "C",
-        text: "An exhaustive O(n^3) tree diff that compares every node against all other nodes.",
+        text: "An exhaustive tree diff that compares every node in one tree against every node in the other.",
         isCorrect: false,
-        explanation: "A general tree diff is O(n^3); React uses heuristic assumptions to achieve linear O(n) performance."
+        explanation: "That describes the O(n^3) general tree diff React deliberately avoids; it uses heuristics to reach roughly linear time instead."
       },
       {
         id: "D",
-        text: "A sorting algorithm that orders database rows alphabetically in O(n log n) time.",
+        text: "A sorting algorithm that orders database rows alphabetically before they are rendered to a table.",
         isCorrect: false,
-        explanation: "Reconciliation is React's Virtual DOM tree diffing process, not a database sort."
+        explanation: "This confuses UI diffing with data sorting; reconciliation compares element trees, it does not order rows."
       }
     ],
     correctAnswer: "B",
-    explanation: "Reconciliation is React, s process for updating the DOM when state or props change. React diffs the old and new Virtual DOM trees, computes the minimal updates, and applies them to the real DOM. The Fiber algorithm lets React pause and prioritize parts of this work so complex apps remain responsive. Related Reading Vibe Coding Leetcode Blind 75 C# Interview Questions Leetcode 75 Jenkins Interview Questions Leetcode Patterns Java Interview Questions And Answers Kubernetes Interview Questions AWS Interview Questions Angular Interview Questions SQL Server Interview Questions AngularJS Interview Questions Vibe Coding Leetcode Blind 75 C# Interview Questions Jenkins Interview Questions React Interview Questions Leetcode Patterns Java Interview Questions And Answers Kubernetes Interview Questions AWS Interview Questions Angular Interview Questions SQL Server Interview Questions AngularJS Interview Questions TypeScript Interview Questions Azure Interview Questions 20 More React Interview Questions and Answers For Freshers",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is Reconciliation in React?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is Reconciliation in React?.",
+    explanation: "Reconciliation is the process React runs when state or props change: it builds a new tree of elements, compares it against the previous one, and computes the minimal set of real DOM mutations to apply. A naive tree diff is O(n^3), so React uses heuristics to get it down to roughly O(n): if two elements have different types it replaces the subtree rather than diffing into it, and within a list it uses `key` to match elements across renders.\n\nThose heuristics are why `key` matters so much. A stable, identity-based key lets React recognise that an item moved rather than that everything after an insertion changed, which preserves component state and avoids needless remounts. Using the array index as a key defeats this whenever the list reorders.\n\nThe senior nuance is Fiber, the implementation that makes reconciliation interruptible. By breaking the work into units that can be paused, prioritised and resumed, React can keep high-priority updates (like typing) responsive and yield to the browser instead of blocking the main thread on a large tree.",
+    interviewLine: "I'd explain reconciliation as diffing the new element tree against the old with type- and key-based heuristics to reach near O(n), and Fiber as what makes that work interruptible so urgent updates stay responsive.",
+    misconception: "Thinking React compares the real DOM, or that it runs a full O(n^3) tree diff. It diffs element trees using type and key heuristics, and Fiber lets that work be paused.",
     hints: [
-      "React re-renders, diffs, and commits only the differences. Ask what identity each element has between renders."
+      "Ask what React compares against what when state changes.",
+      "Consider how React decides an element is the same one between two renders.",
+      "A full tree-to-tree diff would be cubic; React avoids that with heuristics."
     ],
+    example: {
+      caption: "A stable key lets reconciliation match items across renders instead of remounting them.",
+      language: "tsx",
+      code: "function List({ items }: { items: { id: string; label: string }[] }) {\n  // key={item.id} preserves each row's identity when the list reorders;\n  // key={index} would make React treat a reorder as content changes\n  return (\n    <ul>\n      {items.map((item) => (\n        <li key={item.id}>{item.label}</li>\n      ))}\n    </ul>\n  );\n}"
+    },
     source: "150-react",
     estimatedMinutes: 4,
     bestPracticeRef: "https://react.dev/learn/render-and-commit"
@@ -534,36 +604,43 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Props flow strictly from parent to child as read-only data inputs; child components request state updates by invoking callback functions passed down through props.",
+        text: "Props flow parent to child as read-only inputs; a child requests changes through callbacks passed down.",
         isCorrect: true,
-        explanation: "Correct. Unidirectional data flow ensures clear data ownership and makes component behavior predictable and testable."
+        explanation: "Correct. Unidirectional flow gives every value one owner, and children ask for changes via callbacks rather than mutating what they receive."
       },
       {
         id: "B",
-        text: "Props are sent over WebSockets to backend servers on every render.",
+        text: "Props are serialised and sent over a WebSocket to the backend server on every component render.",
         isCorrect: false,
-        explanation: "Props are passed in memory between parent and child components in the React tree."
+        explanation: "This invents a network step; props are passed in memory between components in the tree, never transmitted on render."
       },
       {
         id: "C",
-        text: "Child components can directly mutate `props.data = newValues` to update parents.",
+        text: "A child updates its parent by assigning new values directly to `props.data` on the object it got.",
         isCorrect: false,
-        explanation: "Props are strictly read-only in children; mutating props directly causes bugs and breaks React's unidirectional flow."
+        explanation: "Tempting because JavaScript allows the assignment, but props are read-only; mutating them does not re-render and leaves the parent's value stale."
       },
       {
         id: "D",
-        text: "Props flow bidirectionally with automatic two-way binding on all object properties.",
+        text: "Props use automatic two-way binding, so edits in a child flow back up to the parent on every property.",
         isCorrect: false,
-        explanation: "React rejects automatic two-way binding in favor of explicit unidirectional prop and callback flow."
+        explanation: "This imports a two-way-binding model from other frameworks; React is deliberately one-way, with explicit callbacks for upward requests."
       }
     ],
     correctAnswer: "A",
-    explanation: "Props are read-only inputs passed from parent to child. They let you parameterize components and compose UI. A child must not modify its props directly. Pass callbacks if a child needs to request changes to the parent state. Example: <Profile name=\"Ava\" onChange={newName => setName(newName)} />Tips: Use prop types or TypeScript to document and validate prop shapes. Prefer passing minimal necessary data and callbacks to avoid excessive prop drilling.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Props: Data In, One-Way Flow.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Props: Data In, One-Way Flow.",
+    explanation: "Props are the read-only inputs a parent passes to a child. Data flows in one direction, down the tree, and the child may read its props but must never reassign them. This unidirectional flow is what makes a React UI predictable: to find why a value is what it is, you follow it up to the parent that owns it, not sideways between siblings.\n\nWhen a child needs to cause a change, it does not reach back up and mutate; the parent passes a callback prop, and the child invokes it to request the update. The parent owns the state and decides how to apply the change, then the new value flows back down as a prop on the next render.\n\nThe nuance an interviewer probes is why mutating a prop is a bug even though JavaScript lets you. React does not re-render because you edited a prop object, and the parent still holds the old value, so the UI and the data silently diverge. Lifting state up and passing callbacks keeps a single owner for every piece of state.",
+    interviewLine: "I describe props as read-only inputs flowing parent to child, where a child requests changes through a callback prop rather than mutating, so every value has one clear owner.",
+    misconception: "Thinking a child can update a parent by assigning to its props. Props are read-only; the child must call a callback the parent passed so the parent updates its own state.",
     hints: [
-      "Types are erased before the code runs. Ask what the compiler knows, and what it can only assume."
+      "Ask which direction data is allowed to travel between parent and child.",
+      "Think about how a child asks its parent to change something it does not own.",
+      "Editing a prop object does not trigger a re-render or update the parent."
     ],
+    example: {
+      caption: "The child never mutates; it calls the callback the parent owns.",
+      language: "tsx",
+      code: "function Parent() {\n  const [name, setName] = useState(\"Ada\");\n  return <Child name={name} onRename={setName} />;\n}\n\nfunction Child({ name, onRename }: { name: string; onRename: (n: string) => void }) {\n  // name is read-only; request a change via the callback\n  return <button onClick={() => onRename(\"Grace\")}>{name}</button>;\n}"
+    },
     source: "150-react",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
@@ -585,36 +662,43 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Map page identifiers to component definitions in an object dictionary `const PAGES = { home: Home, about: About }`, render dynamically `<Comp {...props} />`, and type with TypeScript union.",
+        text: "Map page keys to components in a typed object and render `<Comp {...props} />`, composable with `React.lazy`.",
         isCorrect: true,
-        explanation: "Correct. Object dictionary mapping provides a clean, extensible switching pattern with full TypeScript safety, easily combined with `React.lazy` for code splitting."
+        explanation: "Correct. A keyed lookup stays flat as pages grow, is type-safe against unknown keys, and code-splits cleanly behind `Suspense`."
       },
       {
         id: "B",
-        text: "Hardcode 50 nested `if/else` statements modifying `document.body.innerHTML` directly.",
+        text: "Write a long chain of nested `if/else` branches that set `document.body.innerHTML` for each page.",
         isCorrect: false,
-        explanation: "Directly modifying `innerHTML` breaks React virtual DOM mounting and lifecycle tracking."
+        explanation: "Tempting as 'simple', but writing to `innerHTML` bypasses React's rendering and lifecycle, and the conditional chain grows with every page."
       },
       {
         id: "C",
-        text: "Use `eval()` to execute strings of JSX code fetched from external URLs.",
+        text: "Use `eval()` to run JSX source strings fetched from a remote URL for whichever page is active.",
         isCorrect: false,
-        explanation: "`eval()` is insecure, slow, and completely inappropriate for React component switching."
+        explanation: "This is insecure and slow, and executing fetched code has nothing to do with cleanly selecting a component by key."
       },
       {
         id: "D",
-        text: "Create 50 separate `index.html` files and reload the browser page on every switch.",
+        text: "Create a separate static `index.html` per page and do a full browser reload on each switch.",
         isCorrect: false,
-        explanation: "Full page reloads negate single-page application benefits and reset client state."
+        explanation: "Full reloads throw away single-page-app benefits and reset client state; switching should swap components in place, not reload the document."
       }
     ],
     correctAnswer: "A",
-    explanation: "Implement a switcher via a mapping object, dynamic import for code splitting, and type checks for safety. Use lazy and Suspense if pages are large. Basic pattern: const PAGES = { home: Home, about: About, contact: Contact };function Page({ page.props }) { const Comp = PAGES[page] || NotFound; return <Comp {.props} />;} Code-split version: const Home = React.lazy(() => import('./Home'));return ( <Suspense fallback={<Spinner />}> <Page page={page} /> </Suspense>); Best practices: Validate page prop with PropTypes or TypeScript union types. Favor route-driven switching (react-router) for navigable pages. Keep the page registry centralized for analytics and permissions.",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Build a Page Switcher, Mapping Props to Components Cleanly.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Build a Page Switcher, Mapping Props to Components Cleanly.",
+    explanation: "The clean pattern for switching between pages is a lookup object that maps an identifier to a component, then rendering the resolved component dynamically. A capitalised variable holds the component so JSX treats it as a component rather than an HTML tag: `const Comp = PAGES[page] ?? NotFound; return <Comp {...props} />`. Adding a page is one entry in the map, with no growing chain of conditionals.\n\nTyped with a key union, the registry becomes safe: `page` can only be a known key, and passing an unknown one is a compile error. The same map composes cleanly with `React.lazy`, so each page can be code-split and loaded on demand behind a `Suspense` boundary.\n\nThe nuance worth stating is where this pattern ends. For anything a user should be able to link to, bookmark or navigate with the back button, a router (route-driven switching) is the right tool, because it ties the view to the URL. The lookup map is for internal, non-navigable view switching, tabs, wizard steps, where a URL would be overkill.",
+    interviewLine: "I map page keys to components in a typed lookup object and render `<Comp {...props} />`, which stays flat as pages grow and composes directly with `React.lazy` for code splitting.",
+    misconception: "Reaching for a long if/else or switch chain, or mutating the DOM by hand. A typed lookup object keeps switching flat, type-safe and easy to code-split.",
     hints: [
-      "Types are erased before the code runs. Ask what the compiler knows, and what it can only assume."
+      "Think about how to pick a component without a growing conditional chain.",
+      "Ask why the resolved component must be assigned to a capitalised variable.",
+      "For anything linkable or bookmarkable, a router fits better than a bare map."
     ],
+    example: {
+      caption: "A typed registry resolves the component; lazy loading composes on top.",
+      language: "tsx",
+      code: "const PAGES = {\n  home: lazy(() => import(\"./Home\")),\n  about: lazy(() => import(\"./About\")),\n} as const;\n\nfunction Router({ page }: { page: keyof typeof PAGES }) {\n  const Comp = PAGES[page];\n  return (\n    <Suspense fallback={<Spinner />}>\n      <Comp />\n    </Suspense>\n  );\n}"
+    },
     source: "150-react",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
@@ -637,36 +721,43 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Hooks reject TypeScript and only accept untyped JavaScript files.",
+        text: "Hooks reject TypeScript entirely and can only be called from plain untyped JavaScript files.",
         isCorrect: false,
-        explanation: "React Hooks have comprehensive first-class TypeScript support in `@types/react`."
+        explanation: "This is simply false; hooks ship first-class generic types in `@types/react` and are used in typed code everywhere."
       },
       {
         id: "B",
-        text: "Only `useEffect` supports types; all other hooks must use `any`.",
+        text: "Only `useEffect` is typed; every other hook must annotate its state and return values as `any`.",
         isCorrect: false,
-        explanation: "All built-in hooks provide robust generic type parameters."
+        explanation: "Tempting if you have only typed effects, but all built-in hooks are generically typed, with inference handling most cases."
       },
       {
         id: "C",
-        text: "TypeScript compiler removes all React hooks during compile time.",
+        text: "The TypeScript compiler strips every hook call during compilation, so they never run at runtime.",
         isCorrect: false,
-        explanation: "TypeScript transpiles types and preserves runtime JavaScript function calls."
+        explanation: "This confuses type erasure with code removal; types are erased, but the hook calls themselves are ordinary runtime JavaScript."
       },
       {
         id: "D",
-        text: "TypeScript types hook state generics (`useState<User | null>(null)`), action union types in `useReducer`, ref DOM elements (`useRef<HTMLInputElement>(null)`), and prop interfaces.",
+        text: "Hooks are generically typed: `useState<User | null>`, action unions in `useReducer`, `useRef<HTMLInputElement>`.",
         isCorrect: true,
-        explanation: "Correct. TypeScript integrates deeply with React Hooks, inferring state types or accepting explicit generics to guarantee full type safety."
+        explanation: "Correct. Inference covers most calls, and an explicit generic is added only when the initial value underspecifies the state or ref type."
       }
     ],
     correctAnswer: "D",
-    explanation: "Hooks work well with TypeScript. Type component props, state generics, dispatch signatures, and refs. Examples: const [count, setCount] = useState<number>(0);type Action = { type: 'inc' } | { type: 'dec' };const [state, dispatch] = useReducer((s: number, a: Action) => ., 0); Typing refs: const inputRef = useRef<HTMLInputElement | null>(null);",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Static Typing with Hooks, TypeScript Patterns and Examples.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Static Typing with Hooks, TypeScript Patterns and Examples.",
+    explanation: "React's hooks are fully typed through `@types/react`, and most of the time inference does the work: `useState(0)` gives `number`, `useState(\"\")` gives `string`. You reach for an explicit generic only when the initial value does not describe the full type, the classic case being `useState<User | null>(null)`, where the initial `null` would otherwise narrow the state to just `null`.\n\nThe other hooks follow the same shape. `useReducer` is typed by giving its reducer a state type and an action union, so `dispatch` only accepts valid actions and the state is narrowed inside each case. `useRef<HTMLInputElement>(null)` types the ref so `ref.current` is `HTMLInputElement | null`, forcing a null check before you touch the node.\n\nThe nuance worth raising is the difference between a value ref and a DOM ref: `useRef<number>(0)` gives a mutable `{ current: number }` you can write to freely, while a DOM ref starts `null` until React attaches the element, which is exactly why its type includes `null`.",
+    interviewLine: "I let inference type most hooks and add a generic only when the initial value is too narrow, like `useState<User | null>(null)` or `useRef<HTMLInputElement>(null)`.",
+    misconception: "Thinking hooks need `any` or special handling to work with TypeScript. They are generically typed; you add an explicit type parameter only when the initial value underspecifies the state.",
     hints: [
-      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
+      "Ask when inference from the initial value is enough and when it is not.",
+      "Think about what `useState(null)` infers if the eventual value is an object.",
+      "A DOM ref is `null` until React attaches it, which its type has to reflect."
     ],
+    example: {
+      caption: "An explicit generic widens the state beyond what the initial value would infer.",
+      language: "tsx",
+      code: "type User = { id: string; name: string };\n\nfunction Profile() {\n  const [user, setUser] = useState<User | null>(null); // not just null\n  const inputRef = useRef<HTMLInputElement>(null);\n\n  useEffect(() => {\n    inputRef.current?.focus(); // null-checked by the type\n  }, []);\n\n  return <input ref={inputRef} onChange={() => setUser({ id: \"1\", name: \"Ada\" })} />;\n}"
+    },
     source: "150-react",
     estimatedMinutes: 3,
     bestPracticeRef: "https://react.dev/reference/react/hooks"
@@ -688,36 +779,43 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Rely entirely on runtime `console.log()` statements inside component bodies.",
+        text: "Scatter `console.log` calls through component bodies and read the values while the app runs.",
         isCorrect: false,
-        explanation: "Console logging is manual debugging, not static compile-time type checking."
+        explanation: "This is runtime inspection after the fact, not static checking; it verifies nothing automatically and never fails a build."
       },
       {
         id: "B",
-        text: "Use TypeScript (or Flow) to provide compile-time type validation, auto-completion, and refactoring safety across components, props, and hooks.",
+        text: "Use TypeScript (or Flow) for compile-time type validation, autocomplete and safe refactoring across the app.",
         isCorrect: true,
-        explanation: "Correct. TypeScript has become the industry standard for static type checking in React applications, catching bugs at build time with zero runtime bundle overhead."
+        explanation: "Correct. A static checker catches mismatches at build time and erases the types from the bundle, with no runtime cost."
       },
       {
         id: "C",
-        text: "Inspect JavaScript source files with a hex editor before deploying.",
+        text: "Open the compiled JavaScript in a hex editor and inspect the bytes before each deployment.",
         isCorrect: false,
-        explanation: "Static type checking uses dedicated language servers and compilers (TypeScript)."
+        explanation: "This is nonsensical for type checking; static analysis is done by a compiler and language server, not by reading binary output."
       },
       {
         id: "D",
-        text: "Disable all type checking to speed up code execution.",
+        text: "Disable type checking entirely so the code runs faster without the compiler getting in the way.",
         isCorrect: false,
-        explanation: "Static type checking runs at build time and prevents production runtime crashes."
+        explanation: "Tempting as a speed shortcut, but static checking runs at build time only and prevents the runtime crashes that cost far more."
       }
     ],
     correctAnswer: "B",
-    explanation: "Normally we use PropTypes library (React.PropTypes moved to a prop-types package since React v15.5) for type checking in the React applications. For large code bases, it is recommended to use static type checkers such as Flow or TypeScript, that perform type checking at compile time and provide auto-completion features.: ",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the recommended ways for static type checking?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the recommended ways for static type checking?.",
+    explanation: "For static type checking in a React codebase, the recommended tool is TypeScript (Flow is the older alternative). A static checker runs at compile time: it reads your annotations, verifies that values, props and hook usage match, and reports mismatches before the code ever executes, while adding editor autocomplete and safe refactoring across the project.\n\nThe word 'static' is the key distinction. The check happens as you build, not while the app runs in front of a user, and the types are erased from the output, so there is no runtime cost and no bundle weight. This is categorically stronger than inspecting values with logs or ad-hoc runtime guards.\n\nThe nuance to state is that the older `PropTypes` approach was a runtime checker, not a static one, and it is deprecated in React 19. Static checking with TypeScript catches the same errors earlier and across far more than just props, which is why it is the default in modern React tooling.",
+    interviewLine: "I use TypeScript for static checking: it verifies types at build time and erases them from the bundle, catching mismatches before the app runs rather than warning at runtime like PropTypes.",
+    misconception: "Treating runtime PropTypes or console inspection as static type checking. Static checking happens at compile time with TypeScript or Flow, before the code runs, at zero runtime cost.",
     hints: [
-      "Types are erased before the code runs. Ask what the compiler knows, and what it can only assume."
+      "Separate checks that run at build time from ones that run while the app executes.",
+      "Ask what the user's browser pays for each approach.",
+      "Inspecting a value at runtime is not the same as verifying a type statically."
     ],
+    example: {
+      caption: "The static checker rejects the mismatch at build time, before anything runs.",
+      language: "typescript",
+      code: "function total(prices: number[]): number {\n  return prices.reduce((sum, p) => sum + p, 0);\n}\n\ntotal([10, 20, 30]);  // ok\n// total([\"10\", \"20\"]); // compile error: string[] is not number[]"
+    },
     source: "300-react",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
@@ -739,36 +837,43 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Set `NODE_ENV=production` during build bundling (handled automatically by Vite/Next.js/Webpack), which strips development warnings, disables StrictMode double-invoking, and minifies bundles.",
+        text: "Build with `NODE_ENV=production` so the bundler strips React's dev warnings, checks and extra bookkeeping.",
         isCorrect: true,
-        explanation: "Correct. Bundlers use the `NODE_ENV=production` flag to perform dead-code elimination (stripping development checks and warnings) and create optimized, minified production assets."
+        explanation: "Correct. The bundler inlines the flag and dead-code-eliminates the development-only paths, producing a smaller, faster minified build."
       },
       {
         id: "B",
-        text: "Add `production: true` as a prop on every single HTML `<div>` tag.",
+        text: "Add a `production={true}` attribute to every top-level HTML element the app renders.",
         isCorrect: false,
-        explanation: "Production mode is a global build-time environment variable, not a JSX prop."
+        explanation: "This confuses a global build flag with per-element markup; production mode is set once at build time, not as a JSX attribute."
       },
       {
         id: "C",
-        text: "Edit browser settings to enable 'Production Browser Mode'.",
+        text: "Switch on a 'Production Browser Mode' option in the end user's browser settings.",
         isCorrect: false,
-        explanation: "Production optimization happens at code build/bundling time on the developer/CI machine."
+        explanation: "Tempting if you think the browser decides, but the optimisation happens when you build the bundle, not in the user's browser."
       },
       {
         id: "D",
-        text: "Production mode is enabled by purchasing a paid license from Meta.",
+        text: "Purchase a paid production license from Meta to unlock the optimised React runtime.",
         isCorrect: false,
-        explanation: "React is free and open-source under the MIT license."
+        explanation: "React is free and MIT-licensed; there is no paid tier, and production mode is purely a build configuration."
       }
     ],
     correctAnswer: "A",
-    explanation: "You should use Webpack's DefinePlugin method to set NODE_ENV to production, by which it strip out things like propType validation and extra warnings. Apart from this, if you minify the code, for example, Uglify's dead-code elimination to strip out development only code and comments, it will drastically reduce the size of your bundle.: ",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to enable production mode in React?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to enable production mode in React?.",
+    explanation: "You enable React's production mode by building with `NODE_ENV` set to `production`. Modern tooling, Next.js, Vite, webpack in production configs, does this for you when you run the production build command. React reads `process.env.NODE_ENV`, and when it is `production` the development-only code paths are compiled out.\n\nThe mechanism is dead-code elimination. Bundlers inline `process.env.NODE_ENV` as the literal string `\"production\"`, so blocks guarded by `if (process.env.NODE_ENV !== 'production')` become statically false and the minifier strips them, along with the warnings, prop checks and the extra bookkeeping that `StrictMode`'s double-invocation relies on. The result is a smaller, faster bundle.\n\nThe nuance worth raising is that this is a build-time switch, not a runtime one: you cannot flip it in the browser or with a prop. Shipping a development build to production is a common and expensive mistake, since it keeps all the warnings and slow paths; the React DevTools badge tells you which build is actually running.",
+    interviewLine: "I treat production mode as a build-time switch: `NODE_ENV=production` lets the bundler dead-code-eliminate React's dev warnings and checks, which my tooling does automatically on a production build.",
+    misconception: "Thinking production mode is a runtime toggle, a prop, a browser setting or a license. It is a build-time `NODE_ENV` flag the bundler uses to strip development-only code.",
     hints: [
-      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
+      "Ask at what point in the pipeline this is decided, build time or runtime.",
+      "Think about how the bundler strips the warning code paths out.",
+      "It is not a prop, a browser setting, or something you buy."
     ],
+    example: {
+      caption: "The bundler inlines the flag so the guarded block is statically dead and stripped.",
+      language: "javascript",
+      code: "if (process.env.NODE_ENV !== \"production\") {\n  console.warn(\"dev-only warning\");\n}\n// after a production build the condition is literally\n// if (\"production\" !== \"production\") { ... }  -> removed by the minifier"
+    },
     source: "300-react",
     estimatedMinutes: 2,
     bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
@@ -790,36 +895,43 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Unified hardware-agnostic input events including `onPointerDown`, `onPointerMove`, `onPointerUp`, `onPointerCancel`, `onPointerEnter`, and `onPointerLeave`.",
+        text: "A unified set of input events, `onPointerDown`, `onPointerMove`, `onPointerUp`, `onPointerCancel`, enter/leave.",
         isCorrect: true,
-        explanation: "Correct. Pointer Events provide a single standard interface for handling mouse, touch screen, and pen/stylus interactions uniformly across modern browsers."
+        explanation: "Correct. One device-agnostic model covers mouse, touch and pen, each event carrying a `pointerType` and `pointerId`."
       },
       {
         id: "B",
-        text: "Events that only trigger on laser pointer hardware devices.",
+        text: "Events that fire only when a dedicated laser-pointer hardware device is connected to the machine.",
         isCorrect: false,
-        explanation: "Pointer Events cover all standard user input devices (mouse, touch, stylus)."
+        explanation: "This misreads 'pointer' as a laser; Pointer Events abstract ordinary input devices like mouse, touch and stylus."
       },
       {
         id: "C",
-        text: "Events that measure computer memory pointer addresses in C++.",
+        text: "Events that report the memory pointer addresses of objects, as `*` and `&` do in C or C++.",
         isCorrect: false,
-        explanation: "Pointer Events handle UI hardware input (mouse/pen/touch), not C++ memory pointers."
+        explanation: "This confuses UI input with memory pointers; Pointer Events are about user interaction, not addresses."
       },
       {
         id: "D",
-        text: "Pointer events are not supported in React DOM.",
+        text: "A legacy API that React DOM dropped, so pointer interactions must use mouse and touch events instead.",
         isCorrect: false,
-        explanation: "React DOM has full built-in support for the W3C Pointer Events specification."
+        explanation: "Tempting if you assume only mouse/touch exist, but React DOM fully supports the W3C Pointer Events specification."
       }
     ],
     correctAnswer: "A",
-    explanation: "Pointer Events provide a unified way of handling all input events. In the old days we had a mouse and respective event listeners to handle them but nowadays we have many devices which don't correlate to having a mouse, like phones with touch surface or pens. We need to remember that these events will only work in browsers that support the Pointer Events specification. The following event types are now available in React DOM: onPointerDown onPointerMove onPointerUp onPointerCancel onGotPointerCapture onLostPointerCapture onPointerEnter onPointerLeave onPointerOver onPointerOut: ",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the Pointer Events supported in React?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the Pointer Events supported in React?.",
+    explanation: "Pointer Events are a single, device-agnostic input model. Instead of handling mouse, touch and pen separately, one set of events covers all of them, and each event carries a `pointerType` (`\"mouse\"`, `\"touch\"` or `\"pen\"`) plus pressure, tilt and `pointerId`. React DOM exposes them as camelCased props: `onPointerDown`, `onPointerMove`, `onPointerUp`, `onPointerCancel`, `onPointerEnter`, `onPointerLeave`, `onPointerOver`, `onPointerOut`, and the capture pair `onGotPointerCapture` / `onLostPointerCapture`.\n\nIn practice this replaces the old pattern of wiring up mouse and touch handlers side by side and reconciling their differences. One `onPointerMove` handler works for a mouse drag, a finger swipe and a stylus stroke, and `pointerId` lets you track several simultaneous touches cleanly.\n\nThe nuance worth stating is browser support and `onPointerCancel`: the spec is supported in current browsers, and `pointercancel` fires when the system takes over the gesture (for example the browser starts scrolling), so robust drag code must handle it, not just `pointerup`.",
+    interviewLine: "I reach for Pointer Events as one device-agnostic model \u2014 `onPointerDown/Move/Up` and friends, with a `pointerType` and `pointerId` \u2014 so a single handler covers mouse, touch and pen.",
+    misconception: "Reading 'pointer' as a laser pointer or a C-style memory pointer. Pointer Events are a unified input model for mouse, touch and pen, exposed by React DOM.",
     hints: [
-      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
+      "Think about what kinds of input devices a single event model would unify.",
+      "Ask how one handler could serve a mouse, a finger and a stylus at once.",
+      "This is about user input, not hardware pointers or memory addresses."
     ],
+    example: {
+      caption: "One handler branches on pointerType instead of separate mouse and touch code.",
+      language: "tsx",
+      code: "function Canvas() {\n  function handleDown(e: React.PointerEvent<HTMLDivElement>) {\n    console.log(e.pointerType, e.pointerId); // \"mouse\" | \"touch\" | \"pen\"\n  }\n  return <div onPointerDown={handleDown} onPointerCancel={() => {}} />;\n}"
+    },
     source: "300-react",
     estimatedMinutes: 2,
     bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
@@ -842,36 +954,43 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Use `Array.prototype.map()` with an inline callback returning JSX elements with unique keys; standard `for` loop statements cannot be embedded directly inside JSX expressions.",
+        text: "Call `Array.prototype.map` returning keyed elements; a `for` statement cannot go inline in JSX braces.",
         isCorrect: true,
-        explanation: "Correct. JSX expressions `{}` only accept JavaScript expressions that evaluate to a value (like `array.map()`), not control flow statements (`for`, `while`)."
+        explanation: "Correct. JSX braces accept expressions, and `map` returns an array of elements, whereas `for` is a statement that cannot be interpolated."
       },
       {
         id: "B",
-        text: "JSX does not support iterating over arrays.",
+        text: "You cannot iterate arrays in JSX at all; lists must be written out element by element by hand.",
         isCorrect: false,
-        explanation: "Iterating over arrays using `map()` is fundamental to React list rendering."
+        explanation: "This is false; mapping an array to elements is the standard way React renders dynamic lists."
       },
       {
         id: "C",
-        text: "Use `while(true)` loops inside JSX attributes.",
+        text: "Place a `while (condition)` loop inside the JSX braces to keep appending elements until it ends.",
         isCorrect: false,
-        explanation: "Infinite loops freeze the JavaScript thread and crash the browser."
+        explanation: "Tempting as another loop form, but `while` is also a statement and still cannot sit inside a JSX expression slot."
       },
       {
         id: "D",
-        text: "Use a standard `for (let i=0; i<items.length; i++)` loop statement directly inside JSX tags.",
+        text: "Write a `for (let i = 0; i < items.length; i++)` loop directly between the JSX tags themselves.",
         isCorrect: false,
-        explanation: "`for` statements cannot be placed inside JSX expression curly braces."
+        explanation: "This is the exact trap: a `for` statement cannot appear inside JSX braces, which only evaluate expressions."
       }
     ],
     correctAnswer: "A",
-    explanation: "You can simply use Array.prototype.map with ES6 arrow function syntax. For example, the items array of objects is mapped into an array of components: But you can't iterate using for loop: This is because JSX tags are transpiled into function calls, and you can't use statements inside expressions. This may change thanks to do expressions which are stage 1 proposal.: ",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to loop inside JSX?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to loop inside JSX?.",
+    explanation: "Inside JSX you render a list with `Array.prototype.map`, returning one element per item and giving each a stable `key`. The reason a bare `for` loop does not work is structural: JSX curly braces accept a JavaScript expression, something that evaluates to a value, and a `for` statement is a statement, not an expression. `map` returns an array of elements, which JSX renders directly.\n\nThis follows from how JSX compiles. `<li>{...}</li>` becomes a function call whose children are the evaluated contents of the braces, and you cannot drop a statement into an argument position. If you prefer an imperative loop, you run it before the `return`, push elements into an array, and then interpolate that array.\n\nThe nuance worth stating is `key`. It must be a stable identity from your data, not the array index, so React can match elements across renders during reconciliation; an index key breaks that matching the moment the list reorders or has items inserted.",
+    interviewLine: "I render lists with `map` because JSX braces take an expression, not a statement, so a `for` loop can't go inline; each element gets a stable `key` from the data.",
+    misconception: "Thinking a `for` loop can be written directly inside JSX braces. Braces accept expressions only; `map` returns an array of elements, while `for` is a statement.",
     hints: [
-      "Types are erased before the code runs. Ask what the compiler knows, and what it can only assume."
+      "Ask what kind of thing JSX curly braces are allowed to contain.",
+      "Consider the difference between a statement and an expression here.",
+      "If you want an imperative loop, build the array before the return."
     ],
+    example: {
+      caption: "An imperative loop works only before the return, pushing into an array JSX then renders.",
+      language: "tsx",
+      code: "function NumberList({ to }: { to: number }) {\n  const items = [];\n  for (let i = 1; i <= to; i++) {\n    items.push(<li key={i}>{i}</li>); // built before return\n  }\n  return <ul>{items}</ul>;\n}"
+    },
     source: "300-react",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
@@ -894,36 +1013,43 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "An array sorting algorithm that arranges items by color.",
+        text: "A sorting helper that reorders the items of an array by one of their fields, such as color.",
         isCorrect: false,
-        explanation: "`arrayOf(shape(...))` is a type validation schema definition."
+        explanation: "This reads 'shape' as sorting, but `arrayOf(shape(...))` validates structure; it never reorders anything."
       },
       {
         id: "B",
-        text: "A method that creates 3D geometric shapes inside HTML5 Canvas.",
+        text: "A method that draws 3D geometric shapes into an HTML5 `<canvas>` from array data.",
         isCorrect: false,
-        explanation: "PropTypes validates component prop types, unrelated to 3D Canvas rendering."
+        explanation: "This confuses the word 'shape' with graphics; it is a prop-validation schema, unrelated to canvas drawing."
       },
       {
         id: "C",
-        text: "Combine `PropTypes.arrayOf()` with `PropTypes.shape({...})` to validate an array of objects matching a specific schema (e.g. `PropTypes.arrayOf(PropTypes.shape({ id: PropTypes.number }))`).",
+        text: "Nest `PropTypes.arrayOf(PropTypes.shape({ ... }))` to validate that each array item matches a schema.",
         isCorrect: true,
-        explanation: "Correct. Nesting `PropTypes.shape` inside `PropTypes.arrayOf` validates that each item in the passed array conforms to the specified object structure."
+        explanation: "Correct. `arrayOf` applies its inner validator to every element, so a `shape` inside it checks each object's structure."
       },
       {
         id: "D",
-        text: "A database schema validator for backend SQL queries.",
+        text: "A validator for backend SQL query result sets, checking each returned database row's columns.",
         isCorrect: false,
-        explanation: "PropTypes is a React client runtime prop validation library."
+        explanation: "Tempting because 'schema' sounds database-like, but PropTypes is a client-side React prop validator, not a SQL tool."
       }
     ],
     correctAnswer: "C",
-    explanation: "If you want to pass an array of objects to a component with a particular shape then use React.PropTypes.shape() as an argument to React.PropTypes.arrayOf().: ",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is React proptype array with shape?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is React proptype array with shape?.",
+    explanation: "In the `prop-types` library you validate an array of objects by nesting validators: `PropTypes.arrayOf(PropTypes.shape({ ... }))`. `arrayOf` asserts the prop is an array and applies its inner validator to every element, and `shape` describes the expected object structure field by field. Together they check that each item in the array matches the given schema, warning in development when one does not.\n\nThe mechanism is composition: both are higher-order validators that take another validator as an argument, so you can go deeper (`arrayOf(shape({ tags: arrayOf(string) }))`) to describe nested data. `.isRequired` can be attached at any level to reject a missing value there.\n\nThe nuance worth stating is that `prop-types` is a runtime checker and is deprecated in React 19. The modern equivalent is a TypeScript array-of-object type, which expresses the same shape and checks it at compile time instead of warning at runtime.",
+    interviewLine: "I nest `PropTypes.arrayOf(PropTypes.shape({ ... }))` to validate an array of objects against a schema, though in modern code I'd express that as a TypeScript object-array type instead.",
+    misconception: "Thinking `arrayOf` and `shape` are standalone or unrelated. They compose: `arrayOf` applies its inner validator, here a `shape` schema, to every element of the array.",
     hints: [
-      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
+      "Ask how you describe one object's structure, then how you say 'an array of those'.",
+      "Think about validators that take another validator as their argument.",
+      "The modern equivalent is a TypeScript array-of-object type checked at compile time."
     ],
+    example: {
+      caption: "The TypeScript equivalent of arrayOf(shape(...)) is an object-array type.",
+      language: "tsx",
+      code: "type Style = { color: string; fontSize: number };\n\nfunction Legend({ styles }: { styles: Style[] }) {\n  return <>{styles.map((s, i) => <span key={i} style={s} />)}</>;\n}\n// <Legend styles={[{ color: \"red\" }]} /> is a compile error: fontSize missing"
+    },
     source: "300-react",
     estimatedMinutes: 2,
     bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
@@ -946,36 +1072,43 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Import specific `core-js` polyfill features (e.g. `import 'core-js/stable'`) at the entry point `index.js`, or include polyfill CDN scripts in `index.html`.",
+        text: "Import `core-js` features at the entry point `index.js`, or add a polyfill CDN `<script>` in `index.html`.",
         isCorrect: true,
-        explanation: "Correct. Importing polyfills at the application entry point ensures necessary ECMAScript features (Promises, Array methods, Object.assign) exist before React code executes."
+        explanation: "Correct. Loading the polyfills before any app code ensures the missing ECMAScript APIs exist by the time React runs."
       },
       {
         id: "B",
-        text: "Edit the user's computer motherboard firmware.",
+        text: "Flash updated firmware onto the user's computer motherboard so the browser gains the missing APIs.",
         isCorrect: false,
-        explanation: "Polyfills are userland JavaScript scripts, not hardware firmware."
+        explanation: "This confuses software shims with hardware; polyfills are JavaScript loaded by the page, nothing to do with firmware."
       },
       {
         id: "C",
-        text: "Polyfills are completely banned in modern web development.",
+        text: "Avoid polyfills entirely, since modern browsers make them unnecessary in all deployment targets.",
         isCorrect: false,
-        explanation: "Polyfills are essential when supporting legacy browser environments lacking modern APIs."
+        explanation: "Tempting if you only test current browsers, but polyfills remain essential whenever you support environments lacking a feature."
       },
       {
         id: "D",
-        text: "Polyfills can only be compiled in Python.",
+        text: "Write the polyfills in Python and compile them to run alongside the JavaScript bundle.",
         isCorrect: false,
-        explanation: "Polyfills are standard JavaScript compatibility libraries."
+        explanation: "This is a category error; polyfills are JavaScript that patches missing browser APIs, not code in another language."
       }
     ],
     correctAnswer: "A",
-    explanation: "There are approaches to include polyfills in create-react-app, Manual import from core-js: Create a file called (something like) polyfills.js and import it into root index.js file. Run npm install core-js or yarn add core-js and import your specific required features. Using Polyfill service: Use the polyfill.io CDN to retrieve custom, browser-specific polyfills by adding this line to index.html: In the above script we had to explicitly request the Array.prototype.includes feature as it is not included in the default feature set.: ",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the approaches to include polyfills in your create-react-app?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the approaches to include polyfills in your create-react-app?.",
+    explanation: "There are two main approaches. The first is to import polyfills at the application entry point: install `core-js` and `import 'core-js/stable'` (or import only the specific features you need) at the top of `index.js`, before any application code. Because the entry module runs first, the missing APIs, `Promise`, `Array.prototype.includes`, `Object.assign`, exist by the time React executes.\n\nThe second is a hosted polyfill service: add a `<script>` to `index.html` pointing at a CDN that inspects the browser's `User-Agent` and returns only the polyfills that browser actually lacks. You list the features you want, and modern browsers receive little or nothing.\n\nThe nuance worth stating is the trade-off. Bundling polyfills makes delivery self-contained but ships code even to browsers that do not need it, which is why targeted imports and build-time browser targets matter; the hosted service keeps modern browsers lean but adds a third-party request on the critical path. Either way, polyfills must load before the code that depends on them.",
+    interviewLine: "I either import `core-js` features at the entry point before any app code, or load a browser-targeted polyfill CDN in `index.html`, so the missing APIs exist before React runs.",
+    misconception: "Thinking polyfills are banned, hardware-level, or language-specific. They are ordinary JavaScript that must simply be loaded before the code relying on the APIs they provide.",
     hints: [
-      "Types are erased before the code runs. Ask what the compiler knows, and what it can only assume."
+      "Ask where the polyfill must run relative to the code that needs the API.",
+      "Consider the difference between bundling features and fetching them per browser.",
+      "The question is about loading JavaScript shims, not firmware or another language."
     ],
+    example: {
+      caption: "Importing the polyfill first guarantees the API exists before app code runs.",
+      language: "javascript",
+      code: "// index.js, before any app imports\nimport \"core-js/stable\";\nimport \"./app\";\n\n// now older browsers have Array.prototype.includes, Promise, etc.\n[1, 2, 3].includes(2); // safe even where it was missing natively"
+    },
     source: "300-react",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
@@ -998,36 +1131,43 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Grouping by feature/domain (locating components, styles, hooks, and tests together per feature) or grouping by file type/role (`components/`, `hooks/`, `services/`, `utils/`).",
+        text: "Group by feature or route, co-locating a domain's files, or group by file type (`components/`, `hooks/`).",
         isCorrect: true,
-        explanation: "Correct. Feature-based folder structures scale well for large applications, while type-based structures are common in smaller projects."
+        explanation: "Correct. These are the two dominant conventions; feature grouping scales better by keeping code that changes together in one place."
       },
       {
         id: "B",
-        text: "React enforces a mandatory rigid folder structure and errors if changed.",
+        text: "React enforces one mandatory folder layout and throws a build error if you deviate from it.",
         isCorrect: false,
-        explanation: "React is unopinionated about directory organization, allowing teams to choose what fits best."
+        explanation: "This is false; React is unopinionated about structure, leaving the choice to the team."
       },
       {
         id: "C",
-        text: "Placing all 5,000 files in a single flat root folder with no subdirectories.",
+        text: "Keep every file flat in a single root folder with no subdirectories, however large the project.",
         isCorrect: false,
-        explanation: "Flat monolithic folders become unmaintainable and cluttered."
+        explanation: "Tempting for a tiny demo, but a flat folder becomes unnavigable as the codebase grows; both real conventions subdivide."
       },
       {
         id: "D",
-        text: "Structuring folders strictly by file size in kilobytes.",
+        text: "Organise files strictly by their size in kilobytes, grouping the largest and smallest together.",
         isCorrect: false,
-        explanation: "Folder structures organize code by domain responsibility or technical layer."
+        explanation: "File size is irrelevant to organisation; structures group by domain responsibility or technical role, not bytes."
       }
     ],
     correctAnswer: "A",
-    explanation: "There are two common practices for React project file structure. Grouping by features or routes: One common way to structure projects is locate CSS, JS, and tests together, grouped by feature or route. Grouping by file type: Another popular way to structure projects is to group similar files together.: ",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the common folder structures for React?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the common folder structures for React?.",
+    explanation: "React is unopinionated about file layout, so two conventions dominate. Grouping by feature (or route) keeps everything for one domain together, its components, styles, hooks and tests live in the same folder, so a change to that feature touches one place. Grouping by file type puts all components in `components/`, all hooks in `hooks/`, all services in `services/`, organising by technical role instead.\n\nThe practical difference is how each scales. Feature grouping localises change and keeps related code co-located as the app grows, which is why larger codebases trend toward it. Type grouping is simpler to reason about in small projects but tends to scatter a single feature across many top-level folders as the app expands.\n\nThe nuance worth stating is that neither is enforced and the two are often blended: a feature folder internally grouped by type. The real goal is minimising the distance between files that change together, not following a rule for its own sake.",
+    interviewLine: "I pick between grouping by feature, co-locating a domain's components, hooks and tests, or by file type; feature grouping scales better because it keeps code that changes together in one place.",
+    misconception: "Believing React mandates a specific folder structure. It is unopinionated; teams choose feature-based or type-based layouts, or a blend, based on scale.",
     hints: [
-      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
+      "Ask whether files are grouped by what they do or by what domain they belong to.",
+      "Think about which layout keeps code that changes together in one place.",
+      "React does not enforce any particular structure here."
     ],
+    example: {
+      caption: "Feature grouping co-locates everything a single domain needs.",
+      language: "json",
+      code: "{\n  \"src/features/checkout\": [\n    \"Checkout.tsx\",\n    \"Checkout.test.tsx\",\n    \"useCart.ts\",\n    \"checkout.api.ts\"\n  ],\n  \"src/features/profile\": [\"Profile.tsx\", \"useProfile.ts\"]\n}"
+    },
     source: "300-react",
     estimatedMinutes: 2,
     bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
@@ -1049,36 +1189,43 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Redux deletes the user's hard drive if a reducer returns undefined.",
+        text: "Redux erases the user's hard drive whenever one of its reducers accidentally returns `undefined`.",
         isCorrect: false,
-        explanation: "Redux simply logs a console error if a reducer returns undefined."
+        explanation: "This is absurd; a reducer returning `undefined` just logs a console error, with no effect on the filesystem."
       },
       {
         id: "B",
-        text: "Redux can only run on Linux servers and fails in web browsers.",
+        text: "Redux runs only on Linux servers and throws an error when loaded inside a web browser.",
         isCorrect: false,
-        explanation: "Redux runs in all JavaScript environments, web browsers, Node.js, and mobile."
+        explanation: "This invents a platform limit; Redux is plain JavaScript that runs in browsers, Node and mobile alike."
       },
       {
         id: "C",
-        text: "Enforces strict immutability (requiring careful copying or tools like Immer), higher boilerplate for actions/types (mitigated by Redux Toolkit), and learning curve for reducers.",
+        text: "Strict immutability and more action/reducer boilerplate (both largely eased by Redux Toolkit's Immer).",
         isCorrect: true,
-        explanation: "Correct. Redux requires developers to manage immutability strictly and configure middleware, though Redux Toolkit has streamlined modern Redux development dramatically."
+        explanation: "Correct. These are the real compromises versus Flux's looser model, and Redux Toolkit folds in Immer and generators to remove most of them."
       },
       {
         id: "D",
-        text: "Redux completely disables all React hooks in the application.",
+        text: "Redux disables every React hook in the application, forcing a return to class components.",
         isCorrect: false,
-        explanation: "React-Redux provides first-class hooks like `useSelector` and `useDispatch`."
+        explanation: "Tempting if you only know connect-based Redux, but React-Redux ships `useSelector` and `useDispatch` as first-class hooks."
       }
     ],
     correctAnswer: "C",
-    explanation: "Instead of saying downsides we can say that there are few compromises of using Redux over Flux. Those are as follows: You will need to learn to avoid mutations: Flux is un-opinionated about mutating data, but Redux doesn't like mutations and many packages complementary to Redux assume you never mutate the state. You can enforce this with dev-only packages like redux-immutable-state-invariant, Immutable.js, or instructing your team to write non-mutating code. You're going to have to carefully pick your packages: While Flux explicitly doesn't try to solve problems such as undo/redo, persistence, or forms, Redux has extension points such as middleware and store enhancers, and it has spawned a rich ecosystem. There is no nice Flow integration yet: Flux currently lets you do very impressive static type checks which Redux doesn't support yet.: ",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the downsides of Redux compared to Flux?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the downsides of Redux compared to Flux?.",
+    explanation: "The trade-offs of Redux over Flux are mostly about discipline and ceremony. Redux leans hard on immutability: reducers must return new state rather than mutate, and many ecosystem tools assume you never mutate, so you either copy carefully by hand or reach for a helper. Flux, by contrast, is unopinionated about mutation.\n\nThe second cost is boilerplate: action types, action creators, reducers and store wiring add up, and because Flux solves fewer problems itself, Redux's richer middleware and store-enhancer ecosystem is more to learn and choose from. In practice Redux Toolkit has largely erased this, bundling Immer so you can write 'mutating' logic that stays immutable, and generating action creators and types for you.\n\nThe nuance worth stating is that these are compromises, not disqualifiers. The same single-store, pure-reducer model that creates the ceremony is exactly what gives Redux its predictability, time-travel debugging and testability, which is why the boilerplate was considered a worthwhile exchange even before Toolkit reduced it.",
+    interviewLine: "I'd name Redux's costs versus Flux as its strict immutability and action/reducer boilerplate, then note that I lean on Redux Toolkit to fold in Immer and generators and remove most of it while keeping the single-store predictability.",
+    misconception: "Treating Redux's boilerplate and immutability as flaws rather than the price of its predictable single-store model, a price Redux Toolkit has largely removed.",
     hints: [
-      "Ask where the state genuinely belongs: the URL, a server cache, a global store, or one component."
+      "Think about what Redux insists on that Flux leaves open.",
+      "Ask what you must do by hand to avoid mutating state in a reducer.",
+      "Consider how Redux Toolkit changes this comparison today."
     ],
+    example: {
+      caption: "Redux Toolkit uses Immer so this 'mutating' reducer stays immutable.",
+      language: "typescript",
+      code: "import { createSlice } from \"@reduxjs/toolkit\";\n\nconst todos = createSlice({\n  name: \"todos\",\n  initialState: [] as string[],\n  reducers: {\n    add(state, action: { payload: string }) {\n      state.push(action.payload); // Immer makes this immutable under the hood\n    },\n  },\n});"
+    },
     source: "300-react",
     estimatedMinutes: 2,
     bestPracticeRef: "https://redux.js.org/style-guide/"
@@ -1101,36 +1248,43 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "A plain JavaScript object representing an intention to change state, requiring a `type` property (string identifier) and optional payload data (`{ type: 'todos/add', payload: text }`).",
+        text: "A plain object describing an intended change, with a required `type` and optional payload data.",
         isCorrect: true,
-        explanation: "Correct. Actions are the only way to send data to the Redux store, acting as serialized descriptions of events that occurred in the application."
+        explanation: "Correct. Actions are the only input to the store; the reducer reads the `type` and payload to compute the next state."
       },
       {
         id: "B",
-        text: "A database stored procedure executed inside PostgreSQL.",
+        text: "A stored procedure that runs inside a PostgreSQL database to persist each state change to disk.",
         isCorrect: false,
-        explanation: "Actions are in-memory JavaScript objects dispatched to the Redux store."
+        explanation: "This moves the action into the database layer; actions are in-memory JavaScript objects dispatched on the client."
       },
       {
         id: "C",
-        text: "A CSS stylesheet rule that animates buttons.",
+        text: "A CSS rule that animates a button when the user triggers the corresponding interaction.",
         isCorrect: false,
-        explanation: "Actions describe state update intentions in Redux."
+        explanation: "This confuses an action with styling; actions describe state-change intent, not visual transitions."
       },
       {
         id: "D",
-        text: "A synchronous infinite loop that halts the browser.",
+        text: "A synchronous infinite loop that blocks the main thread until the store finishes updating.",
         isCorrect: false,
-        explanation: "Actions are lightweight data objects, not loops."
+        explanation: "Tempting if 'action' sounds like running code, but an action is passive data, not a loop or any executing process."
       }
     ],
     correctAnswer: "A",
-    explanation: "Actions are plain JavaScript objects or payloads of information that send data from your application to your store. They are the only source of information for the store. Actions must have a type property that indicates the type of action being performed. For example, let's take an action which represents adding a new todo item:, React Native: ",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is an action in Redux?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is an action in Redux?.",
+    explanation: "An action is a plain JavaScript object that describes something that happened in the app. It must have a `type` field, a string identifier the reducers switch on, and may carry additional data, conventionally under `payload`. Actions are the only way information enters the store: nothing changes state except an action flowing through `dispatch` into the reducers.\n\nThat makes actions the event log of the application. Because they are plain, serialisable data, middleware can record, inspect, persist and replay them, which is what powers logging and time-travel debugging. The reducer, not the action, computes the next state; the action merely states intent.\n\nThe nuance an interviewer may probe is naming and shape conventions. Keeping `type` strings namespaced (`\"todos/add\"`) avoids collisions across slices, and keeping payloads plain, no functions, Promises or class instances, is what keeps actions serialisable and replayable.",
+    interviewLine: "I describe an action as a serialisable object with a required `type` describing what happened \u2014 it's the only input to the store, and the reducer, not the action, computes the next state.",
+    misconception: "Thinking an action itself changes state or may hold arbitrary runtime objects. It only describes intent as plain data, and the reducer applies the change when the action is dispatched.",
     hints: [
-      "Ask where the state genuinely belongs: the URL, a server cache, a global store, or one component."
+      "Identify the one field every action object must contain.",
+      "Ask what role the action plays versus what the reducer does.",
+      "An action states what happened; it does not apply the change itself."
     ],
+    example: {
+      caption: "A typed action union keeps type strings namespaced and payloads plain.",
+      language: "typescript",
+      code: "type TodoAction =\n  | { type: \"todos/add\"; payload: string }\n  | { type: \"todos/clear\" };\n\nconst add = (text: string): TodoAction => ({ type: \"todos/add\", payload: text });\ndispatch(add(\"ship it\")); // { type: \"todos/add\", payload: \"ship it\" }"
+    },
     source: "300-react",
     estimatedMinutes: 2,
     bestPracticeRef: "https://redux.js.org/style-guide/"
@@ -1152,36 +1306,43 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "React Native is written in Swift and cannot use JavaScript.",
+        text: "React Native is written in Swift and cannot share any JavaScript component code with React.",
         isCorrect: false,
-        explanation: "React Native code is written in JavaScript/TypeScript using React paradigms."
+        explanation: "This is false; React Native apps are written in JavaScript or TypeScript using the same React component model."
       },
       {
         id: "B",
-        text: "There is no difference; they are exact duplicates.",
+        text: "There is no real difference between them; they are the same package under two marketing names.",
         isCorrect: false,
-        explanation: "They target different platforms: React for Web DOM, React Native for native OS widgets."
+        explanation: "Tempting because they share React's core, but they render to entirely different targets, the browser DOM versus native widgets."
       },
       {
         id: "C",
-        text: "React (React DOM) targets the browser web DOM using HTML/CSS; React Native compiles to native iOS/Android mobile components (`<View>`, `<Text>`) using native bridge/JSI architectures.",
+        text: "React DOM renders to the browser DOM with HTML/CSS; React Native renders to native iOS and Android widgets.",
         isCorrect: true,
-        explanation: "Correct. Both share the same React component and hook paradigms, but target completely different rendering backends (browser DOM vs native mobile platform UI primitives)."
+        explanation: "Correct. Both share React's component and hook model, but the rendering target differs: DOM elements versus native `<View>`/`<Text>` primitives."
       },
       {
         id: "D",
-        text: "React runs on mobile phones; React Native runs only on smart TVs.",
+        text: "Plain React runs on mobile phones while React Native runs only on smart TVs and set-top boxes.",
         isCorrect: false,
-        explanation: "React Native is designed for native mobile platforms (iOS, Android) and desktop."
+        explanation: "This invents a device split; React Native targets native mobile (and desktop) platforms, while React DOM targets the browser."
       }
     ],
     correctAnswer: "C",
-    explanation: "React is a JavaScript library, supporting both front end web and being run on the server, for building user interfaces and web applications. React Native is a mobile framework that compiles to native app components, allowing you to build native mobile applications (iOS, Android, and Windows) in JavaScript that allows you to use React to build your components, and implements React under the hood.: ",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the difference between React Native and React?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the difference between React Native and React?.",
+    explanation: "React is the library for building component trees; React DOM renders those components to the browser's DOM using HTML elements and CSS. React Native uses the same React core and component model but renders to native iOS and Android UI widgets instead, through primitives like `<View>`, `<Text>` and `<Image>` and a bridge/JSI layer that talks to the platform.\n\nSo what you reuse is the mental model, components, props, state and hooks, and what differs is the rendering target. There is no DOM in React Native, no `<div>` or CSS stylesheet; layout uses a Flexbox-based `StyleSheet` and platform components map to real native views.\n\nThe nuance worth stating is that 'learn once, write anywhere' is not 'write once, run anywhere': you reuse skills and often business logic, but the view layer and many platform APIs are distinct, so a web and a native app share patterns rather than the same component tree.",
+    interviewLine: "I'd say React plus React DOM render components to the browser DOM, while React Native shares the same React core but renders to native iOS and Android views like `<View>` and `<Text>`.",
+    misconception: "Thinking React Native renders HTML/CSS or is a different language. It reuses React's component model but renders to native platform widgets, with no DOM involved.",
     hints: [
-      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
+      "Separate the component model you reuse from the thing each one renders to.",
+      "Ask what `<View>` and `<Text>` map to that `<div>` and `<span>` do not.",
+      "React Native shares React's core; the difference is the rendering target."
     ],
+    example: {
+      caption: "The same hooks and props, but native primitives instead of DOM elements.",
+      language: "tsx",
+      code: "import { View, Text, Pressable } from \"react-native\";\n\nfunction Counter() {\n  const [n, setN] = useState(0);\n  return (\n    <View>\n      <Text>{n}</Text>\n      <Pressable onPress={() => setN(n + 1)}><Text>+</Text></Pressable>\n    </View>\n  );\n}"
+    },
     source: "300-react",
     estimatedMinutes: 2,
     bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
@@ -1203,36 +1364,43 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "A physical water cooling device for servers.",
+        text: "A physical water-cooling device fitted to servers to keep their processors from overheating.",
         isCorrect: false,
-        explanation: "Flow is a software static analysis tool."
+        explanation: "This reads 'Flow' as hardware; it is a software static analysis tool for JavaScript."
       },
       {
         id: "B",
-        text: "A static type checker for JavaScript developed by Meta that annotates variables, functions, and components to detect type errors at compile time.",
+        text: "A static type checker for JavaScript from Meta that annotates code to catch type errors at build time.",
         isCorrect: true,
-        explanation: "Correct. Flow introduced static type safety to JavaScript codebases (heavily used internally at Meta), though TypeScript has become the broader industry standard."
+        explanation: "Correct. Flow analyses annotated JavaScript at compile time, with strong null-safety, solving the same problem as TypeScript."
       },
       {
         id: "C",
-        text: "A database management system for streaming real-time video.",
+        text: "A database system for ingesting and querying real-time video streams at large scale.",
         isCorrect: false,
-        explanation: "Flow checks JavaScript code types statically at build time."
+        explanation: "This confuses the name with streaming infrastructure; Flow checks JavaScript source types, not data streams."
       },
       {
         id: "D",
-        text: "A CSS animation framework for creating liquid fluid effects.",
+        text: "A CSS animation framework for building liquid, fluid motion effects in the browser.",
         isCorrect: false,
-        explanation: "Flow is a static type checker, not an animation library."
+        explanation: "Tempting because 'flow' suggests motion, but Flow is a type checker, unrelated to animation or styling."
       }
     ],
     correctAnswer: "B",
-    explanation: "Flow is a static type checker designed to find type errors in JavaScript. Flow types can express much more fine-grained distinctions than traditional type systems. For example, Flow helps you catch errors involving null, unlike most type systems.: ",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is Flow?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is Flow?.",
+    explanation: "Flow is a static type checker for JavaScript, created at Meta. You add type annotations to variables, functions and components, and Flow analyses the code at build time to catch type errors before it runs, much like TypeScript. It is particularly known for strong null-safety: it tracks where a value can be `null` or `undefined` and forces you to handle those cases.\n\nThe key point is 'static': Flow checks as you build and the annotations are stripped from the output, so there is no runtime cost. Code is written in plain `.js` files with Flow syntax (often marked `// @flow`), rather than a separate language extension.\n\nThe nuance worth stating is adoption. Flow and TypeScript solve the same problem, but TypeScript has become the broad industry standard with far larger ecosystem and tooling support, so Flow is now mostly seen inside Meta's own codebases rather than in new external projects.",
+    interviewLine: "I'd describe Flow as Meta's static type checker for JavaScript \u2014 build-time, null-aware, erased from output \u2014 solving the same problem as TypeScript, which I've seen become the industry standard.",
+    misconception: "Reading 'Flow' as hardware, a database or an animation tool. It is a static type checker for JavaScript, conceptually alongside TypeScript.",
     hints: [
-      "Types are erased before the code runs. Ask what the compiler knows, and what it can only assume."
+      "Focus on what kind of tool analyses code without running it.",
+      "Ask what Flow and TypeScript have in common.",
+      "It operates on JavaScript source at build time, not on data at runtime."
     ],
+    example: {
+      caption: "Flow annotations look similar to TypeScript and are checked at build time.",
+      language: "javascript",
+      code: "// @flow\nfunction greet(name /*: string */) /*: string */ {\n  return `Hi ${name}`;\n}\n\ngreet(\"Ada\");\n// greet(42); // Flow reports: number is incompatible with string"
+    },
     source: "300-react",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
@@ -1255,36 +1423,43 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Install the Java Development Kit (JDK) on the web server.",
+        text: "Install the Java Development Kit on the web server so it can compile the TypeScript at request time.",
         isCorrect: false,
-        explanation: "TypeScript is compiled via the TypeScript compiler / Babel in Node.js, not the Java JDK."
+        explanation: "This confuses TypeScript with Java; TS is transpiled by Babel or `tsc` in Node, with no JDK involved."
       },
       {
         id: "B",
-        text: "Rename all files to `.html` and disable JavaScript.",
+        text: "Rename every file to `.html` and switch JavaScript off so the browser reads the types directly.",
         isCorrect: false,
-        explanation: "TypeScript uses `.ts` and `.tsx` file extensions for components."
+        explanation: "This is nonsensical; TypeScript lives in `.ts`/`.tsx` files and is transpiled to JavaScript, not read as HTML."
       },
       {
         id: "C",
-        text: "TypeScript is incompatible with React applications.",
+        text: "You cannot use TypeScript with React apps at all; the two toolchains are fundamentally incompatible.",
         isCorrect: false,
-        explanation: "TypeScript is the industry standard for type-safe React development."
+        explanation: "Tempting if you have only seen JavaScript setups, but TypeScript is the standard for type-safe React development."
       },
       {
         id: "D",
-        text: "Create a new app with `npx create-react-app my-app --template typescript` or add `typescript @types/react @types/react-dom` to an existing project and rename files to `.tsx`.",
+        text: "Scaffold with `--template typescript`, or add `typescript` and the React `@types` and rename files to `.tsx`.",
         isCorrect: true,
-        explanation: "Correct. Create React App natively supported TypeScript via `--template typescript` (or in modern tooling, `npm create vite@latest -- --template react-ts`)."
+        explanation: "Correct. CRA supported a TypeScript template natively; today the equivalent is Vite's `react-ts` template or a framework like Next.js."
       }
     ],
     correctAnswer: "D",
-    explanation: "Starting from react-scripts@2.1.0 or higher, there is a built-in support for typescript. i.e, create-react-app now supports typescript natively. You can just pass, typescript option as below But for lower versions of react scripts, just supply, scripts-version option as react-scripts-ts while you create a new project. react-scripts-ts is a set of adjustments to take the standard create-react-app project pipeline and bring TypeScript into the mix. Now the project layout should look like the following: Miscellaneous: ",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How to use TypeScript in create-react-app application?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How to use TypeScript in create-react-app application?.",
+    explanation: "Create React App supported TypeScript natively through a template: `npx create-react-app my-app --template typescript` scaffolds the project with a `tsconfig.json`, `.tsx` files and the needed `@types` already wired up. To add TypeScript to an existing JavaScript CRA project, you install `typescript @types/react @types/react-dom`, rename your files to `.ts`/`.tsx`, and the build picks up type checking.\n\nThe mechanism is that CRA's build already ran code through Babel, which strips type annotations the same way it transpiles JSX; adding TypeScript provides the `tsconfig` and type packages so the editor and `tsc` can check types while Babel handles the transform.\n\nThe nuance worth stating is that CRA is effectively deprecated: the React team now points new projects at frameworks or Vite, so modern equivalents are `npm create vite@latest -- --template react-ts` or a framework like Next.js, which ship first-class TypeScript support out of the box.",
+    interviewLine: "I scaffold with the TypeScript template (`--template typescript`) or, for an existing app, add `typescript` and the React `@types` and rename files to `.tsx`; modern projects use Vite's `react-ts` template instead.",
+    misconception: "Thinking TypeScript needs a separate runtime, a Java toolchain, or a different file type like `.html`. It uses `.ts`/`.tsx` files and a `tsconfig`, with Babel or `tsc` doing the transform.",
     hints: [
-      "Types are erased before the code runs. Ask what the compiler knows, and what it can only assume."
+      "Recall the flag that scaffolds a typed project in one command.",
+      "Ask what you add to an existing JavaScript project to turn on type checking.",
+      "The modern equivalent is a Vite `react-ts` template or a framework, not CRA."
     ],
+    example: {
+      caption: "A minimal typed component in a .tsx file after enabling TypeScript.",
+      language: "tsx",
+      code: "// App.tsx\ntype Props = { greeting: string };\n\nexport default function App({ greeting }: Props) {\n  return <h1>{greeting}</h1>;\n}\n// scaffold: npm create vite@latest my-app -- --template react-ts"
+    },
     source: "300-react",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
@@ -1307,36 +1482,43 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Pass a comma-separated string `PropTypes.stringOrNumber`.",
+        text: "Pass a single combined validator named `PropTypes.stringOrNumber` for the two-type prop.",
         isCorrect: false,
-        explanation: "`oneOfType` takes an array of PropType validators; there is no `stringOrNumber` property."
+        explanation: "Tempting as a tidy name, but no such validator exists; unions are built with `oneOfType` taking an array."
       },
       {
         id: "B",
-        text: "Union types are impossible in PropTypes.",
+        text: "You cannot express a prop that accepts more than one type with the PropTypes library.",
         isCorrect: false,
-        explanation: "`PropTypes.oneOfType([ ... ])` specifically handles union types."
+        explanation: "This is false; `PropTypes.oneOfType([...])` exists precisely to validate union-typed props."
       },
       {
         id: "C",
-        text: "PropTypes only permits one global type for all props across the entire application.",
+        text: "PropTypes allows only one global type that every prop in the whole application must share.",
         isCorrect: false,
-        explanation: "PropTypes validates individual props with rich primitive and compound validators."
+        explanation: "This misunderstands PropTypes entirely; each prop is validated independently with its own validator."
       },
       {
         id: "D",
-        text: "Use `PropTypes.oneOfType([PropTypes.string, PropTypes.number])` to allow a prop to accept any one of several specified types.",
+        text: "Use `PropTypes.oneOfType([PropTypes.string, PropTypes.number])` so the prop accepts any listed type.",
         isCorrect: true,
-        explanation: "Correct. `PropTypes.oneOfType` creates a union validator that passes if the prop matches any of the provided PropTypes validators (e.g. `string | number`)."
+        explanation: "Correct. `oneOfType` is a union validator that passes if the value matches any validator in the array."
       }
     ],
     correctAnswer: "D",
-    explanation: "You can use oneOfType() method of PropTypes. For example, the height property can be defined with either string or number type as below:: ",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of How React PropTypes allow different types for one prop?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of How React PropTypes allow different types for one prop?.",
+    explanation: "In the `prop-types` library you allow a prop to accept more than one type with `PropTypes.oneOfType([...])`, passing an array of validators. The prop passes validation if it satisfies any one of them, so `oneOfType([PropTypes.string, PropTypes.number])` accepts a value that is either a string or a number and warns in development for anything else.\n\nThe mechanism is a union validator: `oneOfType` composes other PropTypes validators, and because each entry is itself a validator you can mix primitives with compound ones like `shape` or `arrayOf`. Appending `.isRequired` additionally rejects a missing value.\n\nThe nuance worth stating is that `prop-types` is a runtime checker and is deprecated in React 19. The modern equivalent is a TypeScript union type, `size: string | number`, which expresses the same 'one of these types' and is checked at compile time rather than warned about at runtime.",
+    interviewLine: "I use `PropTypes.oneOfType([...])` for a union-typed prop, though in modern code I'd write it as a TypeScript union like `string | number` checked at compile time.",
+    misconception: "Expecting a dedicated multi-type validator name or thinking unions are impossible in PropTypes. You compose them with `oneOfType`, passing an array of validators.",
     hints: [
-      "Props flow down and are read-only; state is owned by the component that declares it. Ask which one the value should be, and who owns it."
+      "Look for a validator that takes an array of other validators.",
+      "Ask what 'one of these types' maps to in a type system.",
+      "The modern equivalent is a TypeScript union checked at compile time."
     ],
+    example: {
+      caption: "The TypeScript equivalent of oneOfType is a plain union type.",
+      language: "tsx",
+      code: "type BadgeProps = { size: string | number };\n\nfunction Badge({ size }: BadgeProps) {\n  return <span style={{ fontSize: size }} />;\n}\n// <Badge size={true} /> is a compile error: boolean is not string | number"
+    },
     source: "300-react",
     estimatedMinutes: 2,
     bestPracticeRef: "https://react.dev/learn/passing-props-to-a-component"
@@ -1358,36 +1540,43 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Error boundaries must only be used once per domain name.",
+        text: "An app may contain at most one error boundary, registered once per deployed domain name.",
         isCorrect: false,
-        explanation: "You can nest multiple error boundaries granularly across component subtrees."
+        explanation: "This invents a limit; you can nest many boundaries at different granularities across the tree."
       },
       {
         id: "B",
-        text: "Place an Error Boundary around every single HTML `<span>` and `<b>` tag in the app.",
+        text: "Wrap every inline `<span>` and `<b>` tag in its own error boundary for maximum safety.",
         isCorrect: false,
-        explanation: "Overusing boundaries on every inline tag creates massive boilerplate without benefit."
+        explanation: "Tempting as 'more is safer', but boundaries on trivial inline tags add huge boilerplate with no real isolation benefit."
       },
       {
         id: "C",
-        text: "Wrap top-level routes to display a global fallback page, and wrap isolated interactive widgets (e.g. sidebar, chat panel) so a failure in one widget doesn't crash the whole app.",
+        text: "Put a top-level boundary around routes for a global fallback, and wrap isolated widgets that can fail alone.",
         isCorrect: true,
-        explanation: "Correct. Strategic placement of Error Boundaries isolates failures to individual widgets while providing a top-level fallback for fatal app-wide crashes."
+        explanation: "Correct. This contains a widget crash to its own subtree while still guaranteeing an app-wide fallback for fatal errors."
       },
       {
         id: "D",
-        text: "Error boundaries should only be placed in the backend database.",
+        text: "Place error boundaries only in the backend database layer so failures are caught before the UI.",
         isCorrect: false,
-        explanation: "Error boundaries are frontend React UI components."
+        explanation: "This misplaces them entirely; error boundaries are frontend React components that catch render errors in the client."
       }
     ],
     correctAnswer: "C",
-    explanation: "The granularity of error boundaries usage is up to the developer based on project needs. You can follow either of these approaches, You can wrap top-level route components to display a generic error message for the entire application. You can also wrap individual components in an error boundary to protect them from crashing the rest of the application.: ",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What is the proper placement for error boundaries?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What is the proper placement for error boundaries?.",
+    explanation: "Placement of error boundaries is a judgement about blast radius. A boundary catches render-time errors in the subtree below it and shows a fallback instead of unmounting the whole app. So you place a top-level boundary around routes to guarantee a global fallback page, and additional boundaries around independent, risky widgets, a chat panel, a chart, a third-party embed, so a crash in one is contained and the rest of the UI keeps working.\n\nThe granularity is yours to choose: too coarse and one failing widget takes down the page; too fine and you drown in boilerplate for parts that never fail. The useful heuristic is to wrap units that can fail independently and that the user can still use the app without.\n\nThe nuance worth stating is what boundaries do not catch: errors in event handlers, in asynchronous code, during SSR, and in the boundary's own render. Those need ordinary `try/catch` or promise rejection handling, which is why boundaries are only one layer of a resilience strategy.",
+    interviewLine: "I put a top-level boundary around routes for a global fallback and wrap independently-failing widgets so one crash is contained, keeping in mind boundaries miss event-handler and async errors.",
+    misconception: "Thinking boundaries go on every element or exactly one per app. Place them by blast radius: a top-level fallback plus boundaries around widgets that can fail independently.",
     hints: [
-      "A type parameter carries information from the call site to the return type. Ask what the caller keeps."
+      "Think about which parts of the UI should fail without taking the rest down.",
+      "Ask what the user should still be able to do when one widget crashes.",
+      "Boundaries also do not catch event-handler or async errors."
     ],
+    example: {
+      caption: "A top-level fallback plus a boundary isolating one risky widget.",
+      language: "tsx",
+      code: "function App() {\n  return (\n    <ErrorBoundary fallback={<FullPageError />}>\n      <Header />\n      <ErrorBoundary fallback={<WidgetError />}>\n        <ThirdPartyChart />\n      </ErrorBoundary>\n      <Content />\n    </ErrorBoundary>\n  );\n}"
+    },
     source: "300-react",
     estimatedMinutes: 3,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/generics.html"
@@ -1409,36 +1598,43 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Because `forwardRef` deletes the library's `package.json` file.",
+        text: "Because adding `forwardRef` deletes the library's own `package.json` during the build step.",
         isCorrect: false,
-        explanation: "The care needed relates to API breaking changes and ref assignment semantics."
+        explanation: "This is invented; the concern is the changed ref semantics and types, not any file deletion."
       },
       {
         id: "B",
-        text: "Because component libraries must be written in assembly language.",
+        text: "Because component libraries must be rewritten in assembly before `forwardRef` can be used.",
         isCorrect: false,
-        explanation: "Component libraries are written in JavaScript and TypeScript."
+        explanation: "This is nonsensical; libraries are written in JavaScript and TypeScript, and `forwardRef` is a plain React API."
       },
       {
         id: "C",
-        text: "Adding `forwardRef` to an existing component changes what `ref` attaches to (e.g. from the component instance to the underlying DOM node), which is a breaking change for library consumers.",
+        text: "Adopting `forwardRef` changes what a consumer's `ref` attaches to and the exported types, a breaking change.",
         isCorrect: true,
-        explanation: "Correct. When a library adopts `forwardRef`, consumers expecting a component instance ref will now receive a DOM node ref, requiring a major semantic version bump."
+        explanation: "Correct. The ref target and type signatures shift, so library consumers can break and the change belongs in a major version."
       },
       {
         id: "D",
-        text: "Because component libraries cannot use CSS stylesheets.",
+        text: "Because a component library that uses `forwardRef` can no longer ship any CSS stylesheets with it.",
         isCorrect: false,
-        explanation: "Component libraries distribute both JS/TS components and CSS styles."
+        explanation: "Tempting as a vague constraint, but `forwardRef` has nothing to do with styling; libraries still distribute CSS freely."
       }
     ],
     correctAnswer: "C",
-    explanation: "When you start using forwardRef in a component library, you should treat it as a breaking change and release a new major version of your library. This is because your library likely has a different behavior such as what refs get assigned to, and what types are exported. These changes can break apps and other libraries that depend on the old behavior.: ",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of Why do you need additional care for component libraries while using forward refs?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of Why do you need additional care for component libraries while using forward refs?.",
+    explanation: "Adding `forwardRef` to a component changes where a passed `ref` lands, and for a library that is a breaking change. Before, a consumer's `ref` might have attached to a class instance or been ignored; after, it forwards to whatever the component targets, typically an inner DOM node. Any consumer relying on the old behaviour, or on the old exported types, now behaves differently.\n\nBecause the change alters the component's public contract, a library should ship it as a new major version under semver, not a patch or minor. The exported type signatures often shift too (the component now accepts a `ref`), which can break TypeScript consumers at compile time even when runtime behaviour looks similar.\n\nThe nuance worth stating is that React 19 relaxes the mechanics, `ref` can be a regular prop on function components, so new code often does not need `forwardRef` at all. But the compatibility lesson stands: changing what a `ref` attaches to is a contract change, and contract changes belong in a major release.",
+    interviewLine: "I'd warn that adopting `forwardRef` changes what a consumer's `ref` attaches to and the exported types, so for a library I treat it as a breaking change that warrants a major version bump.",
+    misconception: "Treating `forwardRef` as an internal detail you can add quietly. It changes the ref target and types a consumer depends on, which is a breaking contract change.",
     hints: [
-      "Both refs and state survive a render. Only state causes one, so refs are for values the UI does not display."
+      "Ask what a consumer's `ref` pointed at before and after the change.",
+      "Think about which semver bump a changed public contract requires.",
+      "The exported types shift too, which can break TypeScript consumers."
     ],
+    example: {
+      caption: "forwardRef changes the ref target; in React 19 ref can be a plain prop instead.",
+      language: "tsx",
+      code: "// before: ref was ignored or hit an instance\n// after: ref now reaches the inner input, a contract change\nconst Input = forwardRef<HTMLInputElement, { label: string }>(\n  ({ label }, ref) => <input ref={ref} aria-label={label} />,\n);\n\n// React 19: ref as a regular prop, no forwardRef needed"
+    },
     source: "300-react",
     estimatedMinutes: 2,
     bestPracticeRef: "https://react.dev/reference/react/useRef"
@@ -1460,36 +1656,43 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Automatic conversion of React components into iOS Swift binaries.",
+        text: "Automatic conversion of React components into native iOS Swift binaries for the App Store.",
         isCorrect: false,
-        explanation: "CRA bundled web JavaScript/TypeScript applications."
+        explanation: "This invents a native-compile step; CRA bundled web JavaScript, with no iOS binary output."
       },
       {
         id: "B",
-        text: "Built-in PostgreSQL clustering and server hardware virtualization.",
+        text: "Built-in PostgreSQL clustering and server hardware virtualisation managed from the CLI.",
         isCorrect: false,
-        explanation: "CRA was a client-side frontend project scaffolding tool."
+        explanation: "This places CRA in the backend/infra layer; it was a client-side frontend scaffolding tool."
       },
       {
         id: "C",
-        text: "Zero-config project setup, built-in Babel/Webpack bundling, TypeScript/Flow support, Jest test runner, ESLint linting, live dev server with Fast Refresh, and production minification.",
+        text: "Zero-config setup with Babel/webpack, TypeScript and Flow support, a test runner, linting and a prod build.",
         isCorrect: true,
-        explanation: "Correct. Create React App bundled a complete developer environment out-of-the-box without requiring manual Webpack/Babel configuration."
+        explanation: "Correct. CRA delivered a complete preconfigured build toolchain so you could write components without hand-writing webpack or Babel config."
       },
       {
         id: "D",
-        text: "CRA had zero features and could only display static text.",
+        text: "No real features at all; a CRA project could only render a single line of static text.",
         isCorrect: false,
-        explanation: "CRA provided an end-to-end frontend build toolchain."
+        explanation: "Tempting as dismissive, but CRA provided an end-to-end dev-to-production toolchain, not a static page."
       }
     ],
     correctAnswer: "C",
-    explanation: "Below are the list of some of the features provided by create react app. React, JSX, ES6, Typescript and Flow syntax support. Autoprefixed CSS CSS Reset/Normalize A live development server A fast interactive unit test runner with built-in support for coverage reporting A build script to bundle JS, CSS, and images for production, with hashes and sourcemaps An offline-first service worker and a web app manifest, meeting all the Progressive Web App criteria.: ",
-    interviewLine: "Interview takeaway: Clearly articulate the underlying mechanism, lifecycle role, and performance trade-offs of What are the features of create react app?.",
-    misconception: "Common misconception: misunderstanding the execution lifecycle, reactivity triggers, or edge cases of What are the features of create react app?.",
+    explanation: "Create React App's value was a zero-config toolchain. One command scaffolded a project with Babel and webpack already wired up, so you got JSX, modern JavaScript, TypeScript and Flow support, autoprefixed CSS, a Jest test runner, ESLint, a dev server with Fast Refresh and a production build that minified and hashed assets, without hand-writing any build configuration.\n\nThe point was that the configuration was hidden behind `react-scripts`. You could start writing components immediately, and the common 90% of build concerns, transpilation, bundling, dev/prod modes, source maps, were handled for you, with an `eject` escape hatch when you needed full control.\n\nThe nuance worth stating is that CRA is effectively deprecated: the React team now steers new projects toward frameworks or Vite, which offer the same zero-config experience with much faster builds and first-class TypeScript. So the feature list is best framed as 'what a modern React starter gives you', now delivered by Vite or Next.js rather than CRA.",
+    interviewLine: "I'd describe CRA as a zero-config toolchain \u2014 Babel and webpack preconfigured for JSX, TypeScript, testing, linting and a prod build \u2014 so I wrote components instead of build config; now I let Vite and frameworks fill that role.",
+    misconception: "Thinking CRA compiled to native binaries, bundled a backend, or did nothing useful. It was a client-side zero-config build toolchain for React web apps.",
     hints: [
-      "Types are erased before the code runs. Ask what the compiler knows, and what it can only assume."
+      "Ask what a developer avoids having to configure by hand with such a tool.",
+      "Think about which layer, build tooling or runtime, these features sit in.",
+      "The same experience now comes from Vite or a framework rather than CRA."
     ],
+    example: {
+      caption: "The whole toolchain sat behind react-scripts in package.json.",
+      language: "json",
+      code: "{\n  \"scripts\": {\n    \"start\": \"react-scripts start\",\n    \"build\": \"react-scripts build\",\n    \"test\": \"react-scripts test\"\n  }\n}"
+    },
     source: "300-react",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
@@ -1513,36 +1716,43 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Disallow any client-side validation and submit raw unvalidated form data to the server on every change.",
+        text: "Skip all client validation and POST the raw, unvalidated form fields to the server on every change.",
         isCorrect: false,
-        explanation: "Client validation gives instant feedback (required fields, email format) before network roundtrips."
+        explanation: "Tempting as 'let the server decide', but it floods the network and denies users instant feedback like required-field and format checks."
       },
       {
         id: "B",
-        text: "Bind every keystroke of 100 form inputs to a top-level React state that re-renders the entire page on every character.",
+        text: "Bind all 100 inputs to one top-level state so every keystroke re-renders the entire form at once.",
         isCorrect: false,
-        explanation: "Top-level state for large forms causes severe typing lag because every keystroke re-renders every untouched input."
+        explanation: "This is the exact performance trap: a shared top-level state re-renders every untouched field on each character, causing typing lag."
       },
       {
         id: "C",
-        text: "Store form input values strictly in global `window` object variables without React state or refs.",
+        text: "Store each field's value in a global `window` variable, bypassing React state and refs entirely.",
         isCorrect: false,
-        explanation: "Global `window` mutations bypass React lifecycle, reactivity, and component isolation."
+        explanation: "Mutating globals sidesteps React's lifecycle and reactivity, so the UI never updates and component isolation is lost."
       },
       {
         id: "D",
-        text: "Manage uncontrolled input refs or subscription-based field state, integrate schema validation (Zod/Yup), track touched/dirty/error states, and prevent unnecessary form-wide re-renders.",
+        text: "Isolate field state (refs or subscriptions), integrate schema validation, and track touched/dirty/error state.",
         isCorrect: true,
-        explanation: "Correct. Form libraries (React Hook Form, Formik) optimize performance by isolating re-renders per field and validating against declarative schemas."
+        explanation: "Correct. Isolating re-renders per field and validating against a declarative schema is exactly how React Hook Form and Formik scale."
       }
     ],
     correctAnswer: "D",
-    explanation: "Forms are complex: validation, error display, async validation, nested fields, arrays, submission. Form libraries to know: React Hook Form, most performant (uncontrolled), small bundle Formik, popular, controlled inputs Zod, schema validation, TypeScript-first Form architecture: Validation schema, define rules once (Zod) Reusable form fields, abstract Input, Select, Checkbox Error messages, show at field level, summary at top Async validation, check email uniqueness on server Dynamic fields, add/remove array items React Hook Form performance: Uncontrolled inputs, no re-render on every keystroke Re-renders only on submit or validation 10x fewer renders than Formik for large forms 1 import { useForm, useFieldArray } from 'react-hook-form' 2 import { zodResolver } from '@hookform/resolvers/zod' 3 import { z } from 'zod' 4 5 // Zod schema, single source of truth for validation 6 const schema = z. object ( { 7 name: z. string ( ). min ( 2, 'Name must be at least 2 characters' ), 8 email: z. string ( ). email ( 'Invalid email' ), 9 age: z. number ( ). min ( 18, 'Must be 18+' ). max ( 120 ), 10 skills: z. array ( z. string ( ) ). min ( 1, 'Add at least one skill' ), 11 password: z. string ( ). min ( 8 ), 12 confirm: z. string ( ) 13 } ). refine ( d = > d. password = = = d. confirm, { 14 message: 'Passwords do not match', 15 path: [ 'confirm' ] 16 } ) 17 18 const RegisterForm = ( ) = > { 19 const { register, control, handleSubmit, formState: { errors, isSubmitting } } = 20 useForm ( { resolver: zodResolver ( schema ) } ) 21 22 // Dynamic skills array 23 const { fields, append, remove } = useFieldArray ( { control, name: 'skills' } ) 24 25 const onSubmit = async ( data ) = > { 26 await api. register ( data ) // isSubmitting = true during this 27 navigate ( '/dashboard' ) 28 }",
-    interviewLine: "Forms are complex: validation, error display, async validation, nested fields, arrays, submission.",
-    misconception: "Form libraries to know: React Hook Form, most performant (uncontrolled), small bundle Formik, popular, controlled inputs Zod, schema validation, TypeScript-first Form architecture: Validation schema, define rules once (Zo",
+    explanation: "The core design decision in a form library is where field state lives and how re-renders are scoped. The naive approach, one top-level `useState` object updated on every keystroke, re-renders every field on each character, which lags badly on large forms. A performant library instead isolates state per field (via uncontrolled inputs and refs, or per-field subscriptions) so typing in one input does not re-render the others.\n\nAround that core you need validation and status tracking: integrate a schema validator (Zod, Yup) so rules live in one place, and track `touched`, `dirty`, `isSubmitting` and per-field `errors` so the UI can show messages at the right moment. React Hook Form (uncontrolled, minimal re-renders) and Formik (controlled) are the reference points, and Zod gives TypeScript-first schemas.\n\nThe senior nuance is the controlled-versus-uncontrolled trade-off: controlled inputs are simpler to reason about but re-render on every change, while uncontrolled inputs with refs are far cheaper at scale but need explicit wiring to read values and surface validation.",
+    interviewLine: "I isolate field state so one input's change doesn't re-render the whole form, then layer schema validation and touched/dirty/error tracking on top, the uncontrolled approach React Hook Form takes for scale.",
+    misconception: "Binding every field to one top-level state object. That re-renders every input on each keystroke, which is the main performance pitfall a form library exists to avoid.",
     hints: [
-      "Hooks run in call order on every render. Ask what this one owns, and when React re-runs it."
+      "Ask what re-renders when you type into one field of a large form.",
+      "Think about where field state should live to keep inputs independent.",
+      "A single top-level state object is the pattern that causes the lag."
     ],
+    example: {
+      caption: "React Hook Form registers uncontrolled inputs and validates against a Zod schema.",
+      language: "tsx",
+      code: "const schema = z.object({ email: z.string().email() });\n\nfunction SignupForm() {\n  const { register, handleSubmit, formState: { errors } } =\n    useForm({ resolver: zodResolver(schema) });\n  return (\n    <form onSubmit={handleSubmit((d) => console.log(d))}>\n      <input {...register(\"email\")} />\n      {errors.email && <span>{errors.email.message}</span>}\n    </form>\n  );\n}"
+    },
     source: "frontend-system-design-50",
     estimatedMinutes: 4,
     bestPracticeRef: "https://react.dev/reference/react/hooks"
@@ -1589,12 +1799,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "C",
-    explanation: "declare const introduces an ambient declaration: it tells the compiler a symbol exists at runtime without emitting any JavaScript for it. That is what makes it safe when the same file is processed more than once, as with legacy, outFile builds or script concatenation. A plain const emits code and can collide; export const is module-scoped rather than global; assigning to globalThis is a runtime-only trick with no type safety.",
+    explanation: "`declare const` introduces an ambient declaration: it tells the compiler a symbol exists at runtime with a given type, but emits no JavaScript for it. The `declare` keyword is what distinguishes an assertion about the world from a definition of it, so nothing lands in the output and there is no binding to clash with. That is exactly what makes it safe when the same file is processed more than once, as with legacy `outFile` builds, `/// <reference>` includes or plain script concatenation.\n\nThe three wrong answers each fail on emit or scope. A plain `const API_VERSION = '1.0'` emits a real binding, so concatenating or including the file twice produces a `Cannot redeclare block-scoped variable` error. `export const` emits a binding too and scopes it to the module, so it is not global and consumers must import it. Assigning to `globalThis.API_VERSION` runs at runtime but gives the compiler no declaration to check against, so you get neither a type nor the duplicate-safety.\n\nThe edge an interviewer probes is who supplies the value. An ambient `declare const` only types the symbol; some other mechanism, a bundler `define`, a `<script>` tag, or a build-time replacement, has to put the real value there at runtime, or the reference throws. The declaration is a promise, and it is on you to keep it.",
     interviewLine: "declare says 'this exists, trust me', it types a symbol without emitting it, which is exactly what a global constant in a declaration file needs.",
     misconception: "Assuming declare and const are interchangeable. declare emits nothing; const emits a binding, and a binding declared twice is an error.",
     hints: [
-      "Which of these produces no JavaScript output at all?"
+      "Look at what each line would emit into the compiled JavaScript.",
+      "Which declaration asserts a symbol exists at runtime without producing a binding?",
+      "A binding that appears twice is a redeclaration error; an assertion is not."
     ],
+    example: {
+      caption: "declare only types a symbol; the runtime value comes from elsewhere.",
+      language: "typescript",
+      code: "// env.d.ts, processed everywhere, emits nothing\ndeclare const BUILD_ID: string;\ndeclare function track(event: string): void;\n\n// a .ts file supplies the real runtime values\n// (window as any).BUILD_ID = \"abc123\";\n\nconsole.log(BUILD_ID.toUpperCase()); // typed as string, no emit from the declare"
+    },
     source: "tricky-typescript-12",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
@@ -1642,12 +1859,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "B",
-    explanation: "as const does two things at once: it stops literal widening, so 'https://api.example.com' stays that exact string literal type rather than widening to string, and it marks every property readonly. Without it TypeScript infers { apiUrl: string; timeout: number }. The narrow literal types are what make exhaustive checks and discriminated unions work off a plain object.",
-    interviewLine: "as const freezes both the value and the type, readonly properties and literal types instead of widened ones.",
+    explanation: "`as const` does two things to the literal at once. It stops literal widening, so `'https://api.example.com'` keeps its exact string-literal type instead of being widened to `string`, and `5000` stays `5000` rather than `number`. It also marks every property `readonly`, recursively, so the whole object becomes a deeply immutable, maximally specific type. Without the assertion TypeScript infers the mutable, widened `{ apiUrl: string; timeout: number }`.\n\nThe distractors each capture half the truth. Option A is the no-`as const` inference. Option C adds the `readonly` but forgets that widening is also suppressed, so it still shows `string` and `number`. Option D collapses the exact keys and values into an index signature, which `as const` never does, it preserves the precise shape.\n\nThose narrow literal types are the payoff, not a side effect. A `readonly ['admin','editor','viewer']` tuple can be indexed with `[number]` to derive the union `'admin' | 'editor' | 'viewer'`, which is how `as const` turns a plain array into a source of truth for a discriminated union or a key constraint. The edge case to remember is that `as const` is shallow in intent but deep in effect: it freezes nested arrays and objects too, so you cannot later push to or reassign any level of the structure.",
+    interviewLine: "I reach for as const to freeze both the value and the type \u2014 readonly properties and literal types instead of widened ones.",
     misconception: "Thinking as const only adds readonly. The bigger effect is that it stops literal widening.",
     hints: [
-      "It changes two things about every property: mutability and how precise the type is."
+      "Compare the inferred type with and without the assertion.",
+      "It changes two things about every property: mutability and how precise the type is.",
+      "The values are not just locked; their types stop widening to string and number."
     ],
+    example: {
+      caption: "as const keeps the literals narrow, which is what makes them usable as a key union.",
+      language: "typescript",
+      code: "const ROLES = [\"admin\", \"editor\", \"viewer\"] as const;\n// type: readonly [\"admin\", \"editor\", \"viewer\"]\n\ntype Role = (typeof ROLES)[number];\n// type Role = \"admin\" | \"editor\" | \"viewer\"\n\nconst grant = (r: Role) => r;\ngrant(\"admin\"); // ok\n// grant(\"owner\"); // error: not a member of the union"
+    },
     source: "tricky-typescript-12",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#literal-types"
@@ -1695,12 +1919,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "C",
-    explanation: "A predicate return type (val is string) carries information the compiler can use; a plain boolean does not. When isString1 returns true, all TypeScript knows is that some boolean was true, it cannot connect that to the argument, so value stays string | number. isString2 declares the connection explicitly, so inside the if branch control flow analysis narrows value to string.",
-    interviewLine: "boolean loses the information; a type predicate keeps it. The runtime behaviour is identical, only the compiler can tell the difference.",
+    explanation: "The difference is entirely in the declared return type, not the function body, which is identical. A predicate return type `val is string` carries information the compiler can act on; a plain `boolean` does not. When `isString1` returns `true`, all TypeScript learns is that some boolean came back, it cannot connect that result to the argument, so `value` stays `string | number` and `.toUpperCase()` is rejected.\n\n`isString2` declares the connection explicitly: a `true` result means `val` is a `string`. Control flow analysis reads that predicate and narrows `value` to `string` inside the `if` branch, and to the complementary type in the `else`. The other options miss this: neither function is generic, both run only at runtime (predicates are erased in the emitted JavaScript), and `isString1` already has a return annotation, `boolean`, which is precisely the annotation that discards the narrowing.\n\nThe nuance an interviewer probes is that the compiler trusts the predicate without verifying the body matches it. You can write `val is string` on a function that actually checks for a number, and TypeScript will narrow incorrectly, a predicate is an assertion you are responsible for, which is why `asserts` guards and `satisfies`-checked implementations matter when the stakes are high.",
+    interviewLine: "I'd point out that `boolean` loses the information while a type predicate keeps it \u2014 the runtime behaviour is identical, only the compiler can tell the difference.",
     misconception: "Believing the compiler can infer a type guard from the function body. It will not; you must declare the predicate.",
     hints: [
-      "What does the compiler actually learn from a function that returns boolean?"
+      "Look at the two declared return types, not the function bodies.",
+      "What does the compiler actually learn from a function that returns boolean?",
+      "A true result has to say something about the argument, not just that it was true."
     ],
+    example: {
+      caption: "A predicate guard narrows a union; a boolean-returning check does not.",
+      language: "typescript",
+      code: "type Cat = { meow(): void };\ntype Dog = { bark(): void };\n\nfunction isCat(pet: Cat | Dog): pet is Cat {\n  return \"meow\" in pet;\n}\n\nfunction speak(pet: Cat | Dog) {\n  if (isCat(pet)) pet.meow(); // narrowed to Cat\n  else pet.bark();            // narrowed to Dog\n}"
+    },
     source: "tricky-typescript-12",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html"
@@ -1749,12 +1980,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "D",
-    explanation: "infer introduces a type variable that TypeScript solves for while checking the extends clause. T extends Promise<infer U> asks 'is T some Promise, and if so what is it a Promise of?', binding that answer to U. For Promise<string>, U becomes string and the true branch returns it. For number the check fails and the false branch returns T unchanged. infer is only legal inside the extends clause of a conditional type.",
-    interviewLine: "infer is pattern matching for types, it destructures a type the way you'd destructure a value.",
+    explanation: "`infer` introduces a fresh type variable that TypeScript solves for while it checks the `extends` clause of a conditional type. `T extends Promise<infer U>` asks two questions at once: is `T` some `Promise`, and if so, what is it a `Promise` of? The answer binds to `U`. For `Promise<string>`, `U` is captured as `string` and the true branch returns it; for `number` the check fails, so the false branch returns `T` unchanged, giving `number`.\n\nThat is why the other answers are wrong. Returning `Promise<string>` would defeat the entire purpose of extracting the inner type; `never` is not what the false branch yields, it returns `T`; and `infer` always produces a concrete inferred type, never `unknown`. Each option corresponds to a specific misread of how the two branches resolve.\n\nThe constraint worth stating is placement: `infer` is only legal inside the `extends` clause of a conditional type, nowhere else. A subtle edge is multiple matches, when a variable like `infer U` appears in a position that could unify with a union, TypeScript infers a union; in contravariant positions such as function parameters it infers an intersection instead, which is how helpers like `UnionToIntersection` are built.",
+    interviewLine: "I describe infer as pattern matching for types \u2014 it destructures a type the way you'd destructure a value.",
     misconception: "Trying to use infer outside a conditional type's extends clause; it is only valid there.",
     hints: [
-      "What happens on the branch where the extends check fails?"
+      "Trace what the compiler binds the inferred variable to for each input.",
+      "What happens on the branch where the extends check fails?",
+      "The false branch returns the original type, not never."
     ],
+    example: {
+      caption: "infer can capture an array's element type the same way it captures a Promise's.",
+      language: "typescript",
+      code: "type ElementType<T> = T extends (infer U)[] ? U : T;\n\ntype A = ElementType<string[]>; // string\ntype B = ElementType<number>;   // number (no match, passthrough)\n\ntype First<T> = T extends [infer H, ...unknown[]] ? H : never;\ntype C = First<[boolean, string]>; // boolean"
+    },
     source: "tricky-typescript-12",
     estimatedMinutes: 3,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/generics.html"
@@ -1802,12 +2040,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Because fail unconditionally throws and has no reachable return statement, TypeScript infers never. That is the type of a value that cannot exist, and it drives control flow analysis: the compiler treats anything following a never-returning call as unreachable. In pick, that means the null case has already exited, so value is narrowed to string. void would be wrong, it says the function returns, just without a useful value.",
-    interviewLine: "never is the type of 'this never comes back', it's what makes assertion helpers and exhaustiveness checks work.",
+    explanation: "Because `fail` unconditionally throws and has no reachable `return`, TypeScript infers its return type as `never`. `never` is the type of a value that cannot exist, the empty set of values, and it drives control flow analysis: the compiler treats any code following a call to a `never`-returning function as unreachable. In `pick`, that means once `fail('missing')` runs in the `null` branch, control cannot continue, so by the time `value.toUpperCase()` executes, `value` has been narrowed from `string | null` to `string`.\n\n`void` would be the wrong inference and the other options show why. `void` says the function returns normally but with no useful value, which would leave the code after the call reachable and `value` still `string | null`. `unknown` is wrong because the compiler can tell precisely that no return path exists, and the thrown value's type is unrelated to the return type, throwing is not returning.\n\nThe edge worth naming is that inference gives you `never` automatically only for functions that always throw; a function annotated `: void` that happens to always throw will not narrow callers. For reusable assertion helpers you make the intent explicit with an `asserts` signature or an explicit `: never` return, which is what powers `assertNever` exhaustiveness checks and invariant helpers.",
+    interviewLine: "I think of never as the type of 'this never comes back' \u2014 it's what makes assertion helpers and exhaustiveness checks work.",
     misconception: "Reaching for void when you mean never. void returns; never does not.",
     hints: [
-      "Is there any path through this function that reaches a return?"
+      "Look for a reachable return statement in the throwing function.",
+      "Is there any path through this function that reaches a return?",
+      "If the function cannot return, what does that let the caller assume afterward?"
     ],
+    example: {
+      caption: "A never-returning assert lets the compiler narrow past the guard.",
+      language: "typescript",
+      code: "function assert(cond: unknown, msg: string): asserts cond {\n  if (!cond) throw new Error(msg);\n}\n\nfunction read(value: string | undefined) {\n  assert(value, \"value required\");\n  return value.trim(); // value is string here\n}"
+    },
     source: "tricky-typescript-12",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
@@ -1855,12 +2100,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "D",
-    explanation: ", isolatedModules guarantees each file can be transpiled on its own, with no knowledge of any other file. That matters because Babel, SWC and esbuild transpile file-by-file and never build a full TypeScript program. It is why re-exporting a type needs export type { T }, why const enum is disallowed, and why every file must actually be a module. Next.js and Vite set it for exactly this reason.",
-    interviewLine: "isolatedModules is a promise to single-file transpilers: nothing in this file needs cross-file type information to compile.",
+    explanation: "`isolatedModules` guarantees that each file can be transpiled entirely on its own, with no knowledge of any other file in the program. It changes nothing about how output is produced; it is a constraint on what syntax you are allowed to write. The reason it exists is tooling: Babel, SWC and esbuild transpile file-by-file for speed and never build a full TypeScript program, so they cannot resolve cross-file type information the way `tsc` can.\n\nThe other options describe things the flag does not do. It says nothing about how often a module is imported, it does not turn circular imports into errors, and it does not split each file into a separate bundle, bundling and output layout are unaffected. All it governs is per-file transpilability.\n\nThat single rule is why several constructs become errors under it. Re-exporting a type needs `export type { T }`, because a single-file transpiler cannot tell whether `T` is a type to erase or a value to re-export. `const enum` is disallowed, because inlining its members requires whole-program knowledge. And a file with no top-level `import`/`export` must add `export {}` to count as a module. Next.js and Vite enable the flag precisely because they transpile with these single-file tools.",
+    interviewLine: "I explain isolatedModules as a promise to single-file transpilers: nothing in this file needs cross-file type information to compile.",
     misconception: "Reading it as a bundling or module-resolution flag. It constrains the syntax you may write, not how output is produced.",
     hints: [
-      "Which tools compile one file at a time without type-checking the whole program?"
+      "Think about the tools that compile without building a whole program.",
+      "Which tools compile one file at a time without type-checking the whole program?",
+      "It constrains the syntax you may write, not how the output is bundled."
     ],
+    example: {
+      caption: "The constructs isolatedModules forbids all need cross-file type information.",
+      language: "typescript",
+      code: "// re-exporting a type must say it is a type\nexport type { User } from \"./models\";\n\n// const enum is disallowed: inlining needs the whole program\n// const enum Dir { Up, Down } // error under isolatedModules\n\n// a file with no import/export must still be a module\nexport {};"
+    },
     source: "tricky-typescript-12",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/modules.html"
@@ -1908,12 +2160,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Key remapping (TypeScript 4.1+) lets a mapped type rewrite each key via an as clause. Here `get${Capitalize<string & K>}` turns name into getName and age into getAge, string & K is needed because keyof T can include number and symbol, and template literal types need a string. The value type () => T[K] makes each member a getter returning the original property type.",
-    interviewLine: "The as clause in a mapped type renames keys; combine it with template literal types and you can generate whole APIs from a shape.",
+    explanation: "Key remapping, added in TypeScript 4.1, lets a mapped type rewrite each key through an `as` clause. In `Getters<Person>`, the clause `` `get${Capitalize<string & K>}` `` runs for every `K in keyof T`, so `name` becomes `getName` and `age` becomes `getAge`. The value type `() => T[K]` makes each remapped member a function returning that key's original property type, which is why `getName` is `() => string` and `getAge` is `() => number`.\n\nThe distractors each drop one piece. Option B keeps the value as the raw property type instead of a function. Option C collapses the per-key members into a single lookup method, which a mapped type never produces, it emits one member per key. Option D is what you would get without the `as` clause, leaving the keys at their original names.\n\nThe detail worth stating is `string & K`. `keyof T` can include `number` and `symbol`, but template literal types require their interpolated parts to be assignable to `string`, so intersecting with `string` filters `K` down to just its string keys and satisfies `Capitalize`. The same `as` clause can also drop keys entirely by mapping them to `never`, which is how utility types like a key-filtering `Omit` are built.",
+    interviewLine: "I use the `as` clause in a mapped type to rename keys; combined with template literal types, I can generate whole APIs from a shape.",
     misconception: "Forgetting string & K and hitting an error because keyof T is not assignable to string.",
     hints: [
-      "Read the as clause as 'and call this key. instead'."
+      "Read the clause that rewrites each key before the value type.",
+      "Read the as clause as 'and call this key something else instead'.",
+      "The value type is a function returning the property type, not the property itself."
     ],
+    example: {
+      caption: "Key remapping can also drop keys by mapping them to never.",
+      language: "typescript",
+      code: "type RemoveId<T> = {\n  [K in keyof T as K extends \"id\" ? never : K]: T[K];\n};\n\ninterface User { id: string; name: string; email: string }\ntype Public = RemoveId<User>; // { name: string; email: string }"
+    },
     source: "tricky-typescript-12",
     estimatedMinutes: 3,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/generics.html"
@@ -1937,9 +2196,9 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "'onclick' | 'onfocus' | 'onblur'",
+        text: "'Click' | 'Focus' | 'Blur'",
         isCorrect: false,
-        explanation: "Capitalize uppercases the first character of each member, so the c, f and b are capitalised."
+        explanation: "Tempting if you read the template as just Capitalize<EventType> and overlook the literal `on` prefix, but the prefix is part of the template, so every member starts with it."
       },
       {
         id: "B",
@@ -1949,9 +2208,9 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       },
       {
         id: "C",
-        text: "`on${string}`",
+        text: "`on${Lowercase<string>}`",
         isCorrect: false,
-        explanation: "The union members are known, so the result is a concrete union rather than an open pattern."
+        explanation: "Tempting if you assume the prefix pairs with an open string pattern, but the three union members are known literals, so the result is a concrete three-member union, not an open template."
       },
       {
         id: "D",
@@ -1961,12 +2220,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "B",
-    explanation: "A template literal type distributes over any union it interpolates: each member of EventType is substituted in turn, producing a union of the results. Capitalize is one of TypeScript's built-in intrinsic string types, so 'click' becomes 'Click' and the whole thing becomes 'onClick'. The result is a closed union of three exact string literals, which is what lets the compiler autocomplete and reject typos.",
-    interviewLine: "Template literal types distribute over unions, one input union of three gives you an output union of three.",
+    explanation: "A template literal type distributes over any union it interpolates. Each member of `EventType` is substituted into the template in turn, and the results are collected back into a union, so one input union of three produces one output union of three. `Capitalize` is one of TypeScript's built-in intrinsic string types, so `'click'` becomes `'Click'`, and with the literal `on` prefix the whole member resolves to `'onClick'`.\n\nThe wrong answers each drop part of the template. Option A applies `Capitalize` but forgets the `on` prefix, which is part of the pattern and so appears on every member. Option C treats the interpolation as an open `string` pattern, but the members are known literals, so the result is concrete. Option D widens all the way to `string`, which is exactly what template literal types avoid, they produce specific literal types.\n\nThe payoff is a closed union of three exact string literals. That is what lets an editor autocomplete the handler name and the compiler reject a typo like `'onClik'`. The edge to remember is that distribution only happens over a genuine union: interpolate a bare `string` and you do get the open `` `on${string}` `` pattern, which matches any `on`-prefixed string rather than a fixed set.",
+    interviewLine: "I'd note that template literal types distribute over unions \u2014 one input union of three gives me an output union of three.",
     misconception: "Expecting a single widened string. The union is preserved through the template.",
     hints: [
-      "What happens to each member of the union separately?"
+      "Substitute each union member into the template separately.",
+      "What happens to each member of the union separately?",
+      "Capitalize uppercases the first letter, so the result is a closed union, not a widened string."
     ],
+    example: {
+      caption: "A template literal type can combine two unions into their cross product.",
+      language: "typescript",
+      code: "type Size = \"sm\" | \"lg\";\ntype Color = \"red\" | \"blue\";\n\ntype ClassName = `${Size}-${Color}`;\n// \"sm-red\" | \"sm-blue\" | \"lg-red\" | \"lg-blue\"\n\nconst c: ClassName = \"lg-blue\"; // ok\n// const bad: ClassName = \"md-green\"; // error"
+    },
     source: "tricky-typescript-12",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#literal-types"
@@ -2014,12 +2280,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "D",
-    explanation: "A mapped type applied to a primitive is not useful, mapping over keyof string gives you string's method names, not the value. The conditional check makes recursion stop at the leaves: object-shaped properties recurse, primitives are returned as-is. Arrays take the recursive branch because arrays are objects, which is usually what you want.",
-    interviewLine: "Recursive mapped types need a base case just like recursive functions, the conditional is that base case.",
+    explanation: "The conditional `T[K] extends object ? DeepReadonly<T[K]> : T[K]` is the base case of the recursion. A mapped type applied to a primitive is not meaningful: mapping over `keyof string` gives you the method names of `string`, not its value, so recursing into `string` or `number` would produce a useless shape. The check stops the recursion at the leaves, object-shaped properties recurse, primitives are returned unchanged.\n\nThe wrong answers each misattribute the purpose. It is not a cycle-breaker, a genuinely cyclic type can still recurse and TypeScript has a separate instantiation-depth limiter for that. It does not exclude arrays, arrays satisfy `extends object`, so they take the recursive branch and are made deeply readonly too, which is usually what you want. And a conditional is not required syntax for recursive aliases; this one needs it for correctness, not to compile.\n\nThe edge an interviewer probes is that `extends object` is a blunt instrument. It catches arrays and plain objects, but it also catches `Date`, `Map`, `RegExp` and functions, which recurse into their method signatures rather than being left intact. A production-grade `DeepReadonly` short-circuits those known built-ins before the object check, which is where the naive one-liner breaks down.",
+    interviewLine: "I remember that recursive mapped types need a base case just like recursive functions \u2014 the conditional is that base case.",
     misconception: "Assuming the conditional is about cycle-breaking. It is about not recursing into primitives.",
     hints: [
-      "What would DeepReadonly<string> mean?"
+      "Ask what the recursion does when it reaches a primitive.",
+      "What would DeepReadonly<string> mean?",
+      "Mapping over a primitive gives you its method names, not a useful shape."
     ],
+    example: {
+      caption: "A recursive type needs a base case, exactly like a recursive function.",
+      language: "typescript",
+      code: "type DeepPartial<T> = T extends object\n  ? { [K in keyof T]?: DeepPartial<T[K]> }\n  : T;\n\ninterface Settings { ui: { theme: string; dense: boolean } }\ntype Patch = DeepPartial<Settings>;\n// { ui?: { theme?: string; dense?: boolean } }"
+    },
     source: "tricky-typescript-12",
     estimatedMinutes: 3,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/generics.html"
@@ -2067,12 +2340,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Interfaces support declaration merging: multiple declarations of the same interface name combine into one, with properties unioned and identically-named methods becoming overloads. A type alias binds a name to exactly one type, so a second declaration is a redefinition error. Merging is why you augment third-party types by re-declaring their interface, and a good reason to prefer interface for public shapes you expect others to extend.",
-    interviewLine: "Interfaces are open, anyone can reopen and extend them. Type aliases are closed. That's the practical difference, not the syntax.",
+    explanation: "Interfaces support declaration merging: multiple declarations of the same interface name in scope combine into a single interface. The two `Box` declarations union their members, so `Box` ends up with both `width` and `height`, and `box` must supply both. Identically-named methods across declarations become overloads rather than conflicting. A `type` alias binds a name to exactly one type, so a second `type Container` is a duplicate-identifier error, there is nothing to merge into.\n\nThe other options miss the actual mechanism. Type aliases describe object shapes perfectly well, they simply cannot be redeclared. Merging is not limited to one file, it works across files, which is the whole basis of ambient library augmentation. And hoisting is not the difference: both constructs are erased at runtime and both are usable before their textual declaration.\n\nThe consequence worth stating is extensibility. Because interfaces are open, you can reopen a third-party or global interface, `Window`, `express`'s `Request`, and add members to it from your own code without touching the original. That is a concrete reason to prefer `interface` for public shapes you expect consumers to extend, and to prefer `type` when you want a closed definition that no one can silently widen.",
+    interviewLine: "I'd say interfaces are open \u2014 anyone can reopen and extend them \u2014 while type aliases are closed; that's the practical difference I care about, not the syntax.",
     misconception: "Treating interface and type as pure synonyms. Only interfaces merge, which matters for library augmentation.",
     hints: [
-      "How would you add a property to a type declared in someone else's package?"
+      "Think about declaring the same name twice with each construct.",
+      "How would you add a property to a type declared in someone else's package?",
+      "One form is open and reopenable; the other binds a name exactly once."
     ],
+    example: {
+      caption: "Merging lets you augment a global interface from your own file.",
+      language: "typescript",
+      code: "// the library declares: interface Window { ... }\ndeclare global {\n  interface Window {\n    analytics: { track(e: string): void };\n  }\n}\n\nwindow.analytics.track(\"page_view\"); // now typed\nexport {}; // keep this file a module"
+    },
     source: "tricky-typescript-12",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
@@ -2120,12 +2400,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Variance annotations (TypeScript 4.7+) declare how a generic type's assignability follows its type argument. out T is covariant: T appears only in output positions, so Producer<Dog> is assignable to Producer<Animal>. in T is contravariant: T appears only in input positions, so Consumer<Animal> is assignable to Consumer<Dog>. in out is invariant, neither direction is safe. TypeScript normally infers this structurally; annotating it makes the intent explicit, catches mistakes at the declaration, and speeds up checking of large generic types.",
-    interviewLine: "out means you only ever get T out, so widening is safe; in means you only ever put T in, so narrowing is safe.",
+    explanation: "Variance annotations, added in TypeScript 4.7, declare how a generic type's assignability follows its type argument. `out T` marks `T` covariant: it appears only in output positions, so `Producer<Dog>` is assignable to `Producer<Animal>`, you only ever read a `T` out, so widening the result is safe. `in T` marks `T` contravariant: it appears only in input positions, so `Consumer<Animal>` is assignable to `Consumer<Dog>`, a thing that accepts any `Animal` can stand in where something accepting a `Dog` is wanted. `in out` is invariant: `T` is both read and written, so neither direction is safe.\n\nThe wrong answers confuse variance with unrelated features. Optional type arguments come from defaults like `<T = string>`, not from `in`/`out`. The annotations are erased at compile time and have no runtime meaning. And they say nothing about what `T` may be, they constrain assignability between instantiations, not the set of allowed types.\n\nThe nuance worth stating is that these annotations are usually optional. TypeScript infers variance structurally from how `T` is used, so the main reasons to write them are to document intent, to catch a mistake at the declaration if a parameter is used in the wrong position, and to speed up checking of very large recursive generic types, where structural inference is expensive.",
+    interviewLine: "I read `out` as 'I only ever get T out, so widening is safe' and `in` as 'I only ever put T in, so narrowing is safe'.",
     misconception: "Assuming variance annotations change what T can be. They only describe assignability between instantiations.",
     hints: [
-      "If you only ever read a T out of something, is it safe to treat it as producing a supertype?"
+      "Think about which direction assignment is safe for a producer versus a consumer.",
+      "If you only ever read a T out of something, is it safe to treat it as producing a supertype?",
+      "The annotations describe assignability between instantiations, not what T may be."
     ],
+    example: {
+      caption: "A read-only producer is covariant: a Dog producer is usable as an Animal producer.",
+      language: "typescript",
+      code: "interface Animal { name: string }\ninterface Dog extends Animal { breed: string }\n\ninterface Producer<out T> { get(): T }\n\nconst dogs: Producer<Dog> = { get: () => ({ name: \"Rex\", breed: \"Lab\" }) };\nconst animals: Producer<Animal> = dogs; // ok: covariant"
+    },
     source: "tricky-typescript-12",
     estimatedMinutes: 3,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/generics.html"
@@ -2173,12 +2460,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Overload signatures define the public API; the implementation signature is invisible to callers and only has to be compatible with all of them. A rest parameter naturally satisfies this because it accepts zero or more arguments, calls matching the first overload simply bind rest to []. This is also why an implementation signature is usually wider than any individual overload, and why widening it does not widen what callers may actually pass.",
-    interviewLine: "Overload signatures are the API; the implementation signature is plumbing that has to satisfy all of them and is never callable itself.",
+    explanation: "The overload signatures define the public API; the implementation signature sits below them and is invisible to callers. Its only job is to be compatible with every overload at once. Here the first overload passes no rest arguments and the second passes some, so the implementation's `...rest: number[]` has to accept being empty, which a rest parameter does naturally, calls matching the first overload simply bind `rest` to `[]`.\n\nThe other options misstate the contract. The implementation does not have to exactly match one overload, it must satisfy all of them, so it is usually broader than any single one. It is not part of the public API, callers can only invoke the declared overload signatures, never the implementation. And rest parameters are not forbidden there; they are the usual way to absorb differing arities across overloads.\n\nThe subtlety worth stating is that widening the implementation signature does not widen what callers may pass. Only the overload signatures are visible, so an implementation typed `(a: string | number, ...rest: unknown[])` still rejects a call that no overload permits. This is also why the compiler does not type-check the body against each overload individually, it is on you to ensure the implementation actually honours every declared shape.",
+    interviewLine: "I treat the overload signatures as the API and the implementation signature as plumbing that has to satisfy all of them and is never callable itself.",
     misconception: "Expecting callers to be able to use the implementation signature. Only the declared overloads are visible.",
     hints: [
-      "What does rest bind to when the caller passes only one argument?"
+      "Think about what each overload passes to the implementation.",
+      "What does rest bind to when the caller passes only one argument?",
+      "The implementation must satisfy every overload, so it is usually wider than any one of them."
     ],
+    example: {
+      caption: "Only the overload signatures are callable; the implementation is invisible to callers.",
+      language: "typescript",
+      code: "function parse(x: string): number;\nfunction parse(x: number): string;\nfunction parse(x: string | number): string | number {\n  return typeof x === \"string\" ? Number(x) : String(x);\n}\n\nconst n = parse(\"42\"); // number\nconst s = parse(42);   // string"
+    },
     source: "tricky-typescript-12",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
@@ -2225,12 +2519,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "B",
-    explanation: "TypeScript is a superset: valid JavaScript is already valid TypeScript, and you opt into typing gradually. Everything the type system knows is discarded by the compiler, so the emitted JavaScript has no annotations and no runtime cost, and equally no runtime protection. A value that arrives from an API as the wrong shape will not be caught unless you validate it yourself.",
-    interviewLine: "Types are compile-time only. They're erased before the code runs, so they catch your mistakes, not your users' data.",
+    explanation: "TypeScript is a strict superset of JavaScript: every valid JavaScript file is already valid TypeScript, so you adopt typing gradually rather than rewriting. On top of that base it adds its own syntax, type annotations, interfaces, generics, enums, and a structural type system that checks your code as you write it. The `add` function here is ordinary JavaScript with `: number` annotations layered on.\n\nEverything the type system knows is discarded by the compiler before the code runs. The emitted JavaScript carries no annotations, no interfaces, no generics, which means zero runtime cost and zero bundle weight, but equally zero runtime protection. A value that arrives from an API or `JSON.parse` as the wrong shape is not caught by the types; only a runtime check you write yourself can catch it.\n\nThe other options each miss this. It is a compiler with real syntax, not a linter layered over JavaScript; it shares all of JavaScript's syntax rather than being a separate language; and it does no runtime enforcement, annotations are erased, not checked while the program executes. The edge an interviewer probes is exactly that gap: a type assertion like `as User` on an untyped response changes what the compiler believes but validates nothing at runtime, which is why schema validators exist for data crossing a trust boundary.",
+    interviewLine: "I stress that types are compile-time only \u2014 they're erased before the code runs, so they catch my mistakes, not my users' data.",
     misconception: "Expecting TypeScript to validate data at runtime. A type assertion on an API response checks nothing.",
     hints: [
-      "What is left in the emitted JavaScript after compilation?"
+      "Think about what the compiler produces after it finishes.",
+      "What is left in the emitted JavaScript after compilation?",
+      "If the types are gone at runtime, who do they actually protect?"
     ],
+    example: {
+      caption: "The annotations vanish; the emitted JavaScript is identical to the untyped version.",
+      language: "typescript",
+      code: "// source.ts\nconst greet = (name: string): string => `Hi ${name}`;\n\n// emitted .js, types stripped:\n// const greet = (name) => `Hi ${name}`;\n\n// so a bad API response is not caught for you:\nconst data = JSON.parse(\"{}\") as { id: number };\ndata.id.toFixed(2); // compiles, throws at runtime"
+    },
     source: "coderpad-typescript",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
@@ -2277,12 +2578,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "B",
-    explanation: "An interface declares the shape a value must have, which properties exist, what types they hold, what methods they expose, and emits nothing. A class can declare implements Person to have the compiler verify it satisfies the contract, but any object with the right shape also satisfies it, because TypeScript is structurally typed rather than nominally typed. Interfaces also merge across declarations, which is what makes them the right choice for shapes other code may extend.",
-    interviewLine: "An interface is a compile-time contract, not a runtime object. Structural typing means anything with the right shape satisfies it.",
+    explanation: "An interface declares the shape a value must have, which properties exist, what types they hold, what methods they expose, and emits nothing into the compiled output. It is a compile-time contract, not a runtime object. In the example, `Employee implements Person` asks the compiler to verify the class provides a `string` `firstName`, a `string` `lastName` and a `greet()` method, and the check happens entirely at build time.\n\nBecause TypeScript is structurally typed rather than nominally typed, `implements` is a convenience, not a requirement. Any object with the right members satisfies `Person`, whether or not it ever named the interface, so a plain object literal `{ firstName, lastName, greet }` is just as assignable as a class that explicitly implements it. This is what lets types from unrelated libraries interoperate without adapters.\n\nThe other options describe things interfaces do not do: they generate no runtime class or default implementations, you cannot instantiate one with `new`, and no validation runs when an object is created. The nuance worth stating is that interfaces merge across declarations, redeclaring the same interface name adds members, which makes them the right choice for shapes other code is expected to extend or augment.",
+    interviewLine: "I describe an interface as a compile-time contract, not a runtime object \u2014 structural typing means anything with the right shape satisfies it.",
     misconception: "Thinking a value must explicitly implement an interface to be assignable to it. Structural typing says otherwise.",
     hints: [
-      "What does an interface compile down to?"
+      "Think about what an interface leaves behind after compilation.",
+      "What does an interface compile down to?",
+      "A value does not have to say it implements the interface to satisfy it."
     ],
+    example: {
+      caption: "Structural typing means a plain object satisfies an interface without declaring it.",
+      language: "typescript",
+      code: "interface Point { x: number; y: number }\n\nfunction length(p: Point) {\n  return Math.hypot(p.x, p.y);\n}\n\nconst anywhere = { x: 3, y: 4, label: \"origin\" };\nlength(anywhere); // ok: it has the right shape"
+    },
     source: "coderpad-typescript",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
@@ -2330,12 +2638,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "D",
-    explanation: "any switches off the type system: identity(42) returns any, and from there you can call .toUpperCase() on a number with no complaint. A type parameter instead captures whatever the caller passed and threads it through to the return type, so identity(42) is number and identity('hello') is string. Generics keep information flowing; any throws it away.",
-    interviewLine: "A generic relates types to each other; any just gives up. Reach for a type parameter whenever output depends on input.",
+    explanation: "`any` switches the type system off for a value and everything derived from it. `identity(42): any` returns `any`, and from there the compiler lets you call `.toUpperCase()` on what is really a number with no complaint, the error only surfaces at runtime. A type parameter instead captures whatever the caller actually passed and threads it through to the return type, so `identity(42)` is `number` and `identity('hello')` is `string`. The relationship between input and output is preserved.\n\nThe other options misread what generics do. Both versions compile to the same JavaScript, so there is no runtime speed difference; `any` is permitted everywhere, including under `strict`; and `T` is resolved per call site, not fixed once for the whole program, so different calls bind it to different concrete types.\n\nThe nuance worth stating is when to reach for a type parameter: whenever the output type depends on the input type. If a function just accepts a value and returns something unrelated, a generic buys nothing. But the moment the return should mirror or derive from the argument, a parameter keeps that information flowing where `any` would throw it away, which is also why `unknown` is the safer catch-all when you truly do not know a type, since it forces a narrowing before use.",
+    interviewLine: "I point out that a generic relates types to each other while `any` just gives up, so I reach for a type parameter whenever output depends on input.",
     misconception: "Treating any as a lightweight generic. It is the absence of typing, not a flexible form of it.",
     hints: [
-      "What type does the caller get back in each version?"
+      "Compare the return type the caller sees in each version.",
+      "What type does the caller get back in each version?",
+      "One keeps the input type flowing to the output; the other discards it."
     ],
+    example: {
+      caption: "A generic threads the element type through; any would lose it.",
+      language: "typescript",
+      code: "function first<T>(arr: T[]): T | undefined {\n  return arr[0];\n}\n\nconst n = first([1, 2, 3]);        // number | undefined\nconst s = first([\"a\", \"b\"]);       // string | undefined\n// first(...) with any would make both results any"
+    },
     source: "coderpad-typescript",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/generics.html"
@@ -2358,9 +2673,9 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "A macro expanded inline at each call site",
+        text: "A macro the compiler expands inline at every call site where the member is used",
         isCorrect: false,
-        explanation: "It runs once at definition, not at each call, and it is an ordinary function rather than a macro."
+        explanation: "Tempting if you picture a C-style macro, but a decorator is an ordinary function that runs once when the declaration is evaluated, not expanded at each call site."
       },
       {
         id: "B",
@@ -2382,12 +2697,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "D",
-    explanation: "A decorator is a function applied to a declaration when that declaration is evaluated. It receives the target and can wrap, replace or annotate it, the classic example replaces a method's implementation with one that logs and delegates. Unlike types, decorators emit real runtime code. Angular and NestJS are built on them, and after years as an experimental flag they are now a standardised JavaScript feature.",
-    interviewLine: "Decorators run at definition time and emit real code, unlike everything else in TypeScript's syntax, they are not erased.",
+    explanation: "A decorator is a function applied to a declaration, a class, method, accessor, property or parameter, at the moment that declaration is evaluated, not at each call. It receives a reference to the target and can wrap, replace or annotate it. The `log` example replaces the method's `descriptor.value` with a wrapper that logs and then delegates through `original.apply`, so every `fetch()` call is traced without the method's own body changing.\n\nUnlike type annotations, decorators are not erased: they emit real runtime code and produce real runtime behaviour, which is why option C is wrong. They are also not a macro expanded at call sites and have nothing to do with declaration merging, the other two traps. The defining property is that they run once, at definition time, and the effect persists on whatever they decorated.\n\nThe current-state nuance is their standardisation. For years decorators were a TypeScript experiment behind `experimentalDecorators`, and frameworks like Angular and NestJS built their dependency injection and metadata systems on that version. The TC39 decorators proposal has since reached Stage 3 and shipped in TypeScript 5.0 with a different signature, so modern code should prefer the standard form, and know that the two are not call-compatible.",
+    interviewLine: "I'd flag that decorators run at definition time and emit real code \u2014 unlike everything else in TypeScript's syntax, they are not erased.",
     misconception: "Assuming decorators are compile-time only like type annotations. They produce runtime behaviour.",
     hints: [
-      "Is there anything left in the emitted JavaScript?"
+      "Check whether anything survives into the compiled output.",
+      "Is there anything left in the emitted JavaScript?",
+      "It runs once when the declaration is evaluated, not at each call."
     ],
+    example: {
+      caption: "A class decorator receives the constructor and can replace or wrap it.",
+      language: "typescript",
+      code: "function sealed<T extends new (...a: any[]) => object>(ctor: T) {\n  Object.seal(ctor);\n  Object.seal(ctor.prototype);\n  return ctor;\n}\n\n@sealed\nclass Config {\n  version = 1;\n}"
+    },
     source: "coderpad-typescript",
     estimatedMinutes: 3,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/decorators.html"
@@ -2434,12 +2756,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "B",
-    explanation: "An async function always returns a promise, and await suspends the function until the awaited promise settles, yielding to the event loop rather than blocking. The practical win is control flow: sequential code reads top to bottom instead of nesting in .then chains, and ordinary try/catch handles rejection. The cost is that awaiting in sequence serialises work that could have run concurrently, which is what Promise.all is for.",
-    interviewLine: "await doesn't block, it yields. Sequential awaits serialise independent work, reach for Promise.all when the calls don't depend on each other.",
+    explanation: "`async`/`await` is syntax built directly on promises, not a replacement for them. An `async` function always returns a promise, wrapping whatever you return (or throw) in one, and `await` suspends the function until the awaited promise settles, then resumes with its resolved value. In `loadUser`, `await fetch(...)` pauses the function, yields control back to the event loop, and continues once the response arrives.\n\nThe practical win is control flow. Sequential asynchronous steps read top to bottom instead of nesting inside `.then` chains, and ordinary `try/catch` handles a rejection the same way it handles a thrown error. The other options get this wrong: nothing blocks the thread, `await` yields rather than halting everything; `await` works on any thenable, not just `fetch`'s promise; and it is built on promises rather than being a separate concurrency primitive.\n\nThe edge an interviewer probes is accidental serialisation. `await`-ing two independent calls one after another runs them in sequence, roughly doubling the latency, even though they do not depend on each other. When the operations are independent you launch them together and `await Promise.all([...])`, which is the difference between concurrent and serial execution that a naive conversion from `.then` chains often misses.",
+    interviewLine: "I remind people that `await` doesn't block, it yields; sequential awaits serialise independent work, so I reach for Promise.all when the calls don't depend on each other.",
     misconception: "Assuming await blocks the thread. It suspends one function while everything else keeps running.",
     hints: [
-      "What does an async function return, always?"
+      "Think about what an async function hands back to its caller.",
+      "What does an async function return, always?",
+      "Awaiting in sequence serialises work that could have run at the same time."
     ],
+    example: {
+      caption: "Promise.all runs independent awaits concurrently instead of in sequence.",
+      language: "typescript",
+      code: "async function load() {\n  // sequential: ~2x slower if the calls don't depend on each other\n  // const user = await getUser();\n  // const posts = await getPosts();\n\n  const [user, posts] = await Promise.all([getUser(), getPosts()]);\n  return { user, posts };\n}"
+    },
     source: "coderpad-typescript",
     estimatedMinutes: 2,
     bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise"
@@ -2486,12 +2815,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "B",
-    explanation: "A file becomes a module the moment it has a top-level import or export. Until then its declarations live in the global scope, which is how two files can collide on the same const name. That is also why an otherwise empty declaration file sometimes needs export {} to force module status., isolatedModules makes this explicit by requiring every file to be a module.",
-    interviewLine: "One top-level import or export is the whole rule. Without it you're writing globals, whether you meant to or not.",
+    explanation: "A file becomes a module the moment it has a top-level `import` or `export`, that single rule is the whole answer. `utils.ts` has an `export`, so `toSlug` is scoped to the module and other files must import it. `globals.ts` has neither, so it is a global script and its `VERSION` lands in the global scope, where it can collide with a `VERSION` declared in any other script file in the program.\n\nThe other options confuse related but distinct settings. The `.ts` extension alone does not make a module; a `.ts` file with no import or export is still a global script. Being listed in `tsconfig`'s `include` only controls which files are compiled. And the `module` compiler option selects the output format (ESM, CommonJS) for files that are already modules, it does not decide module status.\n\nThe consequence worth stating is the `export {}` idiom. A declaration file or an augmentation that has no natural import or export sometimes needs a bare `export {}` purely to force module status and keep its declarations out of the global scope. `isolatedModules` makes this requirement explicit by rejecting any file that is not a module, which is why you see `export {}` in otherwise self-contained files under that flag.",
+    interviewLine: "I keep the rule simple: one top-level import or export is the whole thing \u2014 without it I'm writing globals, whether I meant to or not.",
     misconception: "Assuming every .ts file is automatically scoped. Without an import or export it shares the global scope.",
     hints: [
-      "Why would you ever write a bare `export {}` in a file?"
+      "Think about what distinguishes a scoped file from a global one.",
+      "Why would you ever write a bare `export {}` in a file?",
+      "Without a top-level import or export, the declarations share the global scope."
     ],
+    example: {
+      caption: "An otherwise global file becomes a module with a single empty export.",
+      language: "typescript",
+      code: "// before: const API = \"/v1\" leaks into the global scope\n// and can collide with another file's API\n\nconst API = \"/v1\";\nexport {}; // now this file is a module; API is local to it"
+    },
     source: "coderpad-typescript",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/modules.html"
@@ -2540,12 +2876,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Unary operators bind tighter than binary +, so +\"5\" becomes the number 5 and !\"0\" becomes false, \"0\" is a non-empty string and therefore truthy. That leaves 5 + [1] + false. Binary + is left-associative: 5 + [1] converts the array to a primitive, which for [1] is the string \"1\", so string concatenation wins and gives \"51\". Then \"51\" + false gives \"51false\".",
-    interviewLine: "Binary + is the only arithmetic operator that also concatenates, one string operand anywhere and the whole chain turns into text.",
+    explanation: "Unary operators bind tighter than binary `+`, so they resolve first. `+\"5\"` converts the string to the number `5`, and `!\"0\"` evaluates to `false`, because `\"0\"` is a non-empty string and therefore truthy, only the empty string `\"\"` is falsy among strings. That leaves the expression `5 + [1] + false`.\n\nBinary `+` is left-associative, so it evaluates left to right. `5 + [1]` first coerces the array to a primitive: `[1].toString()` is `\"1\"`, and because one operand is now a string, `+` concatenates rather than adds, giving `\"51\"`. The next step, `\"51\" + false`, concatenates again to produce `\"51false\"`. The single-element array is why there is no comma; `[1,2].toString()` would be `\"1,2\"`, but `[1]` stringifies to just `\"1\"`.\n\nThe trap each wrong answer falls into is a different misread: expecting numeric addition throughout (`6`), inventing a comma from the array (`\"5,1false\"`), or expecting arithmetic on a non-number to yield `NaN`. The key mechanism to internalise is that binary `+` is the one arithmetic operator that is overloaded for string concatenation, so the moment any operand resolves to a string, every `+` from that point rightward concatenates instead of adding.",
+    interviewLine: "I remember that binary + is the only arithmetic operator that also concatenates \u2014 one string operand anywhere and the whole chain turns into text.",
     misconception: "Thinking !\"0\" is true. The string \"0\" is truthy; only the empty string is falsy.",
     hints: [
-      "Evaluate the two unary operators first, then go left to right."
+      "Resolve the unary operators before touching the binary +.",
+      "Evaluate the two unary operators first, then go left to right.",
+      "Once one operand is a string, every following + concatenates."
     ],
+    example: {
+      caption: "A single string operand flips the whole + chain into concatenation.",
+      language: "javascript",
+      code: "console.log(1 + 2 + \"3\");   // \"33\": 1+2 is 3, then \"3\" concatenates\nconsole.log(\"1\" + 2 + 3);   // \"123\": string wins from the left\nconsole.log(+\"\" + 1);        // 1: +\"\" is 0, then numeric add\nconsole.log(1 + +\"2\" + \"3\"); // \"33\": +\"2\" is 2, 1+2 is 3, then concat"
+    },
     source: "advanced-javascript-6",
     estimatedMinutes: 2,
     bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Operators"
@@ -2593,12 +2936,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "D",
-    explanation: "The practical difference is openness. An interface can be declared more than once and the compiler merges the declarations, which is how you add a property to Window or augment a third-party module's types. A type alias binds a name exactly once, a second declaration is a duplicate identifier error. Everything else is largely symmetrical: both describe object shapes, both annotate parameters, both compose. Type aliases win where interfaces cannot go at all: unions, tuples, primitives and conditional types.",
-    interviewLine: "Interfaces are open, type aliases are closed. If someone else needs to extend it from another file, it has to be an interface.",
+    explanation: "The capability unique to interfaces is declaration merging: declare the same interface name twice and the compiler combines the declarations into one, so `User` here ends up with both `name` and `age`. A `type` alias binds a name to exactly one type, so a second `type Point` is a duplicate-identifier error. That openness is what makes global augmentation and module augmentation possible, you add a property to `Window` or a third-party type by reopening its interface.\n\nThe other options describe things both constructs do. Both can annotate a function parameter, both can be extended to build a wider shape (interfaces with `extends`, aliases with `&`), and both describe object shapes equally well, a type alias for an object literal is entirely idiomatic.\n\nThe counterweight worth stating is where type aliases win outright: unions, tuples, primitives, mapped and conditional types, none of which an interface can express, because an interface only describes an object shape. So the practical rule is to prefer `interface` for public object shapes others may extend, and `type` when you need a union, a tuple, or any computed type. The two are not interchangeable precisely at the edges where extensibility or type-level computation matters.",
+    interviewLine: "I'd say interfaces are open and type aliases are closed \u2014 if someone else needs to extend it from another file, I make it an interface.",
     misconception: "Treating the two as pure synonyms. They differ precisely where extensibility matters.",
     hints: [
-      "What happens if you declare the same name twice with each?"
+      "Try declaring the same name twice with each construct.",
+      "What happens if you declare the same name twice with each?",
+      "The unique ability is being reopened and merged, not describing object shapes."
     ],
+    example: {
+      caption: "Two interface declarations merge; a type alias cannot be redeclared.",
+      language: "typescript",
+      code: "interface Theme { color: string }\ninterface Theme { spacing: number }\n\nconst t: Theme = { color: \"blue\", spacing: 8 }; // both merged\n\n// type Theme2 = { color: string };\n// type Theme2 = { spacing: number }; // error: duplicate identifier"
+    },
     source: "typescript-masterclass",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
@@ -2646,12 +2996,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "extends is checked at the point of declaration: an interface that extends another must remain assignable to it, so redeclaring id as an incompatible type is an error you see immediately. An intersection performs no such check, it intersects each member, and string & number has no inhabitants, so id becomes never. The type is accepted and the failure surfaces much later, wherever someone tries to assign to it. That earlier feedback is a real argument for extends when you are modelling inheritance.",
-    interviewLine: "extends fails at the declaration; & fails at the usage, with a never you have to go looking for.",
+    explanation: "`extends` is checked eagerly, at the point of declaration. An interface that extends another must stay assignable to it, so `interface B extends A { id: number }` is an immediate error, you cannot redeclare `id` as a type incompatible with the `string` it inherits. The feedback arrives exactly where you wrote the mistake.\n\nAn intersection performs no such compatibility check. `{ id: string } & { id: number }` is accepted at the declaration; TypeScript intersects the two `id` members into `string & number`, a type with no inhabitants, so `id` silently becomes `never`. The type exists and compiles, and the failure only surfaces much later, wherever someone tries to assign a value to `id` and finds that nothing is assignable to `never`.\n\nThe other options invert or confuse this. `extends` does not let a subtype narrow a member to an incompatible type; neither construct uses last-wins semantics; and only the interface form errors, the intersection is accepted at its declaration. The practical takeaway an interviewer wants is that this earlier, localised feedback is a real argument for `extends` when you are modelling inheritance, you learn about the clash at the declaration rather than chasing a mysterious `never` to some distant assignment.",
+    interviewLine: "I note that `extends` fails at the declaration while `&` fails at the usage \u2014 with a `never` I then have to go looking for.",
     misconception: "Assuming & and extends are interchangeable. They differ exactly when members conflict.",
     hints: [
-      "What is the type string & number?"
+      "Work out what type the clashing member ends up with in each case.",
+      "What is the type string & number?",
+      "One construct complains at the declaration; the other defers the failure to usage."
     ],
+    example: {
+      caption: "An intersection of incompatible members silently becomes never.",
+      language: "typescript",
+      code: "type Conflict = { id: string } & { id: number };\n\nconst x: Conflict = { id: \"anything\" };\n// error, but at the assignment: id is string & number = never\n\ntype IdType = Conflict[\"id\"]; // never"
+    },
     source: "typescript-masterclass",
     estimatedMinutes: 3,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
@@ -2699,12 +3056,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "An interface describes the shape of an object: a set of members. A union is not a shape, it is a choice between types, so there is nothing for an interface to declare. Type aliases have no such restriction: they name any type at all, including unions, tuples, primitives, conditional types and mapped types. This is the counterweight to declaration merging, and in practice it decides most real choices between the two.",
-    interviewLine: "Interfaces describe object shapes; aliases name any type. A union isn't a shape, so it has to be an alias.",
+    explanation: "An interface describes the shape of an object: a set of named members with types. A union like `'idle' | 'loading' | 'done'` is not a shape at all, it is a choice between types, so there is nothing for an interface to declare. That is why only `type Status = 'idle' | 'loading' | 'done'` works directly.\n\nThe other options each fail on that distinction. Wrapping the union in `interface Status { value: ... }` declares an object with a `value` property, not the union itself. `interface Status extends 'idle' | 'loading' | 'done'` is illegal because an interface can only extend an object type or a statically known class/interface, not a union of literals. And the claim that both forms express unions is simply false.\n\nType aliases have no such restriction: a `type` can name any type at all, unions, tuples, primitives, conditional and mapped types, which is the direct counterweight to the one thing interfaces can do and aliases cannot, declaration merging. In practice this trade decides most real choices: reach for an alias whenever the type is a union, tuple or computed type, and for an interface when it is an open object shape others may extend. A discriminated union, the backbone of exhaustive state modelling, is a union and therefore always an alias.",
+    interviewLine: "I'd explain that interfaces describe object shapes while aliases name any type \u2014 a union isn't a shape, so I have to make it an alias.",
     misconception: "Reaching for an interface by default and then wrapping the union in a pointless property.",
     hints: [
-      "Is a union a set of members, or a choice between types?"
+      "Decide whether a union is a set of members or a choice between types.",
+      "Is a union a set of members, or a choice between types?",
+      "An interface describes an object shape; a bare union is not one."
     ],
+    example: {
+      caption: "Only an alias can name a union, a tuple, or a primitive.",
+      language: "typescript",
+      code: "type Status = \"idle\" | \"loading\" | \"done\";\ntype Pair = [number, number];\ntype Id = string | number;\n\n// none of these can be expressed as an interface\nconst s: Status = \"loading\";"
+    },
     source: "typescript-masterclass",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
@@ -2752,12 +3116,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Module augmentation reopens a declaration inside another package's module and merges into it. Because interfaces merge and type aliases do not, this only works if the library declared the shape as an interface, a real argument for exporting public shapes as interfaces in library code. The same mechanism extends global types: declare global { interface Window { myApp: App } }. Note that augmenting a module requires your file to be a module itself, so it needs at least one import or export.",
-    interviewLine: "Augmentation is declaration merging pointed at somebody else's package, which is exactly why library authors should export interfaces, not aliases.",
+    explanation: "Module augmentation reopens a declaration inside another package's module scope and merges into it. Writing `declare module \"some-lib\" { interface Config { myFeatureFlag?: boolean } }` adds the property to the library's own `Config`, everywhere `Config` is used, without touching its source. It works precisely because interfaces merge; a `type` alias cannot, so this technique only applies when the library declared the shape as an interface, a concrete argument for exporting public shapes as interfaces in library code.\n\nThe other options are the common wrong instincts. Forking and editing the package's `.d.ts` in `node_modules` works until the next `npm install` silently reverts it. Casting each call site to `any` disables checking locally instead of extending the type once, centrally. And declaring your own `type Config` with the same name neither merges, it is a duplicate-identifier error, nor affects the library's type.\n\nThe mechanism generalises: `declare global { interface Window { myApp: App } }` augments global types the same way. The edge worth stating is that an augmenting file must itself be a module, so it needs at least one top-level `import` or `export`, otherwise `declare module` is interpreted as an ambient module declaration rather than an augmentation and does not merge.",
+    interviewLine: "I think of augmentation as declaration merging pointed at somebody else's package, which is exactly why I want library authors to export interfaces, not aliases.",
     misconception: "Trying to augment with a type alias, or editing node_modules and losing it on the next install.",
     hints: [
-      "Which of the two declaration forms can be reopened?"
+      "Only one of the two declaration forms can be reopened.",
+      "Which of the two declaration forms can be reopened?",
+      "The augmenting file must itself be a module, so it needs an import or export."
     ],
+    example: {
+      caption: "Augmenting Express's Request type adds a field everywhere it is used.",
+      language: "typescript",
+      code: "import \"express\";\n\ndeclare module \"express\" {\n  interface Request {\n    user?: { id: string };\n  }\n}\n\n// now req.user is typed in every route handler"
+    },
     source: "typescript-masterclass",
     estimatedMinutes: 3,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
@@ -2805,12 +3176,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "public is the default and imposes no restriction. protected narrows access to the declaring class and anything that extends it, which is what lets a base class expose internals to its subclasses without exposing them to consumers. private narrows further, to the declaring class alone, even a subclass cannot see it. All three are compile-time only and are erased from the emitted JavaScript, so none of them prevents access at runtime.",
-    interviewLine: "protected is for your subclasses, private is for you alone, and both are erased, so neither stops anyone at runtime.",
+    explanation: "`public` is the default and imposes no restriction, a `public` member is reachable from anywhere. `protected` narrows access to the declaring class and anything that extends it, which is what lets a base class share internals with its subclasses while keeping them hidden from outside consumers; in the example `Derived.read` can return `this.kind` but external code cannot. `private` narrows further still, to the declaring class alone, so even a subclass cannot see `this.secret`. The difference between the two restricted modifiers is exactly whether the inheritance chain can reach the member.\n\nThe wrong options invert or misplace this. `private` members are not visible to subclasses, that is `protected`; the default is `public`, not `private`; and `protected` follows the class hierarchy, not the file or module, so being in the same module grants no access.\n\nThe nuance worth stating is that all three are compile-time only. They are erased from the emitted JavaScript, so none of them prevents access at runtime, a cast to `any`, a bracket index, or plain JavaScript interop can still reach a `private` field, and it still appears in `JSON.stringify` and `Object.keys`. When you need a boundary the runtime actually enforces, you reach for an ECMAScript `#private` field instead.",
+    interviewLine: "I'd say `protected` is for my subclasses and `private` is for me alone \u2014 both are erased, so neither stops anyone at runtime.",
     misconception: "Expecting a subclass to reach a private member. Only protected crosses the inheritance boundary.",
     hints: [
-      "Which one is about the inheritance chain rather than the class itself?"
+      "Decide which modifier is about the inheritance chain.",
+      "Which one is about the inheritance chain rather than the class itself?",
+      "All three are erased, so none of them restricts access at runtime."
     ],
+    example: {
+      caption: "A subclass can reach a protected member but not a private one.",
+      language: "typescript",
+      code: "class Account {\n  protected balance = 0;\n  private pin = 1234;\n}\n\nclass Savings extends Account {\n  check() {\n    return this.balance; // ok\n    // return this.pin;  // error: private to Account\n  }\n}"
+    },
     source: "typescript-masterclass",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/classes.html"
@@ -2858,12 +3236,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "D",
-    explanation: "private is part of the type system and vanishes with the types, so the property is still an ordinary property at runtime, a cast to any or a bracket access reaches it, and it shows up in JSON.stringify and Object.keys. A # field is real ECMAScript private state: the name is not a property key at all, access from outside is a syntax error, and it stays out of serialisation. Use private when you want the compiler to guide callers; use # when the boundary genuinely has to hold.",
-    interviewLine: "private is advice to the compiler; # is enforced by the engine. If untrusted code runs in your process, only one of them is real.",
+    explanation: "`private` is part of the type system, so it vanishes with the types. At runtime the property is an ordinary property: a cast to `any` or a bracket access `(obj as any).balance` reaches it, it shows up in `JSON.stringify` and `Object.keys`, and plain JavaScript that never saw the types can read and write it freely. It is enforced only by the compiler, as guidance to callers.\n\nA `#` field is genuinely different: it is standard ECMAScript private state, not a TypeScript invention. The `#name` is not a property key at all, so it never appears in serialisation or enumeration, access from outside the class is a syntax error caught at parse time, and no cast can defeat it. This is why option D is correct and the others wrong, they are not identical newer syntax, `#` is not a TypeScript feature compiling down to `private`, and both forms apply equally to fields and methods.\n\nThe decision an interviewer wants is when each fits. Use `private` when you want the compiler to steer callers away from internals but still allow controlled escape hatches (tests, serialisation). Use `#` when the boundary genuinely has to hold at runtime, for example when untrusted code shares the process or when a field must stay out of `JSON.stringify` output. The trade-off is that `#` fields cannot be accessed via computed keys and interact differently with some older tooling and proxies.",
+    interviewLine: "I treat `private` as advice to the compiler and `#` as enforced by the engine \u2014 if untrusted code runs in my process, only one of them is real.",
     misconception: "Assuming TypeScript's private survives compilation. It is erased along with every other annotation.",
     hints: [
-      "What is left in the emitted JavaScript for each?"
+      "Compare what each leaves in the compiled JavaScript.",
+      "What is left in the emitted JavaScript for each?",
+      "One is a compile-time check a cast defeats; the other the engine enforces."
     ],
+    example: {
+      caption: "A # field is absent from serialisation and unreachable from outside.",
+      language: "typescript",
+      code: "class Wallet {\n  #balance = 100;\n  report() { return this.#balance; }\n}\n\nconst w = new Wallet();\nconsole.log(JSON.stringify(w)); // {} , #balance is hidden\n// console.log(w.#balance);     // SyntaxError at parse time"
+    },
     source: "typescript-masterclass",
     estimatedMinutes: 3,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/classes.html"
@@ -2911,12 +3296,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "D",
-    explanation: "Adding public, private, protected or readonly to a constructor parameter tells TypeScript to declare a field of the same name and assign the argument to it, replacing the usual declare-then-assign boilerplate. It is one of the few TypeScript features that emits code rather than being erased. Worth knowing the caveat: a parameter with no modifier stays an ordinary parameter, so mixing the two forms in one constructor is a common source of confusion.",
-    interviewLine: "A modifier on a constructor parameter promotes it to a field. It's one of the rare bits of TypeScript syntax that actually emits code.",
+    explanation: "Adding an access modifier (`public`, `private`, `protected`) or `readonly` to a constructor parameter tells TypeScript to declare a class field of the same name and assign the argument to it automatically. The `Point` example is exactly equivalent to declaring `x` and `y` as fields and writing `this.x = x; this.y = y` in the body, the modifier collapses that declare-then-assign boilerplate into one place.\n\nThe other options misread it. It does not make the parameter optional, that comes from `?` or a default value. Its visibility follows whichever modifier you wrote, not subclasses specifically; the promotion to a field is the feature, independent of which modifier. And it is not documentation-only: it emits a real assignment in the constructor, making it one of the few TypeScript constructs that generate code rather than being erased.\n\nThe caveat worth stating is the one that bites people: only a parameter carrying a modifier is promoted. A bare parameter stays an ordinary parameter and never becomes a field, so mixing modified and unmodified parameters in the same constructor, `constructor(public id: string, name: string)`, quietly creates a field for `id` but not `name`, which is a common source of `this.name is undefined` confusion.",
+    interviewLine: "I point out that a modifier on a constructor parameter promotes it to a field \u2014 it's one of the rare bits of TypeScript syntax that actually emits code.",
     misconception: "Expecting every constructor parameter to become a property. Only the ones carrying a modifier do.",
     hints: [
-      "Compare it with writing the field declaration and the this.x = x line yourself."
+      "Compare it with writing the field declaration and the assignment yourself.",
+      "Compare it with writing the field declaration and the this.x = x line yourself.",
+      "Only a parameter carrying a modifier is promoted; a bare one stays a parameter."
     ],
+    example: {
+      caption: "The modifier replaces the usual declare-then-assign boilerplate.",
+      language: "typescript",
+      code: "// shorthand\nclass A {\n  constructor(private name: string) {}\n}\n\n// equivalent longhand\nclass B {\n  private name: string;\n  constructor(name: string) {\n    this.name = name;\n  }\n}"
+    },
     source: "typescript-masterclass",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
@@ -2964,12 +3356,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "C",
-    explanation: "implements asks the compiler to verify that a class satisfies a contract; it brings nothing with it, so every member has to be written out, and it disappears entirely from the emitted JavaScript. extends creates a real prototype chain and inherits implementations, which is why a class can implement any number of interfaces but extend exactly one class. Because TypeScript is structurally typed, a class that happens to have the right shape is assignable to the interface anyway, implements just makes the intent explicit and moves the error to the class rather than the call site.",
-    interviewLine: "implements is a checked promise; extends is actual inheritance. Structural typing means you don't need the promise, but you want the error where the class is, not where it's used.",
+    explanation: "`implements` asks the compiler to verify that a class satisfies a contract. It brings no implementation with it, so every member the interface declares has to be written out in the class, and it disappears entirely from the emitted JavaScript. `extends` is different in kind: it creates a real prototype chain and inherits the base class's concrete members, so `Doc extends Base` gets `Base`'s `id` for free. That inheritance is why a class may `implement` any number of interfaces but `extend` exactly one class.\n\nThe wrong options invert this. It is `extends`, not `implements`, that emits a prototype link; `implements` is erased. `implements` copies nothing, the class must supply every member. And the two are not interchangeable, only `extends` brings behaviour.\n\nThe nuance worth stating follows from structural typing: a class with the right shape is already assignable to an interface whether or not it says `implements`. So `implements` adds no capability, its value is purely that it moves the conformance error onto the class declaration, where you can see immediately that a member is missing or mistyped, rather than letting the mismatch surface at some distant call site that tried to use the class as the interface.",
+    interviewLine: "I describe `implements` as a checked promise and `extends` as actual inheritance \u2014 structural typing means I don't need the promise, but I want the error where the class is, not where it's used.",
     misconception: "Expecting implements to provide members. It only verifies that you wrote them.",
     hints: [
-      "Which one is still present in the compiled JavaScript?"
+      "Check which keyword survives into the compiled JavaScript.",
+      "Which one is still present in the compiled JavaScript?",
+      "One verifies a contract and brings nothing; the other inherits real members."
     ],
+    example: {
+      caption: "A class may implement many interfaces but extend only one base.",
+      language: "typescript",
+      code: "interface Printable { print(): void }\ninterface Loggable { log(): void }\nclass Base { id = 0 }\n\nclass Doc extends Base implements Printable, Loggable {\n  print() {}\n  log() {}\n}"
+    },
     source: "typescript-masterclass",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/classes.html"
@@ -3018,12 +3417,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "D",
-    explanation: "Both declare a contract, but only an abstract class can also provide implementation, concrete methods, constructor logic, protected state, while leaving some members abstract for subclasses to fill in. The cost is the single extends slot and a real runtime artifact. The rule of thumb: if you have behaviour to share, use an abstract class; if you only have a shape to describe, use an interface, which is free at runtime and can be implemented alongside anything else.",
-    interviewLine: "Interface when you have a shape; abstract class when you also have behaviour worth inheriting, and remember it spends the one extends slot.",
+    explanation: "Both an abstract class and an interface declare a contract, but only an abstract class can also carry implementation. It can ship concrete methods, constructor logic and `protected` state while leaving selected members `abstract` for subclasses to fill in. The `Repository` example does exactly this: `find` is abstract, but `findOrFail` is a working method every subclass inherits, built on top of the abstract `find`. An interface can declare the shape of `findOrFail` but can never provide its body.\n\nThe wrong options point at things interfaces handle fine. A contract satisfied by many classes is an interface's strength, and without consuming the one `extends` slot. Both constructs are checked at compile time, and both express optional members with `?`. None of those is a reason to pay for an abstract class.\n\nThe cost that decides it is the single `extends` slot and a real runtime artifact, an abstract class emits a constructor and prototype. The rule of thumb: if you have behaviour to share, use an abstract class; if you only have a shape to describe, use an interface, which is free at runtime and can be implemented alongside any number of other interfaces. The edge case is wanting shared behaviour across an existing hierarchy, where mixins or composition can beat an abstract base precisely because the base would spend that one inheritance slot.",
+    interviewLine: "I pick an interface when I have a shape and an abstract class when I also have behaviour worth inheriting, and I remember it spends the one `extends` slot.",
     misconception: "Reaching for an abstract class purely to declare a contract, and paying the inheritance cost for nothing.",
     hints: [
-      "Which of the two can contain a method with a body?"
+      "Ask which construct can carry a method body.",
+      "Which of the two can contain a method with a body?",
+      "If you only have a shape to describe, the free, multiply-implementable option wins."
     ],
+    example: {
+      caption: "An abstract class ships shared behaviour while leaving some members unfilled.",
+      language: "typescript",
+      code: "abstract class Shape {\n  abstract area(): number;\n  describe() {\n    return `area is ${this.area()}`; // shared, inherited\n  }\n}\n\nclass Circle extends Shape {\n  constructor(private r: number) { super(); }\n  area() { return Math.PI * this.r ** 2; }\n}"
+    },
     source: "typescript-masterclass",
     estimatedMinutes: 3,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
@@ -3071,12 +3477,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "D",
-    explanation: "An unconstrained type parameter stands for absolutely any type, so the compiler can only allow operations valid on every type, and .length is not one of them. extends { length: number } narrows the set of acceptable types and, in exchange, lets you use that member inside the body. This is the fundamental trade of generics: the more you constrain, the more you can do. The constraint also improves the call site, rejecting a number argument at the caller rather than deep inside the function.",
-    interviewLine: "A constraint is a two-way deal: you narrow what callers may pass, and in return the compiler lets you use what you've guaranteed.",
+    explanation: "An unconstrained type parameter `T` stands for absolutely any type, so inside the function body the compiler only permits operations valid on every possible type. Reading `.length` is not one of them, a `number` or a `boolean` has no `length`, so `longest1` fails to compile. Adding `T extends { length: number }` narrows the set of types `T` may be to those that have a numeric `length`, and in exchange the compiler lets you read that member in the body, which is why `longest2` compiles.\n\nThe wrong options miss the trade. Generic functions can access parameter properties, once a constraint guarantees them. The constraint need not be a class; any type that guarantees the member works, including an object-literal type like `{ length: number }`. And sharing one `T` across both parameters is correct here, not the cause of the error.\n\nThe principle an interviewer wants named is that a constraint is a two-way deal: the more you constrain `T`, the more you can do with it. It also tightens the call site, `longest2` rejects a plain `number` argument at the caller, because a `number` is not assignable to `{ length: number }`, rather than failing deep inside the body. The subtlety is that `extends` on a type parameter means assignable to, not class inheritance, so `string`, arrays and any `{ length }` object all satisfy it.",
+    interviewLine: "I treat a constraint as a two-way deal: I narrow what callers may pass, and in return the compiler lets me use what I've guaranteed.",
     misconception: "Reading extends as inheritance. On a type parameter it means 'is assignable to'.",
     hints: [
-      "What can you safely do to a value whose type could be anything at all?"
+      "Ask what operations are valid on a value that could be any type.",
+      "What can you safely do to a value whose type could be anything at all?",
+      "Here extends means 'is assignable to', not inheritance."
     ],
+    example: {
+      caption: "A constraint unlocks member access inside the body and tightens the call site.",
+      language: "typescript",
+      code: "function pluckId<T extends { id: string }>(item: T): string {\n  return item.id; // allowed because the constraint guarantees it\n}\n\npluckId({ id: \"a\", name: \"x\" }); // ok\n// pluckId({ name: \"x\" });        // error: missing id"
+    },
     source: "typescript-masterclass",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/generics.html"
@@ -3124,12 +3537,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "C",
-    explanation: "Two inferences make this work. T is inferred from obj as { name: string; age: number }, and K is inferred from the literal argument as 'age' rather than widening to string, because K is constrained to keyof T, which is a union of literal types. T[K] is then an indexed access type resolving to number. The same signature also rejects getProperty(user, 'email') at compile time, since 'email' is not in keyof T.",
-    interviewLine: "keyof plus an indexed access type turns a runtime lookup into a compile-time one, the return type follows the key you actually passed.",
+    explanation: "Two inferences cooperate here. `T` is inferred from `obj` as the concrete object type `{ name: string; age: number }`. `K` is constrained to `keyof T`, which is the union of literal keys `'name' | 'age'`, so when you pass the literal `'age'`, `K` is inferred as the literal `'age'` rather than widening to `string`. The return type `T[K]` is an indexed access type, and with `K` pinned to `'age'` it resolves to exactly `T['age']`, which is `number`.\n\nThe wrong options each misjudge how far inference goes. `T` is not left generic, it is inferred from the argument; the result is not the union `string | number`, because the indexed access resolves to the one member the literal key selects; and the key is a static string literal, not a runtime-only value, so it is not `any`.\n\nThe safety this buys is worth stating: because `K extends keyof T`, calling `getProperty(user, 'email')` is a compile error, `'email'` is not in `keyof T`, so typos and stale keys are caught at build time. The same `keyof` + indexed-access pattern scales to `Pick<T, K>` and to setters typed `(obj: T, key: K, value: T[K])`, turning what would be a loose `string` lookup into a precise, statically-checked one.",
+    interviewLine: "I use `keyof` plus an indexed access type to turn a runtime lookup into a compile-time one \u2014 the return type follows the key I actually passed.",
     misconception: "Expecting the union of all property types. The literal key resolves to exactly one.",
     hints: [
-      "What does K infer as when the argument is a string literal constrained to keyof T?"
+      "Work out what K infers to from a string-literal argument.",
+      "What does K infer as when the argument is a string literal constrained to keyof T?",
+      "The indexed access resolves to one member type, not the union of all of them."
     ],
+    example: {
+      caption: "The constrained key makes the return type follow the exact key passed.",
+      language: "typescript",
+      code: "function pick<T, K extends keyof T>(obj: T, keys: K[]): Pick<T, K> {\n  return keys.reduce((acc, k) => ((acc[k] = obj[k]), acc), {} as Pick<T, K>);\n}\n\nconst u = { id: 1, name: \"Ada\", age: 36 };\nconst r = pick(u, [\"id\", \"name\"]); // { id: number; name: string }"
+    },
     source: "typescript-masterclass",
     estimatedMinutes: 3,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/generics.html"
@@ -3176,12 +3596,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "A default type argument lets a generic be used without type arguments, which keeps common cases terse while leaving the parameter available when you need it. It is orthogonal to a constraint, and the two combine: <T extends object = Record<string, unknown>> both restricts what may be passed and supplies a fallback. As with value parameters, defaults must come after any non-defaulted parameters.",
-    interviewLine: "extends restricts what T may be; = says what T is when nobody specifies. They're independent and often used together.",
+    explanation: "`= Record<string, unknown>` supplies a default type argument: when the caller writes `ApiResponse` with no angle brackets, `T` falls back to `Record<string, unknown>`, exactly like a default value on an ordinary function parameter, but at the type level. So `a` uses the default and `b` overrides it with `User[]`. The default keeps the common case terse while leaving the parameter available when a caller needs a specific type.\n\nThe wrong options confuse the default with other features. It has no runtime existence, type parameters are erased. It does not force inference, explicit type arguments like `ApiResponse<User[]>` remain fully available. And it does not constrain `T`, that is what `extends` does; a default supplies a fallback and restricts nothing about what may be passed.\n\nThe nuance worth stating is that defaults and constraints are orthogonal and frequently combine: `<T extends object = Record<string, unknown>>` both restricts `T` to object types and supplies a fallback when none is given. As with value parameters, a defaulted type parameter must come after any non-defaulted ones in the list, otherwise the compiler cannot tell which argument you are omitting.",
+    interviewLine: "I read `extends` as restricting what T may be and `=` as saying what T is when nobody specifies \u2014 they're independent and I often use them together.",
     misconception: "Confusing = with extends. One is a fallback, the other a restriction.",
     hints: [
-      "What is the analogous feature for ordinary function parameters?"
+      "Think of the equivalent feature for ordinary function parameters.",
+      "What is the analogous feature for ordinary function parameters?",
+      "A default supplies a fallback; it does not restrict what may be passed."
     ],
+    example: {
+      caption: "A default and a constraint are independent and often combined.",
+      language: "typescript",
+      code: "interface Box<T extends object = Record<string, unknown>> {\n  value: T;\n}\n\nconst a: Box = { value: {} };          // uses the default\nconst b: Box<{ id: number }> = { value: { id: 1 } };\n// const c: Box<string> = ...;         // error: violates the constraint"
+    },
     source: "typescript-masterclass",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/generics.html"
@@ -3229,12 +3656,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "B",
-    explanation: "Date and Map both satisfy extends object, so the recursion maps over their members. What comes back is a readonly object with the same method signatures, not a Date you can pass to anything expecting one, and no protection at all, because readonly stops you reassigning index.set, not calling it. A production-grade version has to special-case built-ins, typically by short-circuiting on known types before the object check and treating readonly collections as ReadonlyMap or ReadonlySet. Deep recursion also runs into the compiler's instantiation depth limit on large types.",
-    interviewLine: "extends object catches Date, Map and RegExp too, you get a readonly bag of method signatures, which is type-safety theatre rather than immutability.",
+    explanation: "`Date` and `Map` both satisfy `extends object`, so the naive `DeepReadonly` takes the recursive branch on them and maps over their members. What comes back is a readonly object with the same method signatures, `{ readonly getTime: () => number; ... }` for `Date`, not a `Date` you can pass anywhere a `Date` is expected. Worse, it offers no actual protection: `readonly` on a property that holds a method stops you reassigning `index.set`, it does nothing to stop you calling `index.set(...)` and mutating the map.\n\nThe other options are wrong about the mechanism. The compiler does not error, it compiles happily; the problem is what it produces. The members do not become `never`, they become a mapped shape over the public API. And there is no automatic exclusion of built-ins, nothing special-cases `Date` or `Map`.\n\nThe fix a senior names is to special-case known built-ins before the generic object check, short-circuiting `Date`, `RegExp` and friends to themselves, and mapping `Map`/`Set` to their `Readonly` collection types. The further edge is TypeScript's instantiation-depth limit: deeply recursive conditional types can hit the compiler's recursion ceiling on large or cyclic shapes, so a one-line `DeepReadonly` is correct only for plain, finite data, not for a general-purpose utility.",
+    interviewLine: "I warn that `extends object` catches Date, Map and RegExp too \u2014 I get a readonly bag of method signatures, which is type-safety theatre rather than immutability.",
     misconception: "Believing a one-line DeepReadonly is production-ready. It is correct only for plain data.",
     hints: [
-      "Does readonly on a property that holds a method prevent calling that method?"
+      "Ask whether readonly on a method-valued property stops you calling it.",
+      "Does readonly on a property that holds a method prevent calling that method?",
+      "Date and Map both satisfy extends object, so neither is excluded automatically."
     ],
+    example: {
+      caption: "A production DeepReadonly must short-circuit known built-ins.",
+      language: "typescript",
+      code: "type DeepReadonly<T> = T extends Date | RegExp\n  ? T\n  : T extends Map<infer K, infer V>\n    ? ReadonlyMap<K, DeepReadonly<V>>\n    : T extends object\n      ? { readonly [K in keyof T]: DeepReadonly<T[K]> }\n      : T;"
+    },
     source: "typescript-masterclass",
     estimatedMinutes: 3,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/generics.html"
@@ -3283,12 +3717,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "B",
-    explanation: "any switches the type system off for a value and for everything derived from it, read a property off an any and the result is any too, so a single annotation at the boundary can hollow out an entire module. unknown accepts anything on the way in but permits almost nothing on the way out until you narrow it with a type guard, a typeof check or a schema validator. That makes it the right type for anything crossing a trust boundary: fetch responses, JSON.parse, postMessage payloads, third-party callbacks.",
-    interviewLine: "any is an opt-out that spreads; unknown is an opt-in that stops. At a trust boundary you want the one that forces a check.",
+    explanation: "`any` switches the type system off for a value and for everything derived from it. Read a property off an `any` and the result is `any` too, call a method and the return is `any`, so a single `any` at a boundary can quietly hollow out the type safety of an entire module as it spreads outward through every expression it touches. `a.user.name.toUpperCase()` compiles even though any link in that chain might be `undefined` at runtime.\n\n`unknown` is the top type with the opposite ergonomics: it accepts any value on the way in but permits almost nothing on the way out until you narrow it, with a `typeof` check, a type guard, an `in` test or a schema validator. `b.user` is an error until you prove the shape. That is why `unknown` is the correct annotation for anything crossing a trust boundary, `fetch`/`res.json()`, `JSON.parse`, `postMessage` payloads, third-party callbacks, where the real shape is not guaranteed.\n\nThe other options get the relationship backwards: neither does runtime checks, both are erased; `unknown` allows far fewer operations than `any`, not the same set; and `strict` does not forbid `any`. The edge an interviewer probes is that `unknown` is contagious in a good way, it forces the narrowing to happen once, at the boundary, instead of letting unchecked data flow deep into the code where a crash is harder to trace.",
+    interviewLine: "I describe `any` as an opt-out that spreads and `unknown` as an opt-in that stops \u2014 at a trust boundary I want the one that forces a check.",
     misconception: "Treating any as 'unknown but more convenient'. It is the absence of typing, and it is contagious.",
     hints: [
-      "What is the type of x.foo when x is any?"
+      "Ask what the type of a property read off an any value is.",
+      "What is the type of x.foo when x is any?",
+      "One forces a check before use; the other disables checking and spreads."
     ],
+    example: {
+      caption: "unknown blocks use until a guard proves the shape; any would wave it through.",
+      language: "typescript",
+      code: "function handle(input: unknown) {\n  // input.trim(); // error: must narrow first\n  if (typeof input === \"string\") {\n    return input.trim(); // ok, narrowed to string\n  }\n  throw new Error(\"expected a string\");\n}"
+    },
     source: "typescript-masterclass",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#unknown"
@@ -3336,12 +3777,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "C",
-    explanation: "An annotation widens the value to the annotated type: once routes is Routes, the compiler only knows it is a string-keyed record, so the specific keys are gone and typos on lookup go unnoticed. satisfies checks the value against the type and then throws the type away, leaving the narrow inferred type in place, so the keys stay known and the literal values stay literal, while still failing if a route is missing auth. It is the tool for 'conform to this contract but remember exactly what I wrote'.",
-    interviewLine: "An annotation replaces the inferred type; satisfies validates against it and keeps what you wrote.",
+    explanation: "A type annotation widens the value to the annotated type. Once `routes: Routes`, the compiler only knows it is a `Record<string, { path; auth }>`, so the specific keys `home` and `admin` are forgotten and a typo like `routes.missing` goes unflagged, it is just another string index. `satisfies` instead checks the value against the type and then throws the type away, leaving the narrow inferred type in place. So `routes satisfies Routes` still fails if any entry is missing `auth`, but `routes.home` stays known and the literal values stay literal.\n\nThe other options misread it. `satisfies` is not a safer `as`, `as` reinterprets a type and can be unsound, whereas `satisfies` only validates and never changes the inferred type. It does not affect mutability the way `as const` does; the two are often combined precisely because they do different jobs. And it is erased at compile time like every other type-level construct, nothing runs at runtime.\n\nThe use case to name is 'conform to this contract but remember exactly what I wrote'. It is ideal for configuration objects, route tables, theme palettes, where you want each entry checked against a shape yet still want autocomplete on the concrete keys and precise value types for downstream inference. Reach for an annotation when you want the wider type, and `satisfies` when you want the check without losing specificity.",
+    interviewLine: "I remember that an annotation replaces the inferred type while `satisfies` validates against it and keeps what I wrote.",
     misconception: "Thinking satisfies is just a safer as. as reinterprets, satisfies verifies.",
     hints: [
-      "After annotating with Record<string, \u2026>, does the compiler still know which keys exist?"
+      "Compare what the compiler still knows about the keys after each form.",
+      "After annotating with Record<string, \u2026>, does the compiler still know which keys exist?",
+      "One replaces the inferred type; the other validates against it and keeps it."
     ],
+    example: {
+      caption: "satisfies checks the shape but keeps the exact value types for inference.",
+      language: "typescript",
+      code: "const palette = {\n  primary: [0, 128, 255],\n  danger: [255, 0, 0],\n} satisfies Record<string, number[]>;\n\npalette.primary[0].toFixed(0); // ok: still number[], not unknown\n// palette.secondary;          // error: not a key"
+    },
     source: "typescript-masterclass",
     estimatedMinutes: 3,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html#literal-types"
@@ -3389,12 +3837,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "C",
-    explanation: "Inside the switch, each handled case is removed from the union, so by the default branch s has narrowed to never, the type with no values, and assigning never to never is fine. Add a third variant and the default branch now narrows to that variant instead, which is not assignable to never, so the build fails. That turns 'I forgot to handle a case' from a runtime surprise into a compile error at every exhaustive switch in the codebase, which is the main practical reason to use discriminated unions over loose objects.",
-    interviewLine: "The never assignment is a tripwire: add a variant and every switch that forgot it stops compiling.",
+    explanation: "Inside the `switch`, control flow analysis removes each handled case from the union. After `case 'circle'` and `case 'square'`, the only variants left for the `default` branch are none, so `s` has narrowed to `never`, the type with no values, and assigning `never` to a `never`-typed variable is legal. That is why the code compiles today.\n\nNow add a third variant, say `{ kind: 'triangle'; base: number; height: number }`, without adding a case. The `default` branch no longer narrows to `never`; `s` is the unhandled `triangle` variant, which is not assignable to `never`, so `const exhaustive: never = s` becomes a compile error at that exact switch. The wrong options misread this: the branch is not stripped as dead code, nothing is thrown at runtime (the annotation is erased), and narrowing removes handled cases rather than widening `s` to `unknown`.\n\nThe payoff an interviewer wants is that this turns 'I forgot to handle a case' from a runtime surprise into a build failure at every exhaustive `switch` in the codebase the moment the union grows. It is the main practical reason to model state as a discriminated union rather than a loose object, the compiler enforces that every consumer stays in sync with the set of variants.",
+    interviewLine: "I use the `never` assignment as a tripwire: add a variant and every switch that forgot it stops compiling.",
     misconception: "Thinking the default branch is dead code. It is the assertion that keeps the union honest.",
     hints: [
-      "What has s narrowed to once every case has been handled?"
+      "Work out what s has narrowed to by the time the default runs.",
+      "What has s narrowed to once every case has been handled?",
+      "The default branch is an assertion, not dead code."
     ],
+    example: {
+      caption: "A tiny helper turns the never assignment into a reusable guard.",
+      language: "typescript",
+      code: "function assertNever(x: never): never {\n  throw new Error(`unhandled: ${JSON.stringify(x)}`);\n}\n\ntype Action = { type: \"add\" } | { type: \"remove\" };\nfunction run(a: Action) {\n  switch (a.type) {\n    case \"add\": return 1;\n    case \"remove\": return -1;\n    default: return assertNever(a);\n  }\n}"
+    },
     source: "typescript-masterclass",
     estimatedMinutes: 3,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/narrowing.html#exhaustiveness-checking"
@@ -3441,12 +3896,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "C",
-    explanation: "TypeScript compares types by structure, not by name: anything with a string name is assignable to Named, whether or not it ever heard of it. This is why implements is a convenience rather than a requirement, and why types from different libraries interoperate without adapters. Two caveats: a fresh object literal gets an excess property check, which rejects unexpected members; and private members make a class nominal in practice, since two classes with identically-named privates are still not assignable to each other.",
-    interviewLine: "TypeScript checks shape, not lineage. If it has the members, it's assignable, declared relationships are documentation.",
+    explanation: "TypeScript compares types by structure, not by name. `Named` requires a `string` `name`, and `Person` has one, so a `Person` instance is assignable to `Named` whether or not `Person` ever mentioned the interface. The extra `age` property is fine, a value with more members than required still satisfies the smaller shape. This is why option C is right: compatibility is decided by the members present, not by any declared relationship.\n\nThe wrong options assume nominal typing. `implements Named` is a convenience that moves the conformance check to the class, not a requirement for assignability. Interfaces and type aliases behave identically here, so the choice between them is irrelevant. And the `age` property does not break anything, because excess-property checks apply only to fresh object literals, not to a class instance assigned to a variable.\n\nThe two edges worth naming are exactly those caveats. First, a fresh object literal assigned directly to a typed target does get an excess-property check that rejects unexpected members, which is a deliberate typo-catcher sitting on top of structural assignability. Second, `private` and `#private` members make a class effectively nominal: two classes with identically-named private fields are still not assignable to each other, because structural comparison treats private state as part of the identity.",
+    interviewLine: "I remind people that TypeScript checks shape, not lineage \u2014 if it has the members, it's assignable, and declared relationships are just documentation.",
     misconception: "Assuming a class must implement an interface to satisfy it. Structural typing says otherwise.",
     hints: [
-      "Does TypeScript care what the type is called, or what it contains?"
+      "Ask whether the compiler cares about the name or the members.",
+      "Does TypeScript care what the type is called, or what it contains?",
+      "A fresh object literal is the one case where extra properties are rejected."
     ],
+    example: {
+      caption: "Shape alone decides assignability, no declared relationship required.",
+      language: "typescript",
+      code: "interface Logger { log(msg: string): void }\n\nconst consoleLike = {\n  log: (m: string) => process.stdout.write(m),\n  level: \"info\",\n};\n\nconst l: Logger = consoleLike; // ok: it has log, extra members allowed"
+    },
     source: "typescript-masterclass",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
@@ -3470,9 +3932,9 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "raw is inferred as Options, so height is discarded",
+        text: "raw is inferred as Options, so the extra height property is discarded at inference",
         isCorrect: false,
-        explanation: "raw is inferred as { width: number; height: number }; nothing is discarded."
+        explanation: "Tempting if you think the annotation flows backward, but raw is inferred as { width: number; height: number }; nothing is discarded, and the assignment succeeds for a different reason."
       },
       {
         id: "B",
@@ -3482,9 +3944,9 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       },
       {
         id: "C",
-        text: "The error is a bug that a type assertion works around",
+        text: "The error is a compiler bug that a type assertion is meant to work around",
         isCorrect: false,
-        explanation: "It is intentional behaviour, not a bug."
+        explanation: "Tempting when the inconsistency looks arbitrary, but the extra check is intentional behaviour aimed at typos, not a bug, and reaching for an assertion hides the real mistake."
       },
       {
         id: "D",
@@ -3494,12 +3956,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "B",
-    explanation: "Structurally, { width: number; height: number } is assignable to Options, it has everything required. But TypeScript adds an excess property check for fresh object literals assigned directly to a typed target, because an unexpected member there is almost always a typo or a misremembered option name. Assign through a variable and the freshness is gone, so only ordinary structural compatibility applies. The right fix is usually to correct the property name, not to widen the target or reach for as.",
-    interviewLine: "Excess property checks only fire on fresh literals, it's a typo catcher, deliberately sitting on top of structural assignability.",
+    explanation: "Structurally, `{ width: number; height: number }` is assignable to `Options`, it has everything `Options` requires, and extra members are normally allowed. So the question is why the inline literal is rejected while the identical object routed through `raw` is accepted. The answer is the excess-property check: TypeScript adds an extra guard, on top of structural assignability, for a fresh object literal assigned directly to a typed target, flagging members that the target does not declare.\n\nThe reason is pragmatic: an unexpected property on a literal written right at the assignment is almost always a typo or a misremembered option name (`heigth`, or `onClick` where the API wants `onPress`). Assign through a variable first and the literal's freshness is gone, so only ordinary structural compatibility applies and the extra `height` is tolerated. The wrong options miss this: `raw` is inferred with both properties, nothing is discarded; the behaviour is intentional, not a bug to assert around; and interfaces and aliases behave identically, the split is literal-versus-variable.\n\nThe edge worth stating is the right fix. When the check fires, the correct response is usually to correct the property name, not to widen the target type, add an index signature, or reach for `as`, each of which silences a check that exists precisely to catch the mistake you just made.",
+    interviewLine: "I explain that excess property checks only fire on fresh literals \u2014 it's a typo catcher I think of as sitting on top of structural assignability.",
     misconception: "Concluding the type system is inconsistent. The extra check exists exactly where typos happen.",
     hints: [
-      "What is different about a value written inline versus one that arrived in a variable?"
+      "Compare a value written inline with one that arrived in a variable.",
+      "What is different about a value written inline versus one that arrived in a variable?",
+      "The extra check is a typo catcher sitting on top of structural assignability."
     ],
+    example: {
+      caption: "The literal is rejected; routing it through a variable passes the structural check.",
+      language: "typescript",
+      code: "interface Props { title: string }\n\n// <Comp {...{ title: \"a\", subtitle: \"b\" }} /> inline literal: error on subtitle\n\nconst extra = { title: \"a\", subtitle: \"b\" };\nconst ok: Props = extra; // no error: freshness is gone"
+    },
     source: "typescript-masterclass",
     estimatedMinutes: 3,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
@@ -3548,12 +4017,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "D",
-    explanation: "These four cover most day-to-day shape manipulation and are all one-line mapped types in lib.d.ts. Partial<T> makes every property optional and Required<T> reverses it; Readonly<T> is the mutability equivalent. Pick<T, K> keeps a subset of keys while Omit<T, K> drops one, Omit is the more maintainable of the pair for a public shape, since a newly added field is included by default rather than silently missing. Deriving these from one source interface is what keeps a create-DTO and an update-DTO from drifting apart.",
-    interviewLine: "Derive your DTOs from one interface with Pick, Omit and Partial. Hand-maintained parallel shapes drift; derived ones can't.",
+    explanation: "`Partial<User>` is the answer because it maps every property to optional, which is exactly 'every property optional'. It is a one-line mapped type in `lib.d.ts`: `{ [K in keyof T]?: T[K] }`. Its inverse, `Required<T>`, strips the optionality back off, and `Readonly<T>` is the mutability equivalent that adds `readonly` to each member.\n\nThe distractors are the sibling utilities that do different jobs. `Pick<T, K>` keeps a chosen subset of keys, `Pick<User, keyof User>` just reproduces `User` and changes no optionality. `Omit<T, K>` drops keys, `Omit<User, never>` removes nothing and leaves the original. `Readonly<User>` changes mutability, not whether properties may be absent. None of these touches optionality, which is what the question asks for.\n\nThe practical point an interviewer wants is deriving related shapes from one source instead of maintaining parallel types by hand. A create-DTO is `Omit<User, 'id'>`, an update-DTO is `Partial<Omit<User, 'id'>>`, and because they are derived, adding a field to `User` flows into both automatically. The edge worth knowing is that `Omit` is more maintainable than `Pick` for a public shape: a newly added field is included by default rather than silently missing, which is safer when forgetting a field is the dangerous direction.",
+    interviewLine: "I derive my DTOs from one interface with Pick, Omit and Partial \u2014 hand-maintained parallel shapes drift, but derived ones can't.",
     misconception: "Confusing Pick and Omit with Partial. The first two select keys; Partial changes optionality.",
     hints: [
-      "Which of these touches optionality rather than the set of keys?"
+      "Separate the utilities that change keys from the ones that change optionality.",
+      "Which of these touches optionality rather than the set of keys?",
+      "Pick and Omit select keys; the one you want flips every property to optional."
     ],
+    example: {
+      caption: "Deriving an update DTO from one source keeps the shapes from drifting.",
+      language: "typescript",
+      code: "interface User { id: string; name: string; email: string }\n\ntype CreateUser = Omit<User, \"id\">;        // server assigns id\ntype UpdateUser = Partial<Omit<User, \"id\">>; // any subset, no id\n\nconst patch: UpdateUser = { name: \"Ada\" }; // ok"
+    },
     source: "typescript-masterclass",
     estimatedMinutes: 2,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
@@ -3602,12 +4078,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "C",
-    explanation: "typeof getUser lifts the function value into the type world; ReturnType<F> then extracts its return type with a conditional type and infer, and Parameters<F> extracts the argument tuple. Awaited<T> unwraps a promise, recursively, so a nested Promise<Promise<T>> still resolves to T, and a non-promise passes through unchanged. Composing them means the derived types follow the implementation automatically instead of being restated and left to rot.",
-    interviewLine: "typeof lifts a value into the type world; ReturnType, Parameters and Awaited read it from there. Derive rather than restate.",
+    explanation: "`typeof getUser` lifts the function value into the type world, giving its full signature as a type. `ReturnType<F>` then extracts the return type using a conditional type with `infer`, and because `getUser` is `async`, that return type is `Promise<{ id: string; name: string }>`. `Awaited<T>` is the step that unwraps the promise, so `Result` resolves to the plain `{ id: string; name: string }`.\n\nThe wrong options each stop at the wrong stage. `[string, boolean]` is what `Parameters<typeof getUser>` gives, the argument tuple, not the return. `Promise<{...}>` is `ReturnType` alone, missing the `Awaited` unwrap. And an inferred return type is a real, fully-known type, so `ReturnType` reads it fine; it is not `unknown`.\n\nThe mechanism worth stating is that `Awaited` recurses: a nested `Promise<Promise<T>>` still resolves to `T`, and a non-promise passes through unchanged, which matches the real flattening behaviour of `await`. The payoff of composing `typeof`, `ReturnType`, `Parameters` and `Awaited` is that derived types follow the implementation automatically, change the function's return shape and every type built from it updates, instead of a hand-written duplicate silently drifting out of sync.",
+    interviewLine: "I use `typeof` to lift a value into the type world, then ReturnType, Parameters and Awaited to read it from there \u2014 I derive rather than restate.",
     misconception: "Forgetting the Awaited step and ending up with a Promise where the resolved value was wanted.",
     hints: [
-      "An async function's return type is always what?"
+      "Recall what an async function's return type always is.",
+      "An async function's return type is always what?",
+      "ReturnType gives the Promise; a further step unwraps the resolved value."
     ],
+    example: {
+      caption: "Deriving the element type of a function's resolved array in one chain.",
+      language: "typescript",
+      code: "async function listUsers() {\n  return [{ id: \"1\", name: \"Ada\" }];\n}\n\ntype Users = Awaited<ReturnType<typeof listUsers>>; // { id: string; name: string }[]\ntype OneUser = Users[number];                       // { id: string; name: string }"
+    },
     source: "typescript-masterclass",
     estimatedMinutes: 3,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/generics.html"
@@ -3655,12 +4138,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "Over an open key type they are the same thing, Record<string, V> is defined as a mapped type that produces exactly { [k: string]: V }. The difference appears with a finite key union: Record<Role, number> produces two named, required properties, so forgetting one is an error and adding a member to Role breaks every incomplete record. An index signature can never do that, because it describes an open set of keys rather than a specific one. Note that reading through an open index signature is unchecked unless noUncheckedIndexedAccess is on.",
-    interviewLine: "Record over a union gives you a closed, required key set, which is what turns adding an enum member into a compile error instead of a bug.",
+    explanation: "Over an open key type the two are the same thing. `Record<string, V>` is defined in `lib.d.ts` as a mapped type that produces exactly `{ [k: string]: V }`, so `type A` and `type B` are identical and interchangeable. The difference only appears with a finite key union.\n\n`Record<Role, number>` where `Role` is `'admin' | 'guest'` produces two named, required properties, `{ admin: number; guest: number }`. Forgetting one is a compile error, and adding a member to `Role` breaks every record that does not yet handle it, turning an enum extension into a checked task. An index signature can never express that, because `{ [key: Role]: number }` is not even valid syntax, an index signature describes an open set of keys, not a specific finite one. The wrong options miss this: both forms accept any value type, neither exists at runtime, and an index signature says nothing about which keys must be present.\n\nThe edge worth stating is read safety. Reading through an open index signature is unchecked by default, `a[someKey]` is typed as `V` even when the key is absent, so the value could be `undefined` at runtime. Enable `noUncheckedIndexedAccess` and the result becomes `V | undefined`, forcing you to handle the missing-key case that the open signature otherwise hides.",
+    interviewLine: "I reach for Record over a union to get a closed, required key set \u2014 that's what turns adding an enum member into a compile error instead of a bug.",
     misconception: "Treating Record<string, V> as safer than an index signature. They are the same; the win comes from a finite key type.",
     hints: [
-      "What happens if you pass a union of literals as the key type?"
+      "Try keying each form on a finite union of literals.",
+      "What happens if you pass a union of literals as the key type?",
+      "Over open string they are identical; the win comes from a finite key type."
     ],
+    example: {
+      caption: "Record over a union forces every key to be present.",
+      language: "typescript",
+      code: "type Status = \"idle\" | \"active\" | \"done\";\n\nconst labels: Record<Status, string> = {\n  idle: \"Idle\",\n  active: \"Active\",\n  done: \"Done\",\n};\n// omitting \"done\" is a compile error; adding a status breaks this map"
+    },
     source: "typescript-masterclass",
     estimatedMinutes: 3,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/everyday-types.html"
@@ -3709,12 +4199,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "D",
-    explanation: "Promise.all is declared with an overload taking a readonly tuple, so passing an array literal of three differently-typed promises preserves the arity and the position of each. The signature maps Awaited over each element, so Promise<User> becomes User in slot 0 and so on. This is why destructuring is fully typed with no assertions, and also why passing a pre-built array typed Promise<A | B>[] loses it, collapsing to (A | B)[]. Keep the literal inline, or use as const, to keep the tuple.",
-    interviewLine: "Promise.all keeps the tuple when you pass the array literal inline. Hoist it into a variable first and the positions collapse into a union.",
+    explanation: "`Promise.all` is declared with an overload that takes a readonly tuple of promises, so passing an inline array literal of three differently-typed promises preserves both the arity and the position of each element. The signature maps `Awaited` over each slot, so `Promise<User>` resolves to `User` in position 0, `Promise<Post[]>` to `Post[]` in position 1, and `Promise<number>` to `number` in position 2. A single `await` unwraps the aggregate promise, leaving the resolved values.\n\nThat is why the destructured `[user, posts, count]` is fully typed with no assertions, and why the wrong options fail: nothing becomes `unknown`, the elements need no further `await`, and the result is not a union `(User | Post[] | number)` requiring narrowing, the tuple overload keeps the positions distinct.\n\nThe edge an interviewer probes is how to lose the tuple. If you build the array first and give it a type like `Promise<A | B>[]`, you have handed `Promise.all` an array type rather than a tuple, so it collapses to `(A | B)[]` and the positional types are gone. Keep the array literal inline at the call, or use `as const`, so the compiler sees a tuple and the overload can preserve each slot's type.",
+    interviewLine: "I keep `Promise.all`'s tuple by passing the array literal inline \u2014 if I hoist it into a variable first, the positions collapse into a union.",
     misconception: "Expecting a union and narrowing each result. The tuple overload already resolved them positionally.",
     hints: [
-      "What is the difference between a tuple type and an array type here?"
+      "Distinguish a tuple type from an array type at the call.",
+      "What is the difference between a tuple type and an array type here?",
+      "Hoisting the array into a variable collapses the positions into a union."
     ],
+    example: {
+      caption: "Keep the array literal inline so the tuple positions survive.",
+      language: "typescript",
+      code: "const [n, s] = await Promise.all([\n  Promise.resolve(1),\n  Promise.resolve(\"a\"),\n]);\n// n: number, s: string\n\n// const jobs: Promise<number | string>[] = [...];\n// await Promise.all(jobs) -> (number | string)[], positions lost"
+    },
     source: "typescript-masterclass",
     estimatedMinutes: 3,
     bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Promise"
@@ -3762,12 +4259,19 @@ export const TYPESCRIPT_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "A",
-    explanation: "tsc knows whether an imported name is a type or a value because it type-checks the whole program. Babel, SWC and esbuild transpile one file at a time and have no such view, faced with export { User }, they cannot know whether to emit a real re-export or erase it, and emitting one for a type produces an import of something that does not exist at runtime. import type and export type make the intent explicit in the syntax. The same constraint is why const enum is disallowed: inlining its values requires cross-file type information no single-file transpiler has.",
-    interviewLine: "A single-file transpiler can't look up whether a name is a type. import type puts the answer in the syntax instead of the type checker.",
+    explanation: "`tsc` knows whether an imported name like `User` is a type or a value because it type-checks the whole program and can look the name up in `./models`. Babel, SWC and esbuild do not: they transpile one file at a time and never build a cross-file view. Faced with `export { User }`, such a tool cannot tell whether to emit a real runtime re-export or erase it, and emitting one for a type produces an import of something that does not exist at runtime, a broken module.\n\n`import type` and `export type` resolve the ambiguity by putting the answer in the syntax itself: `import type { User }` is erased entirely, `import { createUser }` stays. The wrong options miss this. Types have no runtime representation to tree-shake; type-only imports do help with import cycles but that is not what the flag requires; and under `isolatedModules` the compiler itself enforces the rule, it is not merely an ESLint style preference.\n\nThe same single-file constraint explains the flag's other prohibitions, which an interviewer may connect. `const enum` is disallowed because inlining its member values requires whole-program type information no single-file transpiler has. The underlying principle is one promise: nothing in a file may depend on cross-file type information to be transpiled correctly on its own.",
+    interviewLine: "I note a single-file transpiler can't look up whether a name is a type, so I use `import type` to put the answer in the syntax instead of the type checker.",
     misconception: "Reading import type as a performance hint. It is a correctness requirement for file-at-a-time transpilers.",
     hints: [
-      "What does a transpiler that never sees ./models know about User?"
+      "Consider what a transpiler that never reads ./models can know about a name.",
+      "What does a transpiler that never sees ./models know about User?",
+      "The syntax has to say type-or-value because the single-file tool cannot look it up."
     ],
+    example: {
+      caption: "import type is erased; a value import stays, so the two are declared apart.",
+      language: "typescript",
+      code: "import type { Config } from \"./config\"; // erased at compile time\nimport { loadConfig } from \"./config\";   // real runtime import\n\nexport function start(c: Config) {\n  return loadConfig(c);\n}"
+    },
     source: "typescript-masterclass",
     estimatedMinutes: 3,
     bestPracticeRef: "https://www.typescriptlang.org/docs/handbook/2/modules.html"

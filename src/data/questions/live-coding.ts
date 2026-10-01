@@ -57,7 +57,7 @@ export const LIVE_CODING_QUESTIONS: QuizQuestion[] = [
     example: {
       caption: "Two dynamic params and a catch-all 404 route show that every segment is a string and that unmatched URLs need an explicit fallback.",
       language: "tsx",
-      code: "import { BrowserRouter, Routes, Route, useParams, Link } from 'react-router-dom';\n\nfunction OrderPage() {\n  const { userId, orderId } = useParams();\n  return (\n    <div>\n      <p>User: {userId}, Order: {orderId}</p>\n      <Link to={`/users/${userId}/orders`}>Back to orders</Link>\n    </div>\n  );\n}\n\nfunction NotFound() {\n  return <h1>404 \u2013 No route matched</h1>;\n}\n\nexport default function App() {\n  return (\n    <BrowserRouter>\n      <Routes>\n        <Route path=\"/users/:userId/orders/:orderId\" element={<OrderPage />} />\n        <Route path=\"*\" element={<NotFound />} />\n      </Routes>\n    </BrowserRouter>\n  );\n}"
+      code: "import { BrowserRouter, Routes, Route, useParams, Link } from 'react-router-dom';\n\nfunction OrderPage() {\n  const { userId, orderId } = useParams();\n  return (\n    <div>\n      <p>User: {userId}, Order: {orderId}</p>\n      <Link to={`/users/${userId}/orders`}>Back to orders</Link>\n    </div>\n  );\n}\nfunction NotFound() {\n  return <h1>404 \u2013 No route matched</h1>;\n}\nexport default function App() {\n  return (\n    <BrowserRouter>\n      <Routes>\n        <Route path=\"/users/:userId/orders/:orderId\" element={<OrderPage />} />\n        <Route path=\"*\" element={<NotFound />} />\n      </Routes>\n    </BrowserRouter>\n  );\n}"
     }
   },
   {
@@ -277,7 +277,7 @@ export const LIVE_CODING_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "B",
     explanation: "JSX is a syntax extension for JavaScript. Every tag you write in a .tsx file is transpiled by a build tool (Babel, SWC, esbuild) into a plain `React.createElement` call. The browser never parses JSX; it executes the resulting JavaScript.\n\nIn practice this means `<div className=\"wrap\"><p>Hi</p></div>` becomes `React.createElement(\"div\", { className: \"wrap\" }, React.createElement(\"p\", null, \"Hi\"))`. The sugar is purely structural: it lets you nest, conditionally include, and map over markup without building a call tree by hand. You can write React without JSX entirely \u2014 the output element objects are identical.\n\nThe nuance an interviewer will probe: because JSX compiles to function calls, there is no \"JSX runtime\" in the browser. Attribute names that collide with HTML keywords (`class`, `for`) must use the React-safe alternatives (`className`, `htmlFor`) because the transpiler maps them into the props object passed to `createElement`.",
-    interviewLine: "JSX is a syntax extension, not a new language \u2014 the build tool transpiles every tag into a `React.createElement` call, so the browser only ever executes plain JavaScript that constructs element objects.",
+    interviewLine: "I describe JSX as a syntax extension, not a new language \u2014 the build tool transpiles every tag into a `React.createElement` call, so the browser only ever executes plain JavaScript that constructs element objects.",
     misconception: "Treating JSX as a standalone language or runtime the browser executes directly, rather than a syntax extension that a build tool transpiles into `React.createElement` function calls in plain JavaScript.",
     hints: [
       "What does the browser actually execute when it loads a page that contains JSX?",
@@ -311,25 +311,25 @@ export const LIVE_CODING_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Using HTML comments `<!-- comment -->` directly inside JSX tags.",
+        text: "Using HTML `<!-- comment -->` syntax directly between JSX tags, the same as in a `.html` file.",
         isCorrect: false,
         explanation: "Tempting if you come from HTML, where `<!-- -->` is the standard comment. JSX is not HTML; the JSX parser does not recognise that token and throws a syntax error the moment it appears between tags."
       },
       {
         id: "B",
-        text: "Comments are forbidden in React and cause build errors.",
+        text: "Comments are forbidden anywhere in React components and always trigger a build error.",
         isCorrect: false,
         explanation: "Tempting if a comment you wrote once produced a build error, but the error came from using the wrong syntax in the wrong place. React fully supports comments; the constraint is only about which syntax is valid in which context."
       },
       {
         id: "C",
-        text: "Prefixing comment lines with `@comment` in JSX.",
+        text: "Prefixing each comment line with an `@comment` directive inside the JSX block.",
         isCorrect: false,
         explanation: "Tempting if you have seen `@`-prefixed directives in other languages or in CSS. No version of JavaScript, TypeScript, or the JSX transform recognises `@comment` as a comment token, so the parser treats it as an identifier and fails."
       },
       {
         id: "D",
-        text: "Inside JSX: `{/* Multi-line comment */}`; In standard component JavaScript: `// single line` or `/* multi line */`.",
+        text: "Inside JSX: `{/* comment */}`; in plain component JavaScript: `// line` or `/* block */`.",
         isCorrect: true,
         explanation: "Correct. Curly braces turn the content into a JavaScript expression, so the parser accepts the block-comment syntax. Outside JSX you are writing plain JS, where `//` and `/* */` are already valid."
       }
@@ -526,7 +526,7 @@ export const LIVE_CODING_QUESTIONS: QuizQuestion[] = [
     example: {
       caption: "A class component with `componentDidMount` sits inside a function component that uses `useState`; both render in the same tree with no conflict.",
       language: "tsx",
-      code: "import { useState, Component } from \"react\";\n\nclass Timer extends Component<{ label: string }> {\n  state = { seconds: 0 };\n  private id: number | undefined;\n\n  componentDidMount() {\n    this.id = setInterval(\n      () => this.setState({ seconds: this.state.seconds + 1 }),\n      1000\n    );\n  }\n  componentWillUnmount() {\n    if (this.id) clearInterval(this.id);\n  }\n  render() {\n    return <span>{this.props.label}: {this.state.seconds}s</span>;\n  }\n}\n\nexport function Dashboard() {\n  const [show, setShow] = useState(true);\n  return (\n    <div>\n      <button onClick={() => setShow(!show)}>Toggle</button>\n      {show && <Timer label=\"Uptime\" />}\n    </div>\n  );\n}"
+      code: "import { useState, Component } from \"react\";\n\nclass Timer extends Component<{ label: string }> {\n  state = { seconds: 0 };\n  private id: number | undefined;\n  componentDidMount() {\n    this.id = setInterval(() => this.setState({ seconds: this.state.seconds + 1 }), 1000);\n  }\n  componentWillUnmount() {\n    if (this.id) clearInterval(this.id);\n  }\n  render() {\n    return <span>{this.props.label}: {this.state.seconds}s</span>;\n  }\n}\n\nexport function Dashboard() {\n  const [show, setShow] = useState(true);\n  return (\n    <div>\n      <button onClick={() => setShow(!show)}>Toggle</button>\n      {show && <Timer label=\"Uptime\" />}\n    </div>\n  );\n}"
     }
   },
   {
@@ -642,7 +642,7 @@ export const LIVE_CODING_QUESTIONS: QuizQuestion[] = [
     example: {
       caption: "A minimal implementation using `IntersectionObserver` and cursor-based pagination with React Query.",
       language: "tsx",
-      code: "const useFeed = () => {\n  return useInfiniteQuery({\n    queryKey: ['feed'],\n    queryFn: ({ pageParam }) => api.getFeed({ cursor: pageParam, limit: 20 }),\n    initialPageParam: null,\n    getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,\n  })\n}\n\nconst Feed = () => {\n  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useFeed()\n  const sentinelRef = useRef<HTMLDivElement>(null)\n\n  useEffect(() => {\n    const observer = new IntersectionObserver(([entry]) => {\n      if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) {\n        fetchNextPage()\n      }\n    })\n    if (sentinelRef.current) observer.observe(sentinelRef.current)\n    return () => observer.disconnect()\n  }, [hasNextPage, isFetchingNextPage, fetchNextPage])\n\n  return (\n    <div>\n      {data.pages.flatMap((page) => page.items)}\n      <div ref={sentinelRef} />\n    </div>\n  )\n}"
+      code: "const useFeed = () =>\n  useInfiniteQuery({\n    queryKey: ['feed'],\n    queryFn: ({ pageParam }) => api.getFeed({ cursor: pageParam, limit: 20 }),\n    initialPageParam: null,\n    getNextPageParam: (lastPage) => lastPage.nextCursor ?? undefined,\n  });\n\nconst Feed = () => {\n  const { data, fetchNextPage, hasNextPage, isFetchingNextPage } = useFeed();\n  const sentinelRef = useRef<HTMLDivElement>(null);\n  useEffect(() => {\n    const observer = new IntersectionObserver(([entry]) => {\n      if (entry.isIntersecting && hasNextPage && !isFetchingNextPage) fetchNextPage();\n    });\n    if (sentinelRef.current) observer.observe(sentinelRef.current);\n    return () => observer.disconnect();\n  }, [hasNextPage, isFetchingNextPage, fetchNextPage]);\n  return (\n    <div>\n      {data.pages.flatMap((page) => page.items)}\n      <div ref={sentinelRef} />\n    </div>\n  );\n}"
     }
   },
   {
@@ -687,7 +687,7 @@ export const LIVE_CODING_QUESTIONS: QuizQuestion[] = [
       }
     ],
     correctAnswer: "D",
-    explanation: "Error Boundaries intercept render-phase exceptions before they unmount the entire React tree, letting you show a fallback UI and report the error to Sentry or Datadog RUM. The `web-vitals` library observes LCP, INP, and CLS from the user's actual browser and reports them as real-user metrics, complementing the lab scores you get from Lighthouse. Session replays are sampled (typically 1\u201310%) to capture the user's actions around an error without recording every session.\n\nWithout an Error Boundary, a single render exception in a child component unmounts the whole tree and the user sees a blank white screen with no diagnostic data. Without RUM, you only see performance on CI or your own machine, which misses real-world network conditions, device throttling, and third-party script impact. Sampling replays and tracing via Sentry's `tracesSampleRate` and `replaysSessionSampleRate` keeps ingest costs predictable while preserving enough signal to debug the errors that actually reach users.\n\nError Boundaries do not catch exceptions in event handlers, async callbacks, or their own render; those still need `try/catch` or `window.addEventListener('unhandledrejection')`. `web-vitals` values are heuristic and vary by device and network, so alert on percentiles (p75, p90) rather than a single threshold. Finally, a boundary placed too high in the tree hides the component that actually failed, so place them at natural feature boundaries.",
+    explanation: "Error Boundaries intercept render-phase exceptions before they unmount the entire React tree, letting you show a fallback UI and report the error to Sentry or Datadog RUM. The `web-vitals` library observes LCP, INP, and CLS from the user's actual browser as real-user metrics, complementing the lab scores from Lighthouse. Session replays are sampled (typically 1\u201310%) to capture the user's actions around an error without recording every session.\n\nWithout an Error Boundary, a single render exception in a child component unmounts the whole tree and the user sees a blank white screen with no diagnostic data. Without RUM, you only see performance on CI or your own machine, which misses real-world network conditions, device throttling, and third-party script impact. Sampling replays and tracing via Sentry's `tracesSampleRate` and `replaysSessionSampleRate` keeps ingest costs predictable while preserving enough signal to debug the errors that actually reach users.\n\nError Boundaries do not catch exceptions in event handlers, async callbacks, or their own render; those still need `try/catch` or an `unhandledrejection` listener. `web-vitals` values are heuristic and vary by device and network, so alert on percentiles (p75, p90) rather than a single threshold. A boundary placed too high in the tree hides the component that actually failed, so place them at natural feature boundaries.",
     interviewLine: "I layer three things: Error Boundaries with Sentry or Datadog to catch render exceptions before they white-screen the tree, `web-vitals` to get real-user LCP and INP instead of trusting Lighthouse lab scores, and sampled session replays so I can see what the user did right before the error.",
     misconception: "Monitoring is a single tool you bolt on after launch, rather than a set of layered concerns (render errors, perceived performance, session context) that each need their own instrumentation and sampling strategy.",
     hints: [

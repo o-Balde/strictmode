@@ -44,7 +44,7 @@ export const NEXTJS_RSC_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "C",
     explanation: "SSR means the server executes your React component tree and produces a complete HTML document on every incoming request. The browser receives that finished markup, paints the page immediately, and then React hydrates the DOM to attach event listeners. The key word is every: the HTML is generated fresh per request, not cached from a build step.\n\nIn practice this removes the blank-screen period a pure client-side app suffers. Without SSR the browser downloads a JS bundle, fetches data, and only then renders the first pixel. With SSR the first meaningful paint arrives in the initial HTML response, and search-engine crawlers see real text content without executing JavaScript.\n\nThe trade-off is time-to-first-byte: the server must run your render code before it can send a single byte, so slow data fetches inside the component directly delay the response. That is why teams pair SSR with SSG for pages whose content is identical for every visitor, reserving per-request rendering for pages that genuinely depend on the caller.",
-    interviewLine: "SSR runs the component tree on the server for each request and ships the finished HTML to the browser, so the first paint doesn't wait for a JS bundle or a data fetch. The cost is that TTFB now includes your render time, which is why you'd reach for SSG when the output is the same for every visitor.",
+    interviewLine: "I explain SSR as running the component tree on the server for each request and shipping the finished HTML to the browser, so the first paint doesn't wait for a JS bundle or a data fetch. The cost is that TTFB now includes my render time, which is why I'd reach for SSG when the output is the same for every visitor.",
     misconception: "SSR and SSG both produce HTML on the server, so it is easy to collapse them into one idea. The distinguishing question is when: SSR renders per request, SSG renders once at build time and serves the frozen file thereafter.",
     hints: [
       "Ask yourself when the HTML is produced: at build time or at request time.",
@@ -116,7 +116,7 @@ export const NEXTJS_RSC_QUESTIONS: QuizQuestion[] = [
     example: {
       caption: "In the App Router, the same SSG capability is an async Server Component that awaits `fetch`; `revalidate` turns it into incremental static regeneration.",
       language: "tsx",
-      code: "// app/blog/[id]/page.tsx\ninterface Post {\n  id: string;\n  title: string;\n}\n\nasync function getPost(id: string): Promise<Post> {\n  const res = await fetch(`https://api.example.com/posts/${id}`, {\n    next: { revalidate: 3600 },\n  });\n  return res.json();\n}\n\nexport default async function PostPage({\n  params,\n}: {\n  params: Promise<{ id: string }>;\n}) {\n  const { id } = await params;\n  const post = await getPost(id);\n  return (\n    <article>\n      <h1>{post.title}</h1>\n    </article>\n  );\n}"
+      code: "// app/blog/[id]/page.tsx\ninterface Post {\n  id: string;\n  title: string;\n}\n\nasync function getPost(id: string): Promise<Post> {\n  const res = await fetch(`https://api.example.com/posts/${id}`, {\n    next: { revalidate: 3600 },\n  });\n  return res.json();\n}\n\nexport default async function PostPage({\n  params,\n}: {\n  params: Promise<{ id: string }>;\n}) {\n  const { id } = await params;\n  const post = await getPost(id);\n  return <article><h1>{post.title}</h1></article>;\n}"
     }
   },
   {
@@ -195,7 +195,7 @@ export const NEXTJS_RSC_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Defers the `import()` call until the component enters the render tree, and `<Suspense fallback={...}>` pauses that subtree to show a placeholder while the promise is pending.",
+        text: "Defers `import()` until the component renders; `<Suspense fallback>` pauses that subtree with a placeholder.",
         isCorrect: true,
         explanation: "Correct. `React.lazy` defers the `import()` call until the component enters the render tree, and Suspense is the boundary that pauses that subtree and renders the `fallback` prop while the promise is pending."
       },
@@ -220,7 +220,7 @@ export const NEXTJS_RSC_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "A",
     explanation: "React.lazy takes a function that returns a dynamic `import()` promise and returns a component. When that component first enters the render tree, React triggers the network fetch for the corresponding JavaScript chunk. `<Suspense fallback={...}>` is the boundary that catches the \"chunk not yet loaded\" state: it pauses rendering of the subtree and shows the `fallback` element instead.\n\nWithout this pattern, every component in the bundle ships with the initial HTML response. With `React.lazy` plus `Suspense`, the browser only downloads the chunk when the user navigates to or scrolls to that part of the UI. In a Next.js App Router project you see the same idea through `next/dynamic`, which wraps `React.lazy` and adds options like `loading` and `ssr`.\n\nIn React 19, `<Suspense>` also suspends on async data \u2014 for example, an `await` inside a Server Component \u2014 not just on lazy chunks. You can nest multiple Suspense boundaries to get independent fallbacks per section, and the fallback is not a separate render pass: React re-renders the subtree once the underlying promise resolves.",
-    interviewLine: "React.lazy wraps a dynamic `import()` so the chunk fetches on first render, and Suspense is the boundary that pauses that subtree and shows the `fallback` prop until the promise settles \u2014 it is a rendering pause, not an error catch.",
+    interviewLine: "I use React.lazy to wrap a dynamic `import()` so the chunk fetches on first render, and I treat Suspense as the boundary that pauses that subtree and shows the `fallback` prop until the promise settles \u2014 it is a rendering pause, not an error catch.",
     misconception: "Suspense is often confused with an Error Boundary because both wrap a subtree, but Suspense pauses rendering while a promise is still pending, whereas an Error Boundary reacts to a value that was actually thrown.",
     hints: [
       "Look at what `React.lazy` actually wraps: it is a `import()` expression, not a static `import` statement.",
@@ -291,7 +291,7 @@ export const NEXTJS_RSC_QUESTIONS: QuizQuestion[] = [
     example: {
       caption: "Notice that `getDerivedStateFromError` updates state during render and `componentDidCatch` fires after the error is caught; neither has a hook equivalent in React 19.",
       language: "tsx",
-      code: "import { Component, type ReactNode } from \"react\";\n\ninterface Props {\n  children: ReactNode;\n  fallback: ReactNode;\n}\n\ninterface State {\n  hasError: boolean;\n  error: Error | null;\n}\n\nexport class ErrorBoundary extends Component<Props, State> {\n  state: State = { hasError: false, error: null };\n\n  static getDerivedStateFromError(error: Error): State {\n    return { hasError: true, error };\n  }\n\n  componentDidCatch(error: Error, info: { componentStack: string }) {\n    console.error(\"Boundary caught:\", error, info.componentStack);\n  }\n\n  render() {\n    if (this.state.hasError) {\n      return <div>{this.props.fallback}</div>;\n    }\n    return this.props.children;\n  }\n}"
+      code: "import { Component, type ReactNode } from \"react\";\n\ninterface Props { children: ReactNode; fallback: ReactNode; }\ninterface State { hasError: boolean; error: Error | null; }\n\nexport class ErrorBoundary extends Component<Props, State> {\n  state: State = { hasError: false, error: null };\n\n  static getDerivedStateFromError(error: Error): State {\n    return { hasError: true, error };\n  }\n\n  componentDidCatch(error: Error, info: { componentStack: string }) {\n    console.error(\"Boundary caught:\", error, info.componentStack);\n  }\n\n  render() {\n    if (this.state.hasError) return <div>{this.props.fallback}</div>;\n    return this.props.children;\n  }\n}"
     }
   },
   {
@@ -396,7 +396,7 @@ export const NEXTJS_RSC_QUESTIONS: QuizQuestion[] = [
     ],
     correctAnswer: "B",
     explanation: "React 19 is an additive release. Its headline features are Actions (`useActionState`, `useFormStatus`, `useOptimistic`) for managing async mutations, the `use` hook for reading promises and context synchronously during render, stable React Server Components, native `<form action={fn}>` support, `ref` as a regular prop on function components, and the React Compiler for automatic memoization.\n\nIn practice this means a form submission no longer needs a hand-rolled `isLoading` flag and `try/catch` around `setState`; you pass an async function to `<form action>` and read pending or error state from `useActionState`. Components stop calling `forwardRef` because `ref` is just another prop. The Compiler removes the need for manual `useMemo` and `useCallback` in most cases.\n\nOne nuance an interviewer will probe: the React Compiler is opt-in and works at build time, not runtime; `use` only works inside render, not in effects or event handlers; and Actions are designed for mutations, not for replacing data-fetching patterns like `use` with a promise or a server component boundary.",
-    interviewLine: "React 19 is additive: it adds Actions for async mutations, the `use` hook for reading promises during render, stable Server Components, native `<form action>` with functions, `ref` as a plain prop, and the React Compiler for automatic memoization. The core rendering model and every existing hook are unchanged.",
+    interviewLine: "I'd frame React 19 as additive: it adds Actions for async mutations, the `use` hook for reading promises during render, stable Server Components, native `<form action>` with functions, `ref` as a plain prop, and the React Compiler for automatic memoization. I stress the core rendering model and every existing hook are unchanged.",
     misconception: "React 19 is a breaking rewrite that changes the rendering model or removes existing APIs, rather than an additive release that layers async state management, server components, and build-time tooling on top of the existing hook and component model.",
     hints: [
       "Think about what problem each feature solves: async form handling, reading async data in render, server-side rendering, ref forwarding, and performance.",
@@ -409,7 +409,7 @@ export const NEXTJS_RSC_QUESTIONS: QuizQuestion[] = [
     example: {
       caption: "`useActionState` gives you pending and message state for free, so the form no longer needs a separate `isLoading` flag or a `try/catch` around `setState`.",
       language: "tsx",
-      code: "\"use client\";\n\nimport { useActionState } from \"react\";\n\nasync function submitForm(prev: string, formData: FormData) {\n  const email = formData.get(\"email\") as string;\n  await fetch(\"/api/subscribe\", {\n    method: \"POST\",\n    body: JSON.stringify({ email }),\n  });\n  return \"Subscribed!\";\n}\n\nexport function Subscribe() {\n  const [message, formAction, pending] = useActionState(submitForm, \"\");\n\n  return (\n    <form action={formAction}>\n      <input name=\"email\" type=\"email\" required />\n      <button disabled={pending}>\n        {pending ? \"Sending\u2026\" : \"Subscribe\"}\n      </button>\n      {message && <p>{message}</p>}\n    </form>\n  );\n}"
+      code: "\"use client\";\n\nimport { useActionState } from \"react\";\n\nasync function submitForm(prev: string, formData: FormData) {\n  const email = formData.get(\"email\") as string;\n  await fetch(\"/api/subscribe\", { method: \"POST\", body: JSON.stringify({ email }) });\n  return \"Subscribed!\";\n}\n\nexport function Subscribe() {\n  const [message, formAction, pending] = useActionState(submitForm, \"\");\n  return (\n    <form action={formAction}>\n      <input name=\"email\" type=\"email\" required />\n      <button disabled={pending}>{pending ? \"Sending\u2026\" : \"Subscribe\"}</button>\n      {message && <p>{message}</p>}\n    </form>\n  );\n}"
     }
   },
   {
@@ -487,13 +487,13 @@ export const NEXTJS_RSC_QUESTIONS: QuizQuestion[] = [
     options: [
       {
         id: "A",
-        text: "Client Components cannot receive props from Server Components.",
+        text: "Client Components cannot receive props or JSX children from Server Components at all.",
         isCorrect: false,
         explanation: "Tempting if you picture the `'use client'` boundary as a wall that blocks data flow. In reality, Server Components pass serializable props and JSX children to Client Components every render; that is the primary way data crosses the boundary."
       },
       {
         id: "B",
-        text: "Server Components cannot import Client Components under any circumstances.",
+        text: "Server Components cannot import or render Client Components under any circumstances.",
         isCorrect: false,
         explanation: "This inverts the import rule. Server Components import and render Client Components freely; the `'use client'` directive simply marks where the client boundary begins. What is forbidden is the reverse: a Client Component importing a Server Component by name."
       },
@@ -505,13 +505,13 @@ export const NEXTJS_RSC_QUESTIONS: QuizQuestion[] = [
       },
       {
         id: "D",
-        text: "Server Components run only on the server and can directly await data, shipping 0KB JS; Client Components (`'use client'`) run on client and SSR, handling interactivity, state, and browser APIs.",
+        text: "Server Components run server-only and `await` data with 0KB JS; Client Components (`'use client'`) handle interactivity, state, and browser APIs.",
         isCorrect: true,
         explanation: "Correct. This captures the two compilation targets, the zero-JS guarantee for Server Components, and the interactivity and state ownership that Client Components provide."
       }
     ],
     correctAnswer: "D",
-    explanation: "Server Components are a compilation target in Next.js App Router that executes only on the server. The compiler serializes their rendered output into an RSC payload (a wire format, not JavaScript) and sends that to the browser. No JavaScript bundle for a Server Component ever reaches the client, which is why they can call `await` on a database or API directly and pass the result down as a prop. Client Components, marked with the `'use client'` directive, are compiled into a JavaScript bundle that hydrates in the browser, giving them access to `useState`, `useEffect`, event handlers, and browser APIs.\n\nIn practice this means a page like `app/dashboard/page.tsx` can be a Server Component that fetches revenue data and hands it to a `<RevenueChart>` Client Component. The chart component owns its hover state and click handlers, while the server component's `await getRevenue()` call never appears in the client bundle. The server component's code is gone after rendering; only the serialized tree and the client component's JS survive.\n\nThe import boundary is one-directional: a Server Component can import and render a Client Component, but a Client Component cannot import a Server Component directly. It can only receive Server Components as props or children. Also, Client Components still execute on the server during SSR to produce the initial HTML; `'use client'` marks the hydration boundary, not a ban on server-side execution.",
+    explanation: "Server Components are a compilation target in Next.js App Router that executes only on the server. The compiler serializes their rendered output into an RSC payload (a wire format, not JavaScript) and sends that to the browser. No JavaScript bundle for a Server Component reaches the client, which is why they can `await` a database or API directly and pass the result down as a prop. Client Components, marked with `'use client'`, are compiled into a JavaScript bundle that hydrates in the browser, giving them `useState`, `useEffect`, event handlers, and browser APIs.\n\nIn practice this means a page like `app/dashboard/page.tsx` can be a Server Component that fetches revenue data and hands it to a `<RevenueChart>` Client Component. The chart component owns its hover state and click handlers, while the `await getRevenue()` call never appears in the client bundle. The server component's code is gone after rendering; only the serialized tree and the client component's JS survive.\n\nThe import boundary is one-directional: a Server Component can import and render a Client Component, but a Client Component cannot import a Server Component directly. It can only receive Server Components as props or children. Also, Client Components still execute on the server during SSR to produce the initial HTML; `'use client'` marks the hydration boundary, not a ban on server execution.",
     interviewLine: "Server Components are a compilation target that produces a serialized RSC payload with zero JavaScript shipped, so I can `await` a database call directly and pass the result as a prop to a `'use client'` component that owns the interactive state and event handlers.",
     misconception: "Treating Server and Client Components as the same component that \"runs in two places\" rather than two distinct compilation targets with different capabilities and a strictly one-way import boundary (Server \u2192 Client allowed, Client \u2192 Server not).",
     hints: [
@@ -782,36 +782,43 @@ export const NEXTJS_RSC_QUESTIONS: QuizQuestion[] = [
         id: "A",
         text: "Store column visibility and sorting state in global immutable Redux stores that cannot be parameterized.",
         isCorrect: false,
-        explanation: "Table state is best modeled as URL query params or local component state so multiple tables can coexist."
+        explanation: "Tempting if you treat all UI state as global, but table state belongs in local component state or the URL so two tables on one page do not fight over a single store entry."
       },
       {
         id: "B",
         text: "Force all sorting and filtering to occur strictly on the backend with full page reloads for every column click.",
         isCorrect: false,
-        explanation: "Full page reloads for simple sorting destroy SPA responsiveness; client or async AJAX updates are standard."
+        explanation: "Tempting because the server can sort, but a full page reload per column click throws away the SPA; a client update or an async request to the API keeps the page responsive."
       },
       {
         id: "C",
         text: "Use a headless table hook (e.g. TanStack Table) to manage column models, sorting, filtering, and pagination state, combining with virtualization for large datasets.",
         isCorrect: true,
-        explanation: "Correct. Headless table libraries manage data transformations, multi-column sorting, faceted filtering, and pagination while giving 100% control over UI rendering."
+        explanation: "Correct. A headless hook owns the row-model logic while you own the markup, and virtualization keeps the DOM small when the dataset is large."
       },
       {
         id: "D",
         text: "Render 50,000 raw table `<tr>` rows directly in the DOM and sort them using synchronous `Array.prototype.sort` in render.",
         isCorrect: false,
-        explanation: "Rendering 50,000 table rows freezes the browser DOM; sorting inside render recalculates on every state update."
+        explanation: "Tempting as the most direct approach, but 50,000 DOM nodes freeze layout and sorting inside render re-sorts on every state change; virtualization and memoized row models exist to avoid exactly this."
       }
     ],
     correctAnswer: "C",
-    explanation: "A production data table handles thousands of rows, complex filters, and must remain performant. TanStack Table (react-table) is the standard: Headless, you own the HTML/CSS, library owns the logic Server-side: sorting/filtering/pagination sent to API Client-side: all data in memory, sort/filter/page locally Server-side vs client-side: Client-side: < 500 rows, simple filtering Server-side: > 500 rows, complex filtering, API-driven Key features to implement: Column sort (asc/desc toggle, multi-sort) Filter per column (text, select, date range, number range) Pagination with page size selector Column resize and reorder Row selection with bulk actions Exportable (CSV, Excel) URL state for table config: Encode sort, filters, page in URL params Shareable, bookmarkable table state 1 import { useReactTable, getCoreRowModel, getSortedRowModel, 2 getFilteredRowModel, getPaginationRowModel } from '@tanstack/react-table' 3 4 const DataTable = ( { columns, data } ) = > { 5 const [ sorting, setSorting ] = useState ( [ ] ) 6 const [ filtering, setFiltering ] = useState ( [ ] ) 7 const [ pagination, setPagination ] = useState ( { pageIndex: 0, pageSize: 20 } ) 8 9 const table = useReactTable ( { 10 data, 11 columns, 12 state: { sorting, columnFilters: filtering, pagination }, 13 onSortingChange: setSorting, 14 onColumnFiltersChange: setFiltering, 15 onPaginationChange: setPagination, 16 getCoreRowModel: getCoreRowModel ( ), 17 getSortedRowModel: getSortedRowModel ( ), 18 getFilteredRowModel: getFilteredRowModel ( ), 19 getPaginationRowModel: getPaginationRowModel ( ), 20 manualPagination: false, // true = server-side 21 } ) 22 23 return ( 24 < div >",
-    interviewLine: "A production data table handles thousands of rows, complex filters, and must remain performant.",
-    misconception: "TanStack Table (react-table) is the standard: Headless, you own the HTML/CSS, library owns the logic Server-side: sorting/filtering/pagination sent to API Client-side: all data in memory, sort/filter/page locally Server-side vs client",
+    explanation: "Reach for a headless table library such as TanStack Table. Headless means it owns the logic (the column model, sorted and filtered row models, pagination state) and hands you plain data and callbacks, while you render every `<th>` and `<tr>` yourself. That split keeps full control of markup and styling without reimplementing multi-column sort, faceted filters, or page math by hand.\n\nThe second decision is where the work happens. Under roughly 500 rows you can keep the full dataset in memory and sort, filter and page on the client for instant interaction. Past that, or when filters are complex, switch to server-side: send sort, filter and page descriptors to the API and let the database do the work, so the browser only holds one page. For long client-side lists, add row virtualization so the DOM renders only visible rows instead of all of them.\n\nAn interviewer will probe table state persistence: encoding sort, filters and page in the URL as query params makes the view shareable and bookmarkable and survives a refresh, which is why URL state usually beats a global store for a table.",
+    interviewLine: "I use a headless table like TanStack Table so the library owns the sort, filter and pagination models while I own the markup, keep data client-side under a few hundred rows and move to server-side plus virtualization beyond that, and encode table state in the URL so it is shareable.",
+    misconception: "Thinking a data table is a rendering problem you solve by printing all rows, when the hard part is managing sort, filter and pagination state and only rendering the rows the user can see.",
     hints: [
-      "State the time and space cost before you optimise. A Set or Map turns a repeated scan into a lookup."
+      "Separate the two concerns: who owns the row-model logic and who owns the HTML.",
+      "Ask what changes once the dataset is tens of thousands of rows rather than a few dozen.",
+      "A full page reload on every column click is the thing a single-page app exists to avoid."
     ],
     source: "frontend-system-design-50",
     estimatedMinutes: 4,
-    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map"
+    bestPracticeRef: "https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Map",
+    example: {
+      caption: "Encoding sort and page in the URL makes the table view shareable and survive a refresh.",
+      language: "typescript",
+      code: "import { useSearchParams } from \"next/navigation\";\n\nfunction useTableState() {\n  const params = useSearchParams();\n  const sort = params.get(\"sort\") ?? \"name\";\n  const dir = params.get(\"dir\") === \"desc\" ? \"desc\" : \"asc\";\n  const page = Number(params.get(\"page\") ?? \"1\");\n\n  function toHref(next: { sort?: string; dir?: string; page?: number }) {\n    const q = new URLSearchParams(params);\n    for (const [k, v] of Object.entries(next)) q.set(k, String(v));\n    return `?${q.toString()}`;\n  }\n\n  return { sort, dir, page, toHref };\n}"
+    }
   }
 ];

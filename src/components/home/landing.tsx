@@ -53,6 +53,9 @@ export function Landing() {
           <Link href="/topics" className="text-ash hover:text-bone hidden text-[12.5px] transition-colors sm:block">
             Topics
           </Link>
+          <Link href="/interview-prep" className="text-ash hover:text-bone hidden text-[12.5px] transition-colors sm:block">
+            Interview prep
+          </Link>
           <Link href="/progress" className="text-ash hover:text-bone hidden text-[12.5px] transition-colors sm:block">
             Progress
           </Link>

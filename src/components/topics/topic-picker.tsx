@@ -11,7 +11,7 @@ import { useMemo, useState } from "react";
 import Link from "next/link";
 import { motion } from "motion/react";
 import { ArrowLeft } from "lucide-react";
-import { CoverageRing, useProgress } from "@components";
+import { CoverageRing, FilterPill, useProgress } from "@components";
 import type { QuestionCategory } from "@data";
 import {
   CATEGORIES,
@@ -144,32 +144,5 @@ export function TopicPicker() {
         </motion.div>
       </motion.div>
     </div>
-  );
-}
-
-interface FilterPillProps {
-  active: boolean;
-  onClick: () => void;
-  children: React.ReactNode;
-}
-
-function FilterPill({
-  active,
-  onClick,
-  children,
-}: Readonly<FilterPillProps>) {
-  return (
-    <button
-      type="button"
-      onClick={onClick}
-      className={cn(
-        "rounded-full px-3 py-1.75 font-mono text-xs font-medium transition-colors",
-        active
-          ? "bg-flame text-ink"
-          : "border-line-2 text-stone hover:text-bone border",
-      )}
-    >
-      {children}
-    </button>
   );
 }

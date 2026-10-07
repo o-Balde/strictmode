@@ -244,6 +244,27 @@
   text-shadow: 0 0 6px rgb(40 254 20 / 0.45);
 }
 
+/* ---------------------------------------------------------------------------
+   Interview prep sheet. One document holds a couple of hundred snippets and a
+   couple of thousand inline code spans, so both are styled by a short class
+   here instead of repeating utilities and inline colours on every element.
+   The token classes are emitted by highlightCompact() in src/lib/highlight.ts.
+   --------------------------------------------------------------------------- */
+.tk-k, .tk-ki { color: var(--code-keyword); }
+.tk-s, .tk-si { color: var(--code-string); }
+.tk-f, .tk-fi { color: var(--code-function); }
+.tk-t, .tk-ti { color: var(--code-type); }
+.tk-c, .tk-ci { color: var(--code-comment); }
+.tk-n, .tk-ni { color: var(--code-number); }
+.tk-p, .tk-pi { color: var(--code-param); }
+.tk-ki, .tk-si, .tk-fi, .tk-ti, .tk-ci, .tk-ni, .tk-pi, .tk-xi { font-style: italic; }
+
+.prep-code {
+  @apply rounded-[3px] px-1 py-px font-mono text-[0.9em] wrap-break-word;
+  background: var(--well);
+  color: var(--code-function);
+}
+
 @layer base {
   * {
     @apply border-border outline-ring/50;

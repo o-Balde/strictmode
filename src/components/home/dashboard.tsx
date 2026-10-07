@@ -55,6 +55,9 @@ export function Dashboard({ initialHud }: Readonly<DashboardProps>) {
           <Link href="/topics" className="text-ash hover:text-bone text-[12.5px] transition-colors">
             Topics
           </Link>
+          <Link href="/interview-prep" className="text-ash hover:text-bone text-[12.5px] transition-colors">
+            Prep
+          </Link>
           <Link href="/progress" className="text-ash hover:text-bone text-[12.5px] transition-colors">
             Progress
           </Link>

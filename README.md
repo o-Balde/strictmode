@@ -15,6 +15,7 @@ Built with **Next.js 16 (App Router)**, **React 19**, **Tailwind CSS v4**, **Mot
 npm run dev        # Build columnar index + question payloads, then start on :3000
 npm run build      # Production build with Turbopack
 npm run verify     # 122 pure-logic assertions (streaks, schedulers, transitions, indexes, card-bank invariants)
+npm run verify:prep  # Type-checks and executes the interview prep sheet's code examples
 npm run typecheck  # Strict TypeScript verification (tsc --noEmit)
 npm run lint       # ESLint check
 ```
@@ -55,6 +56,7 @@ npm run lint       # ESLint check
 | **Summary** | `/drill/done` | `components/session/session-summary.tsx` | Session accuracy, speed, interval updates, streak |
 | **Progress** | `/progress` | `components/progress-view.tsx` | Full lifetime stats, review backlog, data export |
 | **Topic Picker** | `/topics` | `components/topics/topic-picker.tsx` | 16 subject cards sorted by bank volume |
+| **Interview Prep** | `/interview-prep` | `components/prep/interview-prep.tsx` | Reference sheet: 170 Q&As with worked examples, search and filters (static pre-rendered) |
 | **Subject Drill** | `/topics/[subject]`| `components/topics/subject-view.tsx` | Subject-specific drill queue (static pre-rendered) |
 
 > `/` and `/path` inspect the lightweight `sm_hud` cookie server-side to resolve between the landing page and the active dashboard without client-side redirects or visual flash.
@@ -148,12 +150,15 @@ strictmode/
 ├── public/q/              # Pre-rendered static question payloads (generated)
 ├── scripts/
 │   ├── build-index.ts     # Compiles question bank & pre-renders Shiki markup
+│   ├── build-prep.ts      # Validates the interview prep sheet & highlights its snippets
 │   ├── verify-logic.ts    # Assertion suite for scheduler, streaks, and index
+│   ├── verify-prep.ts     # Type-checks and runs every example on the prep sheet
 │   └── authored/          # Curated & verified question source files
 ├── src/
 │   ├── app/               # Next.js App Router pages and API routes
 │   ├── components/
 │   │   ├── home/          # Landing page, dashboard, and focus path
+│   │   ├── prep/          # Interview prep sheet: search, filters, answers
 │   │   ├── session/       # Drill runner, question view, hint panel, feedback
 │   │   ├── topics/        # Topic browser and subject drill views
 │   │   └── ui/            # Base UI & Radix primitive components

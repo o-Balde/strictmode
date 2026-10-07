@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build:index": "tsx scripts/build-index.ts && tsx scripts/build-binary.ts",
+    "build:index": "tsx scripts/build-index.ts && tsx scripts/build-binary.ts && tsx scripts/build-prep.ts",
     "predev": "npm run build:index",
     "prebuild": "npm run build:index",
     "dev": "next dev --turbopack",
@@ -12,6 +12,7 @@
     "lint": "eslint",
     "typecheck": "tsc --noEmit",
     "verify": "tsx scripts/verify-logic.ts",
+    "verify:prep": "tsx scripts/verify-prep.ts",
     "enrich": "tsx scripts/ollama-enrich.ts",
     "enrich:forever": "bash scripts/enrich-forever.sh",
     "enrich:status": "tsx scripts/ollama-enrich.ts --status",

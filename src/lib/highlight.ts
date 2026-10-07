@@ -22,18 +22,32 @@ import type { CodeLanguage } from "@data";
  * Dracula's cool #282a36, so the well belongs to the warm palette around it
  * instead of reading as a pasted screenshot.
  */
+const GROUND = "#0c0b0a";
+
+/** One entry per `--code-*` custom property in globals.css. */
+const HUE = {
+  plain: "#f8f8f2",
+  keyword: "#ff79c6",
+  string: "#f1fa8c",
+  function: "#50fa7b",
+  type: "#8be9fd",
+  comment: "#6272a4",
+  number: "#bd93f9",
+  param: "#ffb86c",
+} as const;
+
 const STRICTMODE_DRACULA: ThemeRegistration = {
   name: "strictmode-dracula",
   type: "dark",
   colors: {
-    "editor.background": "#0c0b0a",
-    "editor.foreground": "#f8f8f2",
+    "editor.background": GROUND,
+    "editor.foreground": HUE.plain,
   },
   settings: [
-    { settings: { background: "#0c0b0a", foreground: "#f8f8f2" } },
+    { settings: { background: GROUND, foreground: HUE.plain } },
     {
       scope: ["comment", "punctuation.definition.comment"],
-      settings: { foreground: "#6272a4", fontStyle: "italic" },
+      settings: { foreground: HUE.comment, fontStyle: "italic" },
     },
     {
       scope: [
@@ -47,11 +61,11 @@ const STRICTMODE_DRACULA: ThemeRegistration = {
         "keyword.operator.expression",
         "variable.language",
       ],
-      settings: { foreground: "#ff79c6" },
+      settings: { foreground: HUE.keyword },
     },
     {
       scope: ["string", "string.quoted", "string.template", "constant.character"],
-      settings: { foreground: "#f1fa8c" },
+      settings: { foreground: HUE.string },
     },
     {
       scope: [
@@ -61,7 +75,7 @@ const STRICTMODE_DRACULA: ThemeRegistration = {
         "constant.language.null",
         "constant.other",
       ],
-      settings: { foreground: "#bd93f9" },
+      settings: { foreground: HUE.number },
     },
     {
       scope: [
@@ -70,7 +84,7 @@ const STRICTMODE_DRACULA: ThemeRegistration = {
         "meta.function-call",
         "variable.function",
       ],
-      settings: { foreground: "#50fa7b" },
+      settings: { foreground: HUE.function },
     },
     {
       scope: [
@@ -81,13 +95,13 @@ const STRICTMODE_DRACULA: ThemeRegistration = {
         "entity.other.inherited-class",
         "meta.type.parameters",
       ],
-      settings: { foreground: "#8be9fd", fontStyle: "italic" },
+      settings: { foreground: HUE.type, fontStyle: "italic" },
     },
-    { scope: ["entity.name.tag", "punctuation.definition.tag"], settings: { foreground: "#ff79c6" } },
-    { scope: ["entity.other.attribute-name"], settings: { foreground: "#50fa7b", fontStyle: "italic" } },
-    { scope: ["variable.parameter"], settings: { foreground: "#ffb86c", fontStyle: "italic" } },
-    { scope: ["variable", "variable.other", "meta.definition.variable"], settings: { foreground: "#f8f8f2" } },
-    { scope: ["punctuation"], settings: { foreground: "#f8f8f2" } },
+    { scope: ["entity.name.tag", "punctuation.definition.tag"], settings: { foreground: HUE.keyword } },
+    { scope: ["entity.other.attribute-name"], settings: { foreground: HUE.function, fontStyle: "italic" } },
+    { scope: ["variable.parameter"], settings: { foreground: HUE.param, fontStyle: "italic" } },
+    { scope: ["variable", "variable.other", "meta.definition.variable"], settings: { foreground: HUE.plain } },
+    { scope: ["punctuation"], settings: { foreground: HUE.plain } },
   ],
 };
 
@@ -103,7 +117,7 @@ function highlighter(): Promise<Highlighter> {
   return instance;
 }
 
-const LANG_MAP: Record<CodeLanguage, string> = {
+const LANG_MAP: Record<CodeLanguage, (typeof LANGS)[number]> = {
   tsx: "tsx",
   jsx: "jsx",
   typescript: "typescript",
@@ -128,6 +142,50 @@ export async function highlight(
       theme: "strictmode-dracula",
       structure: "inline",
     });
+  } catch {
+    return escapeHtml(code);
+  }
+}
+
+/** `tk-k` for a keyword, `tk-ki` for an italic one: see the matching rules in globals.css. */
+const TOKEN_CLASS = new Map<string, string>(
+  Object.entries(HUE).map(([name, hex]) => [hex, `tk-${name === "plain" ? "x" : name[0]}`]),
+);
+const ITALIC = 1;
+
+/**
+ * The same highlighting as `highlight`, as markup a fraction of the size.
+ *
+ * `highlight` writes a `style` attribute on every token, which is right for a
+ * payload holding one snippet. The prep sheet puts a couple of hundred snippets
+ * in a single document, where those attributes came to over a megabyte, twice,
+ * since a server-rendered page also carries its content in the RSC payload.
+ * Here a token gets a short class, plain tokens get no element at all, and
+ * lines end in a newline: the caller renders the result inside a <pre> whose
+ * colour is `--code-plain`.
+ */
+export async function highlightCompact(
+  code: string,
+  language: CodeLanguage = "typescript",
+): Promise<string> {
+  const lang = LANG_MAP[language] ?? "typescript";
+  try {
+    const hl = await highlighter();
+    const { tokens } = hl.codeToTokens(code, { lang, theme: "strictmode-dracula" });
+    return tokens
+      .map((line) =>
+        line
+          .map((token) => {
+            const text = escapeHtml(token.content);
+            const italic = ((token.fontStyle ?? 0) & ITALIC) !== 0;
+            const base = TOKEN_CLASS.get((token.color ?? HUE.plain).toLowerCase());
+            if (base === undefined) return `<span style="color:${token.color}">${text}</span>`;
+            if (base === "tk-x" && !italic) return text;
+            return `<span class=${base}${italic ? "i" : ""}>${text}</span>`;
+          })
+          .join(""),
+      )
+      .join("\n");
   } catch {
     return escapeHtml(code);
   }

@@ -18,6 +18,7 @@
 import { spawnSync } from "node:child_process";
 import { dirname, join } from "node:path";
 import ts from "typescript";
+import { CODESIGNAL_PREP_SECTIONS, codesignalBlockGroups } from "../src/data/codesignal";
 import { PREP_SECTIONS, type PrepBlock } from "../src/data/interview-prep";
 
 const REPO = process.cwd();
@@ -58,10 +59,15 @@ const files = new Map<string, VirtualFile>();
 const runs: Run[] = [];
 let skipped = 0;
 
-for (const section of PREP_SECTIONS) {
+// The CodeSignal page's question cards and its other prose (level briefs,
+// debriefs, bug fixes, widget notes) carry snippets of their own.
+for (const section of [...PREP_SECTIONS, ...CODESIGNAL_PREP_SECTIONS]) {
   for (const question of section.questions) {
     question.body.forEach((block, index) => collect(`${question.id}#${index}`, block, question.body[index + 1]));
   }
+}
+for (const { label, blocks } of codesignalBlockGroups()) {
+  blocks.forEach((block, index) => collect(`codesignal-${label}#${index}`, block, blocks[index + 1]));
 }
 
 function collect(label: string, block: PrepBlock, next: PrepBlock | undefined) {

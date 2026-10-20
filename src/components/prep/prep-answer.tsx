@@ -25,11 +25,7 @@ export function PrepAnswer({ question }: Readonly<PrepAnswerProps>) {
         <PrepText text={question.short} />
       </p>
 
-      <div className="mt-5 flex flex-col gap-4">
-        {question.body.map((block, index) => (
-          <Block key={index} block={block} />
-        ))}
-      </div>
+      <PrepBlocks blocks={question.body} className="mt-5" />
 
       {question.followUps?.length ? (
         <div className="mt-7">
@@ -60,6 +56,22 @@ export function PrepAnswer({ question }: Readonly<PrepAnswerProps>) {
           <ArrowUpRight className="size-3" />
         </a>
       ) : null}
+    </div>
+  );
+}
+
+export interface PrepBlocksProps {
+  blocks: readonly RenderedPrepBlock[];
+  className?: string;
+}
+
+/** A run of answer blocks, set the same way wherever they appear. */
+export function PrepBlocks({ blocks, className }: Readonly<PrepBlocksProps>) {
+  return (
+    <div className={cn("flex flex-col gap-4", className)}>
+      {blocks.map((block, index) => (
+        <Block key={index} block={block} />
+      ))}
     </div>
   );
 }

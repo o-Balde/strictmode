@@ -15,7 +15,7 @@ Built with **Next.js 16 (App Router)**, **React 19**, **Tailwind CSS v4**, **Mot
 npm run dev        # Build columnar index + question payloads, then start on :3000
 npm run build      # Production build with Turbopack
 npm run verify     # 122 pure-logic assertions (streaks, schedulers, transitions, indexes, card-bank invariants)
-npm run verify:prep  # Type-checks and executes the interview prep sheet's code examples
+npm run verify:prep  # Type-checks and executes the interview prep and CodeSignal pages' code examples
 npm run typecheck  # Strict TypeScript verification (tsc --noEmit)
 npm run lint       # ESLint check
 ```
@@ -57,6 +57,7 @@ npm run lint       # ESLint check
 | **Progress** | `/progress` | `components/progress-view.tsx` | Full lifetime stats, review backlog, data export |
 | **Topic Picker** | `/topics` | `components/topics/topic-picker.tsx` | 16 subject cards sorted by bank volume |
 | **Interview Prep** | `/interview-prep` | `components/prep/interview-prep.tsx` | Reference sheet: 170 Q&As with worked examples, search and filters (static pre-rendered) |
+| **CodeSignal Practice** | `/codesignal-react-typescript` | `components/codesignal/codesignal-prep.tsx` | CodeSignal React/TS assessment prep: format intel with sources, a 90-minute clock, level-locked mocks, bug hunt and drills, graded by the runnable kit in `practice/codesignal` (static pre-rendered) |
 | **Subject Drill** | `/topics/[subject]`| `components/topics/subject-view.tsx` | Subject-specific drill queue (static pre-rendered) |
 
 > `/` and `/path` inspect the lightweight `sm_hud` cookie server-side to resolve between the landing page and the active dashboard without client-side redirects or visual flash.

@@ -1,0 +1,9 @@
+[
+  { "id": "s1", "title": "Intro to React Server Components", "track": "Frontend", "seatsRemaining": 12 },
+  { "id": "s2", "title": "Designing Event-Driven Systems", "track": "Architecture", "seatsRemaining": 0 },
+  { "id": "s3", "title": "Prompt Engineering for Developers", "track": "AI", "seatsRemaining": 1 },
+  { "id": "s4", "title": "CSS Layout Deep Dive", "track": "Frontend", "seatsRemaining": 5 },
+  { "id": "s5", "title": "Scaling Postgres", "track": "Architecture", "seatsRemaining": 3 },
+  { "id": "s6", "title": "Evaluating LLM Apps", "track": "AI", "seatsRemaining": 8 },
+  { "id": "s7", "title": "Accessible React Components", "track": "Frontend", "seatsRemaining": 2 }
+]

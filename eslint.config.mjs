@@ -18,6 +18,9 @@ const eslintConfig = defineConfig([
     "scratch/**",
     ".venv/**",
     "src/generated/**",
+    // A standalone practice project with its own tooling; its bug-hunt app is
+    // broken on purpose.
+    "practice/**",
   ]),
 ]);
 

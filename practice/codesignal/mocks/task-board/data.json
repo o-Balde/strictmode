@@ -1,0 +1,31 @@
+{
+  "todoItems": [
+    {
+      "id": "t3",
+      "title": "Write release notes",
+      "description": "Summarise the sprint for customers",
+      "status": "TO_DO"
+    },
+    {
+      "id": "t4",
+      "title": "Fix flaky test",
+      "description": "checkout.spec times out on CI",
+      "status": "TO_DO"
+    },
+    {
+      "id": "t5",
+      "title": "Fix flaky test",
+      "description": "search.spec fails on Mondays",
+      "status": "TO_DO"
+    }
+  ],
+  "inProgressItems": [
+    {
+      "id": "t1",
+      "title": "Design review",
+      "description": "Walk through the new dashboard",
+      "status": "IN_PROGRESS"
+    }
+  ],
+  "doneItems": []
+}

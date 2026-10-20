@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "build:index": "tsx scripts/build-index.ts && tsx scripts/build-binary.ts && tsx scripts/build-prep.ts",
+    "build:index": "tsx scripts/build-index.ts && tsx scripts/build-binary.ts && tsx scripts/build-prep.ts && tsx scripts/build-codesignal.ts",
     "predev": "npm run build:index",
     "prebuild": "npm run build:index",
     "dev": "next dev --turbopack",

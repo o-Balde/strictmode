@@ -40,6 +40,9 @@ export function InterviewPrep({ sections }: Readonly<InterviewPrepProps>) {
       <header className="border-line flex items-center justify-between border-b px-6 py-4 sm:px-8">
         <Brand />
         <nav className="flex items-center gap-5 sm:gap-5.5">
+          <Link href="/quick-review" className="text-ash hover:text-bone hidden text-[12.5px] transition-colors sm:block">
+            Quick review
+          </Link>
           <Link
             href="/codesignal-react-typescript"
             className="text-ash hover:text-bone hidden text-[12.5px] transition-colors sm:block"

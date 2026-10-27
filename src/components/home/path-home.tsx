@@ -165,6 +165,10 @@ export function PathHome({ initialHud }: Readonly<PathHomeProps>) {
               <Link href="/topics" className="text-clay underline underline-offset-2">
                 pick a topic yourself
               </Link>
+              , or{" "}
+              <Link href="/quick-review" className="text-clay underline underline-offset-2">
+                run a quick review
+              </Link>
             </div>
           </motion.div>
 

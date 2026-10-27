@@ -34,6 +34,9 @@ export const js = snippet("javascript");
 /** Untyped on purpose: for the "find the bugs" snippets that would not compile. */
 export const jsx = snippet("jsx");
 export const json = snippet("json");
+export const css = snippet("css");
+export const html = snippet("html");
+export const http = snippet("http");
 
 export const p = (text: string): PrepParagraph => ({ kind: "p", text });
 

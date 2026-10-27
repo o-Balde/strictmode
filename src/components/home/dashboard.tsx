@@ -7,7 +7,7 @@
  */
 import Link from "next/link";
 import { motion } from "motion/react";
-import { Flame, Layers3, ListChecks, Shuffle } from "lucide-react";
+import { Flame, Layers3, ListChecks, Shuffle, Sparkles } from "lucide-react";
 import {
   Brand,
   Heatmap,
@@ -54,6 +54,9 @@ export function Dashboard({ initialHud }: Readonly<DashboardProps>) {
           </span>
           <Link href="/topics" className="text-ash hover:text-bone text-[12.5px] transition-colors">
             Topics
+          </Link>
+          <Link href="/quick-review" className="text-ash hover:text-bone hidden text-[12.5px] transition-colors sm:block">
+            Review
           </Link>
           <Link href="/interview-prep" className="text-ash hover:text-bone text-[12.5px] transition-colors">
             Prep
@@ -179,6 +182,13 @@ export function Dashboard({ initialHud }: Readonly<DashboardProps>) {
             >
               <Shuffle className="size-3.5" />
               Pick a topic
+            </Link>
+            <Link
+              href="/quick-review"
+              className="border-line-3 text-bone hover:border-line-2 flex items-center gap-2 rounded-lg border px-5 py-3.75 text-sm font-medium transition-colors"
+            >
+              <Sparkles className="size-3.5" />
+              Quick review
             </Link>
             <span className="text-slate hidden text-[12.5px] lg:block">
               A–D to answer · Enter to continue

@@ -9,6 +9,7 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { motion, useReducedMotion } from "motion/react";
+import { Sparkles } from "lucide-react";
 import { Brand, OptionText } from "@components";
 import {
   BANK_TOTAL,
@@ -52,6 +53,9 @@ export function Landing() {
         <nav className="flex items-center gap-5 sm:gap-5.5">
           <Link href="/topics" className="text-ash hover:text-bone hidden text-[12.5px] transition-colors sm:block">
             Topics
+          </Link>
+          <Link href="/quick-review" className="text-ash hover:text-bone hidden text-[12.5px] transition-colors sm:block">
+            Quick review
           </Link>
           <Link href="/interview-prep" className="text-ash hover:text-bone hidden text-[12.5px] transition-colors sm:block">
             Interview prep
@@ -121,6 +125,24 @@ export function Landing() {
             <Stat value={String(BANK_TOTAL)} label="questions, never repeated until you've seen them all" />
             <Stat value={String(codeQuestions)} label="code-reading exercises drawn from real bugs" />
             <Stat value="0" label="accounts, trackers or servers involved" />
+          </motion.div>
+
+          <motion.div variants={staggerChild}>
+            <Link
+              href="/quick-review"
+              className="border-binary-line bg-binary-deep/50 hover:border-binary group flex items-center gap-4 rounded-lg border px-4 py-3.5 transition-colors"
+            >
+              <span className="border-binary-line text-binary-soft grid size-9 shrink-0 place-items-center rounded-lg border">
+                <Sparkles aria-hidden className="size-4" />
+              </span>
+              <span className="min-w-0 flex-1">
+                <span className="text-paper block text-[14.5px] font-semibold">Quick review</span>
+                <span className="text-ash block text-[12.5px]/[1.5]">
+                  Over 100 short front-end questions with thirty-second answers and interactive demos, from event loops to a 3D box model.
+                </span>
+              </span>
+              <span className="text-binary-soft shrink-0 text-[13px] font-semibold group-hover:underline group-hover:underline-offset-4">Open →</span>
+            </Link>
           </motion.div>
         </motion.div>
 

@@ -27,6 +27,7 @@ export * from './binary-types';
 export * from './binary-cards';
 export * from './interview-prep';
 export * from './codesignal';
+export * from './quick-review';
 export { REACT_HOOKS_QUESTIONS } from './questions/react-hooks';
 export { REACT_RENDERING_QUESTIONS } from './questions/react-rendering';
 export { TYPESCRIPT_QUESTIONS } from './questions/typescript';

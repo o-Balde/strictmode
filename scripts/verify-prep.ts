@@ -1,7 +1,9 @@
 /**
- * Verification harness for the interview prep sheet's examples. A wrong example
- * on a page people read the night before an interview is worse than none, so
- * the snippets are checked rather than trusted. Run with `npm run verify:prep`.
+ * Verification harness for the interview prep sheet's examples (and those of
+ * the CodeSignal, quick review and Scotiabank pages, the Scotiabank concept
+ * review included). A wrong example on a page people read the night before an
+ * interview is worse than none, so the snippets are checked rather than
+ * trusted. Run with `npm run verify:prep`.
  *
  * - Every `typescript` and `tsx` snippet is type-checked under `strict`. A line
  *   whose trailing comment starts with `// error` must produce a diagnostic on
@@ -24,6 +26,8 @@ import ts from "typescript";
 import { CODESIGNAL_PREP_SECTIONS, codesignalBlockGroups } from "../src/data/codesignal";
 import { PREP_SECTIONS, type PrepBlock } from "../src/data/interview-prep";
 import { REVIEW_SECTIONS } from "../src/data/quick-review";
+import { SCOTIABANK_SECTIONS, scotiabankBlockGroups } from "../src/data/scotiabank";
+import { studyBlockGroups } from "../src/data/scotiabank/study";
 import { BROWSER_LOOP_SCENARIOS, NODE_LOOP_SCENARIOS } from "../src/components/quick-review/demos/event-loop-scenarios";
 import { specificityOf } from "../src/components/quick-review/demos/specificity";
 import { STEPPER_SCENARIOS } from "../src/components/quick-review/demos/stepper-scenarios";
@@ -69,13 +73,16 @@ let skipped = 0;
 
 // The CodeSignal page's question cards and its other prose (level briefs,
 // debriefs, bug fixes, widget notes) carry snippets of their own.
-for (const section of [...PREP_SECTIONS, ...CODESIGNAL_PREP_SECTIONS]) {
+for (const section of [...PREP_SECTIONS, ...CODESIGNAL_PREP_SECTIONS, ...SCOTIABANK_SECTIONS]) {
   for (const question of section.questions) {
     question.body.forEach((block, index) => collect(`${question.id}#${index}`, block, question.body[index + 1]));
   }
 }
 for (const { label, blocks } of codesignalBlockGroups()) {
   blocks.forEach((block, index) => collect(`codesignal-${label}#${index}`, block, blocks[index + 1]));
+}
+for (const { label, blocks } of [...scotiabankBlockGroups(), ...studyBlockGroups()]) {
+  blocks.forEach((block, index) => collect(`scotiabank-${label}#${index}`, block, blocks[index + 1]));
 }
 // The quick review page: each question's prompt snippets and its answer.
 for (const section of REVIEW_SECTIONS) {

@@ -37,6 +37,15 @@ export const json = snippet("json");
 export const css = snippet("css");
 export const html = snippet("html");
 export const http = snippet("http");
+export const java = snippet("java");
+export const sql = snippet("sql");
+export const yaml = snippet("yaml");
+export const bash = snippet("bash");
+export const dockerfile = snippet("dockerfile");
+/** Jenkinsfiles. */
+export const groovy = snippet("groovy");
+/** Spring XML configuration and Maven files. */
+export const xml = snippet("xml");
 
 export const p = (text: string): PrepParagraph => ({ kind: "p", text });
 

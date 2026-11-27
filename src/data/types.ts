@@ -34,7 +34,22 @@ export type QuestionSubject =
   | 'system-architecture'
   | 'data-structures';
 
-export type CodeLanguage = 'typescript' | 'javascript' | 'tsx' | 'jsx' | 'css' | 'json' | 'html' | 'http';
+export type CodeLanguage =
+  | 'typescript'
+  | 'javascript'
+  | 'tsx'
+  | 'jsx'
+  | 'css'
+  | 'json'
+  | 'html'
+  | 'http'
+  | 'java'
+  | 'sql'
+  | 'yaml'
+  | 'bash'
+  | 'dockerfile'
+  | 'groovy'
+  | 'xml';
 
 export interface QuestionOption {
   id: 'A' | 'B' | 'C' | 'D' | string;

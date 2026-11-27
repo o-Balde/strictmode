@@ -12,6 +12,8 @@ export * from "./progress-store";
 export * as progressStore from "./progress-store";
 export * from "./quick-review";
 export * as quickReviewStore from "./quick-review-store";
+export * from "./scotiabank-study";
+export * as studyStore from "./scotiabank-study-store";
 export * from "./question-index";
 export * from "./question-payload";
 export * from "./question-source";

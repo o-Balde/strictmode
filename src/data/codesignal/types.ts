@@ -11,8 +11,11 @@
  */
 import type { PrepBlock, PrepSection, RenderedPrepBlock, RenderedPrepSection } from "../interview-prep";
 
-/** How much weight a statement about the assessment can bear. */
-export type Confidence = "official" | "reported" | "unverified";
+/**
+ * How much weight a statement can bear. `inferred` marks the page's own
+ * reasoning from sourced facts, never a source.
+ */
+export type Confidence = "official" | "reported" | "unverified" | "inferred";
 
 export interface Source {
   id: string;

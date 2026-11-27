@@ -105,7 +105,23 @@ const STRICTMODE_DRACULA: ThemeRegistration = {
   ],
 };
 
-const LANGS = ["tsx", "typescript", "javascript", "jsx", "css", "json", "html", "http"] as const;
+const LANGS = [
+  "tsx",
+  "typescript",
+  "javascript",
+  "jsx",
+  "css",
+  "json",
+  "html",
+  "http",
+  "java",
+  "sql",
+  "yaml",
+  "shellscript",
+  "dockerfile",
+  "groovy",
+  "xml",
+] as const;
 
 let instance: Promise<Highlighter> | null = null;
 
@@ -126,6 +142,13 @@ const LANG_MAP: Record<CodeLanguage, (typeof LANGS)[number]> = {
   json: "json",
   html: "html",
   http: "http",
+  java: "java",
+  sql: "sql",
+  yaml: "yaml",
+  bash: "shellscript",
+  dockerfile: "dockerfile",
+  groovy: "groovy",
+  xml: "xml",
 };
 
 /**

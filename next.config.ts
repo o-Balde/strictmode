@@ -23,6 +23,12 @@ const nextConfig: NextConfig = {
           },
         ],
       },
+      {
+        // The unlisted prep pages (/scotiabank and /scotiabank/study): the header
+        // covers crawlers that skip the meta tag. `:path*` also matches zero segments.
+        source: "/scotiabank/:path*",
+        headers: [{ key: "X-Robots-Tag", value: "noindex, nofollow, noarchive" }],
+      },
     ];
   },
 };

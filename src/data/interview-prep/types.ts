@@ -11,7 +11,20 @@
  */
 import type { CodeLanguage, QuestionLevel, QuestionSubject } from "../types";
 
-export type PrepTrack = "typescript" | "react" | "javascript" | "coding";
+export type PrepTrack =
+  | "typescript"
+  | "react"
+  | "javascript"
+  | "coding"
+  // Full-stack tracks, used by role-specific prep pages beyond the main sheet.
+  | "frontend"
+  | "backend"
+  | "architecture"
+  | "data"
+  | "platform"
+  | "security"
+  | "delivery"
+  | "behavioral";
 
 export interface PrepParagraph {
   kind: "p";

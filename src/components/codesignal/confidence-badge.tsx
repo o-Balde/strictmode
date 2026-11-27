@@ -6,6 +6,7 @@ const CONFIDENCE: Record<Confidence, { label: string; className: string }> = {
   official: { label: "Official", className: "border-mint-line bg-mint-deep text-mint-text" },
   reported: { label: "Reported", className: "border-flame-dim bg-flame-deep text-clay" },
   unverified: { label: "Unverified", className: "border-rust-line bg-rust-bg text-rust" },
+  inferred: { label: "Inferred", className: "border-line-3 bg-surface-3 text-stone" },
 };
 
 export interface ConfidenceBadgeProps {

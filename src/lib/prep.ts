@@ -100,6 +100,14 @@ export const PREP_TRACK_LABEL: Record<PrepTrack, string> = {
   react: "React",
   javascript: "JavaScript",
   coding: "Live coding",
+  frontend: "Front end",
+  backend: "Back end",
+  architecture: "APIs & architecture",
+  data: "Databases",
+  platform: "Cloud & DevOps",
+  security: "Security",
+  delivery: "Agile & testing",
+  behavioral: "Behavioral",
 };
 
 export const PREP_LEVELS: readonly QuestionLevel[] = ["junior", "intermediate", "senior"];
